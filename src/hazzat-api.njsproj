@@ -12,7 +12,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>cfde6605-8c61-4551-b890-7a722bac4a67</ProjectGuid>
+    <ProjectGuid>0f26fa13-c2f7-416a-b59a-87d93323c373</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>app.js</StartupFile>
     <SearchPath>
@@ -43,19 +43,19 @@
     <TypeScriptCompile Include="DataProviders\SqlDataProvider\SqlDataProvider.ts" />
     <TypeScriptCompile Include="routes\index.ts" />
     <TypeScriptCompile Include="routes\seasons.ts" />
-    <Content Include="config.json" />
     <None Include="hazzat-api - Web Deploy.pubxml" />
+    <Content Include="config.json" />
     <Content Include="tsconfig.json" />
     <Content Include="package.json" />
-    <Content Include="..\README.md" />
+    <Content Include="README.md" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DataProviders\" />
-    <Folder Include="DataProviders\SqlDataProvider\" />
     <Folder Include="Common\" />
     <Folder Include="DataModels\" />
+    <Folder Include="DataProviders\" />
+    <Folder Include="DataProviders\SqlDataProvider\" />
     <Folder Include="Routes\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->

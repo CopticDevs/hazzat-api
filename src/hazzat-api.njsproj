@@ -43,11 +43,11 @@
     <TypeScriptCompile Include="DataProviders\SqlDataProvider\SqlDataProvider.ts" />
     <TypeScriptCompile Include="routes\index.ts" />
     <TypeScriptCompile Include="routes\seasons.ts" />
-    <None Include="hazzat-api - Web Deploy.pubxml" />
     <Content Include="config.json" />
+    <None Include="hazzat-api - Web Deploy.pubxml" />
     <Content Include="tsconfig.json" />
     <Content Include="package.json" />
-    <Content Include="README.md" />
+    <Content Include="..\README.md" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config" />
   </ItemGroup>

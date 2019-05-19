@@ -36,7 +36,6 @@
   </PropertyGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app.ts" />
-    <TypeScriptCompile Include="Common\Utils\Net.ts" />
     <TypeScriptCompile Include="Common\Configuration.ts" />
     <TypeScriptCompile Include="DataProviders\SqlDataProvider\HazzatDbSchema.ts" />
     <TypeScriptCompile Include="Models\SeasonInfo.ts" />
@@ -54,7 +53,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />
-    <Folder Include="Common\Utils\" />
     <Folder Include="Models\" />
     <Folder Include="DataProviders\" />
     <Folder Include="DataProviders\SqlDataProvider\" />

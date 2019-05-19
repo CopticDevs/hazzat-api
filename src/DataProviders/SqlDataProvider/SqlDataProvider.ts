@@ -9,51 +9,52 @@ import { HazzatDbSchema } from "./HazzatDbSchema";
  */
 export class SqlDataProvider implements IDataProvider {
     private _tablePrefix: string = "Hymns_";
+    private _cp: Promise<ConnectionPool>;
 
     constructor(private _connectionString: string) {
+        this._cp = new ConnectionPool(this._connectionString).connect();
     }
 
     private _getQualifiedName(sp: string): string {
         return `${this._tablePrefix}${sp}`
     }
 
-    //TODO: why is the return type requiring void?
-    public getSeasonList(): Promise<void | SeasonInfo[]> {
-        const cp = new ConnectionPool(this._connectionString);
-        return cp.connect()
-            .then((pool) => {
-                return pool.request()
-                    .query("select * from Hymns_Seasons");
-            }).then((result) => {
-                assert.ok(result);
-                assert.ok(result.recordsets);
-                assert.ok(result.recordsets.length);
-                assert.notEqual(result.recordsets.length, 0);
+    public async getSeasonList(): Promise<SeasonInfo[]> {
+        try {
+            const connection = await this._cp;
+            const result = await connection.request()
+                .query("select * from Hymns_Seasons");
 
-                const seasons: SeasonInfo[] = result.recordsets[0]
-                    .map((row) => SqlDataProvider._convertSeasonDbItemToSeasonInfo(row));
-                return seasons;
-            }).catch((err) => {
-                console.log(err);
-            });
+            assert.ok(result);
+            assert.ok(result.recordsets);
+            assert.ok(result.recordsets.length);
+            assert.notEqual(result.recordsets.length, 0);
+
+            const seasons: SeasonInfo[] = result.recordsets[0]
+                .map((row) => SqlDataProvider._convertSeasonDbItemToSeasonInfo(row));
+            return seasons;
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
     }
 
-    public getSeason(seasonId: string): Promise<void | SeasonInfo> {
-        const cp = new ConnectionPool(this._connectionString);
-        return cp.connect()
-            .then((pool) => {
-                return pool.request()
-                    .query(`select * from Hymns_Seasons where ID = ` + seasonId);
-            }).then((result) => {
-                assert.ok(result);
-                assert.ok(result.recordsets);
-                assert.ok(result.recordsets.length);
-                assert.notEqual(result.recordsets.length, 0);
-                const row = result.recordsets[0][0];
-                return SqlDataProvider._convertSeasonDbItemToSeasonInfo(row);
-            }).catch((err) => {
-                console.log(err);
-            });
+    public async getSeason(seasonId: string): Promise<SeasonInfo> {
+        try {
+            const connection = await this._cp;
+            const result = await connection.request()
+                .query(`select * from Hymns_Seasons where ID = ` + seasonId);
+
+            assert.ok(result);
+            assert.ok(result.recordsets);
+            assert.ok(result.recordsets.length);
+            assert.notEqual(result.recordsets.length, 0);
+            const row = result.recordsets[0][0];
+            return SqlDataProvider._convertSeasonDbItemToSeasonInfo(row);   
+        } catch (e) {       
+            console.log(e);
+            throw e;
+        }
     }
 
     private static _convertSeasonDbItemToSeasonInfo(seasonDbItem: HazzatDbSchema.Season): SeasonInfo {

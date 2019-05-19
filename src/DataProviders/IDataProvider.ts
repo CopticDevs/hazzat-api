@@ -4,6 +4,6 @@
  * Data Provider Interface
  */
 export interface IDataProvider {
-    getSeasonList(): Promise<void | SeasonInfo[]>;
-    getSeason(seasonId: string): Promise<void | SeasonInfo>;
+    getSeasonList(): Promise<SeasonInfo[]>;
+    getSeason(seasonId: string): Promise<SeasonInfo>;
 }

@@ -18,7 +18,7 @@ export class Configuration {
         Configuration._configKeys.databasePassword
     ];
 
-    public static port: number;
+    public static port: string;
     public static dbConnectionString: string;
 
     public static initialize(): void {
@@ -29,7 +29,7 @@ export class Configuration {
 
         nconf.required(Configuration._requiredConfigKeys);
 
-        this.port = parseInt(process.env.PORT) || 3000;
+        this.port = process.env.PORT || "3000";
 
         const dbName: string = nconf.get(Configuration._configKeys.databaseName);
         const dbUser: string = nconf.get(Configuration._configKeys.databaseUsername);

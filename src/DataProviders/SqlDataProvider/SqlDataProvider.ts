@@ -1,5 +1,6 @@
 ﻿import * as assert from "assert";
 import { ConnectionPool } from "mssql";
+import { isNullOrUndefined } from "util";
 import { SeasonInfo } from "../../Models/SeasonInfo";
 import { IDataProvider } from "../IDataProvider";
 import { HazzatDbSchema } from "./HazzatDbSchema";
@@ -58,6 +59,10 @@ export class SqlDataProvider implements IDataProvider {
     }
 
     private static _convertSeasonDbItemToSeasonInfo(seasonDbItem: HazzatDbSchema.Season): SeasonInfo {
+        if (isNullOrUndefined(seasonDbItem)) {
+            return null;
+        }
+
         return {
             id: seasonDbItem.ID,
             name: seasonDbItem.Name,

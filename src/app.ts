@@ -1,17 +1,23 @@
 ﻿import debug = require('debug');
 import * as express from "express";
 import { Configuration } from "./Common/Configuration";
+import { IDataProvider } from './DataProviders/IDataProvider';
+import { SqlDataProvider } from './DataProviders/SqlDataProvider/SqlDataProvider';
+import { HomeController } from './Routes/HomeController';
+import { SeasonsController } from "./Routes/SeasonsController";
 
 Configuration.initialize();
 
-import routes from './routes/index';
-import seasons from "./routes/seasons";
+// TODO: Use DI
+const dataProvider: IDataProvider = new SqlDataProvider(Configuration.dbConnectionString);
+const homeController = new HomeController();
+const seasonsController = new SeasonsController(dataProvider);
 
 const app = express();
 const port = Configuration.port;
 
-app.use('/', routes);
-app.use('/seasons', seasons);
+app.use('/', homeController.router);
+app.use('/seasons', seasonsController.router);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

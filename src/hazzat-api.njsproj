@@ -36,9 +36,10 @@
   </PropertyGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app.ts" />
-    <TypeScriptCompile Include="Common\Helpers.ts" />
+    <TypeScriptCompile Include="Common\Utils\Net.ts" />
     <TypeScriptCompile Include="Common\Configuration.ts" />
-    <TypeScriptCompile Include="DataModels\SeasonInfo.ts" />
+    <TypeScriptCompile Include="DataProviders\SqlDataProvider\HazzatDbSchema.ts" />
+    <TypeScriptCompile Include="Models\SeasonInfo.ts" />
     <TypeScriptCompile Include="DataProviders\IDataProvider.ts" />
     <TypeScriptCompile Include="DataProviders\SqlDataProvider\SqlDataProvider.ts" />
     <TypeScriptCompile Include="routes\index.ts" />
@@ -53,7 +54,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />
-    <Folder Include="DataModels\" />
+    <Folder Include="Common\Utils\" />
+    <Folder Include="Models\" />
     <Folder Include="DataProviders\" />
     <Folder Include="DataProviders\SqlDataProvider\" />
     <Folder Include="Routes\" />

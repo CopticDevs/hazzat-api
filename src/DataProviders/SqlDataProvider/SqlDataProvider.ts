@@ -1,9 +1,8 @@
-﻿//import sql from "mssql";
-const sql = require('mssql');
-import * as assert from "assert";
+﻿import * as assert from "assert";
+import { ConnectionPool } from "mssql";
+import { SeasonInfo } from "../../Models/SeasonInfo";
 import { IDataProvider } from "../IDataProvider";
-import { ConnectionPool, ConnectionError, config, IResult } from "mssql";
-import { SeasonInfo } from "../../DataModels/SeasonInfo";
+import { HazzatDbSchema } from "./HazzatDbSchema";
 
 /*
  * Sql Data Provider
@@ -11,7 +10,7 @@ import { SeasonInfo } from "../../DataModels/SeasonInfo";
 export class SqlDataProvider implements IDataProvider {
     private _tablePrefix: string = "Hymns_";
 
-    constructor(private _config: config) {
+    constructor(private _connectionString: string) {
     }
 
     private _getQualifiedName(sp: string): string {
@@ -20,14 +19,15 @@ export class SqlDataProvider implements IDataProvider {
 
     //TODO: why is the return type requiring void?
     public getSeasonList(): Promise<void | SeasonInfo[]> {
-        const cp = new ConnectionPool(this._config);
+        const cp = new ConnectionPool(this._connectionString);
         return cp.connect()
             .then((pool) => {
                 return pool.request()
                     .query("select * from Hymns_Seasons");
             }).then((result) => {
-                assert.notEqual(result, null);
-                assert.notEqual(result.recordsets, null);
+                assert.ok(result);
+                assert.ok(result.recordsets);
+                assert.ok(result.recordsets.length);
                 assert.notEqual(result.recordsets.length, 0);
 
                 const seasons: SeasonInfo[] = result.recordsets[0]
@@ -39,14 +39,15 @@ export class SqlDataProvider implements IDataProvider {
     }
 
     public getSeason(seasonId: string): Promise<void | SeasonInfo> {
-        const cp = new ConnectionPool(this._config);
+        const cp = new ConnectionPool(this._connectionString);
         return cp.connect()
             .then((pool) => {
                 return pool.request()
                     .query(`select * from Hymns_Seasons where ID = ` + seasonId);
             }).then((result) => {
-                assert.notEqual(result, null);
-                assert.notEqual(result.recordsets, null);
+                assert.ok(result);
+                assert.ok(result.recordsets);
+                assert.ok(result.recordsets.length);
                 assert.notEqual(result.recordsets.length, 0);
                 const row = result.recordsets[0][0];
                 return SqlDataProvider._convertSeasonDbItemToSeasonInfo(row);
@@ -55,7 +56,7 @@ export class SqlDataProvider implements IDataProvider {
             });
     }
 
-    private static _convertSeasonDbItemToSeasonInfo(seasonDbItem: any): SeasonInfo {
+    private static _convertSeasonDbItemToSeasonInfo(seasonDbItem: HazzatDbSchema.Season): SeasonInfo {
         return {
             id: seasonDbItem.ID,
             name: seasonDbItem.Name,

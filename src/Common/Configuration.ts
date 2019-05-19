@@ -1,5 +1,4 @@
-﻿import { config } from "mssql";
-import * as nconf from "nconf";
+﻿import * as nconf from "nconf";
 
 /*
  * App Configuration
@@ -19,8 +18,8 @@ export class Configuration {
         Configuration._configKeys.databasePassword
     ];
 
-    public static sqlConfig: config;
-    public static port: string | number;
+    public static port: number;
+    public static dbConnectionString: string;
 
     public static initialize(): void {
         // Load command line arguments, environment variables and config.json into nconf
@@ -30,15 +29,12 @@ export class Configuration {
 
         nconf.required(Configuration._requiredConfigKeys);
 
-        this.sqlConfig = {
-            database: nconf.get(Configuration._configKeys.databaseName),
-            options: {
-                encrypt: true
-            },
-            password: nconf.get(Configuration._configKeys.databasePassword),
-            server: nconf.get(Configuration._configKeys.databaseServer),
-            user: nconf.get(Configuration._configKeys.databaseUsername)
-        };
-        this.port = process.env.PORT || 3000;
+        this.port = parseInt(process.env.PORT) || 3000;
+
+        const dbName: string = nconf.get(Configuration._configKeys.databaseName);
+        const dbUser: string = nconf.get(Configuration._configKeys.databaseUsername);
+        const dbServer: string = nconf.get(Configuration._configKeys.databaseServer);
+        const dbPass:string = encodeURIComponent(nconf.get(Configuration._configKeys.databasePassword));
+        this.dbConnectionString = `mssql://${dbUser}:${dbPass}@${dbServer}/${dbName}?encrypt=true`;
     }
 }

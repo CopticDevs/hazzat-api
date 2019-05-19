@@ -1,13 +1,11 @@
 ﻿import debug = require('debug');
 import * as express from "express";
 import { Configuration } from "./Common/Configuration";
-//import path = require('path');
 
 Configuration.initialize();
 
 import routes from './routes/index';
 import seasons from "./routes/seasons";
-
 
 const app = express();
 const port = Configuration.port;

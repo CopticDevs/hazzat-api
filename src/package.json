@@ -16,9 +16,11 @@
   "dependencies": {
     "debug": "^2.2.0",
     "express": "^4.14.0",
+    "injection-js": "^2.2.1",
     "mssql": "^5.1.0",
     "nconf": "^0.10.0",
-    "q": "^1.5.1"
+    "q": "^1.5.1",
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
     "@types/debug": "0.0.30",

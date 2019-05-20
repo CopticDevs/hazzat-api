@@ -1,19 +1,23 @@
 ﻿import * as assert from "assert";
+import { Injectable } from 'injection-js';
 import { ConnectionPool } from "mssql";
 import { isNullOrUndefined } from "util";
 import { SeasonInfo } from "../../Models/SeasonInfo";
 import { IDataProvider } from "../IDataProvider";
 import { HazzatDbSchema } from "./HazzatDbSchema";
+import { Configuration } from "../../Common/Configuration";
+
 
 /*
  * Sql Data Provider
  */
+@Injectable()
 export class SqlDataProvider implements IDataProvider {
     private _tablePrefix: string = "Hymns_";
     private _cp: Promise<ConnectionPool>;
 
-    constructor(private _connectionString: string) {
-        this._cp = new ConnectionPool(this._connectionString).connect();
+    constructor() {
+        this._cp = new ConnectionPool(Configuration.dbConnectionString).connect();
     }
 
     private _getQualifiedName(sp: string): string {

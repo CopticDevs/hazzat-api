@@ -5,7 +5,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <Name>hazzat-api</Name>
     <RootNamespace>hazzat-api</RootNamespace>
-    <LastActiveSolutionConfig>Release|Any CPU</LastActiveSolutionConfig>
+    <LastActiveSolutionConfig>Debug|Any CPU</LastActiveSolutionConfig>
     <NameOfLastUsedPublishProfile>hazzat-api - Web Deploy</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
@@ -37,6 +37,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="app.ts" />
     <TypeScriptCompile Include="Common\Configuration.ts" />
+    <TypeScriptCompile Include="Common\Utils\Net.ts" />
     <TypeScriptCompile Include="DataProviders\SqlDataProvider\HazzatDbSchema.ts" />
     <TypeScriptCompile Include="Models\SeasonInfo.ts" />
     <TypeScriptCompile Include="DataProviders\IDataProvider.ts" />
@@ -53,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />
+    <Folder Include="Common\Utils\" />
     <Folder Include="Models\" />
     <Folder Include="DataProviders\" />
     <Folder Include="DataProviders\SqlDataProvider\" />

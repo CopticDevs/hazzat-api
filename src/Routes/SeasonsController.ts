@@ -1,7 +1,6 @@
 ﻿import * as express from "express";
-import { ReflectiveInjector } from 'injection-js';
-import { SqlDataProvider } from "../DataProviders/SqlDataProvider/SqlDataProvider";
 import { Net } from "../Common/Utils/Net";
+import { IDataProvider } from "../DataProviders/IDataProvider";
 
 /*
  * Seasons controller
@@ -9,10 +8,7 @@ import { Net } from "../Common/Utils/Net";
 export class SeasonsController {
     public router = express.Router();
 
-    //constructor(_dataProvider: SqlDataProvider) {
-    constructor() {
-        const injector = ReflectiveInjector.resolveAndCreate([SqlDataProvider]);
-        const _dataProvider: SqlDataProvider = injector.get(SqlDataProvider);
+    constructor(_dataProvider: IDataProvider) {
         
         this.router.get('/', async (req: express.Request, res: express.Response) => {
             const result = await _dataProvider.getSeasonList();

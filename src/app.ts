@@ -1,14 +1,17 @@
 ﻿import * as express from "express";
 import "reflect-metadata";
 import { Configuration } from "./Common/Configuration";
+import { IDataProvider } from "./DataProviders/IDataProvider";
+import { myContainer } from "./inversify.config";
 import { HomeController } from './Routes/HomeController';
 import { SeasonsController } from "./Routes/SeasonsController";
+import { TYPES } from "./types";
 import debug = require('debug');
 
 Configuration.initialize();
-
+const dataProvider: IDataProvider = myContainer.get<IDataProvider>(TYPES.IDataProvider);
 const homeController = new HomeController();
-const seasonsController = new SeasonsController();
+const seasonsController = new SeasonsController(dataProvider);
 
 const app = express();
 const port = Configuration.port;
@@ -29,22 +32,14 @@ app.use(function (req, res, next) {
 // will print stacktrace
 if (app.get('env') === 'development') {
     app.use((err: any, req, res, next) => {
-        res.status(err['status'] || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
+        res.status(err['status'] || 500).send(err)
     });
 }
 
 // production error handler
 // no stacktraces leaked to user
 app.use((err: any, req, res, next) => {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {}
-    });
+    res.status(err['status'] || 500).send(err.message)
 });
 
 app.set('port', port);

@@ -16,7 +16,7 @@
   "dependencies": {
     "debug": "^2.2.0",
     "express": "^4.14.0",
-    "injection-js": "^2.2.1",
+    "inversify": "^5.0.1",
     "mssql": "^5.1.0",
     "nconf": "^0.10.0",
     "q": "^1.5.1",
@@ -30,7 +30,6 @@
     "@types/nconf": "^0.10.0",
     "@types/node": "^8.10.48",
     "@types/q": "^1.5.2",
-    "@types/serve-static": "^1.7.32",
     "typescript": "^3.4.5"
   },
   "engines": {

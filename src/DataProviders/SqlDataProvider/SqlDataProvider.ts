@@ -1,23 +1,34 @@
 ﻿import * as assert from "assert";
-import { Injectable } from 'injection-js';
+import { inject, injectable } from "inversify";
 import { ConnectionPool } from "mssql";
 import { isNullOrUndefined } from "util";
-import { SeasonInfo } from "../../Models/SeasonInfo";
-import { IDataProvider } from "../IDataProvider";
-import { HazzatDbSchema } from "./HazzatDbSchema";
 import { Configuration } from "../../Common/Configuration";
+import { SeasonInfo } from "../../Models/SeasonInfo";
+import { TYPES } from "../../types";
+import { IDataProvider, IDataProviderOptions } from "../IDataProvider";
+import { HazzatDbSchema } from "./HazzatDbSchema";
 
+/**
+ * Sql Data Provider Options
+ */
+@injectable()
+export class SqlDataProviderOptions implements IDataProviderOptions {
+    // TODO: Is there a way to pass this in from App?
+    public settings: string = Configuration.dbConnectionString;
+}
 
 /*
  * Sql Data Provider
  */
-@Injectable()
+@injectable()
 export class SqlDataProvider implements IDataProvider {
     private _tablePrefix: string = "Hymns_";
     private _cp: Promise<ConnectionPool>;
 
-    constructor() {
-        this._cp = new ConnectionPool(Configuration.dbConnectionString).connect();
+    constructor(
+        @inject(TYPES.IDataProviderOptions) options: IDataProviderOptions
+    ) {
+        this._cp = new ConnectionPool(options.settings).connect();
     }
 
     private _getQualifiedName(sp: string): string {

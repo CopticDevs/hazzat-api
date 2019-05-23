@@ -1,21 +1,11 @@
-﻿import * as assert from "assert";
-import { inject, injectable } from "inversify";
+﻿import { injectable } from "inversify";
 import { ConnectionPool } from "mssql";
-import { isNullOrUndefined } from "util";
 import { Configuration } from "../../Common/Configuration";
 import { SeasonInfo } from "../../Models/SeasonInfo";
-import { TYPES } from "../../types";
-import { IDataProvider, IDataProviderOptions } from "../IDataProvider";
+import { IDataProvider } from "../IDataProvider";
 import { HazzatDbSchema } from "./HazzatDbSchema";
-
-/**
- * Sql Data Provider Options
- */
-@injectable()
-export class SqlDataProviderOptions implements IDataProviderOptions {
-    // TODO: Is there a way to pass this in from App?
-    public settings: string = Configuration.dbConnectionString;
-}
+import { SqlHelpers } from "../../Common/Utils/SqlHelpers";
+import { HazzatApplicationError, ErrorCodes } from "../../Common/Errors";
 
 /*
  * Sql Data Provider
@@ -25,10 +15,8 @@ export class SqlDataProvider implements IDataProvider {
     private _tablePrefix: string = "Hymns_";
     private _cp: Promise<ConnectionPool>;
 
-    constructor(
-        @inject(TYPES.IDataProviderOptions) options: IDataProviderOptions
-    ) {
-        this._cp = new ConnectionPool(options.settings).connect();
+    constructor() {
+        this._cp = new ConnectionPool(Configuration.dbConnectionString).connect();
     }
 
     private _getQualifiedName(sp: string): string {
@@ -36,48 +24,39 @@ export class SqlDataProvider implements IDataProvider {
     }
 
     public async getSeasonList(): Promise<SeasonInfo[]> {
-        try {
-            const connection = await this._cp;
-            const result = await connection.request()
-                .query("select * from Hymns_Seasons");
+        const connection = await this._cp;
+        const result = await connection.request()
+            .query("select * from Hymns_Seasons");
 
-            assert.ok(result);
-            assert.ok(result.recordsets);
-            assert.ok(result.recordsets.length);
-            assert.notEqual(result.recordsets.length, 0);
-
-            const seasons: SeasonInfo[] = result.recordsets[0]
-                .map((row) => SqlDataProvider._convertSeasonDbItemToSeasonInfo(row));
-            return seasons;
-        } catch (e) {
-            console.log(e);
-            throw e;
+        if (!SqlHelpers.isValidResult(result)) {
+            throw new HazzatApplicationError(500, ErrorCodes[ErrorCodes.DatabaseError], "Unexpected database error");
         }
+
+        const seasons: SeasonInfo[] = result.recordsets[0]
+            .map((row) => SqlDataProvider._convertSeasonDbItemToSeasonInfo(row));
+        return seasons;
     }
 
     public async getSeason(seasonId: string): Promise<SeasonInfo> {
-        try {
-            const connection = await this._cp;
-            const result = await connection.request()
-                .query(`select * from Hymns_Seasons where ID = ` + seasonId);
-
-            assert.ok(result);
-            assert.ok(result.recordsets);
-            assert.ok(result.recordsets.length);
-            assert.notEqual(result.recordsets.length, 0);
-            const row = result.recordsets[0][0];
-            return SqlDataProvider._convertSeasonDbItemToSeasonInfo(row);   
-        } catch (e) {       
-            console.log(e);
-            throw e;
+        if (!SqlHelpers.isValidNumberParameter(seasonId)) {
+            throw new HazzatApplicationError(400, ErrorCodes[ErrorCodes.InvalidParameterError], "Invalid season id specified.", `Season id: '${seasonId}'`);
         }
+        const connection = await this._cp;
+        const result = await connection.request()
+            .query(`select * from Hymns_Seasons where ID = ` + seasonId);
+
+        if (!SqlHelpers.isValidResult(result)) {
+            throw new HazzatApplicationError(500, ErrorCodes[ErrorCodes.DatabaseError], "Unexpected database error");
+        }
+
+        const row = result.recordsets[0][0];
+        if (!row) {
+            throw new HazzatApplicationError(404, ErrorCodes[ErrorCodes.NotFoundError], `Unable to find Season with id '${seasonId}'`);
+        }
+        return SqlDataProvider._convertSeasonDbItemToSeasonInfo(row);
     }
 
     private static _convertSeasonDbItemToSeasonInfo(seasonDbItem: HazzatDbSchema.Season): SeasonInfo {
-        if (isNullOrUndefined(seasonDbItem)) {
-            return null;
-        }
-
         return {
             id: seasonDbItem.ID,
             name: seasonDbItem.Name,

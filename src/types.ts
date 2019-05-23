@@ -1,6 +1,5 @@
 ﻿const TYPES = {
-    IDataProvider: Symbol.for("IDataProvider"),
-    IDataProviderOptions: Symbol.for("IDataProviderOptions")
+    IDataProvider: Symbol.for("IDataProvider")
 };
 
 export { TYPES };

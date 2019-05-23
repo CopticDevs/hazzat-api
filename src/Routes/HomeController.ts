@@ -2,7 +2,8 @@
 
 /*
  * Home Controller.
- */export class HomeController {
+ */
+export class HomeController {
     public router = express.Router();
 
      constructor() {

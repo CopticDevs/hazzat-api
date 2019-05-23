@@ -5,6 +5,7 @@ import { IDataProvider } from "./DataProviders/IDataProvider";
 import { myContainer } from "./inversify.config";
 import { HomeController } from './Routes/HomeController';
 import { SeasonsController } from "./Routes/SeasonsController";
+import { HazzatApplicationError, ErrorCodes } from "./Common/Errors";
 import { TYPES } from "./types";
 import debug = require('debug');
 
@@ -21,25 +22,17 @@ app.use('/seasons', seasonsController.router);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    var err = new Error('Not Found');
-    err['status'] = 404;
+    const err = new HazzatApplicationError(404, ErrorCodes[ErrorCodes.NotFoundError], "Not Found");
     next(err);
 });
 
 // error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-    app.use((err: any, req, res, next) => {
-        res.status(err['status'] || 500).send(err)
-    });
-}
-
-// production error handler
-// no stacktraces leaked to user
 app.use((err: any, req, res, next) => {
-    res.status(err['status'] || 500).send(err.message)
+    if (err instanceof HazzatApplicationError) {
+        res.status(err.statusCode).send(err);
+    } else {
+        res.status(err['status'] || 500).send(HazzatApplicationError.UnknownError);
+    }
 });
 
 app.set('port', port);

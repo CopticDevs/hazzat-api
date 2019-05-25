@@ -1,11 +1,13 @@
-﻿import { injectable } from "inversify";
-import { ConnectionPool } from "mssql";
-import { Configuration } from "../../Common/Configuration";
+﻿import { inject, injectable } from "inversify";
+import * as Sql from "mssql";
+import { IConfiguration } from "../../Common/Configuration";
+import { ErrorCodes, HazzatApplicationError } from "../../Common/Errors";
+import { SqlHelpers } from "../../Common/Utils/SqlHelpers";
 import { SeasonInfo } from "../../Models/SeasonInfo";
+import { TYPES } from "../../types";
 import { IDataProvider } from "../IDataProvider";
 import { HazzatDbSchema } from "./HazzatDbSchema";
-import { SqlHelpers } from "../../Common/Utils/SqlHelpers";
-import { HazzatApplicationError, ErrorCodes } from "../../Common/Errors";
+import ConnectionPool = Sql.ConnectionPool;
 
 /*
  * Sql Data Provider
@@ -15,8 +17,10 @@ export class SqlDataProvider implements IDataProvider {
     private _tablePrefix: string = "Hymns_";
     private _cp: Promise<ConnectionPool>;
 
-    constructor() {
-        this._cp = new ConnectionPool(Configuration.dbConnectionString).connect();
+    constructor(
+        @inject(TYPES.IConfiguration) configuration: IConfiguration
+    ) {
+        this._cp = new ConnectionPool(configuration.dbConnectionString).connect();
     }
 
     private _getQualifiedName(sp: string): string {
@@ -26,10 +30,10 @@ export class SqlDataProvider implements IDataProvider {
     public async getSeasonList(): Promise<SeasonInfo[]> {
         const connection = await this._cp;
         const result = await connection.request()
-            .query("select * from Hymns_Seasons");
+            .execute(this._getQualifiedName("SeasonListSelectAll"));
 
         if (!SqlHelpers.isValidResult(result)) {
-            throw new HazzatApplicationError(500, ErrorCodes[ErrorCodes.DatabaseError], "Unexpected database error");
+            throw new HazzatApplicationError(ErrorCodes[ErrorCodes.DatabaseError], "Unexpected database error");
         }
 
         const seasons: SeasonInfo[] = result.recordsets[0]
@@ -38,20 +42,21 @@ export class SqlDataProvider implements IDataProvider {
     }
 
     public async getSeason(seasonId: string): Promise<SeasonInfo> {
-        if (!SqlHelpers.isValidNumberParameter(seasonId)) {
-            throw new HazzatApplicationError(400, ErrorCodes[ErrorCodes.InvalidParameterError], "Invalid season id specified.", `Season id: '${seasonId}'`);
+        if (!SqlHelpers.isValidPositiveIntParameter(seasonId)) {
+            throw new HazzatApplicationError(ErrorCodes[ErrorCodes.InvalidParameterError], "Invalid season id specified.", `Season id: '${seasonId}'`);
         }
         const connection = await this._cp;
         const result = await connection.request()
-            .query(`select * from Hymns_Seasons where ID = ` + seasonId);
+            .input("ID", Sql.Int, seasonId)
+            .execute(this._getQualifiedName("SeasonSelect"));
 
         if (!SqlHelpers.isValidResult(result)) {
-            throw new HazzatApplicationError(500, ErrorCodes[ErrorCodes.DatabaseError], "Unexpected database error");
+            throw new HazzatApplicationError(ErrorCodes[ErrorCodes.DatabaseError], "Unexpected database error");
         }
 
         const row = result.recordsets[0][0];
         if (!row) {
-            throw new HazzatApplicationError(404, ErrorCodes[ErrorCodes.NotFoundError], `Unable to find Season with id '${seasonId}'`);
+            throw new HazzatApplicationError(ErrorCodes[ErrorCodes.NotFoundError], `Unable to find Season with id '${seasonId}'`);
         }
         return SqlDataProvider._convertSeasonDbItemToSeasonInfo(row);
     }

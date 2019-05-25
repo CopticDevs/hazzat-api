@@ -1,14 +1,14 @@
 ﻿import express = require('express');
+import { BaseController } from './BaseController';
 
 /*
  * Home Controller.
  */
-export class HomeController {
-    public router = express.Router();
-
-     constructor() {
-         this.router.get('/', (req: express.Request, res: express.Response) => {
-             res.send("hazzat-api");
-         });
-     }
+export class HomeController extends BaseController {
+    constructor() {
+        super();
+        this.router.get('/', (req: express.Request, res: express.Response) => {
+            res.send("hazzat-api");
+        });
+    }
 }

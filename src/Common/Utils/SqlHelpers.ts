@@ -8,7 +8,7 @@ export module SqlHelpers {
         return true;
     }
 
-    export function isValidNumberParameter(param: string): boolean {
+    export function isValidPositiveIntParameter(param: string): boolean {
         // Check for valid input
         if (!param) {
             return false;
@@ -19,7 +19,7 @@ export module SqlHelpers {
             return false;
         }
 
-        // Check if it's an ingeger
+        // Check if it's an integer
         const val: number = Number(param);
         if (!Number.isInteger(val)) {
             return false;

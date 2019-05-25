@@ -1,26 +1,19 @@
 ﻿import * as express from "express";
-import { Net } from "../Common/Utils/Net";
 import { IDataProvider } from "../DataProviders/IDataProvider";
-import { HazzatApplicationError, ErrorCodes } from "../Common/Errors";
+import { BaseController } from "./BaseController";
 
 /*
  * Seasons controller
  */
-export class SeasonsController {
-    public router = express.Router();
-
+export class SeasonsController extends BaseController {
     constructor(_dataProvider: IDataProvider) {
+        super();
         this.router.get('/', async (req: express.Request, res: express.Response) => {
             try {
                 const result = await _dataProvider.getSeasonList();
                 res.send(result);
             } catch (ex) {
-                console.log(JSON.stringify(ex));
-                if (ex instanceof HazzatApplicationError) {
-                    res.status(ex.statusCode).send(ex);
-                } else {
-                    res.status(500).send(HazzatApplicationError.UnknownError);
-                }
+                BaseController._OnError(ex, res);
             }
         });
 
@@ -29,11 +22,7 @@ export class SeasonsController {
                 const result = await _dataProvider.getSeason(req.params.seasonId);
                 res.send(result);
             } catch (ex) {
-                if (ex instanceof HazzatApplicationError) {
-                    res.status(ex.statusCode).send(ex);
-                } else {
-                    res.status(500).send(HazzatApplicationError.UnknownError);
-                }
+                BaseController._OnError(ex, res);
             }
         });
     }

@@ -1,9 +1,16 @@
-﻿import * as nconf from "nconf";
+﻿import { injectable } from "inversify";
+import * as nconf from "nconf";
+
+export interface IConfiguration {
+    port: string;
+    dbConnectionString: string;
+}
 
 /*
  * App Configuration
  */
-export class Configuration {
+@injectable()
+export class Configuration implements IConfiguration {
     private static readonly _configKeys = {
         databaseServer: "databaseServer",
         databaseName: "databaseName",
@@ -18,10 +25,14 @@ export class Configuration {
         Configuration._configKeys.databasePassword
     ];
 
-    public static port: string;
-    public static dbConnectionString: string;
+    public port: string;
+    public dbConnectionString: string;
 
-    public static initialize(): void {
+    constructor() {
+        this._initialize();
+    }
+
+    private _initialize(): void {
         // Load command line arguments, environment variables and config.json into nconf
         nconf.argv()
             .env()

@@ -17,7 +17,7 @@ export class SeasonsController extends BaseController {
             }
         });
 
-        this.router.get("/:seasonId", async (req: express.Request, res: express.Response) => {            
+        this.router.get("/:seasonId(\\d+)", async (req: express.Request, res: express.Response) => {
             try {
                 const result = await _dataProvider.getSeason(req.params.seasonId);
                 res.send(result);

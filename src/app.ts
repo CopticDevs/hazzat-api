@@ -1,6 +1,6 @@
 ﻿import * as express from "express";
 import "reflect-metadata";
-import { Configuration } from "./Common/Configuration";
+import { IConfiguration } from "./Common/Configuration";
 import { IDataProvider } from "./DataProviders/IDataProvider";
 import { myContainer } from "./inversify.config";
 import { HomeController } from './Routes/HomeController';
@@ -8,7 +8,7 @@ import { SeasonsController } from "./Routes/SeasonsController";
 import { TYPES } from "./types";
 import debug = require('debug');
 
-const configuration: Configuration = myContainer.get<Configuration>(TYPES.IConfiguration);
+const configuration: IConfiguration = myContainer.get<IConfiguration>(TYPES.IConfiguration);
 const dataProvider: IDataProvider = myContainer.get<IDataProvider>(TYPES.IDataProvider);
 const homeController = new HomeController();
 const seasonsController = new SeasonsController(dataProvider);

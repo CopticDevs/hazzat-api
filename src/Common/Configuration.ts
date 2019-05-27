@@ -1,4 +1,4 @@
-﻿import { injectable } from "inversify";
+import { injectable } from "inversify";
 import * as nconf from "nconf";
 
 export interface IConfiguration {
@@ -11,41 +11,41 @@ export interface IConfiguration {
  */
 @injectable()
 export class Configuration implements IConfiguration {
-    private static readonly _configKeys = {
-        databaseServer: "databaseServer",
+    private static readonly configKeys = {
         databaseName: "databaseName",
-        databaseUsername: "databaseUsername",
-        databasePassword: "databasePassword"
+        databasePassword: "databasePassword",
+        databaseServer: "databaseServer",
+        databaseUsername: "databaseUsername"
     };
 
-    private static readonly _requiredConfigKeys: string[] = [
-        Configuration._configKeys.databaseServer,
-        Configuration._configKeys.databaseName,
-        Configuration._configKeys.databaseUsername,
-        Configuration._configKeys.databasePassword
+    private static readonly requiredConfigKeys: string[] = [
+        Configuration.configKeys.databaseName,
+        Configuration.configKeys.databasePassword,
+        Configuration.configKeys.databaseServer,
+        Configuration.configKeys.databaseUsername
     ];
 
     public port: string;
     public dbConnectionString: string;
 
     constructor() {
-        this._initialize();
+        this.initialize();
     }
 
-    private _initialize(): void {
+    private initialize(): void {
         // Load command line arguments, environment variables and config.json into nconf
         nconf.argv()
             .env()
             .file(__dirname + "/../config.json");
 
-        nconf.required(Configuration._requiredConfigKeys);
+        nconf.required(Configuration.requiredConfigKeys);
 
         this.port = process.env.PORT || "3000";
 
-        const dbName: string = nconf.get(Configuration._configKeys.databaseName);
-        const dbUser: string = nconf.get(Configuration._configKeys.databaseUsername);
-        const dbServer: string = nconf.get(Configuration._configKeys.databaseServer);
-        const dbPass:string = encodeURIComponent(nconf.get(Configuration._configKeys.databasePassword));
+        const dbName: string = nconf.get(Configuration.configKeys.databaseName);
+        const dbUser: string = nconf.get(Configuration.configKeys.databaseUsername);
+        const dbServer: string = nconf.get(Configuration.configKeys.databaseServer);
+        const dbPass: string = encodeURIComponent(nconf.get(Configuration.configKeys.databasePassword));
         this.dbConnectionString = `mssql://${dbUser}:${dbPass}@${dbServer}/${dbName}?encrypt=true`;
     }
 }

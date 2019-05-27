@@ -1,7 +1,7 @@
-﻿import { Container } from "inversify";
+import { Container } from "inversify";
+import { Configuration, IConfiguration } from "./Common/Configuration";
 import { IDataProvider } from "./DataProviders/IDataProvider";
 import { SqlDataProvider } from "./DataProviders/SqlDataProvider/SqlDataProvider";
-import { Configuration, IConfiguration } from "./Common/Configuration";
 import { TYPES } from "./types";
 
 const myContainer = new Container();

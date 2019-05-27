@@ -1,21 +1,21 @@
-﻿import { IResult } from "mssql";
+import { IResult } from "mssql";
 
-export module SqlHelpers {
-    export function isValidResult<T>(result: IResult<T>): boolean {
+export class SqlHelpers {
+    public static isValidResult<T>(result: IResult<T>): boolean {
         if (!result || !result.recordsets || !result.recordsets.length || result.recordsets.length !== 1) {
             return false;
         }
         return true;
     }
 
-    export function isValidPositiveIntParameter(param: string): boolean {
+    public static isValidPositiveIntParameter(param: string): boolean {
         // Check for valid input
         if (!param) {
             return false;
         }
 
         // Check if it's a number
-        if (Number(param) === NaN) {
+        if (isNaN(Number(param))) {
             return false;
         }
 

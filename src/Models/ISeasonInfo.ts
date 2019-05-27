@@ -1,7 +1,7 @@
 ﻿/*
  * Season Info
  */
-export interface SeasonInfo {
+export interface ISeasonInfo {
     id: number;
     name: string;
     verse: string;

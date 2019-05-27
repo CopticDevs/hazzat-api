@@ -1,11 +1,10 @@
-﻿import * as express from "express";
+import * as express from "express";
 import { ErrorCodes, HazzatApplicationError } from "../Common/Errors";
 
 /*
  * Base controller
  */
 export class BaseController {
-    public router = express.Router();
 
     protected static _OnError(ex: any, res: express.Response): void {
         console.log(JSON.stringify(ex));
@@ -29,4 +28,5 @@ export class BaseController {
             res.status(500).send(HazzatApplicationError.UnknownError);
         }
     }
+    public router = express.Router();
 }

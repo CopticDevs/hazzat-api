@@ -35,6 +35,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Common\HttpError.ts" />
     <TypeScriptCompile Include="Common\Errors.ts" />
     <TypeScriptCompile Include="Common\Utils\SqlHelpers.ts" />
     <TypeScriptCompile Include="inversify.config.ts" />
@@ -43,12 +44,13 @@
     <TypeScriptCompile Include="app.ts" />
     <TypeScriptCompile Include="Common\Configuration.ts" />
     <TypeScriptCompile Include="DataProviders\SqlDataProvider\HazzatDbSchema.ts" />
-    <TypeScriptCompile Include="Models\SeasonInfo.ts" />
+    <TypeScriptCompile Include="Models\ISeasonInfo.ts" />
     <TypeScriptCompile Include="DataProviders\IDataProvider.ts" />
     <TypeScriptCompile Include="DataProviders\SqlDataProvider\SqlDataProvider.ts" />
     <TypeScriptCompile Include="Routes\HomeController.ts" />
     <TypeScriptCompile Include="Routes\SeasonsController.ts" />
     <None Include="hazzat-api - Web Deploy.pubxml" />
+    <Content Include="tslint.json" />
     <Content Include="config.json" />
     <Content Include="tsconfig.json" />
     <Content Include="package.json" />

@@ -1,5 +1,5 @@
-﻿export module HazzatDbSchema {
-    export interface Season {
+export namespace HazzatDbSchema {
+    export interface ISeason {
         ID: number;
         Name: string;
         Verse: string;

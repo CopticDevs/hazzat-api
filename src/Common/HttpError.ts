@@ -1,3 +1,3 @@
 export class HttpError {
-    constructor(public statis: number, public message: string) { }
+    constructor(public status: number, public message: string) { }
 }

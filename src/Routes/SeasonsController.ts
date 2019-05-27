@@ -1,4 +1,4 @@
-﻿import * as express from "express";
+import * as express from "express";
 import { IDataProvider } from "../DataProviders/IDataProvider";
 import { BaseController } from "./BaseController";
 
@@ -6,11 +6,11 @@ import { BaseController } from "./BaseController";
  * Seasons controller
  */
 export class SeasonsController extends BaseController {
-    constructor(_dataProvider: IDataProvider) {
+    constructor(dataProvider: IDataProvider) {
         super();
-        this.router.get('/', async (req: express.Request, res: express.Response) => {
+        this.router.get("/", async (req: express.Request, res: express.Response) => {
             try {
-                const result = await _dataProvider.getSeasonList();
+                const result = await dataProvider.getSeasonList();
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -19,7 +19,7 @@ export class SeasonsController extends BaseController {
 
         this.router.get("/:seasonId(\\d+)", async (req: express.Request, res: express.Response) => {
             try {
-                const result = await _dataProvider.getSeason(req.params.seasonId);
+                const result = await dataProvider.getSeason(req.params.seasonId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

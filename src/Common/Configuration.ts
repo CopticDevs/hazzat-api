@@ -46,6 +46,8 @@ export class Configuration implements IConfiguration {
         const dbUser: string = nconf.get(Configuration.configKeys.databaseUsername);
         const dbServer: string = nconf.get(Configuration.configKeys.databaseServer);
         const dbPass: string = encodeURIComponent(nconf.get(Configuration.configKeys.databasePassword));
-        this.dbConnectionString = `mssql://${dbUser}:${dbPass}@${dbServer}/${dbName}?encrypt=true`;
+        this.dbConnectionString =
+            process.env.CUSTOMCONNSTR_DBCONNECTIONSTRING ||
+            `mssql://${dbUser}:${dbPass}@${dbServer}/${dbName}?encrypt=true`;
     }
 }

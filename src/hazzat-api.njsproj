@@ -50,8 +50,9 @@
     <TypeScriptCompile Include="Routes\HomeController.ts" />
     <TypeScriptCompile Include="Routes\SeasonsController.ts" />
     <None Include="hazzat-api - Web Deploy.pubxml" />
+    <Content Include="Configs\prod.json" />
     <Content Include="tslint.json" />
-    <Content Include="config.json" />
+    <Content Include="Configs\dev.json" />
     <Content Include="tsconfig.json" />
     <Content Include="package.json" />
     <Content Include="README.md" />
@@ -64,6 +65,7 @@
     <Folder Include="Models\" />
     <Folder Include="DataProviders\" />
     <Folder Include="DataProviders\SqlDataProvider\" />
+    <Folder Include="Configs\" />
     <Folder Include="Routes\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->

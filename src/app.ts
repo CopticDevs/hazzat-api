@@ -20,6 +20,9 @@ const port = configuration.port;
 app.use("/", homeController.router);
 app.use("/seasons", seasonsController.router);
 
+// Allow Let's Encrypt to access challenge static content
+app.use("/.well-known/acme-challenge", express.static(__dirname + "/.well-known/acme-challenge"));
+
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
     throw new HttpError(404, "Not Found");

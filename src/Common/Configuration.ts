@@ -34,9 +34,13 @@ export class Configuration implements IConfiguration {
 
     private initialize(): void {
         // Load command line arguments, environment variables and config.json into nconf
+        const configPath: string = process.env.DEV ?
+            "/../Configs/dev.json" :
+            "/../Configs/prod.json";
+
         nconf.argv()
             .env()
-            .file(__dirname + "/../config.json");
+            .file(__dirname + configPath);
 
         nconf.required(Configuration.requiredConfigKeys);
 

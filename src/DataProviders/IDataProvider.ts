@@ -1,4 +1,4 @@
-﻿import { ISeasonInfo } from "../Models/SeasonInfo";
+﻿import { ISeasonInfo } from "../Models/ISeasonInfo";
 
 /**
  * Data Provider Interface

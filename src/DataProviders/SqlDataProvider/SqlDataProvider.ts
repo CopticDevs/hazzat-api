@@ -3,7 +3,7 @@ import * as Sql from "mssql";
 import { IConfiguration } from "../../Common/Configuration";
 import { ErrorCodes, HazzatApplicationError } from "../../Common/Errors";
 import { SqlHelpers } from "../../Common/Utils/SqlHelpers";
-import { ISeasonInfo } from "../../Models/SeasonInfo";
+import { ISeasonInfo } from "../../Models/ISeasonInfo";
 import { TYPES } from "../../types";
 import { IDataProvider } from "../IDataProvider";
 import { HazzatDbSchema } from "./HazzatDbSchema";

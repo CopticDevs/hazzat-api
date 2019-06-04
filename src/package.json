@@ -10,7 +10,7 @@
     "prestart": "npm run build",
     "start": "(cd ../dist && node app)",
     "init": "npm install --no-color --no-optional",
-    "sql-server": "docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Pa$$w0rD' -e 'MSSQL_PID=Express' -p 1433:1433 -d mcr.microsoft.com/mssql/server:2017-latest-ubuntu"
+    "sql-server": "docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Pa$$w0rD' -e 'MSSQL_PID=Express' -p 1433:1433 -d mcr.microsoft.com/mssql/server:latest"
   },
   "description": "hazzat-api",
   "author": {

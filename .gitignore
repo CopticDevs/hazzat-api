@@ -5,3 +5,5 @@ obj/
 *.js
 *.js.map
 *.user
+dist/
+*.orig

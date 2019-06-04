@@ -6,17 +6,14 @@ Hazzat backend REST API writen in vanilla Node.js with a React frontend. [www.ha
 ## Prerequisites
 
 * Node.js & npm
-* SQL Server
-
-## Build
-
-> * `npm install`
-> * `npm run build`
+* Docker
 
 ## Run
 
-> `node app`
-
+> * `cd src`
+> * `npm run sql-server`
+> * `npm start`
+ 
 
 ## Contributing
 

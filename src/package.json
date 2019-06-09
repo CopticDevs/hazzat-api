@@ -8,7 +8,7 @@
     "build": "npm run prereq && tsc -p tsconfig.json",
     "build-trace": "npm run prereq && tsc -p tsconfig.json --diagnostics --listFiles --listEmittedFiles --traceResolution",
     "prestart": "npm run build",
-    "start": "node app",
+    "start": "node dist/app",
     "init": "npm install --no-color --no-optional"
   },
   "description": "hazzat-api",

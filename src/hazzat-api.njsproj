@@ -6,7 +6,7 @@
     <Name>hazzat-api</Name>
     <RootNamespace>hazzat-api</RootNamespace>
     <LastActiveSolutionConfig>Release|Any CPU</LastActiveSolutionConfig>
-    <NameOfLastUsedPublishProfile>hazzat-api - Web Deploy</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>hazzat-api-ppe - Web Deploy</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -14,7 +14,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>0f26fa13-c2f7-416a-b59a-87d93323c373</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>app.js</StartupFile>
+    <StartupFile>dist\app.js</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -51,6 +51,7 @@
     <TypeScriptCompile Include="Routes\SeasonsController.ts" />
     <None Include="hazzat-api - Web Deploy.pubxml" />
     <Content Include="Configs\prod.json" />
+    <None Include="hazzat-api-ppe - Web Deploy.pubxml" />
     <Content Include="tslint.json" />
     <Content Include="Configs\dev.json" />
     <Content Include="tsconfig.json" />

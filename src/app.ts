@@ -1,4 +1,4 @@
-import debug = require("debug");
+import * as debug from "debug";
 import * as express from "express";
 import { AddressInfo } from "net";
 import "reflect-metadata";

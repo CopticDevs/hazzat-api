@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
-    "prereq": "npm run init",
+    "copy:prod": "mkdirp ./dist/Configs && copyfiles -f Configs/prod.json ./dist/Configs/",
+    "copy:dev": "mkdirp ./dist/Configs && copyfiles -f Configs/dev.json ./dist/Configs/",
+    "prereq": "npm run init && npm run copy:prod",
     "build": "npm run prereq && tsc -p tsconfig.json",
     "build-trace": "npm run prereq && tsc -p tsconfig.json --diagnostics --listFiles --listEmittedFiles --traceResolution",
     "prestart": "npm run build",
-    "start": "node dist/app",
+    "start": "node ./dist/app",
     "init": "npm install --no-color --no-optional"
   },
   "description": "hazzat-api",
@@ -32,6 +34,8 @@
     "@types/nconf": "^0.10.0",
     "@types/node": "^12.0.7",
     "@types/q": "^1.5.2",
+    "copyfiles": "^2.1.0",
+    "mkdirp": "^0.5.1",
     "tslint": "^5.17.0",
     "typescript": "^3.5.1"
   },

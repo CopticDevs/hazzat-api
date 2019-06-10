@@ -1,5 +1,6 @@
-import debug = require("debug");
+import * as debug from "debug";
 import * as express from "express";
+import { AddressInfo } from "net";
 import "reflect-metadata";
 import { IConfiguration } from "./Common/Configuration";
 import { HttpError } from "./Common/HttpError";
@@ -37,5 +38,5 @@ app.use((err: any, req, res, next) => {
 app.set("port", port);
 
 const server = app.listen(app.get("port"), () => {
-    debug("Express server listening on port " + server.address().port);
+    debug("Express server listening on port " + (server.address() as AddressInfo).port);
 });

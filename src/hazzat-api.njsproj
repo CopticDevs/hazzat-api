@@ -14,7 +14,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>0f26fa13-c2f7-416a-b59a-87d93323c373</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>app.js</StartupFile>
+    <StartupFile>dist\app.js</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -51,6 +51,7 @@
     <TypeScriptCompile Include="Routes\SeasonsController.ts" />
     <None Include="hazzat-api - Web Deploy.pubxml" />
     <Content Include="Configs\prod.json" />
+    <None Include="hazzat-api-ppe - Web Deploy.pubxml" />
     <Content Include="tslint.json" />
     <Content Include="Configs\dev.json" />
     <Content Include="tsconfig.json" />
@@ -109,4 +110,7 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Target Name="Build" DependsOnTargets="ResolveReferences">
+    <Exec Command="npm run build" />
+  </Target>
 </Project>

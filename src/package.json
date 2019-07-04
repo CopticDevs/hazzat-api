@@ -12,7 +12,7 @@
     "prestart": "npm run build",
     "start": "node ./dist/app",
     "init": "npm install --no-color --no-optional",
-    "test": "mocha -r ts-node/register ./test/*.spec.ts"
+    "test": "mocha -r ts-node/register ../test/*.spec.ts"
   },
   "description": "hazzat-api",
   "author": {

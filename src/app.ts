@@ -25,7 +25,7 @@ const swaggerDefinition = {
   };
 
 const options = {
-    apis: ["./dist/Routes*.js"],
+    apis: ["./dist/Routes/*.js"],
     swaggerDefinition
   };
 

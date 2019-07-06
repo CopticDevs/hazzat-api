@@ -2,8 +2,17 @@ import * as express from "express";
 import { IDataProvider } from "../DataProviders/IDataProvider";
 import { BaseController } from "./BaseController";
 
-/*
- * Seasons controller
+/**
+ * @swagger
+ *
+ * /:
+ *   get:
+ *     description: Gets a list of Seasons
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: seasons
  */
 export class SeasonsController extends BaseController {
     constructor(dataProvider: IDataProvider) {
@@ -16,7 +25,24 @@ export class SeasonsController extends BaseController {
                 BaseController._OnError(ex, res);
             }
         });
-
+/**
+ * @swagger
+ *
+ * /[seasonId]:
+ *   get:
+ *     description: Returns a list of Structs in a Season
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         description: Season ID
+ *         in:  url
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: seasons
+ */
         this.router.get("/:seasonId(\\d+)", async (req: express.Request, res: express.Response) => {
             try {
                 const result = await dataProvider.getSeason(req.params.seasonId);

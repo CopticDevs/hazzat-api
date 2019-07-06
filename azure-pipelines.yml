@@ -2,7 +2,6 @@
 # Build a Node.js project that uses React.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
 - master
 
@@ -10,6 +9,10 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+- task: DockerInstaller@0
+  inputs:
+    dockerVersion: '17.09.0-ce'
+  displayName: 'Install Docker'
 - task: NodeTool@0
   inputs:
     versionSpec: '10.x'

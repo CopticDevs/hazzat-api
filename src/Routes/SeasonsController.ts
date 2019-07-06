@@ -12,7 +12,7 @@ import { BaseController } from "./BaseController";
  *       - application/json
  *     responses:
  *       200:
- *         description: seasons
+ *         description: Seasons
  */
 export class SeasonsController extends BaseController {
     constructor(dataProvider: IDataProvider) {
@@ -41,7 +41,7 @@ export class SeasonsController extends BaseController {
  *         type: string
  *     responses:
  *       200:
- *         description: seasons
+ *         description: Structs
  */
         this.router.get("/:seasonId(\\d+)", async (req: express.Request, res: express.Response) => {
             try {

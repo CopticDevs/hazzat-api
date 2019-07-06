@@ -20,13 +20,15 @@ const seasonsController = new SeasonsController(dataProvider);
 const app = express();
 const port = configuration.port;
 
-const swaggerDefinition = {
-    basePath: "/",
-  };
-
 const options = {
     apis: ["./dist/Routes/*.js"],
-    swaggerDefinition
+    definition: {
+        basePath: "/",
+        info: {
+            title: "hazzat-api",
+            version: "0.0.1",
+          },
+      }
   };
 
 const swaggerSpec = swaggerJSDoc(options);

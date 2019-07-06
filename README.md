@@ -15,7 +15,7 @@ Hazzat backend REST API writen in vanilla Node.js with a React frontend. [www.ha
 
 ## Run
 
-> `node app`
+> `npm run start`
 
 
 ## Contributing

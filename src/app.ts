@@ -2,6 +2,8 @@ import * as debug from "debug";
 import * as express from "express";
 import { AddressInfo } from "net";
 import "reflect-metadata";
+import * as swaggerJSDoc from "swagger-jsdoc";
+import * as swaggerUI from "swagger-ui-express";
 import { IConfiguration } from "./Common/Configuration";
 import { HttpError } from "./Common/HttpError";
 import { IDataProvider } from "./DataProviders/IDataProvider";
@@ -18,6 +20,18 @@ const seasonsController = new SeasonsController(dataProvider);
 const app = express();
 const port = configuration.port;
 
+const swaggerDefinition = {
+    basePath: "/",
+  };
+
+const options = {
+    apis: ["./dist/Routes*.js"],
+    swaggerDefinition
+  };
+
+const swaggerSpec = swaggerJSDoc(options);
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.use("/", homeController.router);
 app.use("/seasons", seasonsController.router);
 

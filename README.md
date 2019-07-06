@@ -20,7 +20,7 @@ Hazzat backend REST API writen in vanilla Node.js with a React frontend. [www.ha
 
 ## Docs (Swagger)
 
-Documention is available at [http://localhost:3000](http://localhost:3000/api-docs) once you clone and run the project.
+Documentation is available at [http://localhost:3000](http://localhost:3000/api-docs) once you clone and run the project.
 
 ## Contributing
 

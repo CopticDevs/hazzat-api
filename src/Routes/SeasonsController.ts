@@ -76,9 +76,18 @@ export class SeasonsController extends BaseController {
  *       200:
  *         description: Structs
  *         schema:
- *           type: array
+ *           type: object
  *           items:
  *             $ref: '#/definitions/Structs'
+ *       404:
+ *         description: A Season detail was not found.
+ *         schema:
+ *           type: object
+ *           properties:
+ *             errorCode:
+ *               type: string
+ *             message:
+ *               type: string
  */
         this.router.get("/:seasonId(\\d+)", async (req: express.Request, res: express.Response) => {
             try {

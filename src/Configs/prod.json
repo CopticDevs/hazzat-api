@@ -1,6 +1,6 @@
 {
   "databaseServer": "127.0.0.1",
   "databaseName": "dbname",
-  "databaseUsername": "sa",
-  "databasePassword": "Password9"
+  "databaseUsername": "username_ro",
+  "databasePassword": "password"
 }

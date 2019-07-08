@@ -22,10 +22,6 @@ Hazzat backend REST API writen in vanilla Node.js with a React frontend. [www.ha
 
 Documentation is available at [http://localhost:3000](http://localhost:3000/api-docs) once you clone and run the project.
 
-## Contributing
-
-Anyone can contribute to this open source project! Just open a Github issue and fork a fresh copy.
-
 ## License 
 
 All work in this repo is covered under the MIT License. You should have received a copy of the Licence with the work therin. If not, you can obtain a license from [opensource.org](https://opensource.org/licenses/MIT).

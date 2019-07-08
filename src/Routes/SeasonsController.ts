@@ -77,8 +77,16 @@ export class SeasonsController extends BaseController {
  *         description: Structs
  *         schema:
  *           type: object
- *           items:
- *             $ref: '#/definitions/Structs'
+ *           properties:
+ *             name:
+ *               type: string
+ *             order:
+ *               type: integer
+ *             reasonId:
+ *               type: integer
+ *             verse:
+ *               type: string
+ *
  *       404:
  *         description: A Season detail was not found.
  *         schema:

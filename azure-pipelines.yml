@@ -10,6 +10,16 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
+# Azure Key Vault
+# Download Azure Key Vault secrets
+- task: AzureKeyVault@1
+  inputs:
+    azureSubscription: 'hazzat-api-ppe - Azure'
+    keyVaultName: 'hazzat-api-ppe'
+    secretsFilter: 'hazzatdnn-ConnectionString'
+  env:
+    CUSTOMCONNSTR_DBCONNECTIONSTRING: $(hazzatdnn-ConnectionString)
+
 - task: NodeTool@0
   inputs:
     versionSpec: '10.x'

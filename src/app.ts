@@ -56,3 +56,5 @@ app.set("port", port);
 const server = app.listen(app.get("port"), () => {
     debug("Express server listening on port " + (server.address() as AddressInfo).port);
 });
+
+module.exports = server;

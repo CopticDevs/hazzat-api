@@ -6,7 +6,7 @@
     <Name>hazzat-api</Name>
     <RootNamespace>hazzat-api</RootNamespace>
     <LastActiveSolutionConfig>Release|Any CPU</LastActiveSolutionConfig>
-    <NameOfLastUsedPublishProfile>hazzat-api - Web Deploy</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>hazzat-api-ppe - Web Deploy</NameOfLastUsedPublishProfile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -40,6 +40,7 @@
     <TypeScriptCompile Include="Common\Utils\SqlHelpers.ts" />
     <TypeScriptCompile Include="inversify.config.ts" />
     <TypeScriptCompile Include="Routes\BaseController.ts" />
+    <TypeScriptCompile Include="test\seasons.spec.ts" />
     <TypeScriptCompile Include="types.ts" />
     <TypeScriptCompile Include="app.ts" />
     <TypeScriptCompile Include="Common\Configuration.ts" />
@@ -67,6 +68,7 @@
     <Folder Include="DataProviders\" />
     <Folder Include="DataProviders\SqlDataProvider\" />
     <Folder Include="Configs\" />
+    <Folder Include="test\" />
     <Folder Include="Routes\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->

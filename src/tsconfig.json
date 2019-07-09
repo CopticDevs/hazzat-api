@@ -3,13 +3,12 @@
     "module": "commonjs",
     "outDir": "./dist",
     "target": "es6",
-    "lib": [ "es6" ],
+    "lib": [ "es6", "dom" ],
     "sourceMap": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "rootDirs": [
-      "src",
-      "test"
+      "src"
     ]
   },
   "exclude": [

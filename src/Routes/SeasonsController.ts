@@ -6,7 +6,7 @@ import { BaseController } from "./BaseController";
  * @swagger
  *
  * definitions:
- *   Seasons:
+ *   Season:
  *     type: object
  *     properties:
  *       isDataSpecific:
@@ -20,7 +20,7 @@ import { BaseController } from "./BaseController";
  *       verse:
  *         type: string
  *
- * /seasons/:
+ * /seasons:
  *   get:
  *     description: Gets a list of Seasons
  *     produces:
@@ -31,7 +31,8 @@ import { BaseController } from "./BaseController";
  *         schema:
  *           type: array
  *           items:
- *             $ref: '#/definitions/Seasons'
+ *             $ref: '#/definitions/Season'
+ *
  *
  */
 export class SeasonsController extends BaseController {
@@ -48,18 +49,7 @@ export class SeasonsController extends BaseController {
 /**
  * @swagger
  *
- * definitions:
- *   Structs:
- *     type: object
- *     properties:
- *       name:
- *         type: string
- *       order:
- *         type: integer
- *       reasonId:
- *         type: integer
- *       verse:
- *         type: string
+
  *
  * /seasons/[seasonId]:
  *   get:
@@ -74,18 +64,11 @@ export class SeasonsController extends BaseController {
  *         type: string
  *     responses:
  *       200:
- *         description: Structs
+ *         description: Season
  *         schema:
  *           type: object
- *           properties:
- *             name:
- *               type: string
- *             order:
- *               type: integer
- *             reasonId:
- *               type: integer
- *             verse:
- *               type: string
+ *           items:
+ *             $ref: '#/definitions/Season'
  *
  *       404:
  *         description: A Season detail was not found.

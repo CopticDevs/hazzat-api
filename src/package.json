@@ -41,6 +41,8 @@
     "copyfiles": "^2.1.0",
     "mkdirp": "^0.5.1",
     "mocha": "^6.1.4",
+    "swagger-jsdoc": "^3.2.9",
+    "swagger-ui-express": "^4.0.7",
     "ts-node": "^8.3.0",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3"

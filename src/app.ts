@@ -21,7 +21,7 @@ const app = express();
 const port = configuration.port;
 
 const options = {
-    apis: ["./dist/Routes/*.js"],
+    apis: ["./**/Routes/*.js"],
     definition: {
         basePath: "/",
         info: {

@@ -1,0 +1,1 @@
+Compress-Archive -Path ..\src\dist\*, ..\src\node_modules, ..\src\Web.config, ..\src\Web.Debug.config -CompressionLevel Optimal -DestinationPath $env:ARCHIVE_FILE_PATH

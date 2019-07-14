@@ -38,6 +38,7 @@ steps:
     scriptName: .build/createDeploymentArchive.ps1
   env:
     ARCHIVE_FILE_PATH: $(Build.ArtifactStagingDirectory)\$(Build.BuildId).zip
+    ENLISTMENT_ROOT: $(System.DefaultWorkingDirectory)
 
 - task: CopyFiles@2
   displayName: 'Copy File to: $(TargetFolder)'

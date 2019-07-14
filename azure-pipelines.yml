@@ -32,11 +32,13 @@ steps:
   env:
     CUSTOMCONNSTR_DBCONNECTIONSTRING: $(hazzatdnn-ConnectionString)
 
-- task: ArchiveFiles@1
-  displayName: 'Archive files'
-  inputs:
-    rootFolder: '$(System.DefaultWorkingDirectory)'
-    includeRootFolder: false
+- name: Create Deployment Archive
+  archive:
+    path:
+    - /src/dist/*
+    - /src/node_modules
+    dest: $(Build.ArtifactStagingDirectory)\$(Build.BuildId).zip
+    format: zip
 
 - task: CopyFiles@2
   displayName: 'Copy File to: $(TargetFolder)'

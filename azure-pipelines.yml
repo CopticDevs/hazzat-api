@@ -26,7 +26,7 @@ steps:
 - script: |
    cd src
     npm install
-    npm run build-trace
+    npm run build
     npm run test
   displayName: 'npm install and build'
   env:

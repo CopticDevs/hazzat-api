@@ -32,8 +32,7 @@ steps:
   env:
     CUSTOMCONNSTR_DBCONNECTIONSTRING: $(hazzatdnn-ConnectionString)
 
-- name: Create Deployment Archive
-  archive:
+- archive:
     path:
     - /src/dist/*
     - /src/node_modules

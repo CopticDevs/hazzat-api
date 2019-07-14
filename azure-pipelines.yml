@@ -32,17 +32,27 @@ steps:
   env:
     CUSTOMCONNSTR_DBCONNECTIONSTRING: $(hazzatdnn-ConnectionString)
 
-- archive:
-    path:
-    - /src/dist/*
-    - /src/node_modules
-    dest: $(Build.ArtifactStagingDirectory)\$(Build.BuildId).zip
-    format: zip
+- task: CopyFiles@2
+  displayName: 'Copy Deployment files to: $(TargetFolder)'
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)'
+    Contents: |
+        src/dist/*/**
+        src/node_modules/**/*
+        src/Web.config
+        src/Web.Debug.config
+    TargetFolder: '$(Build.ArtifactStagingDirectory)\ArtifactsToBeArchived'
+
+- task: ArchiveFiles@1
+  displayName: 'Archive files'
+  inputs:
+    rootFolder: '$(Build.ArtifactStagingDirectory)\ArtifactsToBeArchived'
+    includeRootFolder: false
 
 - task: CopyFiles@2
   displayName: 'Copy File to: $(TargetFolder)'
   inputs:
-    SourceFolder: '$(Build.ArtifactStagingDirectory)'
+    SourceFolder: '$(Build.ArtifactStagingDirectory)\ArtifactsToBeArchived'
     Contents: '$(Build.BuildId).zip'
     TargetFolder: '$(Build.ArtifactStagingDirectory)\ArtifactsToBePublished'
 

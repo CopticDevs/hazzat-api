@@ -28,8 +28,6 @@ steps:
     npm install
     npm run build
     npm run test
-    dir /s
-    set
   displayName: 'npm install and build'
   env:
     CUSTOMCONNSTR_DBCONNECTIONSTRING: $(hazzatdnn-ConnectionString)
@@ -41,7 +39,7 @@ steps:
   env:
     ARCHIVE_FILE_PATH: $(Build.ArtifactStagingDirectory)\$(Build.BuildId).zip
     ENLISTMENT_ROOT: $(System.DefaultWorkingDirectory)
-    OUTPUT_ROOT: $(Build.StagingDirectory)
+    OUTPUT_ROOT: $(Build.ArtifactStagingDirectory)
 
 - task: CopyFiles@2
   displayName: 'Copy File to: $(TargetFolder)'

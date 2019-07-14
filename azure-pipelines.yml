@@ -28,6 +28,8 @@ steps:
     npm install
     npm run build
     npm run test
+    dir /s
+    set
   displayName: 'npm install and build'
   env:
     CUSTOMCONNSTR_DBCONNECTIONSTRING: $(hazzatdnn-ConnectionString)

@@ -39,7 +39,7 @@ steps:
   env:
     ARCHIVE_FILE_PATH: $(Build.ArtifactStagingDirectory)\$(Build.BuildId).zip
     ENLISTMENT_ROOT: $(System.DefaultWorkingDirectory)
-    OUTPUT_ROOT: $(Build.BinariesDirectory)
+    OUTPUT_ROOT: $(Build.StagingDirectory)
 
 - task: CopyFiles@2
   displayName: 'Copy File to: $(TargetFolder)'

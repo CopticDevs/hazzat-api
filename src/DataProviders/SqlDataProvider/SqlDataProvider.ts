@@ -17,11 +17,12 @@ export class SqlDataProvider implements IDataProvider {
 
     private static _convertSeasonDbItemToSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason): ISeasonInfo {
         return {
-            id: seasonDbItem.ID,
+            id: seasonDbItem.ItemId,
             isDateSpecific: seasonDbItem.Date_Specific,
             name: seasonDbItem.Name,
             order: seasonDbItem.Season_Order,
             reasonId: seasonDbItem.Reason_ID,
+            reasonName: seasonDbItem.Reason_Name,
             verse: seasonDbItem.Verse
         };
     }

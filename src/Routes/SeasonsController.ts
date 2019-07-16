@@ -13,6 +13,8 @@ export class SeasonsController extends BaseController {
          *   Season:
          *     type: object
          *     properties:
+         *       id:
+         *         type: integer
          *       isDataSpecific:
          *         type: boolean
          *       name:
@@ -21,6 +23,8 @@ export class SeasonsController extends BaseController {
          *         type: integer
          *       reasonId:
          *         type: integer
+         *       reasonName:
+         *         type: string
          *       verse:
          *         type: string
          *

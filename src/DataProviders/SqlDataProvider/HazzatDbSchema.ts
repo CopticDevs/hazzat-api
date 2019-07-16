@@ -1,10 +1,11 @@
 export namespace HazzatDbSchema {
     export interface ISeason {
-        ID: number;
+        ItemId: number;
         Name: string;
         Verse: string;
         Season_Order: number;
         Reason_ID: number;
+        Reason_Name: string;
         Date_Specific: boolean;
     }
 }

@@ -15,12 +15,12 @@ Hazzat backend REST API writen in vanilla Node.js with a React frontend. [www.ha
 
 ## Run
 
-> `node app`
+> * `npm run start`
+> * point your browser to: [http://localhost:3000](http://localhost:3000)
 
+## Docs (Swagger)
 
-## Contributing
-
-Anyone can contribute to this open source project! Just open a Github issue and fork a fresh copy.
+Documentation is available at [http://localhost:3000](http://localhost:3000/api-docs) once you clone and run the project.
 
 ## License 
 

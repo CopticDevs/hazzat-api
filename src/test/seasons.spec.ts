@@ -17,6 +17,13 @@ describe("Seasons", () => {
                     res.should.have.status(200);
                     res.body.should.be.a("array");
                     res.body.length.should.be.not.eql(0);
+                    res.body[0].should.have.property("id");
+                    res.body[0].should.have.property("name");
+                    res.body[0].should.have.property("order");
+                    res.body[0].should.have.property("reasonId");
+                    res.body[0].should.have.property("reasonName");
+                    res.body[0].should.have.property("verse");
+                    res.body[0].should.have.property("isDateSpecific");
                     done();
                 });
         });
@@ -27,10 +34,13 @@ describe("Seasons", () => {
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a("object");
+                    res.body.should.have.property("id");
                     res.body.should.have.property("name");
                     res.body.should.have.property("order");
                     res.body.should.have.property("reasonId");
+                    res.body.should.have.property("reasonName");
                     res.body.should.have.property("verse");
+                    res.body.should.have.property("isDateSpecific");
                     done();
                 });
         });

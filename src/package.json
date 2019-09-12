@@ -42,7 +42,7 @@
     "mkdirp": "^0.5.1",
     "mocha": "^6.2.0",
     "swagger-jsdoc": "^3.4.0",
-    "swagger-ui-express": "^4.0.7",
+    "swagger-ui-express": "^4.1.0",
     "ts-node": "^8.3.0",
     "tslint": "^5.20.0",
     "typescript": "^3.6.3"

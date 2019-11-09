@@ -14,8 +14,9 @@ import ConnectionPool = Sql.ConnectionPool;
  */
 @injectable()
 export class SqlDataProvider implements IDataProvider {
+    private static connectionPool: Promise<ConnectionPool>;
 
-    private static _convertSeasonDbItemToSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason): ISeasonInfo {
+    private static convertSeasonDbItemToSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason): ISeasonInfo {
         return {
             id: seasonDbItem.ItemId,
             isDateSpecific: seasonDbItem.Date_Specific,
@@ -26,13 +27,13 @@ export class SqlDataProvider implements IDataProvider {
             verse: seasonDbItem.Verse
         };
     }
+
     private tablePrefix: string = "Hymns_";
-    private connectionPool: Promise<ConnectionPool>;
 
     constructor(
         @inject(TYPES.IConfiguration) configuration: IConfiguration
     ) {
-        this.connectionPool = new ConnectionPool(configuration.dbConnectionString).connect();
+        SqlDataProvider.connectionPool = new ConnectionPool(configuration.dbConnectionString).connect();
     }
 
     public async getSeasonList(): Promise<ISeasonInfo[]> {
@@ -45,7 +46,7 @@ export class SqlDataProvider implements IDataProvider {
             }
 
             const seasons: ISeasonInfo[] = result.recordsets[0]
-                .map((row) => SqlDataProvider._convertSeasonDbItemToSeasonInfo(row));
+                .map((row) => SqlDataProvider.convertSeasonDbItemToSeasonInfo(row));
             return seasons;
         });
     }
@@ -74,7 +75,7 @@ export class SqlDataProvider implements IDataProvider {
                     ErrorCodes[ErrorCodes.NotFoundError],
                     `Unable to find Season with id '${seasonId}'`);
             }
-            return SqlDataProvider._convertSeasonDbItemToSeasonInfo(row);
+            return SqlDataProvider.convertSeasonDbItemToSeasonInfo(row);
         });
     }
 
@@ -83,7 +84,7 @@ export class SqlDataProvider implements IDataProvider {
      * @param action
      */
     private async _connectAndExecute<TResult>(action: (cp: ConnectionPool) => Promise<TResult>): Promise<TResult> {
-        const connection = await this.connectionPool;
+        const connection = await SqlDataProvider.connectionPool;
         if (!connection.connected) {
             await connection.connect();
         }

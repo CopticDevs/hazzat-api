@@ -37,8 +37,11 @@
   <ItemGroup>
     <TypeScriptCompile Include="Common\HttpError.ts" />
     <TypeScriptCompile Include="Common\Errors.ts" />
+    <TypeScriptCompile Include="Common\Types\FormatType.ts" />
+    <TypeScriptCompile Include="Common\Types\StringMap.ts" />
     <TypeScriptCompile Include="Common\Utils\SqlHelpers.ts" />
     <TypeScriptCompile Include="inversify.config.ts" />
+    <TypeScriptCompile Include="Models\IServiceInfo.ts" />
     <TypeScriptCompile Include="Routes\BaseController.ts" />
     <TypeScriptCompile Include="test\seasons.spec.ts" />
     <TypeScriptCompile Include="types.ts" />
@@ -63,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />
+    <Folder Include="Common\Types\" />
     <Folder Include="Common\Utils\" />
     <Folder Include="Models\" />
     <Folder Include="DataProviders\" />

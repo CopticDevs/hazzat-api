@@ -80,4 +80,73 @@ describe("Seasons", () => {
                 });
         });
     });
+
+    describe("/GET Season Services", () => {
+        it("should get all season services", (done) => {
+            chai.request(server)
+                .get("/seasons/1/services")
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a("array");
+                    res.body.length.should.be.not.eql(0);
+                    res.body[0].should.have.property("id");
+                    res.body[0].should.have.property("name");
+                    res.body[0].should.have.property("order");
+                    res.body[0].should.have.property("contentCount");
+                    const contentCount = res.body[0].contentCount;
+                    contentCount.should.have.property("Text");
+                    contentCount.should.have.property("Hazzat");
+                    contentCount.should.have.property("VerticalHazzat");
+                    contentCount.should.have.property("Music");
+                    contentCount.should.have.property("Audio");
+                    contentCount.should.have.property("Video");
+                    contentCount.should.have.property("Information");
+                    done();
+                });
+        });
+
+        it("should return a 404 for negative season ids", (done) => {
+            chai.request(server)
+                .get("/seasons/-1/services")
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    res.body.should.be.a("object");
+                    res.body.should.have.property("message");
+                    done();
+                });
+        });
+
+        it("should return a 404 for non integer season ids", (done) => {
+            chai.request(server)
+                .get("/seasons/badInput/services")
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    res.body.should.be.a("object");
+                    res.body.should.have.property("message");
+                    done();
+                });
+        });
+
+        it("should return a 404 for negative season ids", (done) => {
+            chai.request(server)
+                .get("/seasons/-1/services")
+                .end((err, res) => {
+                    res.should.have.status(404);
+                    res.body.should.be.a("object");
+                    res.body.should.have.property("message");
+                    done();
+                });
+        });
+
+        it("should return an empty array for non existing season ids", (done) => {
+            chai.request(server)
+                .get("/seasons/1234/services")
+                .end((err, res) => {
+                    res.should.have.status(200);
+                    res.body.should.be.a("array");
+                    res.body.length.should.be.eql(0);
+                    done();
+                });
+        });
+    });
 });

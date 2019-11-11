@@ -1,9 +1,9 @@
 // tslint:disable-next-line:interface-name
-interface StringMap<T> {
+export interface StringMap<T> {
     [key: string]: T;
 }
 
 // tslint:disable-next-line:interface-name
-interface ReadonlyStringMap<T> {
+export interface ReadonlyStringMap<T> {
     readonly [key: string]: T;
 }

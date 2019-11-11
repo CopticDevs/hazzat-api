@@ -2,8 +2,11 @@ import { inject, injectable } from "inversify";
 import * as Sql from "mssql";
 import { IConfiguration } from "../../Common/Configuration";
 import { ErrorCodes, HazzatApplicationError } from "../../Common/Errors";
+import { FormatType } from "../../Common/Types/FormatType";
+import { StringMap } from "../../Common/Types/StringMap";
 import { SqlHelpers } from "../../Common/Utils/SqlHelpers";
 import { ISeasonInfo } from "../../Models/ISeasonInfo";
+import { IServiceInfo } from "../../Models/IServiceInfo";
 import { TYPES } from "../../types";
 import { IDataProvider } from "../IDataProvider";
 import { HazzatDbSchema } from "./HazzatDbSchema";
@@ -28,12 +31,37 @@ export class SqlDataProvider implements IDataProvider {
         };
     }
 
+    private static convertServiceDbItemToServiceInfo(serviceDbItem: HazzatDbSchema.IService): IServiceInfo {
+        const contentCount: StringMap<number> = {};
+        contentCount[FormatType.Text] = serviceDbItem.Text_Count;
+        contentCount[FormatType.Hazzat] = serviceDbItem.Hazzat_Count;
+        contentCount[FormatType.VerticalHazzat] = serviceDbItem.VerticalHazzat_Count;
+        contentCount[FormatType.Music] = serviceDbItem.Music_Count;
+        contentCount[FormatType.Audio] = serviceDbItem.Audio_Count;
+        contentCount[FormatType.Video] = serviceDbItem.Video_Count;
+        contentCount[FormatType.Information] = serviceDbItem.Information_Count;
+
+        return {
+            contentCount,
+            id: serviceDbItem.ItemId,
+            name: serviceDbItem.Structure_Name,
+            order: serviceDbItem.Service_Order
+        };
+    }
+
     private tablePrefix: string = "Hymns_";
 
     constructor(
         @inject(TYPES.IConfiguration) configuration: IConfiguration
     ) {
-        SqlDataProvider.connectionPool = new ConnectionPool(configuration.dbConnectionString).connect();
+        SqlDataProvider.connectionPool = new ConnectionPool(configuration.dbConnectionString).connect()
+            .then((value) => {
+                console.debug("Established SQL connection");
+                return value;
+            }).catch((ex) => {
+                console.debug("Unable to establish Sql connection: " + JSON.stringify(ex));
+                throw ex;
+            });
     }
 
     public async getSeasonList(): Promise<ISeasonInfo[]> {
@@ -76,6 +104,31 @@ export class SqlDataProvider implements IDataProvider {
                     `Unable to find Season with id '${seasonId}'`);
             }
             return SqlDataProvider.convertSeasonDbItemToSeasonInfo(row);
+        });
+    }
+
+    public async getSeasonServices(seasonId: string): Promise<IServiceInfo[]> {
+        return this._connectAndExecute<IServiceInfo[]>(async (cp: ConnectionPool) => {
+            if (!SqlHelpers.isValidPositiveIntParameter(seasonId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid season id specified.",
+                    `Season id: '${seasonId}'`);
+            }
+            const result = await cp.request()
+                .input("Season_ID", Sql.Int, seasonId)
+                .execute(this._getQualifiedName("SeasonServicesSelect"));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.DatabaseError],
+                    "Unexpected database error");
+            }
+
+            const services: IServiceInfo[] = result.recordsets[0]
+                .map((row) => SqlDataProvider.convertServiceDbItemToServiceInfo(row));
+            return services;
+
         });
     }
 

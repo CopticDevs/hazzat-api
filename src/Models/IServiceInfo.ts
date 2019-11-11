@@ -1,4 +1,6 @@
-﻿/*
+﻿import { ReadonlyStringMap } from "../Common/Types/StringMap";
+
+/*
  * Service Info
  */
 export interface IServiceInfo {

@@ -127,17 +127,6 @@ describe("Seasons", () => {
                 });
         });
 
-        it("should return a 404 for negative season ids", (done) => {
-            chai.request(server)
-                .get("/seasons/-1/services")
-                .end((err, res) => {
-                    res.should.have.status(404);
-                    res.body.should.be.a("object");
-                    res.body.should.have.property("message");
-                    done();
-                });
-        });
-
         it("should return an empty array for non existing season ids", (done) => {
             chai.request(server)
                 .get("/seasons/1234/services")

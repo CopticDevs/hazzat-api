@@ -25,7 +25,8 @@
     "mssql": "^6.0.0",
     "nconf": "^0.10.0",
     "q": "^1.5.1",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "tedious": "^6.6.2"
   },
   "devDependencies": {
     "@types/debug": "4.1.5",

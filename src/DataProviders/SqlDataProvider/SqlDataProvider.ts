@@ -4,6 +4,7 @@ import { IConfiguration } from "../../Common/Configuration";
 import { ErrorCodes, HazzatApplicationError } from "../../Common/Errors";
 import { FormatType } from "../../Common/Types/FormatType";
 import { StringMap } from "../../Common/Types/StringMap";
+import { Log } from "../../Common/Utils/Logger";
 import { SqlHelpers } from "../../Common/Utils/SqlHelpers";
 import { ISeasonInfo } from "../../Models/ISeasonInfo";
 import { IServiceInfo } from "../../Models/IServiceInfo";
@@ -17,9 +18,6 @@ import ConnectionPool = Sql.ConnectionPool;
  */
 @injectable()
 export class SqlDataProvider implements IDataProvider {
-    private static connectionPool: ConnectionPool;
-    private static configuration: IConfiguration;
-
     private static convertSeasonDbItemToSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason): ISeasonInfo {
         return {
             id: seasonDbItem.ItemId,
@@ -50,28 +48,34 @@ export class SqlDataProvider implements IDataProvider {
         };
     }
 
+    private connectionPool: ConnectionPool;
+    private configuration: IConfiguration;
+
     private tablePrefix: string = "Hymns_";
 
     constructor(
         @inject(TYPES.IConfiguration) configuration: IConfiguration
     ) {
-        SqlDataProvider.configuration = configuration;
+        this.configuration = configuration;
     }
 
     public async getConnectionPool(): Promise<ConnectionPool> {
-        if (SqlDataProvider.connectionPool) {
-            console.log("getConnectionPool: Connection pool already initialized.");
-            return SqlDataProvider.connectionPool;
+        if (this.connectionPool) {
+            Log.verbose("SqlDataProvider", "getConnectionPool", "Connection pool already initialized.");
+            return this.connectionPool;
         }
 
         try {
-            console.log("getConnectionPool: Initializing Connection pool singleton.");
-            SqlDataProvider.connectionPool =
-                await new ConnectionPool(SqlDataProvider.configuration.dbConnectionString).connect();
-            console.log("Established SQL connection");
-            return SqlDataProvider.connectionPool;
+            Log.verbose("SqlDataProvider", "getConnectionPool", "Initializing Connection pool singleton.");
+            this.connectionPool =
+                await new ConnectionPool(this.configuration.dbConnectionString).connect();
+            Log.verbose("SqlDataProvider", "getConnectionPool", "Established SQL connection.");
+            return this.connectionPool;
         } catch (ex) {
-            console.log("Unable to establish Sql connection: " + JSON.stringify(ex));
+            Log.error(
+                "SqlDataProvider",
+                "getConnectionPool",
+                "Unable to establish Sql connection: " + JSON.stringify(ex));
             throw ex;
         }
     }
@@ -153,19 +157,19 @@ export class SqlDataProvider implements IDataProvider {
         try {
             connection = await this.getConnectionPool();
             if (!connection.connected) {
-                console.log("_connectAndExecute: Establishing sql connection");
+                Log.verbose("SqlDataProvider", "_connectAndExecute", "Establishing sql connection.");
                 await connection.connect();
             }
 
-            console.log("_connectAndExecute: Sql connection established.  Executing action");
+            Log.verbose("SqlDataProvider", "_connectAndExecute", "Sql connection established.  Executing action.");
             return await action(connection);
         } catch (ex) {
-            console.log("_connectAndExecute error occured: " + JSON.stringify(ex));
+            Log.error("SqlDataProvider", "_connectAndExecute", "Error occured: " + JSON.stringify(ex));
             throw ex;
         } finally {
-            console.log("_connectAndExecute: Action successfully executed.  Closing SQL connection");
+            Log.verbose("SqlDataProvider", "_connectAndExecute", "Action successfully executed.  Closing SQL connection.");
             await connection.close();
-            console.log("_connectAndExecute: SQL connection successfully closed");
+            Log.verbose("SqlDataProvider", "_connectAndExecute", "SQL connection successfully closed.");
         }
     }
 

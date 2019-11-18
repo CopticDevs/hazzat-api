@@ -39,6 +39,7 @@
     <TypeScriptCompile Include="Common\Errors.ts" />
     <TypeScriptCompile Include="Common\Types\FormatType.ts" />
     <TypeScriptCompile Include="Common\Types\StringMap.ts" />
+    <TypeScriptCompile Include="Common\Utils\Logger.ts" />
     <TypeScriptCompile Include="Common\Utils\SqlHelpers.ts" />
     <TypeScriptCompile Include="inversify.config.ts" />
     <TypeScriptCompile Include="Models\IServiceInfo.ts" />

@@ -65,8 +65,13 @@ steps:
     Contents: '$(Build.BuildId).zip'
     TargetFolder: '$(Build.ArtifactStagingDirectory)\ArtifactsToBePublished'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
+- task: AzureWebApp@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)\ArtifactsToBePublished'
-    FileCopyOptions: '/purge'
+    azureSubscription: 'hazzat-api-ppe - Azure'
+    appType: 'webApp'
+    appName: 'hazzat-api-ppe'
+    deployToSlotOrASE: true
+    resourceGroupName: 'hazzat-api-ppe-rg'
+    slotName: 'production'
+    package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+    deploymentMethod: 'auto'

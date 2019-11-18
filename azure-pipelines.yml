@@ -66,6 +66,7 @@ steps:
     TargetFolder: '$(Build.ArtifactStagingDirectory)\ArtifactsToBePublished'
 
 - task: AzureWebApp@1
+  displayName: 'Deploy Azure App Service'
   inputs:
     azureSubscription: 'hazzat-api-ppe - Azure'
     appType: 'webApp'

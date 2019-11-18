@@ -17,7 +17,8 @@ import ConnectionPool = Sql.ConnectionPool;
  */
 @injectable()
 export class SqlDataProvider implements IDataProvider {
-    private static connectionPool: Promise<ConnectionPool>;
+    private static connectionPool: ConnectionPool;
+    private static configuration: IConfiguration;
 
     private static convertSeasonDbItemToSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason): ISeasonInfo {
         return {
@@ -54,14 +55,25 @@ export class SqlDataProvider implements IDataProvider {
     constructor(
         @inject(TYPES.IConfiguration) configuration: IConfiguration
     ) {
-        SqlDataProvider.connectionPool = new ConnectionPool(configuration.dbConnectionString).connect()
-            .then((value) => {
-                console.debug("Established SQL connection");
-                return value;
-            }).catch((ex) => {
-                console.debug("Unable to establish Sql connection: " + JSON.stringify(ex));
-                throw ex;
-            });
+        SqlDataProvider.configuration = configuration;
+    }
+
+    public async getConnectionPool(): Promise<ConnectionPool> {
+        if (SqlDataProvider.connectionPool) {
+            console.log("getConnectionPool: Connection pool already initialized.");
+            return SqlDataProvider.connectionPool;
+        }
+
+        try {
+            console.log("getConnectionPool: Initializing Connection pool singleton.");
+            SqlDataProvider.connectionPool =
+                await new ConnectionPool(SqlDataProvider.configuration.dbConnectionString).connect();
+            console.log("Established SQL connection");
+            return SqlDataProvider.connectionPool;
+        } catch (ex) {
+            console.log("Unable to establish Sql connection: " + JSON.stringify(ex));
+            throw ex;
+        }
     }
 
     public async getSeasonList(): Promise<ISeasonInfo[]> {
@@ -137,15 +149,23 @@ export class SqlDataProvider implements IDataProvider {
      * @param action
      */
     private async _connectAndExecute<TResult>(action: (cp: ConnectionPool) => Promise<TResult>): Promise<TResult> {
-        const connection = await SqlDataProvider.connectionPool;
-        if (!connection.connected) {
-            await connection.connect();
-        }
-
+        let connection: ConnectionPool;
         try {
+            connection = await this.getConnectionPool();
+            if (!connection.connected) {
+                console.log("_connectAndExecute: Establishing sql connection");
+                await connection.connect();
+            }
+
+            console.log("_connectAndExecute: Sql connection established.  Executing action");
             return await action(connection);
+        } catch (ex) {
+            console.log("_connectAndExecute error occured: " + JSON.stringify(ex));
+            throw ex;
         } finally {
+            console.log("_connectAndExecute: Action successfully executed.  Closing SQL connection");
             await connection.close();
+            console.log("_connectAndExecute: SQL connection successfully closed");
         }
     }
 

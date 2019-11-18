@@ -73,5 +73,5 @@ steps:
     deployToSlotOrASE: true
     resourceGroupName: 'hazzat-api-ppe-rg'
     slotName: 'production'
-    package: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+    package: '$(Build.ArtifactStagingDirectory)/ArtifactsToBePublished/**/*.zip'
     deploymentMethod: 'auto'

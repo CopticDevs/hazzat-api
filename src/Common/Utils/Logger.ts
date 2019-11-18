@@ -1,4 +1,9 @@
-import { DateTime } from "mssql";
+enum Verbosity {
+    Verbose = "INFO ",
+    Debug   = "DEBUG",
+    Warning = "WARN ",
+    Error   = "ERROR"
+}
 
 /**
  * Logger class
@@ -11,7 +16,7 @@ export class Log {
      * @param message The message to be logged
      */
     public static verbose(area: string, source: string, message: string): void {
-        console.info(Log._constructMessage(area, source, message));
+        console.info(Log._constructMessage(area, source, Verbosity.Verbose, message));
     }
 
     /**
@@ -21,7 +26,7 @@ export class Log {
      * @param message The message to be logged
      */
     public static debug(area: string, source: string, message: string): void {
-        console.debug(Log._constructMessage(area, source, message));
+        console.debug(Log._constructMessage(area, source, Verbosity.Debug, message));
     }
 
     /**
@@ -31,7 +36,7 @@ export class Log {
      * @param message The message to be logged
      */
     public static warning(area: string, source: string, message: string): void {
-        console.warn(Log._constructMessage(area, source, message));
+        console.warn(Log._constructMessage(area, source, Verbosity.Warning, message));
     }
 
     /**
@@ -41,11 +46,11 @@ export class Log {
      * @param message The message to be logged
      */
     public static error(area: string, source: string, message: string): void {
-        console.error(Log._constructMessage(area, source, message));
+        console.error(Log._constructMessage(area, source, Verbosity.Error, message));
     }
 
-    private static _constructMessage(area: string, source: string, message: string): string {
+    private static _constructMessage(area: string, source: string, level: Verbosity, message: string): string {
         const timestamp = new Date().toISOString();
-        return `${timestamp} - [${area}::${source}] ${message}`;
+        return `${timestamp} - ${level} - [${area}::${source}] ${message}`;
     }
 }

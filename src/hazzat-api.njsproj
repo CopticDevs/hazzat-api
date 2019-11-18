@@ -41,6 +41,7 @@
     <TypeScriptCompile Include="Common\Types\StringMap.ts" />
     <TypeScriptCompile Include="Common\Utils\Logger.ts" />
     <TypeScriptCompile Include="Common\Utils\SqlHelpers.ts" />
+    <TypeScriptCompile Include="DataProviders\SqlDataProvider\SqlConstants.ts" />
     <TypeScriptCompile Include="inversify.config.ts" />
     <TypeScriptCompile Include="Models\IServiceInfo.ts" />
     <TypeScriptCompile Include="Routes\BaseController.ts" />

@@ -11,6 +11,7 @@ import { IServiceInfo } from "../../Models/IServiceInfo";
 import { TYPES } from "../../types";
 import { IDataProvider } from "../IDataProvider";
 import { HazzatDbSchema } from "./HazzatDbSchema";
+import { Constants } from "./SqlConstants";
 import ConnectionPool = Sql.ConnectionPool;
 
 /*
@@ -50,7 +51,6 @@ export class SqlDataProvider implements IDataProvider {
 
     private connectionPool: ConnectionPool;
     private configuration: IConfiguration;
-
     private tablePrefix: string = "Hymns_";
 
     constructor(
@@ -59,7 +59,7 @@ export class SqlDataProvider implements IDataProvider {
         this.configuration = configuration;
     }
 
-    public async getConnectionPool(): Promise<ConnectionPool> {
+    public getConnectionPool(): ConnectionPool {
         if (this.connectionPool) {
             Log.verbose("SqlDataProvider", "getConnectionPool", "Connection pool already initialized.");
             return this.connectionPool;
@@ -67,15 +67,13 @@ export class SqlDataProvider implements IDataProvider {
 
         try {
             Log.verbose("SqlDataProvider", "getConnectionPool", "Initializing Connection pool singleton.");
-            this.connectionPool =
-                await new ConnectionPool(this.configuration.dbConnectionString).connect();
-            Log.verbose("SqlDataProvider", "getConnectionPool", "Established SQL connection.");
+            this.connectionPool = new ConnectionPool(this.configuration.dbConnectionString);
             return this.connectionPool;
         } catch (ex) {
             Log.error(
                 "SqlDataProvider",
                 "getConnectionPool",
-                "Unable to establish Sql connection: " + JSON.stringify(ex));
+                "Unable to initialize SQL connection pool: " + JSON.stringify(ex));
             throw ex;
         }
     }
@@ -83,7 +81,7 @@ export class SqlDataProvider implements IDataProvider {
     public async getSeasonList(): Promise<ISeasonInfo[]> {
         return this._connectAndExecute(async (cp: ConnectionPool) => {
             const result = await cp.request()
-                .execute(this._getQualifiedName("SeasonListSelectAll"));
+                .execute(this._getQualifiedName(Constants.StoredProcedures.SeasonListSelectAll));
 
             if (!SqlHelpers.isValidResult(result)) {
                 throw new HazzatApplicationError(ErrorCodes[ErrorCodes.DatabaseError], "Unexpected database error");
@@ -105,7 +103,7 @@ export class SqlDataProvider implements IDataProvider {
             }
             const result = await cp.request()
                 .input("ID", Sql.Int, seasonId)
-                .execute(this._getQualifiedName("SeasonSelect"));
+                .execute(this._getQualifiedName(Constants.StoredProcedures.SeasonSelect));
 
             if (!SqlHelpers.isValidResult(result)) {
                 throw new HazzatApplicationError(
@@ -133,7 +131,7 @@ export class SqlDataProvider implements IDataProvider {
             }
             const result = await cp.request()
                 .input("Season_ID", Sql.Int, seasonId)
-                .execute(this._getQualifiedName("SeasonServicesSelect"));
+                .execute(this._getQualifiedName(Constants.StoredProcedures.SeasonServicesSelect));
 
             if (!SqlHelpers.isValidResult(result)) {
                 throw new HazzatApplicationError(
@@ -155,7 +153,7 @@ export class SqlDataProvider implements IDataProvider {
     private async _connectAndExecute<TResult>(action: (cp: ConnectionPool) => Promise<TResult>): Promise<TResult> {
         let connection: ConnectionPool;
         try {
-            connection = await this.getConnectionPool();
+            connection = this.getConnectionPool();
             if (!connection.connected) {
                 Log.verbose("SqlDataProvider", "_connectAndExecute", "Establishing sql connection.");
                 await connection.connect();

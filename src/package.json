@@ -44,7 +44,7 @@
     "mocha": "^6.2.2",
     "swagger-jsdoc": "^3.4.0",
     "swagger-ui-express": "^4.1.2",
-    "ts-node": "^8.5.3",
+    "ts-node": "^8.5.4",
     "tslint": "^5.20.1",
     "typescript": "^3.7.2"
   },

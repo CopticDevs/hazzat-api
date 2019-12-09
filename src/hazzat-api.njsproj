@@ -47,6 +47,7 @@
     <TypeScriptCompile Include="Models\IServiceInfo.ts" />
     <TypeScriptCompile Include="Routes\BaseController.ts" />
     <TypeScriptCompile Include="Routes\ServicesController.ts" />
+    <TypeScriptCompile Include="test\services.spec.ts" />
     <TypeScriptCompile Include="test\seasons.spec.ts" />
     <TypeScriptCompile Include="types.ts" />
     <TypeScriptCompile Include="app.ts" />

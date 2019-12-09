@@ -3,5 +3,6 @@ export namespace Constants {
         export const SeasonListSelectAll = "SeasonListSelectAll";
         export const SeasonSelect = "SeasonSelect";
         export const SeasonServicesSelect = "SeasonServicesSelect";
+        export const ServiceHymnListSelectBySeasonServiceId = "ServiceHymnListSelectBySeasonServiceId";
     }
 }

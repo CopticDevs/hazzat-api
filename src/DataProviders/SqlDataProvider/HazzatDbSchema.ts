@@ -25,4 +25,19 @@ export namespace HazzatDbSchema {
         Video_Count: number;
         Information_Count: number;
     }
+
+    export interface IServiceHymn {
+        ItemId: number;
+        Structure_ID: number;
+        Structure_Name: string;
+        Hymn_Order: number;
+        Title: string;
+        Text_Count: number;
+        Hazzat_Count: number;
+        VerticalHazzat_Count: number;
+        Music_Count: number;
+        Audio_Count: number;
+        Video_Count: number;
+        Information_Count: number;
+    }
 }

@@ -7,6 +7,7 @@ import { StringMap } from "../../Common/Types/StringMap";
 import { Log } from "../../Common/Utils/Logger";
 import { SqlHelpers } from "../../Common/Utils/SqlHelpers";
 import { ISeasonInfo } from "../../Models/ISeasonInfo";
+import { IServiceHymnInfo } from "../../Models/IServiceHymnInfo";
 import { IServiceInfo } from "../../Models/IServiceInfo";
 import { TYPES } from "../../types";
 import { IDataProvider } from "../IDataProvider";
@@ -46,6 +47,26 @@ export class SqlDataProvider implements IDataProvider {
             id: serviceDbItem.ItemId,
             name: serviceDbItem.Structure_Name,
             order: serviceDbItem.Service_Order
+        };
+    }
+
+    private static convertServiceHymnDbItemToServiceHymnInfo(
+        serviceHymnDbItem: HazzatDbSchema.IServiceHymn
+    ): IServiceHymnInfo {
+        const contentCount: StringMap<number> = {};
+        contentCount[FormatType.Text] = serviceHymnDbItem.Text_Count;
+        contentCount[FormatType.Hazzat] = serviceHymnDbItem.Hazzat_Count;
+        contentCount[FormatType.VerticalHazzat] = serviceHymnDbItem.VerticalHazzat_Count;
+        contentCount[FormatType.Music] = serviceHymnDbItem.Music_Count;
+        contentCount[FormatType.Audio] = serviceHymnDbItem.Audio_Count;
+        contentCount[FormatType.Video] = serviceHymnDbItem.Video_Count;
+        contentCount[FormatType.Information] = serviceHymnDbItem.Information_Count;
+
+        return {
+            contentCount,
+            id: serviceHymnDbItem.ItemId,
+            name: serviceHymnDbItem.Title,
+            order: serviceHymnDbItem.Hymn_Order
         };
     }
 
@@ -121,7 +142,7 @@ export class SqlDataProvider implements IDataProvider {
         });
     }
 
-    public async getSeasonServices(seasonId: string): Promise<IServiceInfo[]> {
+    public async getSeasonServiceList(seasonId: string): Promise<IServiceInfo[]> {
         return this._connectAndExecute<IServiceInfo[]>(async (cp: ConnectionPool) => {
             if (!SqlHelpers.isValidPositiveIntParameter(seasonId)) {
                 throw new HazzatApplicationError(
@@ -143,6 +164,31 @@ export class SqlDataProvider implements IDataProvider {
                 .map((row) => SqlDataProvider.convertServiceDbItemToServiceInfo(row));
             return services;
 
+        });
+    }
+
+    public async getServiceHymnList(serviceId: string): Promise<IServiceHymnInfo[]> {
+        return this._connectAndExecute<IServiceHymnInfo[]>(async (cp: ConnectionPool) => {
+            if (!SqlHelpers.isValidPositiveIntParameter(serviceId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid service id specified.",
+                    `Service id: '${serviceId}'`);
+            }
+
+            const result = await cp.request()
+                .input("Structure_ID", Sql.Int, serviceId)
+                .execute(this._getQualifiedName(Constants.StoredProcedures.ServiceHymnListSelectBySeasonServiceId));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.DatabaseError],
+                    "Unexpected database error");
+            }
+
+            const serviceHymns: IServiceHymnInfo[] = result.recordsets[0]
+                .map((row) => SqlDataProvider.convertServiceHymnDbItemToServiceHymnInfo(row));
+            return serviceHymns;
         });
     }
 

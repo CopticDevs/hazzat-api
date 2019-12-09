@@ -1,4 +1,5 @@
 ﻿import { ISeasonInfo } from "../Models/ISeasonInfo";
+import { IServiceHymnInfo } from "../Models/IServiceHymnInfo";
 import { IServiceInfo } from "../Models/IServiceInfo";
 
 /**
@@ -7,5 +8,6 @@ import { IServiceInfo } from "../Models/IServiceInfo";
 export interface IDataProvider {
     getSeasonList(): Promise<ISeasonInfo[]>;
     getSeason(seasonId: string): Promise<ISeasonInfo>;
-    getSeasonServices(seasonId: string): Promise<IServiceInfo[]>;
+    getSeasonServiceList(seasonId: string): Promise<IServiceInfo[]>;
+    getServiceHymnList(serviceId: string): Promise<IServiceHymnInfo[]>;
 }

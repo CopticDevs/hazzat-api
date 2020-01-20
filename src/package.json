@@ -39,7 +39,7 @@
     "@types/q": "^1.5.2",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
-    "copyfiles": "^2.1.1",
+    "copyfiles": "^2.2.0",
     "mkdirp": "^0.5.1",
     "mocha": "^7.0.0",
     "swagger-jsdoc": "^3.5.0",

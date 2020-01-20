@@ -6,10 +6,10 @@
 trigger:
   - master
   
-  pool:
-    vmImage: 'vs2017-win2016'
+pool:
+  vmImage: 'vs2017-win2016'
   
-  steps:
+steps:
   # Azure Key Vault
   # Download Azure Key Vault secrets
   - task: AzureKeyVault@1

@@ -4,47 +4,47 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- '*'
+  - '*'
 
 pool:
   vmImage: 'vs2017-win2016'
 
 steps:
-# Azure Key Vault
-# Download Azure Key Vault secrets
-- task: AzureKeyVault@1
-  inputs:
-    azureSubscription: 'hazzat-api-ppe - Azure'
-    keyVaultName: 'hazzat-api-ppe'
-    secretsFilter: 'hazzatazure-ConnectionString'
+  # Azure Key Vault
+  # Download Azure Key Vault secrets
+  - task: AzureKeyVault@1
+    inputs:
+      azureSubscription: 'hazzat-api-ppe - Azure'
+      keyVaultName: 'hazzat-api-ppe'
+      secretsFilter: 'hazzatazure-ConnectionString'
 
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.x'
+    displayName: 'Install Node.js'
 
-- task: Npm@1
-  displayName: 'npm install'
-  inputs:
-    command: custom
-    workingDir: src
-    verbose: false
-    customCommand: 'install'
+  - task: Npm@1
+    displayName: 'npm install'
+    inputs:
+      command: custom
+      workingDir: src
+      verbose: false
+      customCommand: 'install'
 
-- task: Npm@1
-  displayName: 'npm build'
-  inputs:
-    command: custom
-    workingDir: src
-    verbose: false
-    customCommand: 'run build'
+  - task: Npm@1
+    displayName: 'npm build'
+    inputs:
+      command: custom
+      workingDir: src
+      verbose: false
+      customCommand: 'run build'
 
-- task: Npm@1
-  displayName: 'npm test'
-  inputs:
-    command: custom
-    workingDir: src
-    verbose: false
-    customCommand: 'run test'
-  env:
-    CUSTOMCONNSTR_DBCONNECTIONSTRING: $(hazzatazure-ConnectionString)
+  - task: Npm@1
+    displayName: 'npm test'
+    inputs:
+      command: custom
+      workingDir: src
+      verbose: false
+      customCommand: 'run test'
+    env:
+      CUSTOMCONNSTR_DBCONNECTIONSTRING: $(hazzatazure-ConnectionString)

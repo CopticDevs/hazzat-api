@@ -5,11 +5,11 @@
 
 trigger:
   - develop
-  
-  pool:
-    vmImage: 'vs2017-win2016'
-  
-  steps:
+
+pool:
+  vmImage: 'vs2017-win2016'
+
+steps:
   # Azure Key Vault
   # Download Azure Key Vault secrets
   - task: AzureKeyVault@1
@@ -17,12 +17,12 @@ trigger:
       azureSubscription: 'hazzat-api-ppe - Azure'
       keyVaultName: 'hazzat-api-ppe'
       secretsFilter: 'hazzatazure-ConnectionString'
-  
+
   - task: NodeTool@0
     inputs:
       versionSpec: '10.x'
     displayName: 'Install Node.js'
-  
+
   - task: Npm@1
     displayName: 'npm install'
     inputs:
@@ -30,7 +30,7 @@ trigger:
       workingDir: src
       verbose: false
       customCommand: 'install'
-  
+
   - task: Npm@1
     displayName: 'npm build'
     inputs:
@@ -38,7 +38,7 @@ trigger:
       workingDir: src
       verbose: false
       customCommand: 'run build'
-  
+
   - task: Npm@1
     displayName: 'npm test'
     inputs:
@@ -48,7 +48,7 @@ trigger:
       customCommand: 'run test'
     env:
       CUSTOMCONNSTR_DBCONNECTIONSTRING: $(hazzatazure-ConnectionString)
-  
+
   - task: PowerShell@1
     displayName: 'Generate Deployment Archive'
     inputs:
@@ -56,14 +56,14 @@ trigger:
     env:
       ARCHIVE_FILE_PATH: $(Build.ArtifactStagingDirectory)\$(Build.BuildId).zip
       ENLISTMENT_ROOT: $(System.DefaultWorkingDirectory)
-  
+
   - task: CopyFiles@2
     displayName: 'Copy File to: $(TargetFolder)'
     inputs:
       SourceFolder: '$(Build.ArtifactStagingDirectory)'
       Contents: '$(Build.BuildId).zip'
       TargetFolder: '$(Build.ArtifactStagingDirectory)\ArtifactsToBePublished'
-  
+
   - task: AzureWebApp@1
     displayName: 'Deploy Azure App Service'
     inputs:

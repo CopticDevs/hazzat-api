@@ -54,10 +54,17 @@ steps:
       ENLISTMENT_ROOT: $(System.DefaultWorkingDirectory)
 
   - task: CopyFiles@2
-    displayName: 'Copy File to: $(TargetFolder)'
+    displayName: 'Copy Output Files to: $(TargetFolder)'
     inputs:
       SourceFolder: '$(Build.ArtifactStagingDirectory)'
       Contents: '$(Build.BuildId).zip'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)\ArtifactsToBePublished'
+
+  - task: CopyFiles@2
+    displayName: 'Copy Deployment Script to $(TargetFolder)'
+    inputs:
+      SourceFolder: $(System.DefaultWorkingDirectory)/.build
+      Contents: 'createDeploymentArchive.ps1'
       TargetFolder: '$(Build.ArtifactStagingDirectory)\ArtifactsToBePublished'
 
   - task: PublishPipelineArtifact@1

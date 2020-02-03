@@ -48,7 +48,7 @@ steps:
   - task: PowerShell@1
     displayName: 'Generate Deployment Archive'
     inputs:
-      scriptName: .build/createDeploymentArchive.ps1
+      scriptName: build/createDeploymentArchive.ps1
     env:
       ARCHIVE_FILE_PATH: $(Build.ArtifactStagingDirectory)\$(Build.BuildId).zip
       ENLISTMENT_ROOT: $(System.DefaultWorkingDirectory)

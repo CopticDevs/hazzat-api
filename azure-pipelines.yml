@@ -65,7 +65,7 @@ steps:
     inputs:
       SourceFolder: $(System.DefaultWorkingDirectory)/.build
       Contents: 'createDeploymentArchive.ps1'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)/.build'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
   - task: PublishPipelineArtifact@1
     displayName: 'Publish Artifact: drop'

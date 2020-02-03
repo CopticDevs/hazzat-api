@@ -1,3 +1,4 @@
-pr:
+trigger: 
   - master
   - releases/*
+pr: none

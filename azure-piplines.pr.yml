@@ -1,6 +1,6 @@
-trigger: none
+trigger: none	 
 pr:
-  - develop
+    - develop
 
 pool:
   vmImage: 'vs2017-win2016'

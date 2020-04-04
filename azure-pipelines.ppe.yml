@@ -1,5 +1,4 @@
-trigger: 
-  - develop
+trigger: none
 pr: none
 
 pool:
@@ -64,4 +63,4 @@ steps:
     displayName: 'Publish Artifact: drop'
     inputs:
       path: '$(Build.ArtifactStagingDirectory)\ArtifactsToBePublished'
-      artifact: HazzatBuildJS
+      artifact: HazzatBuildPPE

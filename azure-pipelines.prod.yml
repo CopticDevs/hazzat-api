@@ -1,6 +1,4 @@
-trigger: 
-  - master
-  - releases/*
+trigger: none
 pr: none
 
 pool:

@@ -1,48 +1,51 @@
-trigger: none
-pr: none
+trigger:
+- develop
+
+pr:
+- develop
 
 pool:
-   vmImage: 'vs2017-win2016'
+  vmImage: 'vs2017-win2016'
 
 steps:
-   # Azure Key Vault
-   # Download Azure Key Vault secrets
-   - task: AzureKeyVault@1
-     inputs:
-       azureSubscription: 'hazzat-api - Azure'
-       keyVaultName: 'hazzat-api'
-       secretsFilter: 'hazzatdnn-ConnectionString'
+  # Azure Key Vault
+  # Download Azure Key Vault secrets
+  - task: AzureKeyVault@1
+    inputs:
+      azureSubscription: 'hazzat-api - Azure'
+      keyVaultName: 'hazzat-api'
+      secretsFilter: 'hazzatdnn-ConnectionString'
 
-   - task: NodeTool@0
-     inputs:
-       versionSpec: '10.x'
-     displayName: 'Install Node.js'
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '10.x'
+    displayName: 'Install Node.js'
 
-   - task: Npm@1
-     displayName: 'npm install'
-     inputs:
-       command: custom
-       workingDir: src
-       verbose: false
-       customCommand: 'install'
+  - task: Npm@1
+    displayName: 'npm install'
+    inputs:
+      command: custom
+      workingDir: src
+      verbose: false
+      customCommand: 'install'
 
-   - task: Npm@1
-     displayName: 'npm build'
-     inputs:
-       command: custom
-       workingDir: src
-       verbose: false
-       customCommand: 'run build'
+  - task: Npm@1
+    displayName: 'npm build'
+    inputs:
+      command: custom
+      workingDir: src
+      verbose: false
+      customCommand: 'run build'
 
-   - task: Npm@1
-     displayName: 'npm test'
-     inputs:
-       command: custom
-       workingDir: src
-       verbose: false
-       customCommand: 'run test'
-     env:
-       CUSTOMCONNSTR_DBCONNECTIONSTRING: $(hazzatdnn-ConnectionString)
+  - task: Npm@1
+    displayName: 'npm test'
+    inputs:
+      command: custom
+      workingDir: src
+      verbose: false
+      customCommand: 'run test'
+    env:
+      CUSTOMCONNSTR_DBCONNECTIONSTRING: $(hazzatdnn-ConnectionString)
 
   - task: PowerShell@1
     displayName: 'Generate Deployment Archive'

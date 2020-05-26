@@ -1,5 +1,8 @@
-trigger: none
-pr: none
+trigger:
+- master
+
+pr:
+- master
 
 pool:
    vmImage: 'vs2017-win2016'

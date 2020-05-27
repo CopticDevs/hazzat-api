@@ -10,12 +10,14 @@ import { IDataProvider } from "./DataProviders/IDataProvider";
 import { myContainer } from "./inversify.config";
 import { HomeController } from "./Routes/HomeController";
 import { SeasonsController } from "./Routes/SeasonsController";
+import { ServicesController } from "./Routes/ServicesController";
 import { TYPES } from "./types";
 
 const configuration: IConfiguration = myContainer.get<IConfiguration>(TYPES.IConfiguration);
 const dataProvider: IDataProvider = myContainer.get<IDataProvider>(TYPES.IDataProvider);
 const homeController = new HomeController();
 const seasonsController = new SeasonsController(dataProvider);
+const servicesController = new ServicesController(dataProvider);
 
 const app = express();
 const port = configuration.port;
@@ -36,6 +38,7 @@ const swaggerSpec = swaggerJSDoc(options);
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.use("/", homeController.router);
 app.use("/seasons", seasonsController.router);
+app.use("/services", servicesController.router);
 
 // Allow Let's Encrypt to access challenge static content
 app.use("/.well-known/acme-challenge", express.static(__dirname + "/.well-known/acme-challenge"));

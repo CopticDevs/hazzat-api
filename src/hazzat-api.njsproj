@@ -61,6 +61,9 @@
     <None Include="hazzat-api - Web Deploy.pubxml" />
     <Content Include="Configs\prod.json" />
     <None Include="hazzat-api-ppe - Web Deploy.pubxml" />
+    <Content Include="DataProviders\SqlDataProvider\00.00.01.Install.sql" />
+    <Content Include="DataProviders\SqlDataProvider\00.00.01.Uninstall.sql" />
+    <Content Include="DataProviders\SqlDataProvider\SqlMetadata.sql" />
     <Content Include="tslint.json" />
     <Content Include="Configs\dev.json" />
     <Content Include="tsconfig.json" />

@@ -14,7 +14,7 @@ steps:
     inputs:
       azureSubscription: 'hazzat-api - Azure'
       keyVaultName: 'hazzat-api'
-      secretsFilter: 'hazzatdnn-ConnectionString'
+      secretsFilter: 'hazzat-db-ro-connectionString'
 
   - task: NodeTool@0
     inputs:
@@ -45,7 +45,7 @@ steps:
       verbose: false
       customCommand: 'run test'
     env:
-      CUSTOMCONNSTR_DBCONNECTIONSTRING: $(hazzatdnn-ConnectionString)
+      CUSTOMCONNSTR_DBCONNECTIONSTRING: $(hazzat-db-ro-connectionString)
 
   - task: PowerShell@1
     displayName: 'Generate Deployment Archive'

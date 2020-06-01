@@ -5,7 +5,8 @@
  */
 export interface IServiceInfo {
     id: number;
+    seasonId: number;
+    serviceId: number;
     name: string;
     order: number;
-    contentCount: ReadonlyStringMap<number>;
 }

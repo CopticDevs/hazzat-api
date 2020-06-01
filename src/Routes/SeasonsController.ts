@@ -21,13 +21,9 @@ export class SeasonsController extends BaseController {
          *         type: string
          *       order:
          *         type: integer
-         *       reasonId:
-         *         type: integer
-         *       reasonName:
-         *         type: string
          *       verse:
          *         type: string
-         *     required: [id, isDateSpecific, name, order, reasonId, reasonName, verse]
+         *     required: [id, isDateSpecific, name, order, verse]
          *
          * /seasons:
          *   get:
@@ -103,30 +99,15 @@ export class SeasonsController extends BaseController {
          *     properties:
          *       id:
          *         type: integer
+         *       seasonId:
+         *         type: integer
+         *       serviceId:
+         *         type: integer
          *       name:
          *         type: string
          *       order:
          *         type: integer
-         *       contentCount:
-         *         type: object
-         *         description: A dictionary of the format types and the number of items of that format type
-         *         properties:
-         *           Text:
-         *             type: integer
-         *           Hazzat:
-         *             type: integer
-         *           VerticalHazzat:
-         *             type: integer
-         *           Music:
-         *             type: integer
-         *           Audio:
-         *             type: integer
-         *           Video:
-         *             type: integer
-         *           Information:
-         *             type: integer
-         *         required: [Text, Hazzat, VerticalHazzat, Music, Audio, Video, Information]
-         *     required: [id, name, order, contentCount]
+         *     required: [id, seasonId, serviceId, name, order]
          *
          * /seasons/[seasonId]/services:
          *   get:
@@ -150,6 +131,52 @@ export class SeasonsController extends BaseController {
         this.router.get("/:seasonId(\\d+)/services", async (req: express.Request, res: express.Response) => {
             try {
                 const result = await dataProvider.getSeasonServiceList(req.params.seasonId);
+                res.send(result);
+            } catch (ex) {
+                BaseController._OnError(ex, res);
+            }
+        });
+
+       /**
+        * @swagger
+        *
+        * /seasons/[seasonId]/services/[serviceId]:
+        *   get:
+        *     description: Returns the details of the given service
+        *     produces:
+        *       - application/json
+        *     parameters:
+        *       - name: seasonId
+        *         description: Season ID
+        *         in:  url
+        *         required: true
+        *         type: string
+        *       - name: serviceId
+        *         description: Service ID
+        *         in:  url
+        *         required: true
+        *         type: string
+        *     responses:
+        *       200:
+        *         description: Service
+        *         schema:
+        *           type: object
+        *           items:
+        *             $ref: '#/definitions/Service'
+        *
+        *       404:
+        *         description: A service detail was not found.
+        *         schema:
+        *           type: object
+        *           properties:
+        *             errorCode:
+        *               type: string
+        *             message:
+        *               type: string
+        */
+        this.router.get("/:seasonId(\\d+)/services/:serviceId(\\d+)", async (req: express.Request, res: express.Response) => {
+            try {
+                const result = await dataProvider.getSeasonService(req.params.seasonId, req.params.serviceId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

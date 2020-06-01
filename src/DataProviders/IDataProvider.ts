@@ -9,5 +9,6 @@ export interface IDataProvider {
     getSeasonList(): Promise<ISeasonInfo[]>;
     getSeason(seasonId: string): Promise<ISeasonInfo>;
     getSeasonServiceList(seasonId: string): Promise<IServiceInfo[]>;
+    getSeasonService(seasonId: string, serviceId: string): Promise<IServiceInfo>;
     getServiceHymnList(serviceId: string): Promise<IServiceHymnInfo[]>;
 }

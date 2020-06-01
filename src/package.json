@@ -34,7 +34,7 @@
     "@types/mocha": "^7.0.2",
     "@types/mssql": "^6.0.1",
     "@types/nconf": "^0.10.0",
-    "@types/node": "^14.0.5",
+    "@types/node": "^14.0.6",
     "@types/q": "^1.5.4",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",

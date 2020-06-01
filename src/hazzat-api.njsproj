@@ -61,6 +61,8 @@
     <None Include="hazzat-api - Web Deploy.pubxml" />
     <Content Include="Configs\prod.json" />
     <None Include="hazzat-api-ppe - Web Deploy.pubxml" />
+    <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.02.Uninstall.sql" />
+    <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.02.Install.sql" />
     <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.01.Install.sql" />
     <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.01.Uninstall.sql" />
     <Content Include="DataProviders\SqlDataProvider\Scripts\SqlMetadata.sql" />

@@ -6,7 +6,5 @@ export interface ISeasonInfo {
     name: string;
     verse: string;
     order: number;
-    reasonId: number;
-    reasonName: string;
     isDateSpecific: boolean;
 }

@@ -26,25 +26,15 @@ export class SqlDataProvider implements IDataProvider {
             isDateSpecific: seasonDbItem.Date_Specific,
             name: seasonDbItem.Name,
             order: seasonDbItem.Season_Order,
-            reasonId: seasonDbItem.Reason_ID,
-            reasonName: seasonDbItem.Reason_Name,
             verse: seasonDbItem.Verse
         };
     }
 
     private static convertServiceDbItemToServiceInfo(serviceDbItem: HazzatDbSchema.IService): IServiceInfo {
-        const contentCount: StringMap<number> = {};
-        contentCount[FormatType.Text] = serviceDbItem.Text_Count;
-        contentCount[FormatType.Hazzat] = serviceDbItem.Hazzat_Count;
-        contentCount[FormatType.VerticalHazzat] = serviceDbItem.VerticalHazzat_Count;
-        contentCount[FormatType.Music] = serviceDbItem.Music_Count;
-        contentCount[FormatType.Audio] = serviceDbItem.Audio_Count;
-        contentCount[FormatType.Video] = serviceDbItem.Video_Count;
-        contentCount[FormatType.Information] = serviceDbItem.Information_Count;
-
         return {
-            contentCount,
             id: serviceDbItem.ItemId,
+            seasonId: serviceDbItem.Season_ID,
+            serviceId: serviceDbItem.Service_ID,
             name: serviceDbItem.Structure_Name,
             order: serviceDbItem.Service_Order
         };
@@ -164,6 +154,41 @@ export class SqlDataProvider implements IDataProvider {
                 .map((row) => SqlDataProvider.convertServiceDbItemToServiceInfo(row));
             return services;
 
+        });
+    }
+
+    public async getSeasonService(seasonId: string, serviceId: string): Promise<IServiceInfo> {
+        return this._connectAndExecute(async (cp: ConnectionPool) => {
+            if (!SqlHelpers.isValidPositiveIntParameter(seasonId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid season id specified.",
+                    `Season id: '${seasonId}'`);
+            }
+            if (!SqlHelpers.isValidPositiveIntParameter(serviceId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid service id specified.",
+                    `Service id: '${serviceId}'`);
+            }
+            const result = await cp.request()
+                .input("Season_ID", Sql.Int, seasonId)
+                .input("Service_ID", Sql.Int, serviceId)
+                .execute(this._getQualifiedName(Constants.StoredProcedures.SeasonServicesSelectBySeasonIdAndServiceId));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.DatabaseError],
+                    "Unexpected database error");
+            }
+
+            const row = result.recordsets[0][0];
+            if (!row) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.NotFoundError],
+                    `Unable to find Service with Season id '${seasonId}' and Service id '${serviceId}`);
+            }
+            return SqlDataProvider.convertServiceDbItemToServiceInfo(row);
         });
     }
 

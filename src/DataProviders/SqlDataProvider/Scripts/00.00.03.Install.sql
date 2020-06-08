@@ -212,7 +212,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-CREATE PROCEDURE [dbo].[Hymns_SeasonServicesSelect]
+ALTER PROCEDURE [dbo].[Hymns_SeasonServicesSelect]
     @Season_ID int
 AS 
 BEGIN 

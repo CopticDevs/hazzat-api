@@ -1,11 +1,10 @@
-﻿import { ReadonlyStringMap } from "../Common/Types/StringMap";
-
-/*
+﻿/*
  * Service Info
  */
 export interface IServiceInfo {
     id: number;
     name: string;
+    seasonId: number;
+    seasonName: string;
     order: number;
-    contentCount: ReadonlyStringMap<number>;
 }

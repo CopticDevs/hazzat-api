@@ -44,10 +44,10 @@
     <TypeScriptCompile Include="DataProviders\SqlDataProvider\SqlConstants.ts" />
     <TypeScriptCompile Include="inversify.config.ts" />
     <TypeScriptCompile Include="Models\IServiceHymnInfo.ts" />
+    <TypeScriptCompile Include="Models\IServiceHymnFormatInfo.ts" />
     <TypeScriptCompile Include="Models\IServiceInfo.ts" />
     <TypeScriptCompile Include="Routes\BaseController.ts" />
-    <TypeScriptCompile Include="Routes\ServicesController.ts" />
-    <TypeScriptCompile Include="test\services.spec.ts" />
+    <TypeScriptCompile Include="test\Helpers\Validators.ts" />
     <TypeScriptCompile Include="test\seasons.spec.ts" />
     <TypeScriptCompile Include="types.ts" />
     <TypeScriptCompile Include="app.ts" />
@@ -61,6 +61,13 @@
     <None Include="hazzat-api - Web Deploy.pubxml" />
     <Content Include="Configs\prod.json" />
     <None Include="hazzat-api-ppe - Web Deploy.pubxml" />
+    <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.03.Uninstall.sql" />
+    <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.03.Install.sql" />
+    <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.02.Uninstall.sql" />
+    <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.02.Install.sql" />
+    <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.01.Install.sql" />
+    <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.01.Uninstall.sql" />
+    <Content Include="DataProviders\SqlDataProvider\Scripts\SqlMetadata.sql" />
     <Content Include="tslint.json" />
     <Content Include="Configs\dev.json" />
     <Content Include="tsconfig.json" />
@@ -73,12 +80,14 @@
     <Folder Include="Common\" />
     <Folder Include="Common\Types\" />
     <Folder Include="Common\Utils\" />
+    <Folder Include="DataProviders\SqlDataProvider\Scripts\" />
     <Folder Include="Models\" />
     <Folder Include="DataProviders\" />
     <Folder Include="DataProviders\SqlDataProvider\" />
     <Folder Include="Configs\" />
     <Folder Include="test\" />
     <Folder Include="Routes\" />
+    <Folder Include="test\Helpers\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />

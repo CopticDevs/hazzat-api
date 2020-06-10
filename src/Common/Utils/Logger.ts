@@ -1,9 +1,9 @@
-enum Verbosity {
-    Verbose = "INFO ",
-    Debug   = "DEBUG",
-    Warning = "WARN ",
-    Error   = "ERROR"
-}
+import * as winston from "winston";
+
+export const logger = winston.createLogger({
+    level: "debug",
+    transports: [new winston.transports.Console()]
+});
 
 /**
  * Logger class
@@ -16,7 +16,7 @@ export class Log {
      * @param message The message to be logged
      */
     public static verbose(area: string, source: string, message: string): void {
-        console.info(Log._constructMessage(area, source, Verbosity.Verbose, message));
+        Log._log(logger.verbose, area, source, message);
     }
 
     /**
@@ -26,7 +26,7 @@ export class Log {
      * @param message The message to be logged
      */
     public static debug(area: string, source: string, message: string): void {
-        console.debug(Log._constructMessage(area, source, Verbosity.Debug, message));
+        Log._log(logger.debug, area, source, message);
     }
 
     /**
@@ -36,7 +36,7 @@ export class Log {
      * @param message The message to be logged
      */
     public static warning(area: string, source: string, message: string): void {
-        console.warn(Log._constructMessage(area, source, Verbosity.Warning, message));
+        Log._log(logger.warn, area, source, message);
     }
 
     /**
@@ -46,11 +46,16 @@ export class Log {
      * @param message The message to be logged
      */
     public static error(area: string, source: string, message: string): void {
-        console.error(Log._constructMessage(area, source, Verbosity.Error, message));
+        Log._log(logger.error, area, source, message);
     }
 
-    private static _constructMessage(area: string, source: string, level: Verbosity, message: string): string {
+    public static exception(area: string, source: string, exception: any): void {
         const timestamp = new Date().toISOString();
-        return `${timestamp} - ${level} - [${area}::${source}] ${message}`;
+        logger.debug("Exception", { area, source, timestamp, exception });
+    }
+
+    private static _log(loggerMethod: winston.LeveledLogMethod, area: string, source: string, message: string): void {
+        const timestamp = new Date().toISOString();
+        loggerMethod(message, { area, source, timestamp });
     }
 }

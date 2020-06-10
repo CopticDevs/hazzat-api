@@ -1,4 +1,5 @@
 import * as express from "express";
+import { Log } from "../Common/Utils/Logger";
 import { ErrorCodes, HazzatApplicationError } from "../Common/Errors";
 
 /*
@@ -7,7 +8,7 @@ import { ErrorCodes, HazzatApplicationError } from "../Common/Errors";
 export class BaseController {
 
     protected static _OnError(ex: any, res: express.Response): void {
-        console.log(JSON.stringify(ex));
+        Log.exception("BaseController", "_onError", ex);
         if (ex instanceof HazzatApplicationError) {
             switch (ex.errorCode) {
                 case ErrorCodes[ErrorCodes.DatabaseError]:
@@ -20,7 +21,7 @@ export class BaseController {
                     res.status(404).send(ex);
                     break;
                 default:
-                    console.log("SeasonsController: Unhandled error code: " + ErrorCodes[ex.errorCode]);
+                    Log.error("BaseController", "_onError", "Unhandled error code: " + ErrorCodes[ex.errorCode]);
                     res.status(500).send(HazzatApplicationError.UnknownError);
                     break;
             }

@@ -1,8 +1,9 @@
 export enum ErrorCodes {
-    DatabaseError,
-    InvalidParameterError,
-    NotFoundError,
-    UnknownError
+    DatabaseError = "DatabaseError",
+    InvalidParameterError = "InvalidParameterError",
+    NotFoundError = "NotFoundError",
+    NotSupportedError = "NotSupportedError",
+    UnknownError = "UnknownError"
 }
 
 export class HazzatApplicationError {

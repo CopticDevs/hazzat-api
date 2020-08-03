@@ -7,8 +7,6 @@
     <RootNamespace>hazzat-api</RootNamespace>
     <LastActiveSolutionConfig>Debug|Any CPU</LastActiveSolutionConfig>
     <NameOfLastUsedPublishProfile>hazzat-api-ppe - Web Deploy</NameOfLastUsedPublishProfile>
-    <Environment>CUSTOMCONNSTR_DBCONNECTIONSTRING=Server=tcp:hazzat-sql-ppe.database.windows.net,1433;Initial Catalog=hazzat_db_dev;Persist Security Info=False;User ID=hazzat_db_ro;Password=2h7n#FtTv4cmFGyC;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;</Environment>
-    <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>

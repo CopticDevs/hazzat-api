@@ -5,7 +5,7 @@ import { ErrorCodes, HazzatApplicationError } from "../../Common/Errors";
 import { Log } from "../../Common/Utils/Logger";
 import { SqlHelpers } from "../../Common/Utils/SqlHelpers";
 import { ISeasonInfo } from "../../Models/ISeasonInfo";
-import { IHymnContent, IServiceHymnFormatContentInfo, ITextContent, IHazzatContent, IVerticalHazzatContent, IVideoContent, IInformationContent } from "../../Models/IServiceHymnFormatContentInfo";
+import { IHazzatContent, IHymnContent, IInformationContent, IServiceHymnFormatContentInfo, ITextContent, IVerticalHazzatContent, IVideoContent } from "../../Models/IServiceHymnFormatContentInfo";
 import { IServiceHymnFormatInfo } from "../../Models/IServiceHymnFormatInfo";
 import { IServiceHymnInfo } from "../../Models/IServiceHymnInfo";
 import { IServiceInfo } from "../../Models/IServiceInfo";

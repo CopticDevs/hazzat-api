@@ -728,6 +728,7 @@ describe("Seasons controller", () => {
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
                     Validators.validateServiceHymnFormatContentResponse(res.body);
+                    Validators.validateTextContentResponse(res.body.content);
                     done();
                 });
         });
@@ -738,6 +739,7 @@ describe("Seasons controller", () => {
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
                     Validators.validateServiceHymnFormatContentResponse(res.body);
+                    Validators.validateHazzatContentResponse(res.body.content);
                     done();
                 });
         });
@@ -746,9 +748,9 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get("/seasons/1/services/2/serviceHymns/279/formats/3/contents/622")
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
-                    Validators.validateServiceHymnFormatContentResponse(res.body[0]);
-                    Validators.validateVerticalHazzatContentResponse(res.body[0].content);
+                    Validators.validateObjectResponse(res);
+                    Validators.validateServiceHymnFormatContentResponse(res.body);
+                    Validators.validateVerticalHazzatContentResponse(res.body.content);
                     done();
                 });
         });
@@ -775,9 +777,9 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get("/seasons/14/services/4/serviceHymns/162/formats/6/contents/704")
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
-                    Validators.validateServiceHymnFormatContentResponse(res.body[0]);
-                    Validators.validateVideoContentResponse(res.body[0].content);
+                    Validators.validateObjectResponse(res);
+                    Validators.validateServiceHymnFormatContentResponse(res.body);
+                    Validators.validateVideoContentResponse(res.body.content);
                     done();
                 });
         });
@@ -786,9 +788,9 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get("/seasons/14/services/4/serviceHymns/162/formats/7/contents/705")
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
-                    Validators.validateServiceHymnFormatContentResponse(res.body[0]);
-                    Validators.validateInformationContentResponse(res.body[0].content);
+                    Validators.validateObjectResponse(res);
+                    Validators.validateServiceHymnFormatContentResponse(res.body);
+                    Validators.validateInformationContentResponse(res.body.content);
                     done();
                 });
         });

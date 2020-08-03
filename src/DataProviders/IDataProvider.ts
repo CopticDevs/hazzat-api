@@ -1,8 +1,8 @@
 ﻿import { ISeasonInfo } from "../Models/ISeasonInfo";
+import { IHymnContent, IServiceHymnFormatContentInfo } from "../Models/IServiceHymnFormatContentInfo";
 import { IServiceHymnFormatInfo } from "../Models/IServiceHymnFormatInfo";
 import { IServiceHymnInfo } from "../Models/IServiceHymnInfo";
 import { IServiceInfo } from "../Models/IServiceInfo";
-import { IServiceHymnFormatContentInfo, ITextContent, IHazzatContent, IHymnContent } from "../Models/IServiceHymnFormatContentInfo";
 
 /**
  * Data Provider Interface

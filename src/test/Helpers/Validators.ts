@@ -84,29 +84,34 @@ export class Validators {
         contentBody.should.have.property("arabicText");
         contentBody.should.have.property("copticText");
         contentBody.should.have.property("englishText");
+        contentBody.should.have.property("contentType").eq("TextContent");
     }
 
     public static validateHazzatContentResponse(contentBody: any): void {
         contentBody.should.have.property("arabicHazzat");
         contentBody.should.have.property("copticHazzat");
         contentBody.should.have.property("englishHazzat");
+        contentBody.should.have.property("contentType").eq("HazzatContent");
     }
 
     public static validateVerticalHazzatContentResponse(contentBody: any): void {
         contentBody.should.have.property("arabicVerticalHazzat");
         contentBody.should.have.property("copticVerticalHazzat");
         contentBody.should.have.property("englishVerticalHazzat");
+        contentBody.should.have.property("contentType").eq("VerticalHazzatContent");
     }
 
     public static validateVideoContentResponse(contentBody: any): void {
         contentBody.should.have.property("arabicVideo");
         contentBody.should.have.property("copticVideo");
         contentBody.should.have.property("englishVideo");
+        contentBody.should.have.property("contentType").eq("VideoContent");
     }
 
     public static validateInformationContentResponse(contentBody: any): void {
         contentBody.should.have.property("arabicInformation");
         contentBody.should.have.property("englishInformation");
+        contentBody.should.have.property("contentType").eq("InformationContent");
     }
 
 }

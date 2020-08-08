@@ -83,34 +83,39 @@ export class SqlDataProvider implements IDataProvider {
                 content = {
                     arabicText: serviceHymnFormatContentDbItem.Content_Arabic,
                     copticText: serviceHymnFormatContentDbItem.Content_Coptic,
-                    englishText: serviceHymnFormatContentDbItem.Content_English
+                    englishText: serviceHymnFormatContentDbItem.Content_English,
+                    contentType: "TextContent"
                 } as ITextContent;
                 break;
             case 2: // Hazzat
                 content = {
                     arabicHazzat: serviceHymnFormatContentDbItem.Content_Arabic,
                     copticHazzat: serviceHymnFormatContentDbItem.Content_Coptic,
-                    englishHazzat: serviceHymnFormatContentDbItem.Content_English
+                    englishHazzat: serviceHymnFormatContentDbItem.Content_English,
+                    contentType: "HazzatContent"
                 } as IHazzatContent;
                 break;
             case 3: // Vertical Hazzat
                 content = {
                     arabicVerticalHazzat: serviceHymnFormatContentDbItem.Content_Arabic,
                     copticVerticalHazzat: serviceHymnFormatContentDbItem.Content_Coptic,
-                    englishVerticalHazzat: serviceHymnFormatContentDbItem.Content_English
+                    englishVerticalHazzat: serviceHymnFormatContentDbItem.Content_English,
+                    contentType: "VerticalHazzatContent"
                 } as IVerticalHazzatContent;
                 break;
             case 6: // Video
                 content = {
                     arabicVideo: serviceHymnFormatContentDbItem.Content_Arabic,
                     copticVideo: serviceHymnFormatContentDbItem.Content_Coptic,
-                    englishVideo: serviceHymnFormatContentDbItem.Content_English
+                    englishVideo: serviceHymnFormatContentDbItem.Content_English,
+                    contentType: "VideoContent"
                 } as IVideoContent;
                 break;
             case 7: // Information
                 content = {
                     arabicInformation: serviceHymnFormatContentDbItem.Content_Arabic,
-                    englishInformation: serviceHymnFormatContentDbItem.Content_English
+                    englishInformation: serviceHymnFormatContentDbItem.Content_English,
+                    contentType: "InformationContent"
                 } as IInformationContent;
                 break;
             default:

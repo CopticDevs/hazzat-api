@@ -1,28 +1,40 @@
-﻿export interface ITextContent {
+﻿interface ContentType {
+    TextContent: undefined;
+    HazzatContent: undefined;
+    VerticalHazzatContent: undefined;
+    VideoContent: undefined;
+    InformationContent: undefined;
+}
+
+interface ContentCommon {
+    contentType: keyof ContentType;
+}
+
+export interface ITextContent extends ContentCommon {
     arabicText: string;
     copticText: string;
     englishText: string;
 }
 
-export interface IHazzatContent {
+export interface IHazzatContent extends ContentCommon {
     arabicHazzat: string;
     copticHazzat: string;
     englishHazzat: string;
 }
 
-export interface IVerticalHazzatContent {
+export interface IVerticalHazzatContent extends ContentCommon {
     arabicVerticalHazzat: string;
     copticVerticalHazzat: string;
     englishVerticalHazzat: string;
 }
 
-export interface IVideoContent {
+export interface IVideoContent extends ContentCommon {
     arabicVideo: string;
     copticVideo: string;
     englishVideo: string;
 }
 
-export interface IInformationContent {
+export interface IInformationContent extends ContentCommon {
     arabicInformation: string;
     englishInformation: string;
 }

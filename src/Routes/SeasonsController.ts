@@ -424,6 +424,65 @@ export class SeasonsController extends BaseController {
          * @swagger
          *
          * definitions:
+         *   TextContent:
+         *     type: object
+         *     properties:
+         *       arabicText:
+         *         type: string
+         *       copticText:
+         *         type: string
+         *       englishText:
+         *         type: string
+         *
+         *   HazzatContent:
+         *     type: object
+         *     properties:
+         *       arabicHazzat:
+         *         type: string
+         *       copticHazzat:
+         *         type: string
+         *       englishHazzat:
+         *         type: string
+         *
+         *   VerticalHazzatContent:
+         *     type: object
+         *     properties:
+         *       arabicVerticalHazzat:
+         *         type: string
+         *       copticVerticalHazzat:
+         *         type: string
+         *       englishVerticalHazzat:
+         *         type: string
+         *
+         *   VideoContent:
+         *     type: object
+         *     properties:
+         *       arabicVideo:
+         *         type: string
+         *       copticVideo:
+         *         type: string
+         *       englishVideo:
+         *         type: string
+         *
+         *   InformationContent:
+         *     type: object
+         *     properties:
+         *       arabicInformation:
+         *         type: string
+         *       englishInformation:
+         *         type: string
+         *
+         *   HymnContent:
+         *     schema:
+         *       oneOf:
+         *         - $ref: '#/definitions/TextContent'
+         *         - $ref: '#/definitions/HazzatContent'
+         *         - $ref: '#/definitions/VerticalHazzatContent'
+         *         - $ref: '#/definitions/VideoContent'
+         *         - $ref: '#/definitions/InformationContent'
+         *       discriminator:
+         *         propertyName: contentType
+         *
          *   ServiceHymnFormatContent:
          *     type: object
          *     properties:
@@ -432,7 +491,7 @@ export class SeasonsController extends BaseController {
          *       name:
          *         type: string
          *       content:
-         *         type: object
+         *         $ref: '#/definitions/HymnContent'
          *       seasonId:
          *         type: integer
          *       seasonName:

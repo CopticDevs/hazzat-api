@@ -113,5 +113,4 @@ export class Validators {
         contentBody.should.have.property("englishInformation");
         contentBody.should.have.property("contentType").eq("InformationContent");
     }
-
 }

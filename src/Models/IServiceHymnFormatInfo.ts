@@ -1,10 +1,10 @@
 ﻿import { IServiceHymnInfo } from "./IServiceHymnInfo";
 
 /*
- * Service Info
+ * Service Hymn Format Info
  */
 export interface IServiceHymnFormatInfo extends IServiceHymnInfo {
     serviceHymnId: number;
     serviceHymnName: string;
-    formatCount: number;
+    contentCount: number;
 }

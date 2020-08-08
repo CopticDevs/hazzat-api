@@ -26,7 +26,7 @@
     <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
     <TypeScriptToolsVersion>3.9</TypeScriptToolsVersion>
     <EnableTypeScript>true</EnableTypeScript>
-    <StartWebBrowser>true</StartWebBrowser>
+    <StartWebBrowser>True</StartWebBrowser>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,6 +43,7 @@
     <TypeScriptCompile Include="Common\Utils\SqlHelpers.ts" />
     <TypeScriptCompile Include="DataProviders\SqlDataProvider\SqlConstants.ts" />
     <TypeScriptCompile Include="inversify.config.ts" />
+    <TypeScriptCompile Include="Models\IServiceHymnFormatContentInfo.ts" />
     <TypeScriptCompile Include="Models\IServiceHymnInfo.ts" />
     <TypeScriptCompile Include="Models\IServiceHymnFormatInfo.ts" />
     <TypeScriptCompile Include="Models\IServiceInfo.ts" />
@@ -61,6 +62,8 @@
     <None Include="hazzat-api - Web Deploy.pubxml" />
     <Content Include="Configs\prod.json" />
     <None Include="hazzat-api-ppe - Web Deploy.pubxml" />
+    <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.04.Uninstall.sql" />
+    <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.04.Install.sql" />
     <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.03.Uninstall.sql" />
     <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.03.Install.sql" />
     <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.02.Uninstall.sql" />

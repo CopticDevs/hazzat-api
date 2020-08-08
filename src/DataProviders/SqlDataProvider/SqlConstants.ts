@@ -8,7 +8,17 @@ export namespace Constants {
         export const ServiceHymnSelectBySeasonIdAndServiceIdAndServiceHymnId = "ServiceHymnSelectBySeasonIdAndServiceIdAndServiceHymnId";
         export const HymnFormatListSelectBySeasonIdAndServiceIdAndServiceHymnId = "HymnFormatListSelectBySeasonIdAndServiceIdAndServiceHymnId";
         export const HymnFormatSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId = "HymnFormatSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId";
+        export const HymnContentListSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId = "HymnContentListSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId";
+        export const HymnContentSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId = "HymnContentSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId";
 
         export const ServiceHymnListSelectBySeasonServiceId = "ServiceHymnListSelectBySeasonServiceId";
+    }
+
+    export namespace Parameters {
+        export const SeasonId = "Season_ID";
+        export const ServiceId = "Service_ID";
+        export const ServiceHymnId = "ServiceHymn_ID";
+        export const FormatId = "Format_ID";
+        export const ContentId = "Content_ID";
     }
 }

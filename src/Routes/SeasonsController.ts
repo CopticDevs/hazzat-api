@@ -2,6 +2,13 @@ import * as express from "express";
 import { IDataProvider } from "../DataProviders/IDataProvider";
 import { BaseController } from "./BaseController";
 
+const RouteParts = {
+    services: "services",
+    serviceHymns: "serviceHymns",
+    formats: "formats",
+    contents: "contents"
+};
+
 export class SeasonsController extends BaseController {
     constructor(dataProvider: IDataProvider) {
         super();
@@ -128,7 +135,7 @@ export class SeasonsController extends BaseController {
          *           items:
          *             $ref: '#/definitions/Service'
          */
-        this.router.get("/:seasonId(\\d+)/services", async (req: express.Request, res: express.Response) => {
+        this.router.get(`/:seasonId(\\d+)/${RouteParts.services}`, async (req: express.Request, res: express.Response) => {
             try {
                 const result = await dataProvider.getSeasonServiceList(req.params.seasonId);
                 res.send(result);
@@ -174,7 +181,7 @@ export class SeasonsController extends BaseController {
          *             message:
          *               type: string
          */
-        this.router.get("/:seasonId(\\d+)/services/:serviceId(\\d+)", async (req: express.Request, res: express.Response) => {
+        this.router.get(`/:seasonId(\\d+)/${RouteParts.services}/:serviceId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
                 const result = await dataProvider.getSeasonService(req.params.seasonId, req.params.serviceId);
                 res.send(result);
@@ -230,7 +237,7 @@ export class SeasonsController extends BaseController {
          *           items:
          *             $ref: '#/definitions/ServiceHymn'
          */
-        this.router.get("/:seasonId(\\d+)/services/:serviceId(\\d+)/serviceHymns", async (req: express.Request, res: express.Response) => {
+        this.router.get(`/:seasonId(\\d+)/${RouteParts.services}/:serviceId(\\d+)/${RouteParts.serviceHymns}`, async (req: express.Request, res: express.Response) => {
             try {
                 const result = await dataProvider.getServiceHymnList(req.params.seasonId, req.params.serviceId);
                 res.send(result);
@@ -281,7 +288,7 @@ export class SeasonsController extends BaseController {
          *             message:
          *               type: string
          */
-        this.router.get("/:seasonId(\\d+)/services/:serviceId(\\d+)/serviceHymns/:serviceHymnId(\\d+)", async (req: express.Request, res: express.Response) => {
+        this.router.get(`/:seasonId(\\d+)/${RouteParts.services}/:serviceId(\\d+)/${RouteParts.serviceHymns}/:serviceHymnId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
                 const result = await dataProvider.getServiceHymn(req.params.seasonId, req.params.serviceId, req.params.serviceHymnId);
                 res.send(result);
@@ -315,9 +322,9 @@ export class SeasonsController extends BaseController {
          *         type: integer
          *       serviceHymnName:
          *         type: string
-         *       formatCount:
+         *       contentCount:
          *         type: integer
-         *     required: [id, name, seasonId, seasonName, serviceId, serviceName, order, formatId, formatName, formatCount]
+         *     required: [id, name, seasonId, seasonName, serviceId, serviceName, order, serviceHymnId, serviceHymnName, contentCount]
          *
          * /seasons/[seasonId]/services/[serviceId]/serviceHymn/[serviceHymnId]/formats:
          *   get:
@@ -348,7 +355,7 @@ export class SeasonsController extends BaseController {
          *           items:
          *             $ref: '#/definitions/ServiceHymnFormat'
          */
-        this.router.get("/:seasonId(\\d+)/services/:serviceId(\\d+)/serviceHymns/:serviceHymnId(\\d+)/formats", async (req: express.Request, res: express.Response) => {
+        this.router.get(`/:seasonId(\\d+)/${RouteParts.services}/:serviceId(\\d+)/${RouteParts.serviceHymns}/:serviceHymnId(\\d+)/${RouteParts.formats}`, async (req: express.Request, res: express.Response) => {
             try {
                 const result = await dataProvider.getServiceHymnFormatList(req.params.seasonId, req.params.serviceId, req.params.serviceHymnId);
                 res.send(result);
@@ -404,9 +411,227 @@ export class SeasonsController extends BaseController {
          *             message:
          *               type: string
          */
-        this.router.get("/:seasonId(\\d+)/services/:serviceId(\\d+)/serviceHymns/:serviceHymnId(\\d+)/formats/:formatId(\\d+)", async (req: express.Request, res: express.Response) => {
+        this.router.get(`/:seasonId(\\d+)/${RouteParts.services}/:serviceId(\\d+)/${RouteParts.serviceHymns}/:serviceHymnId(\\d+)/${RouteParts.formats}/:formatId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
                 const result = await dataProvider.getServiceHymnFormat(req.params.seasonId, req.params.serviceId, req.params.serviceHymnId, req.params.formatId);
+                res.send(result);
+            } catch (ex) {
+                BaseController._OnError(ex, res);
+            }
+        });
+
+        /**
+         * @swagger
+         *
+         * definitions:
+         *   TextContent:
+         *     type: object
+         *     properties:
+         *       arabicText:
+         *         type: string
+         *       copticText:
+         *         type: string
+         *       englishText:
+         *         type: string
+         *
+         *   HazzatContent:
+         *     type: object
+         *     properties:
+         *       arabicHazzat:
+         *         type: string
+         *       copticHazzat:
+         *         type: string
+         *       englishHazzat:
+         *         type: string
+         *
+         *   VerticalHazzatContent:
+         *     type: object
+         *     properties:
+         *       arabicVerticalHazzat:
+         *         type: string
+         *       copticVerticalHazzat:
+         *         type: string
+         *       englishVerticalHazzat:
+         *         type: string
+         *
+         *   VideoContent:
+         *     type: object
+         *     properties:
+         *       arabicVideo:
+         *         type: string
+         *       copticVideo:
+         *         type: string
+         *       englishVideo:
+         *         type: string
+         *
+         *   InformationContent:
+         *     type: object
+         *     properties:
+         *       arabicInformation:
+         *         type: string
+         *       englishInformation:
+         *         type: string
+         *
+         *   HymnContent:
+         *     schema:
+         *       oneOf:
+         *         - $ref: '#/definitions/TextContent'
+         *         - $ref: '#/definitions/HazzatContent'
+         *         - $ref: '#/definitions/VerticalHazzatContent'
+         *         - $ref: '#/definitions/VideoContent'
+         *         - $ref: '#/definitions/InformationContent'
+         *       discriminator:
+         *         propertyName: contentType
+         *
+         *   ServiceHymnFormatContent:
+         *     type: object
+         *     properties:
+         *       id:
+         *         type: integer
+         *       name:
+         *         type: string
+         *       content:
+         *         $ref: '#/definitions/HymnContent'
+         *       seasonId:
+         *         type: integer
+         *       seasonName:
+         *         type: string
+         *       serviceId:
+         *         type: integer
+         *       serviceName:
+         *         type: string
+         *       serviceHymnId:
+         *         type: integer
+         *       serviceHymnName:
+         *         type: string
+         *       formatId:
+         *         type: integer
+         *       formatName:
+         *         type: string
+         *     required: [id, name, content, seasonId, seasonName, serviceId, serviceName, serviceHymnId, serviceHymnName, formatId, formatName]
+         *
+         * /seasons/[seasonId]/services/[serviceId]/serviceHymn/[serviceHymnId]/formats/[formatId]/contents:
+         *   get:
+         *     description: Gets a list of contents for the given hymn
+         *     produces:
+         *       - application/json
+         *     parameters:
+         *       - name: seasonId
+         *         description: Season ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: serviceId
+         *         description: Service ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: serviceHymnId
+         *         description: Service hymn ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: formatId
+         *         description: Format ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *     responses:
+         *       200:
+         *         description: Hymn format contents
+         *         schema:
+         *           type: array
+         *           items:
+         *             $ref: '#/definitions/ServiceHymnFormatContent'
+         *
+         *       501:
+         *         description: Format content is not supported at this time
+         *         schema:
+         *           type: object
+         *           properties:
+         *             errorCode:
+         *               type: string
+         *             message:
+         *               type: string
+         *             details:
+         *               type: string
+         */
+        this.router.get(`/:seasonId(\\d+)/${RouteParts.services}/:serviceId(\\d+)/${RouteParts.serviceHymns}/:serviceHymnId(\\d+)/${RouteParts.formats}/:formatId(\\d+)/${RouteParts.contents}`, async (req: express.Request, res: express.Response) => {
+            try {
+                const result = await dataProvider.getServiceHymnsFormatContentList(req.params.seasonId, req.params.serviceId, req.params.serviceHymnId, req.params.formatId);
+                res.send(result);
+            } catch (ex) {
+                BaseController._OnError(ex, res);
+            }
+        });
+
+        /**
+         * @swagger
+         *
+         * /seasons/[seasonId]/services/[serviceId]/serviceHymn/[serviceHymnId]/formats/[formatId]/contents/[contentId]:
+         *   get:
+         *     description: Returns the details of the format content
+         *     produces:
+         *       - application/json
+         *     parameters:
+         *       - name: seasonId
+         *         description: Season ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: serviceId
+         *         description: Service ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: serviceHymnId
+         *         description: Service hymn ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: formatId
+         *         description: Format ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: contentId
+         *         description: Content ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *     responses:
+         *       200:
+         *         description: ServiceHymnFormatContent
+         *         schema:
+         *           type: object
+         *           items:
+         *             $ref: '#/definitions/ServiceHymnFormatContent'
+         *
+         *       404:
+         *         description: A content detail was not found.
+         *         schema:
+         *           type: object
+         *           properties:
+         *             errorCode:
+         *               type: string
+         *             message:
+         *               type: string
+         *
+         *       501:
+         *         description: Format content is not supported at this time
+         *         schema:
+         *           type: object
+         *           properties:
+         *             errorCode:
+         *               type: string
+         *             message:
+         *               type: string
+         *             details:
+         *               type: string
+         */
+        this.router.get(`/:seasonId(\\d+)/${RouteParts.services}/:serviceId(\\d+)/${RouteParts.serviceHymns}/:serviceHymnId(\\d+)/${RouteParts.formats}/:formatId(\\d+)/${RouteParts.contents}/:contentId(\\d+)`, async (req: express.Request, res: express.Response) => {
+            try {
+                const result = await dataProvider.getServiceHymnsFormatContent(req.params.seasonId, req.params.serviceId, req.params.serviceHymnId, req.params.formatId, req.params.contentId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

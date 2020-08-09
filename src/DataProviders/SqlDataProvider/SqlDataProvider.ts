@@ -5,7 +5,7 @@ import { ErrorCodes, HazzatApplicationError } from "../../Common/Errors";
 import { Log } from "../../Common/Utils/Logger";
 import { SqlHelpers } from "../../Common/Utils/SqlHelpers";
 import { ISeasonInfo } from "../../Models/ISeasonInfo";
-import { IHazzatContent, IHymnContent, IInformationContent, IVariationInfo, ITextContent, IVerticalHazzatContent, IVideoContent } from "../../Models/IVariationInfo";
+import { IHazzatContent, IHymnContent, IInformationContent, IVariationInfo, ITextContent, IVerticalHazzatContent, IVideoContent, ContentType } from "../../Models/IVariationInfo";
 import { IFormatInfo } from "../../Models/IFormatInfo";
 import { IHymnInfo } from "../../Models/IHymnInfo";
 import { IServiceInfo } from "../../Models/IServiceInfo";
@@ -73,7 +73,7 @@ export class SqlDataProvider implements IDataProvider {
                     arabicText: serviceHymnFormatContentDbItem.Content_Arabic,
                     copticText: serviceHymnFormatContentDbItem.Content_Coptic,
                     englishText: serviceHymnFormatContentDbItem.Content_English,
-                    contentType: "TextContent"
+                    contentType: ContentType.TextContent
                 } as ITextContent;
                 break;
             case 2: // Hazzat
@@ -81,7 +81,7 @@ export class SqlDataProvider implements IDataProvider {
                     arabicHazzat: serviceHymnFormatContentDbItem.Content_Arabic,
                     copticHazzat: serviceHymnFormatContentDbItem.Content_Coptic,
                     englishHazzat: serviceHymnFormatContentDbItem.Content_English,
-                    contentType: "HazzatContent"
+                    contentType: ContentType.HazzatContent
                 } as IHazzatContent;
                 break;
             case 3: // Vertical Hazzat
@@ -89,7 +89,7 @@ export class SqlDataProvider implements IDataProvider {
                     arabicVerticalHazzat: serviceHymnFormatContentDbItem.Content_Arabic,
                     copticVerticalHazzat: serviceHymnFormatContentDbItem.Content_Coptic,
                     englishVerticalHazzat: serviceHymnFormatContentDbItem.Content_English,
-                    contentType: "VerticalHazzatContent"
+                    contentType: ContentType.VerticalHazzatContent
                 } as IVerticalHazzatContent;
                 break;
             case 6: // Video
@@ -97,14 +97,14 @@ export class SqlDataProvider implements IDataProvider {
                     arabicVideo: serviceHymnFormatContentDbItem.Content_Arabic,
                     copticVideo: serviceHymnFormatContentDbItem.Content_Coptic,
                     englishVideo: serviceHymnFormatContentDbItem.Content_English,
-                    contentType: "VideoContent"
+                    contentType: ContentType.VideoContent
                 } as IVideoContent;
                 break;
             case 7: // Information
                 content = {
                     arabicInformation: serviceHymnFormatContentDbItem.Content_Arabic,
                     englishInformation: serviceHymnFormatContentDbItem.Content_English,
-                    contentType: "InformationContent"
+                    contentType: ContentType.InformationContent
                 } as IInformationContent;
                 break;
             default:

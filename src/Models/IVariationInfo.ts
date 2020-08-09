@@ -1,13 +1,13 @@
-﻿interface ContentType {
-    TextContent: undefined;
-    HazzatContent: undefined;
-    VerticalHazzatContent: undefined;
-    VideoContent: undefined;
-    InformationContent: undefined;
+﻿export const enum ContentType {
+    TextContent = "TextContent",
+    HazzatContent = "HazzatContent",
+    VerticalHazzatContent = "VerticalHazzatContent",
+    VideoContent = "VideoContent",
+    InformationContent = "VideoContent"
 }
 
 interface ContentCommon {
-    contentType: keyof ContentType;
+    contentType: ContentType;
 }
 
 export interface ITextContent extends ContentCommon {

@@ -47,18 +47,10 @@ export declare type IHymnContent =
     IInformationContent;
 
 /*
- * Service Hymn Format Content Info
+ * Variation Info
  */
-export interface IServiceHymnFormatContentInfo<T extends IHymnContent> {
-    id: number;
+export interface IVariationInfo<T extends IHymnContent> {
+    id: string;
     name: string;
     content: T;  // TODO: Not sure how I feel about having this being polymorphic.  Bad design?
-    seasonId: number;
-    seasonName: string;
-    serviceId: number;
-    serviceName: string;
-    serviceHymnId: number;
-    serviceHymnName: string;
-    formatId: number;
-    formatName: string;
 }

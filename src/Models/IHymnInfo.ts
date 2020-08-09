@@ -1,7 +1,7 @@
 ﻿/*
- * Service Info
+ * Hymn Info
  */
-export interface IServiceInfo {
+export interface IHymnInfo {
     id: string;
     name: string;
     order: number;

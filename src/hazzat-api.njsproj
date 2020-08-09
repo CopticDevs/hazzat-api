@@ -43,10 +43,11 @@
     <TypeScriptCompile Include="Common\Utils\SqlHelpers.ts" />
     <TypeScriptCompile Include="DataProviders\SqlDataProvider\SqlConstants.ts" />
     <TypeScriptCompile Include="inversify.config.ts" />
-    <TypeScriptCompile Include="Models\IServiceHymnFormatContentInfo.ts" />
-    <TypeScriptCompile Include="Models\IServiceHymnInfo.ts" />
-    <TypeScriptCompile Include="Models\IServiceHymnFormatInfo.ts" />
+    <TypeScriptCompile Include="Models\IVariationInfo.ts" />
+    <TypeScriptCompile Include="Models\IHymnInfo.ts" />
+    <TypeScriptCompile Include="Models\IFormatInfo.ts" />
     <TypeScriptCompile Include="Models\IServiceInfo.ts" />
+    <TypeScriptCompile Include="Routes\ResourceTypes.ts" />
     <TypeScriptCompile Include="Routes\BaseController.ts" />
     <TypeScriptCompile Include="test\Helpers\Validators.ts" />
     <TypeScriptCompile Include="test\seasons.spec.ts" />

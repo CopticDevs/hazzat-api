@@ -1,6 +1,7 @@
 import * as chai from "chai";
 import { ErrorCodes } from "../../Common/Errors";
 import chaiHttp = require("chai-http");
+import { ResourceTypes } from "../../Routes/ResourceTypes";
 const should = chai.should();
 
 export class Validators {
@@ -27,57 +28,52 @@ export class Validators {
         res.body.should.not.be.a("array");
     }
 
-    public static validateSeasonResponse(resBody: any): void {
-        resBody.should.have.property("id");
+    public static validateSeasonResponse(resBody: any, resourceId: string = null): void {
+        resBody.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+$`));
+        if (!!resourceId) {
+            resBody.should.have.property("id").eq(resourceId);
+        }
         resBody.should.have.property("name");
         resBody.should.have.property("order");
         resBody.should.have.property("verse");
         resBody.should.have.property("isDateSpecific");
     }
 
-    public static validateServiceResponse(resBody: any): void {
-        resBody.should.have.property("id");
+    public static validateServiceResponse(resBody: any, resourceId: string = null): void {
+        resBody.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+$`));
+        if (!!resourceId) {
+            resBody.should.have.property("id").eq(resourceId);
+        }
         resBody.should.have.property("name");
-        resBody.should.have.property("seasonId");
-        resBody.should.have.property("seasonName");
         resBody.should.have.property("order");
     }
 
-    public static validateServiceHymnResponse(resBody: any): void {
-        resBody.should.have.property("id");
+    public static validateServiceHymnResponse(resBody: any, resourceId: string = null): void {
+        resBody.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+$`));
+        if (!!resourceId) {
+            resBody.should.have.property("id").eq(resourceId);
+        }
         resBody.should.have.property("name");
-        resBody.should.have.property("seasonId");
-        resBody.should.have.property("seasonName");
-        resBody.should.have.property("serviceId");
-        resBody.should.have.property("serviceName");
         resBody.should.have.property("order");
     }
 
-    public static validateServiceHymnFormatResponse(resBody: any): void {
-        resBody.should.have.property("id");
+    public static validateServiceHymnFormatResponse(resBody: any, resourceId: string = null): void {
+        resBody.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+\/${ResourceTypes.Formats}\/[0-9]+$`));
+        if (!!resourceId) {
+            resBody.should.have.property("id").eq(resourceId);
+        }
         resBody.should.have.property("name");
-        resBody.should.have.property("seasonId");
-        resBody.should.have.property("seasonName");
-        resBody.should.have.property("serviceId");
-        resBody.should.have.property("serviceName");
-        resBody.should.have.property("serviceHymnId");
-        resBody.should.have.property("serviceHymnName");
-        resBody.should.have.property("contentCount");
+        resBody.should.have.property("variationCount");
         resBody.should.have.property("order");
     }
 
-    public static validateServiceHymnFormatContentResponse(resBody: any): void {
-        resBody.should.have.property("id");
+    public static validateServiceHymnFormatVariationResponse(resBody: any, resourceId: string = null): void {
+        resBody.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+\/${ResourceTypes.Formats}\/[0-9]+\/${ResourceTypes.Variations}\/[0-9]+$`));
+        if (!!resourceId) {
+            resBody.should.have.property("id").eq(resourceId);
+        }
         resBody.should.have.property("name");
         resBody.should.have.property("content");
-        resBody.should.have.property("seasonId");
-        resBody.should.have.property("seasonName");
-        resBody.should.have.property("serviceId");
-        resBody.should.have.property("serviceName");
-        resBody.should.have.property("serviceHymnId");
-        resBody.should.have.property("serviceHymnName");
-        resBody.should.have.property("formatId");
-        resBody.should.have.property("formatName");
     }
 
     public static validateTextContentResponse(contentBody: any): void {

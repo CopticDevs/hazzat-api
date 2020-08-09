@@ -1,7 +1,7 @@
 ﻿import { ISeasonInfo } from "../Models/ISeasonInfo";
-import { IHymnContent, IServiceHymnFormatContentInfo } from "../Models/IServiceHymnFormatContentInfo";
-import { IServiceHymnFormatInfo } from "../Models/IServiceHymnFormatInfo";
-import { IServiceHymnInfo } from "../Models/IServiceHymnInfo";
+import { IHymnContent, IVariationInfo } from "../Models/IVariationInfo";
+import { IFormatInfo } from "../Models/IFormatInfo";
+import { IHymnInfo } from "../Models/IHymnInfo";
 import { IServiceInfo } from "../Models/IServiceInfo";
 
 /**
@@ -14,12 +14,12 @@ export interface IDataProvider {
     getSeasonServiceList(seasonId: string): Promise<IServiceInfo[]>;
     getSeasonService(seasonId: string, serviceId: string): Promise<IServiceInfo>;
 
-    getServiceHymnList(seasonId: string, serviceId: string): Promise<IServiceHymnInfo[]>;
-    getServiceHymn(seasonId: string, serviceId: string, serviceHymnId: string): Promise<IServiceHymnInfo>;
+    getServiceHymnList(seasonId: string, serviceId: string): Promise<IHymnInfo[]>;
+    getServiceHymn(seasonId: string, serviceId: string, hymnId: string): Promise<IHymnInfo>;
 
-    getServiceHymnFormatList(seasonId: string, serviceId: string, serviceHymnId: string): Promise<IServiceHymnFormatInfo[]>;
-    getServiceHymnFormat(seasonId: string, serviceId: string, serviceHymnId: string, formatId: string): Promise<IServiceHymnFormatInfo>;
+    getServiceHymnFormatList(seasonId: string, serviceId: string, hymnId: string): Promise<IFormatInfo[]>;
+    getServiceHymnFormat(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IFormatInfo>;
 
-    getServiceHymnsFormatContentList<T extends IHymnContent>(seasonId: string, serviceId: string, serviceHymnId: string, formatId: string): Promise<IServiceHymnFormatContentInfo<T>[]>;
-    getServiceHymnsFormatContent<T extends IHymnContent>(seasonId: string, serviceId: string, serviceHymnId: string, formatId: string, contentId: string): Promise<IServiceHymnFormatContentInfo<T>>;
+    getServiceHymnsFormatVariationList<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IVariationInfo<T>[]>;
+    getServiceHymnsFormatVariation<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string, contentId: string): Promise<IVariationInfo<T>>;
 }

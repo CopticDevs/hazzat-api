@@ -5,10 +5,11 @@ import * as swaggerJSDoc from "swagger-jsdoc";
 import * as swaggerUI from "swagger-ui-express";
 import { IConfiguration } from "./Common/Configuration";
 import { HttpError } from "./Common/HttpError";
+import { logger } from "./Common/Utils/Logger";
 import { IDataProvider } from "./DataProviders/IDataProvider";
 import { myContainer } from "./inversify.config";
-import { logger } from "./Common/Utils/Logger";
 import { HomeController } from "./Routes/HomeController";
+import { ResourceTypes } from "./Routes/ResourceTypes";
 import { SeasonsController } from "./Routes/SeasonsController";
 import { TYPES } from "./types";
 
@@ -47,7 +48,7 @@ app.use((err, req, res, next) => {
 
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.use("/", homeController.router);
-app.use("/seasons", seasonsController.router);
+app.use(`/${ResourceTypes.Seasons}`, seasonsController.router);
 
 // Allow Let's Encrypt to access challenge static content
 app.use("/.well-known/acme-challenge", express.static(__dirname + "/.well-known/acme-challenge"));

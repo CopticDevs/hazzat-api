@@ -1,13 +1,7 @@
 import * as express from "express";
 import { IDataProvider } from "../DataProviders/IDataProvider";
 import { BaseController } from "./BaseController";
-
-const RouteParts = {
-    services: "services",
-    serviceHymns: "serviceHymns",
-    formats: "formats",
-    contents: "contents"
-};
+import { ResourceTypes } from "./ResourceTypes";
 
 export class SeasonsController extends BaseController {
     constructor(dataProvider: IDataProvider) {
@@ -21,7 +15,7 @@ export class SeasonsController extends BaseController {
          *     type: object
          *     properties:
          *       id:
-         *         type: integer
+         *         type: string
          *       isDateSpecific:
          *         type: boolean
          *       name:
@@ -105,16 +99,12 @@ export class SeasonsController extends BaseController {
          *     type: object
          *     properties:
          *       id:
-         *         type: integer
-         *       name:
          *         type: string
-         *       seasonId:
-         *         type: integer
-         *       seasonName:
+         *       name:
          *         type: string
          *       order:
          *         type: integer
-         *     required: [id, name, seasonId, seasonName, order]
+         *     required: [id, name, order]
          *
          * /seasons/[seasonId]/services:
          *   get:
@@ -135,7 +125,7 @@ export class SeasonsController extends BaseController {
          *           items:
          *             $ref: '#/definitions/Service'
          */
-        this.router.get(`/:seasonId(\\d+)/${RouteParts.services}`, async (req: express.Request, res: express.Response) => {
+        this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}`, async (req: express.Request, res: express.Response) => {
             try {
                 const result = await dataProvider.getSeasonServiceList(req.params.seasonId);
                 res.send(result);
@@ -181,7 +171,7 @@ export class SeasonsController extends BaseController {
          *             message:
          *               type: string
          */
-        this.router.get(`/:seasonId(\\d+)/${RouteParts.services}/:serviceId(\\d+)`, async (req: express.Request, res: express.Response) => {
+        this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}/:serviceId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
                 const result = await dataProvider.getSeasonService(req.params.seasonId, req.params.serviceId);
                 res.send(result);
@@ -194,28 +184,20 @@ export class SeasonsController extends BaseController {
          * @swagger
          *
          * definitions:
-         *   ServiceHymn:
+         *   Hymn:
          *     type: object
          *     properties:
          *       id:
-         *         type: integer
+         *         type: string
          *       name:
-         *         type: string
-         *       seasonId:
-         *         type: integer
-         *       seasonName:
-         *         type: string
-         *       serviceId:
-         *         type: integer
-         *       serviceName:
          *         type: string
          *       order:
          *         type: integer
-         *     required: [id, name, seasonId, seasonName, serviceId, serviceName, order]
+         *     required: [id, name, order]
          *
-         * /seasons/[seasonId]/services/[serviceId]/serviceHymns:
+         * /seasons/[seasonId]/services/[serviceId]/hymns:
          *   get:
-         *     description: Gets a list of hymns in the services within a given season id
+         *     description: Gets a list of hymns in the service
          *     produces:
          *       - application/json
          *     parameters:
@@ -231,13 +213,13 @@ export class SeasonsController extends BaseController {
          *         type: integer
          *     responses:
          *       200:
-         *         description: Service Hymns
+         *         description: Hymns
          *         schema:
          *           type: array
          *           items:
-         *             $ref: '#/definitions/ServiceHymn'
+         *             $ref: '#/definitions/Hymn'
          */
-        this.router.get(`/:seasonId(\\d+)/${RouteParts.services}/:serviceId(\\d+)/${RouteParts.serviceHymns}`, async (req: express.Request, res: express.Response) => {
+        this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}/:serviceId(\\d+)/${ResourceTypes.Hymns}`, async (req: express.Request, res: express.Response) => {
             try {
                 const result = await dataProvider.getServiceHymnList(req.params.seasonId, req.params.serviceId);
                 res.send(result);
@@ -249,9 +231,9 @@ export class SeasonsController extends BaseController {
         /**
          * @swagger
          *
-         * /seasons/[seasonId]/services/[serviceId]/serviceHymn/[serviceHymnId]:
+         * /seasons/[seasonId]/services/[serviceId]/hymns/[hymnId]:
          *   get:
-         *     description: Returns the details of the given service hymn
+         *     description: Returns the details of the given hymn
          *     produces:
          *       - application/json
          *     parameters:
@@ -272,11 +254,11 @@ export class SeasonsController extends BaseController {
          *         type: integer
          *     responses:
          *       200:
-         *         description: ServiceHymn
+         *         description: Hymn
          *         schema:
          *           type: object
          *           items:
-         *             $ref: '#/definitions/ServiceHymn'
+         *             $ref: '#/definitions/Hymn'
          *
          *       404:
          *         description: A hymn detail was not found.
@@ -288,9 +270,9 @@ export class SeasonsController extends BaseController {
          *             message:
          *               type: string
          */
-        this.router.get(`/:seasonId(\\d+)/${RouteParts.services}/:serviceId(\\d+)/${RouteParts.serviceHymns}/:serviceHymnId(\\d+)`, async (req: express.Request, res: express.Response) => {
+        this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}/:serviceId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await dataProvider.getServiceHymn(req.params.seasonId, req.params.serviceId, req.params.serviceHymnId);
+                const result = await dataProvider.getServiceHymn(req.params.seasonId, req.params.serviceId, req.params.hymnId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -301,32 +283,20 @@ export class SeasonsController extends BaseController {
          * @swagger
          *
          * definitions:
-         *   ServiceHymnFormat:
+         *   Format:
          *     type: object
          *     properties:
          *       id:
-         *         type: integer
+         *         type: string
          *       name:
-         *         type: string
-         *       seasonId:
-         *         type: integer
-         *       seasonName:
-         *         type: string
-         *       serviceId:
-         *         type: integer
-         *       serviceName:
          *         type: string
          *       order:
          *         type: integer
-         *       serviceHymnId:
+         *       variationCount:
          *         type: integer
-         *       serviceHymnName:
-         *         type: string
-         *       contentCount:
-         *         type: integer
-         *     required: [id, name, seasonId, seasonName, serviceId, serviceName, order, serviceHymnId, serviceHymnName, contentCount]
+         *     required: [id, name, order, variationCount]
          *
-         * /seasons/[seasonId]/services/[serviceId]/serviceHymn/[serviceHymnId]/formats:
+         * /seasons/[seasonId]/services/[serviceId]/hymns/[hymnId]/formats:
          *   get:
          *     description: Gets a list of formats for the given hymn
          *     produces:
@@ -353,11 +323,11 @@ export class SeasonsController extends BaseController {
          *         schema:
          *           type: array
          *           items:
-         *             $ref: '#/definitions/ServiceHymnFormat'
+         *             $ref: '#/definitions/Format'
          */
-        this.router.get(`/:seasonId(\\d+)/${RouteParts.services}/:serviceId(\\d+)/${RouteParts.serviceHymns}/:serviceHymnId(\\d+)/${RouteParts.formats}`, async (req: express.Request, res: express.Response) => {
+        this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}/:serviceId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)/${ResourceTypes.Formats}`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await dataProvider.getServiceHymnFormatList(req.params.seasonId, req.params.serviceId, req.params.serviceHymnId);
+                const result = await dataProvider.getServiceHymnFormatList(req.params.seasonId, req.params.serviceId, req.params.hymnId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -367,9 +337,9 @@ export class SeasonsController extends BaseController {
         /**
          * @swagger
          *
-         * /seasons/[seasonId]/services/[serviceId]/serviceHymn/[serviceHymnId]/formats/[formatId]:
+         * /seasons/[seasonId]/services/[serviceId]/hymns/[hymnId]/formats/[formatId]:
          *   get:
-         *     description: Returns the details of the format for the given service hymn
+         *     description: Returns the details of the format for the given hymn
          *     produces:
          *       - application/json
          *     parameters:
@@ -395,11 +365,11 @@ export class SeasonsController extends BaseController {
          *         type: integer
          *     responses:
          *       200:
-         *         description: ServiceHymnFormat
+         *         description: Format
          *         schema:
          *           type: object
          *           items:
-         *             $ref: '#/definitions/ServiceHymnFormat'
+         *             $ref: '#/definitions/Format'
          *
          *       404:
          *         description: A format detail was not found.
@@ -411,9 +381,9 @@ export class SeasonsController extends BaseController {
          *             message:
          *               type: string
          */
-        this.router.get(`/:seasonId(\\d+)/${RouteParts.services}/:serviceId(\\d+)/${RouteParts.serviceHymns}/:serviceHymnId(\\d+)/${RouteParts.formats}/:formatId(\\d+)`, async (req: express.Request, res: express.Response) => {
+        this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}/:serviceId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)/${ResourceTypes.Formats}/:formatId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await dataProvider.getServiceHymnFormat(req.params.seasonId, req.params.serviceId, req.params.serviceHymnId, req.params.formatId);
+                const result = await dataProvider.getServiceHymnFormat(req.params.seasonId, req.params.serviceId, req.params.hymnId, req.params.formatId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -483,36 +453,20 @@ export class SeasonsController extends BaseController {
          *       discriminator:
          *         propertyName: contentType
          *
-         *   ServiceHymnFormatContent:
+         *   Variation:
          *     type: object
          *     properties:
          *       id:
-         *         type: integer
+         *         type: string
          *       name:
          *         type: string
          *       content:
          *         $ref: '#/definitions/HymnContent'
-         *       seasonId:
-         *         type: integer
-         *       seasonName:
-         *         type: string
-         *       serviceId:
-         *         type: integer
-         *       serviceName:
-         *         type: string
-         *       serviceHymnId:
-         *         type: integer
-         *       serviceHymnName:
-         *         type: string
-         *       formatId:
-         *         type: integer
-         *       formatName:
-         *         type: string
-         *     required: [id, name, content, seasonId, seasonName, serviceId, serviceName, serviceHymnId, serviceHymnName, formatId, formatName]
+         *     required: [id, name, content]
          *
-         * /seasons/[seasonId]/services/[serviceId]/serviceHymn/[serviceHymnId]/formats/[formatId]/contents:
+         * /seasons/[seasonId]/services/[serviceId]/hymns/[hymnId]/formats/[formatId]/variations:
          *   get:
-         *     description: Gets a list of contents for the given hymn
+         *     description: Gets a list of variations for the given hymn
          *     produces:
          *       - application/json
          *     parameters:
@@ -538,14 +492,14 @@ export class SeasonsController extends BaseController {
          *         type: integer
          *     responses:
          *       200:
-         *         description: Hymn format contents
+         *         description: Hymn format variations
          *         schema:
          *           type: array
          *           items:
-         *             $ref: '#/definitions/ServiceHymnFormatContent'
+         *             $ref: '#/definitions/Variation'
          *
          *       501:
-         *         description: Format content is not supported at this time
+         *         description: Format variation is not supported at this time
          *         schema:
          *           type: object
          *           properties:
@@ -556,9 +510,9 @@ export class SeasonsController extends BaseController {
          *             details:
          *               type: string
          */
-        this.router.get(`/:seasonId(\\d+)/${RouteParts.services}/:serviceId(\\d+)/${RouteParts.serviceHymns}/:serviceHymnId(\\d+)/${RouteParts.formats}/:formatId(\\d+)/${RouteParts.contents}`, async (req: express.Request, res: express.Response) => {
+        this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}/:serviceId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)/${ResourceTypes.Formats}/:formatId(\\d+)/${ResourceTypes.Variations}`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await dataProvider.getServiceHymnsFormatContentList(req.params.seasonId, req.params.serviceId, req.params.serviceHymnId, req.params.formatId);
+                const result = await dataProvider.getServiceHymnsFormatVariationList(req.params.seasonId, req.params.serviceId, req.params.hymnId, req.params.formatId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -568,9 +522,9 @@ export class SeasonsController extends BaseController {
         /**
          * @swagger
          *
-         * /seasons/[seasonId]/services/[serviceId]/serviceHymn/[serviceHymnId]/formats/[formatId]/contents/[contentId]:
+         * /seasons/[seasonId]/services/[serviceId]/hymns/[hymnId]/formats/[formatId]/variations/[variationId]:
          *   get:
-         *     description: Returns the details of the format content
+         *     description: Returns the details of the variation
          *     produces:
          *       - application/json
          *     parameters:
@@ -594,21 +548,21 @@ export class SeasonsController extends BaseController {
          *         in:  url
          *         required: true
          *         type: integer
-         *       - name: contentId
-         *         description: Content ID
+         *       - name: variationId
+         *         description: Variation ID
          *         in:  url
          *         required: true
          *         type: integer
          *     responses:
          *       200:
-         *         description: ServiceHymnFormatContent
+         *         description: Variation
          *         schema:
          *           type: object
          *           items:
-         *             $ref: '#/definitions/ServiceHymnFormatContent'
+         *             $ref: '#/definitions/Variation'
          *
          *       404:
-         *         description: A content detail was not found.
+         *         description: A variation detail was not found.
          *         schema:
          *           type: object
          *           properties:
@@ -629,9 +583,9 @@ export class SeasonsController extends BaseController {
          *             details:
          *               type: string
          */
-        this.router.get(`/:seasonId(\\d+)/${RouteParts.services}/:serviceId(\\d+)/${RouteParts.serviceHymns}/:serviceHymnId(\\d+)/${RouteParts.formats}/:formatId(\\d+)/${RouteParts.contents}/:contentId(\\d+)`, async (req: express.Request, res: express.Response) => {
+        this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}/:serviceId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)/${ResourceTypes.Formats}/:formatId(\\d+)/${ResourceTypes.Variations}/:variationId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await dataProvider.getServiceHymnsFormatContent(req.params.seasonId, req.params.serviceId, req.params.serviceHymnId, req.params.formatId, req.params.contentId);
+                const result = await dataProvider.getServiceHymnsFormatVariation(req.params.seasonId, req.params.serviceId, req.params.hymnId, req.params.formatId, req.params.variationId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

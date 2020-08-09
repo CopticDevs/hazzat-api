@@ -97,16 +97,6 @@ END
 GO
 
 
-/****** Object:  StoredProcedure [dbo].[Hymns_HymnContentListSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId]    Script Date: 8/2/2020 4:00:08 PM ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-
-
-
 /****** Object:  StoredProcedure [dbo].[Hymns_HymnContentListSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId]    Script Date: 8/2/2020 5:48:41 PM ******/
 SET ANSI_NULLS ON
 GO
@@ -116,9 +106,7 @@ GO
 
 
 
-
-
-ALTER PROCEDURE [dbo].[Hymns_HymnContentListSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId]
+CREATE PROCEDURE [dbo].[Hymns_HymnContentListSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId]
     @Season_ID int,
 	@Service_ID int,
 	@ServiceHymn_ID int,

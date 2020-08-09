@@ -1,13 +1,13 @@
-﻿interface ContentType {
-    TextContent: undefined;
-    HazzatContent: undefined;
-    VerticalHazzatContent: undefined;
-    VideoContent: undefined;
-    InformationContent: undefined;
+﻿export const enum ContentType {
+    TextContent = "TextContent",
+    HazzatContent = "HazzatContent",
+    VerticalHazzatContent = "VerticalHazzatContent",
+    VideoContent = "VideoContent",
+    InformationContent = "VideoContent"
 }
 
 interface ContentCommon {
-    contentType: keyof ContentType;
+    contentType: ContentType;
 }
 
 export interface ITextContent extends ContentCommon {
@@ -47,18 +47,10 @@ export declare type IHymnContent =
     IInformationContent;
 
 /*
- * Service Hymn Format Content Info
+ * Variation Info
  */
-export interface IServiceHymnFormatContentInfo<T extends IHymnContent> {
-    id: number;
+export interface IVariationInfo<T extends IHymnContent> {
+    id: string;
     name: string;
     content: T;  // TODO: Not sure how I feel about having this being polymorphic.  Bad design?
-    seasonId: number;
-    seasonName: string;
-    serviceId: number;
-    serviceName: string;
-    serviceHymnId: number;
-    serviceHymnName: string;
-    formatId: number;
-    formatName: string;
 }

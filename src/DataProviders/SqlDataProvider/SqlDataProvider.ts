@@ -2,26 +2,27 @@ import { inject, injectable } from "inversify";
 import * as Sql from "mssql";
 import { IConfiguration } from "../../Common/Configuration";
 import { ErrorCodes, HazzatApplicationError } from "../../Common/Errors";
+import { Language } from "../../Common/Types/Language";
 import { Log } from "../../Common/Utils/Logger";
 import { SqlHelpers } from "../../Common/Utils/SqlHelpers";
-import { ISeasonInfo } from "../../Models/ISeasonInfo";
-import { IHazzatContent, IHymnContent, IInformationContent, IVariationInfo, ITextContent, IVerticalHazzatContent, IVideoContent, ContentType } from "../../Models/IVariationInfo";
 import { IFormatInfo } from "../../Models/IFormatInfo";
 import { IHymnInfo } from "../../Models/IHymnInfo";
+import { ISeasonInfo } from "../../Models/ISeasonInfo";
 import { IServiceInfo } from "../../Models/IServiceInfo";
+import { ContentType, IHazzatContent, IHymnContent, IInformationContent, ITextContent, IVariationInfo, IVerticalHazzatContent, IVideoContent } from "../../Models/IVariationInfo";
+import { ResourceTypes } from "../../Routes/ResourceTypes";
 import { TYPES } from "../../types";
 import { IDataProvider } from "../IDataProvider";
 import { HazzatDbSchema } from "./HazzatDbSchema";
 import { Constants } from "./SqlConstants";
 import ConnectionPool = Sql.ConnectionPool;
-import { ResourceTypes } from "../../Routes/ResourceTypes";
 
 /*
  * Sql Data Provider
  */
 @injectable()
 export class SqlDataProvider implements IDataProvider {
-    private static convertSeasonDbItemToSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason): ISeasonInfo {
+    private static _convertSeasonDbItemToSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason): ISeasonInfo {
         return {
             id: `/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`,
             isDateSpecific: seasonDbItem.Date_Specific,
@@ -31,7 +32,7 @@ export class SqlDataProvider implements IDataProvider {
         };
     }
 
-    private static convertServiceDbItemToServiceInfo(serviceDbItem: HazzatDbSchema.IService): IServiceInfo {
+    private static _convertServiceDbItemToServiceInfo(serviceDbItem: HazzatDbSchema.IService): IServiceInfo {
         return {
             id: `/${ResourceTypes.Seasons}/${serviceDbItem.Season_ID}/${ResourceTypes.Services}/${serviceDbItem.ItemId}`,
             name: serviceDbItem.Service_Name,
@@ -39,7 +40,7 @@ export class SqlDataProvider implements IDataProvider {
         };
     }
 
-    private static convertServiceHymnDbItemToHymnInfo(
+    private static _convertServiceHymnDbItemToHymnInfo(
         serviceHymnDbItem: HazzatDbSchema.IServiceHymn
     ): IHymnInfo {
         return {
@@ -49,7 +50,7 @@ export class SqlDataProvider implements IDataProvider {
         };
     }
 
-    public static convertServiceHymnFormatDbItemToFormatInfo(
+    private static _convertServiceHymnFormatDbItemToFormatInfo(
         serviceHymnFormatDbItem: HazzatDbSchema.IServiceHymnFormat
     ): IFormatInfo {
         return {
@@ -60,19 +61,27 @@ export class SqlDataProvider implements IDataProvider {
         };
     }
 
-    public static convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo<T extends IHymnContent>(
-        serviceHymnFormatContentDbItem: HazzatDbSchema.IServiceHymnFormatContent,
-        formatId: number
-    ): IVariationInfo<T> {
+    private async _convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo<T extends IHymnContent>(
+        serviceHymnFormatContentDbItem: HazzatDbSchema.IServiceHymnFormatContent
+    ): Promise<IVariationInfo<T>> {
 
         let content: any = null;
 
-        switch (formatId) {
+        switch (serviceHymnFormatContentDbItem.Format_ID) {
             case 1: // Text
                 content = {
-                    arabicText: serviceHymnFormatContentDbItem.Content_Arabic,
-                    copticText: serviceHymnFormatContentDbItem.Content_Coptic,
-                    englishText: serviceHymnFormatContentDbItem.Content_English,
+                    arabicText: await this._prepareTextContent(
+                        serviceHymnFormatContentDbItem.Content_Arabic,
+                        serviceHymnFormatContentDbItem.Reason_ID,
+                        Language.Arabic),
+                    copticText: await this._prepareTextContent(
+                        serviceHymnFormatContentDbItem.Content_Coptic,
+                        serviceHymnFormatContentDbItem.Reason_ID,
+                        Language.Coptic),
+                    englishText: await this._prepareTextContent(
+                        serviceHymnFormatContentDbItem.Content_English,
+                        serviceHymnFormatContentDbItem.Reason_ID,
+                        Language.English),
                     contentType: ContentType.TextContent
                 } as ITextContent;
                 break;
@@ -111,13 +120,93 @@ export class SqlDataProvider implements IDataProvider {
                 throw new HazzatApplicationError(
                     ErrorCodes[ErrorCodes.NotSupportedError],
                     `The format '${serviceHymnFormatContentDbItem.Format_Name}' is not currently supported.`,
-                    `format id: '${formatId}'`);
+                    `format id: '${serviceHymnFormatContentDbItem.Format_ID}'`);
         }
         return {
             id: `/${ResourceTypes.Seasons}/${serviceHymnFormatContentDbItem.Season_ID}/${ResourceTypes.Services}/${serviceHymnFormatContentDbItem.Service_ID}/${ResourceTypes.Hymns}/${serviceHymnFormatContentDbItem.ServiceHymn_ID}/${ResourceTypes.Formats}/${serviceHymnFormatContentDbItem.Format_ID}/${ResourceTypes.Variations}/${serviceHymnFormatContentDbItem.ItemId}`,
             name: serviceHymnFormatContentDbItem.Content_Name,
             content
         };
+    }
+
+    /**
+     * Prepares the content as stored in storage and makes it ready to presented
+     * to callers through API
+     * @param content The text content as it was stored
+     */
+    private async _prepareTextContent(content: string, reasonId: number, language: Language): Promise<string> {
+        let result = content;
+
+        // Replace references to common content
+        result = await this._replaceCommonContent(result);
+
+        // Replace the reason for the season
+        result = await this._replaceReason(result, reasonId, language);
+
+        return result;
+    }
+
+    private async _replaceCommonContent(content: string): Promise<string> {
+        let result = content;
+        const commonContentRegEx = new RegExp("\<common\=([0-9]+)\>", "i");
+        let matchGroups = result.match(commonContentRegEx);
+
+        // Keep replacing common as long as there are additional references
+        while (!!matchGroups) {
+            const matchedString = matchGroups[0];
+            const commonId = matchGroups[1];
+
+            const commonContent = await this.getCommonContent(commonId);
+
+            result = result.replace(matchedString, commonContent);
+            matchGroups = result.match(commonContentRegEx);
+        }
+
+        return result;
+    }
+
+    private async _replaceReason(content: string, reasonId: number, language: Language): Promise<string> {
+        let result = content;
+        const longReasonRegEx = new RegExp("\<reason_long\>", "i");
+        const shortReasonRegEx = new RegExp("\<short_long\>", "i");
+
+        const longReasonMatch = result.match(longReasonRegEx);
+        const shortReasonMatch = result.match(shortReasonRegEx);
+
+        // only call the DB if there's a match
+        if (!longReasonMatch && !shortReasonMatch) {
+            return result;
+        }
+
+        const reasonInfo = await this._getReason(reasonId);
+        let longReason: string;
+        let shortReason: string;
+
+        switch (language) {
+            case Language.English:
+                longReason = reasonInfo.Long_English;
+                shortReason = reasonInfo.Short_English;
+                break;
+            case Language.Coptic:
+                longReason = reasonInfo.Long_Coptic;
+                shortReason = reasonInfo.Short_Coptic;
+                break;
+            case Language.Arabic:
+                longReason = reasonInfo.Long_Arabic;
+                shortReason = reasonInfo.Short_Arabic;
+                break;
+            default:
+        }
+
+        if (!!longReasonMatch) {
+            result = result.replace(longReasonMatch[0], longReason);
+        }
+
+        if (!!shortReasonMatch) {
+            result = result.replace(shortReasonMatch[0], shortReason);
+        }
+
+        return result;
     }
 
     private connectionPool: ConnectionPool;
@@ -159,7 +248,7 @@ export class SqlDataProvider implements IDataProvider {
             }
 
             const seasons: ISeasonInfo[] = result.recordsets[0]
-                .map((row) => SqlDataProvider.convertSeasonDbItemToSeasonInfo(row));
+                .map((row) => SqlDataProvider._convertSeasonDbItemToSeasonInfo(row));
             return seasons;
         });
     }
@@ -188,7 +277,7 @@ export class SqlDataProvider implements IDataProvider {
                     ErrorCodes[ErrorCodes.NotFoundError],
                     `Unable to find season with id '${seasonId}'`);
             }
-            return SqlDataProvider.convertSeasonDbItemToSeasonInfo(row);
+            return SqlDataProvider._convertSeasonDbItemToSeasonInfo(row);
         });
     }
 
@@ -211,7 +300,7 @@ export class SqlDataProvider implements IDataProvider {
             }
 
             const services: IServiceInfo[] = result.recordsets[0]
-                .map((row) => SqlDataProvider.convertServiceDbItemToServiceInfo(row));
+                .map((row) => SqlDataProvider._convertServiceDbItemToServiceInfo(row));
             return services;
 
         });
@@ -248,7 +337,7 @@ export class SqlDataProvider implements IDataProvider {
                     ErrorCodes[ErrorCodes.NotFoundError],
                     `Unable to find service with season id '${seasonId}' and Service id '${serviceId}`);
             }
-            return SqlDataProvider.convertServiceDbItemToServiceInfo(row);
+            return SqlDataProvider._convertServiceDbItemToServiceInfo(row);
         });
     }
 
@@ -279,7 +368,7 @@ export class SqlDataProvider implements IDataProvider {
             }
 
             const serviceHymns: IHymnInfo[] = result.recordsets[0]
-                .map((row) => SqlDataProvider.convertServiceHymnDbItemToHymnInfo(row));
+                .map((row) => SqlDataProvider._convertServiceHymnDbItemToHymnInfo(row));
             return serviceHymns;
         });
     }
@@ -322,7 +411,7 @@ export class SqlDataProvider implements IDataProvider {
                     ErrorCodes[ErrorCodes.NotFoundError],
                     `Unable to find hymn with season id '${seasonId}', service id '${serviceId}, and hymn id '${hymnId}'`);
             }
-            return SqlDataProvider.convertServiceHymnDbItemToHymnInfo(row);
+            return SqlDataProvider._convertServiceHymnDbItemToHymnInfo(row);
         });
     }
 
@@ -360,7 +449,7 @@ export class SqlDataProvider implements IDataProvider {
             }
 
             const serviceHymns: IFormatInfo[] = result.recordsets[0]
-                .map((row) => SqlDataProvider.convertServiceHymnFormatDbItemToFormatInfo(row));
+                .map((row) => SqlDataProvider._convertServiceHymnFormatDbItemToFormatInfo(row));
             return serviceHymns;
         });
     }
@@ -410,12 +499,12 @@ export class SqlDataProvider implements IDataProvider {
                     ErrorCodes[ErrorCodes.NotFoundError],
                     `Unable to find hymn formats with season id '${seasonId}', service id '${serviceId}, hymn id '${hymnId}', and format id '${formatId}'`);
             }
-            return SqlDataProvider.convertServiceHymnFormatDbItemToFormatInfo(row);
+            return SqlDataProvider._convertServiceHymnFormatDbItemToFormatInfo(row);
         });
     }
 
     public getServiceHymnsFormatVariationList<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IVariationInfo<T>[]> {
-        return this._connectAndExecute<IVariationInfo<T>[]>(async (cp: ConnectionPool) => {
+        return this._connectAndExecute<IVariationInfo<any>[]>(async (cp: ConnectionPool) => {
             if (!SqlHelpers.isValidPositiveIntParameter(seasonId)) {
                 throw new HazzatApplicationError(
                     ErrorCodes[ErrorCodes.InvalidParameterError],
@@ -454,8 +543,9 @@ export class SqlDataProvider implements IDataProvider {
                     "Unexpected database error");
             }
 
-            const serviceHymns: IVariationInfo<T>[] = result.recordsets[0]
-                .map((row) => SqlDataProvider.convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo(row, +formatId));
+            const serviceHymns: IVariationInfo<IHymnContent>[] = await Promise.all(result.recordsets[0]
+                .map((row) => this._convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo(row)));
+
             return serviceHymns;
         });
     }
@@ -513,7 +603,61 @@ export class SqlDataProvider implements IDataProvider {
                     ErrorCodes[ErrorCodes.NotFoundError],
                     `Unable to find hymn variation with season id '${seasonId}', service id '${serviceId}, hymn id '${hymnId}', format id '${formatId}', and variation id '${variationId}'`);
             }
-            return SqlDataProvider.convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo(row, +formatId);
+            return this._convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo(row);
+        });
+    }
+
+    public getCommonContent(commonId: string): Promise<string> {
+        return this._connectAndExecute<string>(async (cp: ConnectionPool) => {
+            if (!SqlHelpers.isValidPositiveIntParameter(commonId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid common id specified.",
+                    `Common id: '${commonId}'`);
+            }
+
+            const result = await cp.request()
+                .input(Constants.Parameters.CommonId, Sql.Int, commonId)
+                .execute(this._getQualifiedName(Constants.StoredProcedures.CommonSelect));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.DatabaseError],
+                    "Unexpected database error");
+            }
+
+            const row = result.recordsets[0][0];
+            if (!row) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.NotFoundError],
+                    `Unable to get common hymn content common id '${commonId}'`);
+            }
+
+            const contentResult: HazzatDbSchema.ICommonContent = row;
+            return contentResult.Content;
+        });
+    }
+
+    private _getReason(reasonId: number): Promise<HazzatDbSchema.IReason> {
+        return this._connectAndExecute<HazzatDbSchema.IReason>(async (cp: ConnectionPool) => {
+            const result = await cp.request()
+                .input(Constants.Parameters.ReasonId, Sql.Int, reasonId)
+                .execute(this._getQualifiedName(Constants.StoredProcedures.ReasonSelect));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.DatabaseError],
+                    "Unexpected database error");
+            }
+
+            const row = result.recordsets[0][0];
+            if (!row) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.NotFoundError],
+                    `Unable to get reason with id '${reasonId}'`);
+            }
+
+            return row;
         });
     }
 

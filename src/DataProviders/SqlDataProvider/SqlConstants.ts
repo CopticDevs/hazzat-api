@@ -10,6 +10,8 @@ export namespace Constants {
         export const HymnFormatSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId = "HymnFormatSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId";
         export const HymnContentListSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId = "HymnContentListSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId";
         export const HymnContentSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId = "HymnContentSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId";
+        export const CommonSelect = "CommonSelect";
+        export const ReasonSelect = "ReasonSelect";
 
         export const ServiceHymnListSelectBySeasonServiceId = "ServiceHymnListSelectBySeasonServiceId";
     }
@@ -20,5 +22,7 @@ export namespace Constants {
         export const ServiceHymnId = "ServiceHymn_ID";
         export const FormatId = "Format_ID";
         export const ContentId = "Content_ID";
+        export const CommonId = "Common_ID";
+        export const ReasonId = "Reason_ID";
     }
 }

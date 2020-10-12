@@ -96,17 +96,17 @@ export class SqlDataProvider implements IDataProvider {
                 break;
             case 2: // Hazzat
                 content = {
-                    arabicHazzat: serviceHymnFormatContentDbItem.Content_Arabic,
-                    copticHazzat: serviceHymnFormatContentDbItem.Content_Coptic,
-                    englishHazzat: serviceHymnFormatContentDbItem.Content_English,
+                    arabicHazzat: await this._prepareHazzatContent(serviceHymnFormatContentDbItem.Content_Arabic),
+                    copticHazzat: await this._prepareHazzatContent(serviceHymnFormatContentDbItem.Content_Coptic),
+                    englishHazzat: await this._prepareHazzatContent(serviceHymnFormatContentDbItem.Content_English),
                     contentType: ContentType.HazzatContent
                 } as IHazzatContent;
                 break;
             case 3: // Vertical Hazzat
                 content = {
-                    arabicVerticalHazzat: serviceHymnFormatContentDbItem.Content_Arabic,
-                    copticVerticalHazzat: serviceHymnFormatContentDbItem.Content_Coptic,
-                    englishVerticalHazzat: serviceHymnFormatContentDbItem.Content_English,
+                    arabicVerticalHazzat: await this._prepareHazzatContent(serviceHymnFormatContentDbItem.Content_Arabic),
+                    copticVerticalHazzat: await this._prepareHazzatContent(serviceHymnFormatContentDbItem.Content_Coptic),
+                    englishVerticalHazzat: await this._prepareHazzatContent(serviceHymnFormatContentDbItem.Content_English),
                     contentType: ContentType.VerticalHazzatContent
                 } as IVerticalHazzatContent;
                 break;
@@ -143,7 +143,7 @@ export class SqlDataProvider implements IDataProvider {
      * to callers through API
      * @param content The text content as it was stored
      * @param language The content language
-     * * @param getReasonFunc A method to get the reason info.
+     * @param getReasonFunc A method to get the reason info.
      */
     private async _prepareTextContent(content: string, language: Language, getReasonFunc: () => Promise<HazzatDbSchema.IReason>): Promise<string> {
         let result = content;
@@ -158,6 +158,10 @@ export class SqlDataProvider implements IDataProvider {
     }
 
     private async _replaceCommonContent(content: string): Promise<string> {
+        if (!content) {
+            return Promise.resolve(content);
+        }
+
         let result = content;
         const commonContentRegEx = new RegExp("\<common\=([0-9]+)\>", "i");
         let matchGroups = result.match(commonContentRegEx);
@@ -177,6 +181,10 @@ export class SqlDataProvider implements IDataProvider {
     }
 
     private async _replaceReason(content: string, language: Language, getReasonFunc: () => Promise<HazzatDbSchema.IReason>): Promise<string> {
+        if (!content) {
+            return Promise.resolve(content);
+        }
+
         let result = content;
         const longReasonRegEx = new RegExp("\<reason_long\>", "i");
         const shortReasonRegEx = new RegExp("\<short_long\>", "i");
@@ -216,6 +224,20 @@ export class SqlDataProvider implements IDataProvider {
         if (!!shortReasonMatch) {
             result = result.replace(shortReasonMatch[0], shortReason);
         }
+
+        return result;
+    }
+
+    /**
+     * Prepares the content as stored in storage and makes it ready to presented
+     * to callers through API
+     * @param content The hazzat content as it was stored
+     */
+    private async _prepareHazzatContent(content: string): Promise<string> {
+        let result = content;
+
+        // Replace references to common content
+        result = await this._replaceCommonContent(result);
 
         return result;
     }

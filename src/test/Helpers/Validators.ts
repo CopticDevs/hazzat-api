@@ -110,4 +110,12 @@ export class Validators {
         contentBody.should.have.property("englishInformation");
         contentBody.should.have.property("contentType").eq(ContentType.InformationContent);
     }
+
+    public static validateDoesNotInclude(contentString: string, searchString: string): void {
+        if (!contentString) {
+            return;
+        }
+
+        contentString.should.not.contain(searchString);
+    }
 }

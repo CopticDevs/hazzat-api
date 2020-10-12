@@ -187,7 +187,7 @@ export class SqlDataProvider implements IDataProvider {
 
         let result = content;
         const longReasonRegEx = new RegExp("\<reason_long\>", "i");
-        const shortReasonRegEx = new RegExp("\<short_long\>", "i");
+        const shortReasonRegEx = new RegExp("\<reason_short\>", "i");
 
         const longReasonMatch = result.match(longReasonRegEx);
         const shortReasonMatch = result.match(shortReasonRegEx);

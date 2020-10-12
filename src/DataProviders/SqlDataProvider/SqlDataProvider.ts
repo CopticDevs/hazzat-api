@@ -67,21 +67,30 @@ export class SqlDataProvider implements IDataProvider {
 
         let content: any = null;
 
+        // to avoid making multiple calls to the db to fetch the same reason
+        let reasonInfo: HazzatDbSchema.IReason;
+        const getReasonFunc = async () => {
+            if (!reasonInfo) {
+                reasonInfo = await this._getReason(serviceHymnFormatContentDbItem.Reason_ID);
+            }
+            return reasonInfo;
+        };
+
         switch (serviceHymnFormatContentDbItem.Format_ID) {
             case 1: // Text
                 content = {
                     arabicText: await this._prepareTextContent(
                         serviceHymnFormatContentDbItem.Content_Arabic,
-                        serviceHymnFormatContentDbItem.Reason_ID,
-                        Language.Arabic),
+                        Language.Arabic,
+                        getReasonFunc),
                     copticText: await this._prepareTextContent(
                         serviceHymnFormatContentDbItem.Content_Coptic,
-                        serviceHymnFormatContentDbItem.Reason_ID,
-                        Language.Coptic),
+                        Language.Coptic,
+                        getReasonFunc),
                     englishText: await this._prepareTextContent(
                         serviceHymnFormatContentDbItem.Content_English,
-                        serviceHymnFormatContentDbItem.Reason_ID,
-                        Language.English),
+                        Language.English,
+                        getReasonFunc),
                     contentType: ContentType.TextContent
                 } as ITextContent;
                 break;
@@ -133,15 +142,17 @@ export class SqlDataProvider implements IDataProvider {
      * Prepares the content as stored in storage and makes it ready to presented
      * to callers through API
      * @param content The text content as it was stored
+     * @param language The content language
+     * * @param getReasonFunc A method to get the reason info.
      */
-    private async _prepareTextContent(content: string, reasonId: number, language: Language): Promise<string> {
+    private async _prepareTextContent(content: string, language: Language, getReasonFunc: () => Promise<HazzatDbSchema.IReason>): Promise<string> {
         let result = content;
 
         // Replace references to common content
         result = await this._replaceCommonContent(result);
 
         // Replace the reason for the season
-        result = await this._replaceReason(result, reasonId, language);
+        result = await this._replaceReason(result, language, getReasonFunc);
 
         return result;
     }
@@ -165,7 +176,7 @@ export class SqlDataProvider implements IDataProvider {
         return result;
     }
 
-    private async _replaceReason(content: string, reasonId: number, language: Language): Promise<string> {
+    private async _replaceReason(content: string, language: Language, getReasonFunc: () => Promise<HazzatDbSchema.IReason>): Promise<string> {
         let result = content;
         const longReasonRegEx = new RegExp("\<reason_long\>", "i");
         const shortReasonRegEx = new RegExp("\<short_long\>", "i");
@@ -178,7 +189,7 @@ export class SqlDataProvider implements IDataProvider {
             return result;
         }
 
-        const reasonInfo = await this._getReason(reasonId);
+        const reasonInfo = await getReasonFunc();
         let longReason: string;
         let shortReason: string;
 

@@ -4,7 +4,6 @@ import { ResourceTypes } from "../Routes/ResourceTypes";
 import { Validators } from "./Helpers/Validators";
 import chaiHttp = require("chai-http");
 import server = require("../app");
-const should = chai.should();
 
 process.env.NODE_ENV = "test";
 

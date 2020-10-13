@@ -37,6 +37,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Common\HttpError.ts" />
     <TypeScriptCompile Include="Common\Errors.ts" />
+    <TypeScriptCompile Include="Common\Types\Language.ts" />
     <TypeScriptCompile Include="Common\Types\FormatType.ts" />
     <TypeScriptCompile Include="Common\Types\StringMap.ts" />
     <TypeScriptCompile Include="Common\Utils\Logger.ts" />
@@ -61,6 +62,8 @@
     <TypeScriptCompile Include="Routes\HomeController.ts" />
     <TypeScriptCompile Include="Routes\SeasonsController.ts" />
     <Content Include="Configs\prod.json" />
+    <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.05.Uninstall.sql" />
+    <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.05.Install.sql" />
     <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.04.Uninstall.sql" />
     <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.04.Install.sql" />
     <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.03.Uninstall.sql" />

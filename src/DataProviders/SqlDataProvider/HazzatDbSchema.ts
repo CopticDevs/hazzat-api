@@ -48,11 +48,31 @@ export namespace HazzatDbSchema {
         Content_English: string;
         Season_ID: number;
         Season_Name: string;
+        Reason_ID: number;
         Service_ID: number;
         Service_Name: string;
         ServiceHymn_ID: number;
         ServiceHymn_Title: string;
         Format_ID: number;
         Format_Name: string;
+    }
+
+    export interface ICommonContent {
+        ItemId: number;
+        Name: string;
+        Content: string;
+        Language: string;
+        Format_ID: number;
+    }
+
+    export interface IReason {
+        ItemId: number;
+        Name: string;
+        Long_English: string;
+        Long_Coptic: string;
+        Long_Arabic: string;
+        Short_English: string;
+        Short_Coptic: string;
+        Short_Arabic: string;
     }
 }

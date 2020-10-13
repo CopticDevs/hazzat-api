@@ -4,7 +4,6 @@ import { ResourceTypes } from "../Routes/ResourceTypes";
 import { Validators } from "./Helpers/Validators";
 import chaiHttp = require("chai-http");
 import server = require("../app");
-const should = chai.should();
 
 process.env.NODE_ENV = "test";
 
@@ -543,8 +542,8 @@ describe("Seasons controller", () => {
         });
     });
 
-    describe("/GET all season service hymn format contents", () => {
-        it("should get a season service hymn format contents (text)", (done) => {
+    describe("/GET all season service hymn format variations", () => {
+        it("should get a season service hymn format variations (text)", (done) => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
@@ -555,7 +554,66 @@ describe("Seasons controller", () => {
                 });
         });
 
-        it("should get a season service hymn format contents (hazzat)", (done) => {
+        it("should get a season service hymn format variations (text) with common content", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Seasons}/33/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/460/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
+                .end((err, res) => {
+                    Validators.validateArrayResponse(res);
+                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
+                    Validators.validateTextContentResponse(res.body[0].content);
+                    Validators.validateDoesNotInclude(res.body[0].content.arabicText, "<common=");
+                    Validators.validateDoesNotInclude(res.body[0].content.copticText, "<common=");
+                    Validators.validateDoesNotInclude(res.body[0].content.englishText, "<common=");
+                    done();
+                });
+        });
+
+        it("should get a season service hymn format variations (text) with short reason content", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Seasons}/6/${ResourceTypes.Services}/3/${ResourceTypes.Hymns}/48/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
+                .end((err, res) => {
+                    Validators.validateArrayResponse(res);
+                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
+                    Validators.validateTextContentResponse(res.body[0].content);
+                    Validators.validateDoesNotInclude(res.body[0].content.arabicText, "<reason_short>");
+                    Validators.validateDoesNotInclude(res.body[0].content.copticText, "<reason_short>");
+                    Validators.validateDoesNotInclude(res.body[0].content.englishText, "<reason_short>");
+                    done();
+                });
+        });
+
+        it("should get a season service hymn format variations (text) with long reason content", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/2/${ResourceTypes.Hymns}/331/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
+                .end((err, res) => {
+                    Validators.validateArrayResponse(res);
+                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
+                    Validators.validateTextContentResponse(res.body[0].content);
+                    Validators.validateDoesNotInclude(res.body[0].content.arabicText, "<reason_long>");
+                    Validators.validateDoesNotInclude(res.body[0].content.copticText, "<reason_long>");
+                    Validators.validateDoesNotInclude(res.body[0].content.englishText, "<reason_long>");
+                    done();
+                });
+        });
+
+        it("should get a season service hymn format variations (text) with reason & common content", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Seasons}/33/${ResourceTypes.Services}/24/${ResourceTypes.Hymns}/456/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
+                .end((err, res) => {
+                    Validators.validateArrayResponse(res);
+                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
+                    Validators.validateTextContentResponse(res.body[0].content);
+                    Validators.validateDoesNotInclude(res.body[0].content.arabicText, "<common=");
+                    Validators.validateDoesNotInclude(res.body[0].content.copticText, "<common=");
+                    Validators.validateDoesNotInclude(res.body[0].content.englishText, "<common=");
+                    Validators.validateDoesNotInclude(res.body[0].content.arabicText, "<reason_");
+                    Validators.validateDoesNotInclude(res.body[0].content.copticText, "<reason_");
+                    Validators.validateDoesNotInclude(res.body[0].content.englishText, "<reason_");
+                    done();
+                });
+        });
+
+        it("should get a season service hymn format variations (hazzat)", (done) => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/2/${ResourceTypes.Variations}`)
                 .end((err, res) => {
@@ -566,7 +624,21 @@ describe("Seasons controller", () => {
                 });
         });
 
-        it("should get a season service hymn format contents (vertical hazzat)", (done) => {
+        it("should get a season service hymn format variations (hazzat) with common content", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/21/${ResourceTypes.Hymns}/377/${ResourceTypes.Formats}/2/${ResourceTypes.Variations}`)
+                .end((err, res) => {
+                    Validators.validateArrayResponse(res);
+                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
+                    Validators.validateHazzatContentResponse(res.body[0].content);
+                    Validators.validateDoesNotInclude(res.body[0].content.arabicHazzat, "<common=");
+                    Validators.validateDoesNotInclude(res.body[0].content.copticHazzat, "<common=");
+                    Validators.validateDoesNotInclude(res.body[0].content.englishHazzat, "<common=");
+                    done();
+                });
+        });
+
+        it("should get a season service hymn format variations (vertical hazzat)", (done) => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/2/${ResourceTypes.Hymns}/279/${ResourceTypes.Formats}/3/${ResourceTypes.Variations}`)
                 .end((err, res) => {
@@ -577,7 +649,21 @@ describe("Seasons controller", () => {
                 });
         });
 
-        it("should return a 501 for unsupported season service hymn format contents (Musical Notes)", (done) => {
+        it("should get a season service hymn format variations (vertical hazzat) with common content", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/21/${ResourceTypes.Hymns}/377/${ResourceTypes.Formats}/3/${ResourceTypes.Variations}`)
+                .end((err, res) => {
+                    Validators.validateArrayResponse(res);
+                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
+                    Validators.validateVerticalHazzatContentResponse(res.body[0].content);
+                    Validators.validateDoesNotInclude(res.body[0].content.arabicVerticalHazzat, "<common=");
+                    Validators.validateDoesNotInclude(res.body[0].content.copticVerticalHazzat, "<common=");
+                    Validators.validateDoesNotInclude(res.body[0].content.englishVerticalHazzat, "<common=");
+                    done();
+                });
+        });
+
+        it("should return a 501 for unsupported season service hymn format variations (Musical Notes)", (done) => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/32/${ResourceTypes.Services}/17/${ResourceTypes.Hymns}/334/${ResourceTypes.Formats}/4/${ResourceTypes.Variations}`)
                 .end((err, res) => {
@@ -586,7 +672,7 @@ describe("Seasons controller", () => {
                 });
         });
 
-        it("should return a 501 for unsupported season service hymn format contents (Audio)", (done) => {
+        it("should return a 501 for unsupported season service hymn format variations (Audio)", (done) => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/14/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/162/${ResourceTypes.Formats}/5/${ResourceTypes.Variations}`)
                 .end((err, res) => {
@@ -595,7 +681,7 @@ describe("Seasons controller", () => {
                 });
         });
 
-        it("should get a season service hymn format contents (video)", (done) => {
+        it("should get a season service hymn format variations (video)", (done) => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/14/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/162/${ResourceTypes.Formats}/6/${ResourceTypes.Variations}`)
                 .end((err, res) => {
@@ -606,7 +692,7 @@ describe("Seasons controller", () => {
                 });
         });
 
-        it("should get a season service hymn format contents (information)", (done) => {
+        it("should get a season service hymn format variations (information)", (done) => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/14/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/162/${ResourceTypes.Formats}/7/${ResourceTypes.Variations}`)
                 .end((err, res) => {
@@ -726,7 +812,7 @@ describe("Seasons controller", () => {
         });
     });
 
-    describe("/GET a season service hymn format content", () => {
+    describe("/GET a season service hymn format variation", () => {
         it("should get a season service hymn content (text)", (done) => {
             const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288`;
             chai.request(server)
@@ -739,7 +825,70 @@ describe("Seasons controller", () => {
                 });
         });
 
-        it("should get a season service hymn content (hazzat)", (done) => {
+        it("should get a season service hymn content (text) with common content", (done) => {
+            const resourceId = `/${ResourceTypes.Seasons}/33/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/460/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/721`;
+            chai.request(server)
+                .get(resourceId)
+                .end((err, res) => {
+                    Validators.validateObjectResponse(res);
+                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
+                    Validators.validateTextContentResponse(res.body.content);
+                    Validators.validateDoesNotInclude(res.body.content.arabicText, "<common=");
+                    Validators.validateDoesNotInclude(res.body.content.copticText, "<common=");
+                    Validators.validateDoesNotInclude(res.body.content.englishText, "<common=");
+                    done();
+                });
+        });
+
+        it("should get a season service hymn content (text) with short reason content", (done) => {
+            const resourceId = `/${ResourceTypes.Seasons}/6/${ResourceTypes.Services}/3/${ResourceTypes.Hymns}/48/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/37`;
+            chai.request(server)
+                .get(resourceId)
+                .end((err, res) => {
+                    Validators.validateObjectResponse(res);
+                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
+                    Validators.validateTextContentResponse(res.body.content);
+                    Validators.validateDoesNotInclude(res.body.content.arabicText, "<reason_short>");
+                    Validators.validateDoesNotInclude(res.body.content.copticText, "<reason_short>");
+                    Validators.validateDoesNotInclude(res.body.content.englishText, "<reason_short>");
+                    done();
+                });
+        });
+
+        it("should get a season service hymn content (text) with long reason content", (done) => {
+            const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/2/${ResourceTypes.Hymns}/331/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/302`;
+            chai.request(server)
+                .get(resourceId)
+                .end((err, res) => {
+                    Validators.validateObjectResponse(res);
+                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
+                    Validators.validateTextContentResponse(res.body.content);
+                    Validators.validateDoesNotInclude(res.body.content.arabicText, "<reason_long>");
+                    Validators.validateDoesNotInclude(res.body.content.copticText, "<reason_long>");
+                    Validators.validateDoesNotInclude(res.body.content.englishText, "<reason_long>");
+                    done();
+                });
+        });
+
+        it("should get a season service hymn content (text) with reason & common content", (done) => {
+            const resourceId = `/${ResourceTypes.Seasons}/33/${ResourceTypes.Services}/24/${ResourceTypes.Hymns}/456/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/713`;
+            chai.request(server)
+                .get(resourceId)
+                .end((err, res) => {
+                    Validators.validateObjectResponse(res);
+                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
+                    Validators.validateTextContentResponse(res.body.content);
+                    Validators.validateDoesNotInclude(res.body.content.arabicText, "<common=");
+                    Validators.validateDoesNotInclude(res.body.content.copticText, "<common=");
+                    Validators.validateDoesNotInclude(res.body.content.englishText, "<common=");
+                    Validators.validateDoesNotInclude(res.body.content.arabicText, "<reason_");
+                    Validators.validateDoesNotInclude(res.body.content.copticText, "<reason_");
+                    Validators.validateDoesNotInclude(res.body.content.englishText, "<reason_");
+                    done();
+                });
+        });
+
+        it("should get a season service hymn variation (hazzat)", (done) => {
             const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/2/${ResourceTypes.Variations}/379`;
             chai.request(server)
                 .get(resourceId)
@@ -751,7 +900,22 @@ describe("Seasons controller", () => {
                 });
         });
 
-        it("should get a season service hymn format contents (vertical hazzat)", (done) => {
+        it("should get a season service hymn variation (hazzat) with common content", (done) => {
+            const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/21/${ResourceTypes.Hymns}/377/${ResourceTypes.Formats}/2/${ResourceTypes.Variations}/436`;
+            chai.request(server)
+                .get(resourceId)
+                .end((err, res) => {
+                    Validators.validateObjectResponse(res);
+                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
+                    Validators.validateHazzatContentResponse(res.body.content);
+                    Validators.validateDoesNotInclude(res.body.content.arabicHazzat, "<common=");
+                    Validators.validateDoesNotInclude(res.body.content.copticHazzat, "<common=");
+                    Validators.validateDoesNotInclude(res.body.content.englishHazzat, "<common=");
+                    done();
+                });
+        });
+
+        it("should get a season service hymn format variation (vertical hazzat)", (done) => {
             const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/2/${ResourceTypes.Hymns}/279/${ResourceTypes.Formats}/3/${ResourceTypes.Variations}/622`;
             chai.request(server)
                 .get(resourceId)
@@ -763,7 +927,22 @@ describe("Seasons controller", () => {
                 });
         });
 
-        it("should return a 501 for unsupported season service hymn format contents (Musical Notes)", (done) => {
+        it("should get a season service hymn format variation (vertical hazzat) with common content", (done) => {
+            const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/21/${ResourceTypes.Hymns}/377/${ResourceTypes.Formats}/3/${ResourceTypes.Variations}/546`;
+            chai.request(server)
+                .get(resourceId)
+                .end((err, res) => {
+                    Validators.validateObjectResponse(res);
+                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
+                    Validators.validateVerticalHazzatContentResponse(res.body.content);
+                    Validators.validateDoesNotInclude(res.body.content.arabicVerticalHazzat, "<common=");
+                    Validators.validateDoesNotInclude(res.body.content.copticVerticalHazzat, "<common=");
+                    Validators.validateDoesNotInclude(res.body.content.englishVerticalHazzat, "<common=");
+                    done();
+                });
+        });
+
+        it("should return a 501 for unsupported season service hymn format variation (Musical Notes)", (done) => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/32/${ResourceTypes.Services}/17/${ResourceTypes.Hymns}/334/${ResourceTypes.Formats}/4/${ResourceTypes.Variations}/639`)
                 .end((err, res) => {
@@ -772,7 +951,7 @@ describe("Seasons controller", () => {
                 });
         });
 
-        it("should return a 501 for unsupported season service hymn format contents (Audio)", (done) => {
+        it("should return a 501 for unsupported season service hymn format variation (Audio)", (done) => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/14/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/162/${ResourceTypes.Formats}/5/${ResourceTypes.Variations}/703`)
                 .end((err, res) => {
@@ -781,7 +960,7 @@ describe("Seasons controller", () => {
                 });
         });
 
-        it("should get a season service hymn format contents (video)", (done) => {
+        it("should get a season service hymn format variation (video)", (done) => {
             const resourceId = `/${ResourceTypes.Seasons}/14/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/162/${ResourceTypes.Formats}/6/${ResourceTypes.Variations}/704`;
             chai.request(server)
                 .get(resourceId)
@@ -793,7 +972,7 @@ describe("Seasons controller", () => {
                 });
         });
 
-        it("should get a season service hymn format contents (information)", (done) => {
+        it("should get a season service hymn format variation (information)", (done) => {
             const resourceId = `/${ResourceTypes.Seasons}/14/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/162/${ResourceTypes.Formats}/7/${ResourceTypes.Variations}/705`;
             chai.request(server)
                 .get(resourceId)
@@ -841,7 +1020,7 @@ describe("Seasons controller", () => {
                 });
         });
 
-        it("should return a 404 for negative service hymn format content ids", (done) => {
+        it("should return a 404 for negative service hymn format variation ids", (done) => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/-1`)
                 .end((err, res) => {
@@ -886,7 +1065,7 @@ describe("Seasons controller", () => {
                 });
         });
 
-        it("should return a 404 for non integer service hymn format content ids", (done) => {
+        it("should return a 404 for non integer service hymn format variation ids", (done) => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/badInput`)
                 .end((err, res) => {

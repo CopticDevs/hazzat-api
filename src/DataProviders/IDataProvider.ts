@@ -1,8 +1,8 @@
-﻿import { ISeasonInfo } from "../Models/ISeasonInfo";
-import { IHymnContent, IVariationInfo } from "../Models/IVariationInfo";
-import { IFormatInfo } from "../Models/IFormatInfo";
+﻿import { IFormatInfo } from "../Models/IFormatInfo";
 import { IHymnInfo } from "../Models/IHymnInfo";
+import { ISeasonInfo } from "../Models/ISeasonInfo";
 import { IServiceInfo } from "../Models/IServiceInfo";
+import { IHymnContent, IVariationInfo } from "../Models/IVariationInfo";
 
 /**
  * Data Provider Interface
@@ -22,4 +22,6 @@ export interface IDataProvider {
 
     getServiceHymnsFormatVariationList<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IVariationInfo<T>[]>;
     getServiceHymnsFormatVariation<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string, contentId: string): Promise<IVariationInfo<T>>;
+
+    getCommonContent(commonId: string): Promise<string>;
 }

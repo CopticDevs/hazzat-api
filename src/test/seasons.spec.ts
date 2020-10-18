@@ -1,5 +1,6 @@
 import * as chai from "chai";
 import { ErrorCodes } from "../Common/Errors";
+import { Constants } from "../DataProviders/SqlDataProvider/SqlConstants";
 import { ResourceTypes } from "../Routes/ResourceTypes";
 import { Validators } from "./Helpers/Validators";
 import chaiHttp = require("chai-http");
@@ -554,6 +555,23 @@ describe("Seasons controller", () => {
                 });
         });
 
+        it("should get a season service hymn format variations (text) with comment", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Seasons}/24/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/284/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
+                .end((err, res) => {
+                    Validators.validateArrayResponse(res);
+                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
+                    Validators.validateTextContentResponse(res.body[0].content);
+
+                    Validators.validateTextParagraphArrayContentWithDescription(res.body[0].content.arabicText);
+                    Validators.validateTextParagraphArrayContent(res.body[0].content.copticText);
+                    Validators.validateTextParagraphArrayContentWithDescription(res.body[0].content.englishText);
+
+                    Validators.validateDoesNotInclude(res.body[0].content.englishText[0].content, "<comment=");
+                    done();
+                });
+        });
+
         it("should get a season service hymn format variations (text) with common content", (done) => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/33/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/460/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
@@ -575,9 +593,9 @@ describe("Seasons controller", () => {
                     Validators.validateArrayResponse(res);
                     Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
                     Validators.validateTextContentResponse(res.body[0].content);
-                    Validators.validateDoesNotInclude(res.body[0].content.arabicText, "<reason_short>");
-                    Validators.validateDoesNotInclude(res.body[0].content.copticText, "<reason_short>");
-                    Validators.validateDoesNotInclude(res.body[0].content.englishText, "<reason_short>");
+                    Validators.validateDoesNotInclude(res.body[0].content.arabicText, Constants.Tokens.ReasonShort);
+                    Validators.validateDoesNotInclude(res.body[0].content.copticText, Constants.Tokens.ReasonShort);
+                    Validators.validateDoesNotInclude(res.body[0].content.englishText, Constants.Tokens.ReasonShort);
                     done();
                 });
         });
@@ -589,9 +607,9 @@ describe("Seasons controller", () => {
                     Validators.validateArrayResponse(res);
                     Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
                     Validators.validateTextContentResponse(res.body[0].content);
-                    Validators.validateDoesNotInclude(res.body[0].content.arabicText, "<reason_long>");
-                    Validators.validateDoesNotInclude(res.body[0].content.copticText, "<reason_long>");
-                    Validators.validateDoesNotInclude(res.body[0].content.englishText, "<reason_long>");
+                    Validators.validateDoesNotInclude(res.body[0].content.arabicText, Constants.Tokens.ReasonLong);
+                    Validators.validateDoesNotInclude(res.body[0].content.copticText, Constants.Tokens.ReasonLong);
+                    Validators.validateDoesNotInclude(res.body[0].content.englishText, Constants.Tokens.ReasonLong);
                     done();
                 });
         });
@@ -825,6 +843,24 @@ describe("Seasons controller", () => {
                 });
         });
 
+        it("should get a season service hymn content (text) with comment content", (done) => {
+            const resourceId = `/${ResourceTypes.Seasons}/24/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/284/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/266`;
+            chai.request(server)
+                .get(resourceId)
+                .end((err, res) => {
+                    Validators.validateObjectResponse(res);
+                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
+                    Validators.validateTextContentResponse(res.body.content);
+
+                    Validators.validateTextParagraphArrayContentWithDescription(res.body.content.arabicText);
+                    Validators.validateTextParagraphArrayContent(res.body.content.copticText);
+                    Validators.validateTextParagraphArrayContentWithDescription(res.body.content.englishText);
+
+                    Validators.validateDoesNotInclude(res.body.content.englishText[0].content, "<comment=");
+                    done();
+                });
+        });
+
         it("should get a season service hymn content (text) with common content", (done) => {
             const resourceId = `/${ResourceTypes.Seasons}/33/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/460/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/721`;
             chai.request(server)
@@ -848,9 +884,9 @@ describe("Seasons controller", () => {
                     Validators.validateObjectResponse(res);
                     Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
                     Validators.validateTextContentResponse(res.body.content);
-                    Validators.validateDoesNotInclude(res.body.content.arabicText, "<reason_short>");
-                    Validators.validateDoesNotInclude(res.body.content.copticText, "<reason_short>");
-                    Validators.validateDoesNotInclude(res.body.content.englishText, "<reason_short>");
+                    Validators.validateDoesNotInclude(res.body.content.arabicText, Constants.Tokens.ReasonShort);
+                    Validators.validateDoesNotInclude(res.body.content.copticText, Constants.Tokens.ReasonShort);
+                    Validators.validateDoesNotInclude(res.body.content.englishText, Constants.Tokens.ReasonShort);
                     done();
                 });
         });
@@ -863,9 +899,9 @@ describe("Seasons controller", () => {
                     Validators.validateObjectResponse(res);
                     Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
                     Validators.validateTextContentResponse(res.body.content);
-                    Validators.validateDoesNotInclude(res.body.content.arabicText, "<reason_long>");
-                    Validators.validateDoesNotInclude(res.body.content.copticText, "<reason_long>");
-                    Validators.validateDoesNotInclude(res.body.content.englishText, "<reason_long>");
+                    Validators.validateDoesNotInclude(res.body.content.arabicText, Constants.Tokens.ReasonLong);
+                    Validators.validateDoesNotInclude(res.body.content.copticText, Constants.Tokens.ReasonLong);
+                    Validators.validateDoesNotInclude(res.body.content.englishText, Constants.Tokens.ReasonLong);
                     done();
                 });
         });

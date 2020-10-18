@@ -6,14 +6,19 @@
     InformationContent = "VideoContent"
 }
 
-interface ContentCommon {
+export interface TextParagraph {
+    content?: string;
+    description?: string;
+}
+
+export interface ContentCommon {
     contentType: ContentType;
 }
 
 export interface ITextContent extends ContentCommon {
-    arabicText: string;
-    copticText: string;
-    englishText: string;
+    arabicText: TextParagraph[];
+    copticText: TextParagraph[];
+    englishText: TextParagraph[];
 }
 
 export interface IHazzatContent extends ContentCommon {

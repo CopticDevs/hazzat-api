@@ -1,6 +1,5 @@
 import * as chai from "chai";
 import { ErrorCodes } from "../../Common/Errors";
-import chaiHttp = require("chai-http");
 import { ResourceTypes } from "../../Routes/ResourceTypes";
 import { ContentType } from "../../Models/IVariationInfo";
 const should = chai.should();
@@ -82,6 +81,17 @@ export class Validators {
         contentBody.should.have.property("copticText");
         contentBody.should.have.property("englishText");
         contentBody.should.have.property("contentType").eq(ContentType.TextContent);
+    }
+
+    public static validateTextParagraphArrayContent(textContent: any): void {
+        textContent.should.be.a("array");
+        textContent[0].should.have.property("content");
+    }
+
+    public static validateTextParagraphArrayContentWithDescription(textContent: any): void {
+        textContent.should.be.a("array");
+        textContent[0].should.have.property("content");
+        textContent[0].should.have.property("description");
     }
 
     public static validateHazzatContentResponse(contentBody: any): void {

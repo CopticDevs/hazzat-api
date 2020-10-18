@@ -9,7 +9,7 @@ import { IFormatInfo } from "../../Models/IFormatInfo";
 import { IHymnInfo } from "../../Models/IHymnInfo";
 import { ISeasonInfo } from "../../Models/ISeasonInfo";
 import { IServiceInfo } from "../../Models/IServiceInfo";
-import { ContentType, IHazzatContent, IHymnContent, IInformationContent, ITextContent, IVariationInfo, IVerticalHazzatContent, IVideoContent } from "../../Models/IVariationInfo";
+import { ContentType, IHazzatContent, IHymnContent, IInformationContent, ITextContent, IVariationInfo, IVerticalHazzatContent, IVideoContent, TextParagraph } from "../../Models/IVariationInfo";
 import { ResourceTypes } from "../../Routes/ResourceTypes";
 import { TYPES } from "../../types";
 import { IDataProvider } from "../IDataProvider";
@@ -145,7 +145,7 @@ export class SqlDataProvider implements IDataProvider {
      * @param language The content language
      * @param getReasonFunc A method to get the reason info.
      */
-    private async _prepareTextContent(content: string, language: Language, getReasonFunc: () => Promise<HazzatDbSchema.IReason>): Promise<string> {
+    private async _prepareTextContent(content: string, language: Language, getReasonFunc: () => Promise<HazzatDbSchema.IReason>): Promise<TextParagraph[]> {
         let result = content;
 
         // Replace references to common content
@@ -153,6 +153,44 @@ export class SqlDataProvider implements IDataProvider {
 
         // Replace the reason for the season
         result = await this._replaceReason(result, language, getReasonFunc);
+
+        // Convert text content into a json array
+        const textContent = this._convertSqlTextToArray(result);
+
+        return textContent;
+    }
+
+    private _convertSqlTextToArray(textContent: string): TextParagraph[] {
+        if (!textContent) {
+            return null;
+        }
+
+        const contentArray = textContent.split(Constants.Tokens.ParagraphSeparator);
+        const result: TextParagraph[] = contentArray.map((paragraph) => {
+            // Empty content is allowed in case there's no content for this paragraph in
+            // this language
+            if (!paragraph) {
+                return null;
+            }
+
+            // See if there's description for this paragraph
+            const descriptionRegEx = new RegExp(Constants.Tokens.descriptionRegEx, "i");
+            const matchGroups = paragraph.match(descriptionRegEx);
+            if (!matchGroups) {
+                return {
+                    content: paragraph
+                };
+            }
+
+            const matchedString = matchGroups[0];
+            const description = matchGroups[1];
+            const content = paragraph.replace(matchedString, "");
+
+            return {
+                content,
+                description
+            };
+        });
 
         return result;
     }
@@ -163,7 +201,7 @@ export class SqlDataProvider implements IDataProvider {
         }
 
         let result = content;
-        const commonContentRegEx = new RegExp("\<common\=([0-9]+)\>", "i");
+        const commonContentRegEx = new RegExp(Constants.Tokens.commonContentRegEx, "i");
         let matchGroups = result.match(commonContentRegEx);
 
         // Keep replacing common as long as there are additional references

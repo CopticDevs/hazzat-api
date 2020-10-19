@@ -25,4 +25,13 @@ export namespace Constants {
         export const CommonId = "Common_ID";
         export const ReasonId = "Reason_ID";
     }
+
+    export namespace Tokens {
+        export const ParagraphSeparator = "<BR><BR>";
+        export const ReasonLong = "<reason_long>";
+        export const ReasonShort = "<reason_short>";
+
+        export const commonContentRegEx = "\<common\=([0-9]+)\>";
+        export const descriptionRegEx = "\<comment\=([^\>]+)\>";
+    }
 }

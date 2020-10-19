@@ -394,15 +394,32 @@ export class SeasonsController extends BaseController {
          * @swagger
          *
          * definitions:
+         *   TextParagraph:
+         *     type: object
+         *     properties:
+         *       content:
+         *         type: string
+         *       description:
+         *         type: string
+         *
          *   TextContent:
          *     type: object
          *     properties:
          *       arabicText:
-         *         type: string
+         *         schema:
+         *           type: array
+         *           items:
+         *             $ref: '#/definitions/TextParagraph'
          *       copticText:
-         *         type: string
+         *         schema:
+         *           type: array
+         *           items:
+         *             $ref: '#/definitions/TextParagraph'
          *       englishText:
-         *         type: string
+         *         schema:
+         *           type: array
+         *           items:
+         *             $ref: '#/definitions/TextParagraph'
          *
          *   HazzatContent:
          *     type: object

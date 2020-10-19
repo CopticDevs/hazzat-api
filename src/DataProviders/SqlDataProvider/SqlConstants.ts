@@ -30,8 +30,9 @@ export namespace Constants {
         export const ParagraphSeparator = "<BR><BR>";
         export const ReasonLong = "<reason_long>";
         export const ReasonShort = "<reason_short>";
+        export const commentStartTag = "<comment=";
 
         export const commonContentRegEx = "\<common\=([0-9]+)\>";
-        export const descriptionRegEx = "\<comment\=([^\>]+)\>";
+        export const commentRegEx = "\<comment\=([^\>]+)\>";
     }
 }

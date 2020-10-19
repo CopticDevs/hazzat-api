@@ -9,7 +9,7 @@ import { IFormatInfo } from "../../Models/IFormatInfo";
 import { IHymnInfo } from "../../Models/IHymnInfo";
 import { ISeasonInfo } from "../../Models/ISeasonInfo";
 import { IServiceInfo } from "../../Models/IServiceInfo";
-import { ContentType, IHazzatContent, IHymnContent, IInformationContent, ITextContent, IVariationInfo, IVerticalHazzatContent, IVideoContent, TextParagraph } from "../../Models/IVariationInfo";
+import { ContentType, IHazzatContent, IHymnContent, IInformationContent, ITextContent, IVariationInfo, IVerticalHazzatContent, IVideoContent, TextColumn, TextParagraph } from "../../Models/IVariationInfo";
 import { ResourceTypes } from "../../Routes/ResourceTypes";
 import { TYPES } from "../../types";
 import { IDataProvider } from "../IDataProvider";
@@ -79,49 +79,42 @@ export class SqlDataProvider implements IDataProvider {
         switch (serviceHymnFormatContentDbItem.Format_ID) {
             case 1: // Text
                 content = {
-                    arabicText: await this._prepareTextContent(
-                        serviceHymnFormatContentDbItem.Content_Arabic,
-                        Language.Arabic,
-                        getReasonFunc),
-                    copticText: await this._prepareTextContent(
-                        serviceHymnFormatContentDbItem.Content_Coptic,
-                        Language.Coptic,
-                        getReasonFunc),
-                    englishText: await this._prepareTextContent(
+                    paragraphs: await this._collateTextContent(
                         serviceHymnFormatContentDbItem.Content_English,
-                        Language.English,
+                        serviceHymnFormatContentDbItem.Content_Coptic,
+                        serviceHymnFormatContentDbItem.Content_Arabic,
                         getReasonFunc),
                     contentType: ContentType.TextContent
                 } as ITextContent;
                 break;
             case 2: // Hazzat
                 content = {
-                    arabicHazzat: await this._prepareHazzatContent(serviceHymnFormatContentDbItem.Content_Arabic),
-                    copticHazzat: await this._prepareHazzatContent(serviceHymnFormatContentDbItem.Content_Coptic),
                     englishHazzat: await this._prepareHazzatContent(serviceHymnFormatContentDbItem.Content_English),
+                    copticHazzat: await this._prepareHazzatContent(serviceHymnFormatContentDbItem.Content_Coptic),
+                    arabicHazzat: await this._prepareHazzatContent(serviceHymnFormatContentDbItem.Content_Arabic),
                     contentType: ContentType.HazzatContent
                 } as IHazzatContent;
                 break;
             case 3: // Vertical Hazzat
                 content = {
-                    arabicVerticalHazzat: await this._prepareHazzatContent(serviceHymnFormatContentDbItem.Content_Arabic),
-                    copticVerticalHazzat: await this._prepareHazzatContent(serviceHymnFormatContentDbItem.Content_Coptic),
                     englishVerticalHazzat: await this._prepareHazzatContent(serviceHymnFormatContentDbItem.Content_English),
+                    copticVerticalHazzat: await this._prepareHazzatContent(serviceHymnFormatContentDbItem.Content_Coptic),
+                    arabicVerticalHazzat: await this._prepareHazzatContent(serviceHymnFormatContentDbItem.Content_Arabic),
                     contentType: ContentType.VerticalHazzatContent
                 } as IVerticalHazzatContent;
                 break;
             case 6: // Video
                 content = {
-                    arabicVideo: serviceHymnFormatContentDbItem.Content_Arabic,
-                    copticVideo: serviceHymnFormatContentDbItem.Content_Coptic,
                     englishVideo: serviceHymnFormatContentDbItem.Content_English,
+                    copticVideo: serviceHymnFormatContentDbItem.Content_Coptic,
+                    arabicVideo: serviceHymnFormatContentDbItem.Content_Arabic,
                     contentType: ContentType.VideoContent
                 } as IVideoContent;
                 break;
             case 7: // Information
                 content = {
-                    arabicInformation: serviceHymnFormatContentDbItem.Content_Arabic,
                     englishInformation: serviceHymnFormatContentDbItem.Content_English,
+                    arabicInformation: serviceHymnFormatContentDbItem.Content_Arabic,
                     contentType: ContentType.InformationContent
                 } as IInformationContent;
                 break;
@@ -138,6 +131,123 @@ export class SqlDataProvider implements IDataProvider {
         };
     }
 
+    private _peekHasComment(paragraphs: string[]): boolean {
+        if (!paragraphs || paragraphs.length === 0) {
+            return false;
+        }
+
+        let content = paragraphs[0];
+        content = content && content.trim();
+
+        if (!content || content === "") {
+            return false;
+        }
+
+        if (content.toUpperCase().startsWith(Constants.Tokens.commentStartTag.toUpperCase())) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private _getCommentColumn(paragraphs: string[], language: Language): TextColumn {
+        if (!this._peekHasComment(paragraphs)) {
+            return null;
+        }
+
+        let content = paragraphs[0].trim();
+        const commentRegEx = new RegExp(Constants.Tokens.commentRegEx, "i");
+        const matchGroups = content.match(commentRegEx);
+        const matchedString = matchGroups[0];
+        const comment = matchGroups[1];
+        content = content.replace(matchedString, "");
+        content = content.trim();
+
+        // put the remaining content back to be handled in the next paragraph
+        paragraphs[0] = content;
+
+        return {
+            content: comment,
+            language
+        };
+    }
+
+    private _getTextColumn(paragraphs: string[], language: Language): TextColumn {
+        if (!paragraphs || paragraphs.length === 0) {
+            return null;
+        }
+
+        // In some cases this paragraph doesn't have content in the specified language
+        let content = paragraphs.shift();
+        content = content && content.trim();
+        if (!content || content === "") {
+            return null;
+        }
+
+        return {
+            content,
+            language
+        };
+    }
+
+    private async _collateTextContent(
+        englishText: string,
+        copticText: string,
+        arabicText: string,
+        getReasonFunc: () => Promise<HazzatDbSchema.IReason>): Promise<TextParagraph[]> {
+
+        const englishParagraphs = await this._prepareTextContent(englishText, Language.English, getReasonFunc);
+        const copticParagraphs = await this._prepareTextContent(copticText, Language.Coptic, getReasonFunc);
+        const arabicParagraphs = await this._prepareTextContent(arabicText, Language.Arabic, getReasonFunc);
+        const result: TextParagraph[] = [];
+
+        // keep processing while there's content left
+        while (englishParagraphs.length > 0 ||
+            copticParagraphs.length > 0 ||
+            arabicParagraphs.length > 0) {
+
+            let englishColumn: TextColumn;
+            let copticColumn: TextColumn;
+            let arabicColumn: TextColumn;
+            let isComment: boolean;
+
+            // check if any of the languages has a comment
+            if (this._peekHasComment(englishParagraphs) ||
+                this._peekHasComment(copticParagraphs) ||
+                this._peekHasComment(arabicParagraphs)) {
+                // These calls will only extract the comment from the languages that have it.  Otherwise
+                // it'll return null
+                englishColumn = this._getCommentColumn(englishParagraphs, Language.English);
+                copticColumn = this._getCommentColumn(copticParagraphs, Language.Coptic);
+                arabicColumn = this._getCommentColumn(arabicParagraphs, Language.Arabic);
+                isComment = true;
+            } else {
+                englishColumn = this._getTextColumn(englishParagraphs, Language.English);
+                copticColumn = this._getTextColumn(copticParagraphs, Language.Coptic);
+                arabicColumn = this._getTextColumn(arabicParagraphs, Language.Arabic);
+            }
+
+            const paragraph: TextParagraph = {
+                columns: [],
+                isComment
+            };
+
+            if (!!englishColumn) {
+                paragraph.columns.push(englishColumn);
+            }
+            if (!!copticColumn) {
+                paragraph.columns.push(copticColumn);
+            }
+            if (!!arabicColumn) {
+                paragraph.columns.push(arabicColumn);
+            }
+
+            result.push(paragraph);
+        }
+
+        return result;
+    }
+
     /**
      * Prepares the content as stored in storage and makes it ready to presented
      * to callers through API
@@ -145,54 +255,27 @@ export class SqlDataProvider implements IDataProvider {
      * @param language The content language
      * @param getReasonFunc A method to get the reason info.
      */
-    private async _prepareTextContent(content: string, language: Language, getReasonFunc: () => Promise<HazzatDbSchema.IReason>): Promise<TextParagraph[]> {
-        let result = content;
+    private async _prepareTextContent(content: string, language: Language, getReasonFunc: () => Promise<HazzatDbSchema.IReason>): Promise<string[]> {
+        let fixedContent = content;
 
         // Replace references to common content
-        result = await this._replaceCommonContent(result);
+        fixedContent = await this._replaceCommonContent(fixedContent);
 
         // Replace the reason for the season
-        result = await this._replaceReason(result, language, getReasonFunc);
+        fixedContent = await this._replaceReason(fixedContent, language, getReasonFunc);
 
         // Convert text content into a json array
-        const textContent = this._convertSqlTextToArray(result);
+        const splitContent = this._convertSqlTextToArray(fixedContent);
 
-        return textContent;
+        return splitContent;
     }
 
-    private _convertSqlTextToArray(textContent: string): TextParagraph[] {
+    private _convertSqlTextToArray(textContent: string): string[] {
         if (!textContent) {
-            return null;
+            return [];
         }
 
-        const contentArray = textContent.split(Constants.Tokens.ParagraphSeparator);
-        const result: TextParagraph[] = contentArray.map((paragraph) => {
-            // Empty content is allowed in case there's no content for this paragraph in
-            // this language
-            if (!paragraph) {
-                return null;
-            }
-
-            // See if there's description for this paragraph
-            const descriptionRegEx = new RegExp(Constants.Tokens.descriptionRegEx, "i");
-            const matchGroups = paragraph.match(descriptionRegEx);
-            if (!matchGroups) {
-                return {
-                    content: paragraph
-                };
-            }
-
-            const matchedString = matchGroups[0];
-            const description = matchGroups[1];
-            const content = paragraph.replace(matchedString, "");
-
-            return {
-                content,
-                description
-            };
-        });
-
-        return result;
+        return textContent.split(Constants.Tokens.ParagraphSeparator);
     }
 
     private async _replaceCommonContent(content: string): Promise<string> {

@@ -395,14 +395,14 @@ export class SeasonsController extends BaseController {
          *
          * definitions:
          *   TextColumn:
-         *   type: object
-         *   properties:
-         *     content:
-         *       type: string
-         *     language:
-         *       type: string
+         *     type: object
+         *     properties:
+         *       content:
+         *         type: string
+         *       language:
+         *         type: string
+         *     required: [content, language]
          *
-         * definitions:
          *   TextParagraph:
          *     type: object
          *     properties:
@@ -414,25 +414,17 @@ export class SeasonsController extends BaseController {
          *         type: string
          *       isComment:
          *         type: boolean
+         *     required: [columns]
          *
          *   TextContent:
          *     type: object
          *     properties:
-         *       arabicText:
+         *       paragraphs:
          *         schema:
          *           type: array
          *           items:
          *             $ref: '#/definitions/TextParagraph'
-         *       copticText:
-         *         schema:
-         *           type: array
-         *           items:
-         *             $ref: '#/definitions/TextParagraph'
-         *       englishText:
-         *         schema:
-         *           type: array
-         *           items:
-         *             $ref: '#/definitions/TextParagraph'
+         *     required: [paragraphs]
          *
          *   HazzatContent:
          *     type: object

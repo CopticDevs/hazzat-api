@@ -563,11 +563,8 @@ describe("Seasons controller", () => {
                     Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
                     Validators.validateTextContentResponse(res.body[0].content);
 
-                    Validators.validateTextParagraphArrayContentWithDescription(res.body[0].content.arabicText);
-                    Validators.validateTextParagraphArrayContent(res.body[0].content.copticText);
-                    Validators.validateTextParagraphArrayContentWithDescription(res.body[0].content.englishText);
-
-                    Validators.validateDoesNotInclude(res.body[0].content.englishText[0].content, "<comment=");
+                    res.body[0].content.paragraphs[0].should.have.property("isComment");
+                    Validators.validateDoesNotInclude(res.body[0].content.paragraphs[0].columns[0].content, Constants.Tokens.commentStartTag);
                     done();
                 });
         });
@@ -852,11 +849,8 @@ describe("Seasons controller", () => {
                     Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
                     Validators.validateTextContentResponse(res.body.content);
 
-                    Validators.validateTextParagraphArrayContentWithDescription(res.body.content.arabicText);
-                    Validators.validateTextParagraphArrayContent(res.body.content.copticText);
-                    Validators.validateTextParagraphArrayContentWithDescription(res.body.content.englishText);
-
-                    Validators.validateDoesNotInclude(res.body.content.englishText[0].content, "<comment=");
+                    res.body.content.paragraphs[0].should.have.property("isComment");
+                    Validators.validateDoesNotInclude(res.body.content.paragraphs[0].columns[0].content, Constants.Tokens.commentStartTag);
                     done();
                 });
         });

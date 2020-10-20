@@ -1,14 +1,21 @@
-﻿export const enum ContentType {
+﻿import { Language } from "../Common/Types/Language";
+
+export const enum ContentType {
     TextContent = "TextContent",
     HazzatContent = "HazzatContent",
     VerticalHazzatContent = "VerticalHazzatContent",
     VideoContent = "VideoContent",
-    InformationContent = "VideoContent"
+    InformationContent = "InformationContent"
+}
+
+export interface TextColumn {
+    content: string;
+    language: Language;
 }
 
 export interface TextParagraph {
-    content?: string;
-    description?: string;
+    columns: TextColumn[];
+    isComment?: boolean;
 }
 
 export interface ContentCommon {
@@ -16,9 +23,7 @@ export interface ContentCommon {
 }
 
 export interface ITextContent extends ContentCommon {
-    arabicText: TextParagraph[];
-    copticText: TextParagraph[];
-    englishText: TextParagraph[];
+    paragraphs: TextParagraph[];
 }
 
 export interface IHazzatContent extends ContentCommon {

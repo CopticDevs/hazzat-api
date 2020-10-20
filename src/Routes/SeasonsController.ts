@@ -394,32 +394,34 @@ export class SeasonsController extends BaseController {
          * @swagger
          *
          * definitions:
-         *   TextParagraph:
+         *   TextColumn:
          *     type: object
          *     properties:
          *       content:
          *         type: string
-         *       description:
+         *       language:
          *         type: string
+         *     required: [content, language]
+         *
+         *   TextParagraph:
+         *     type: object
+         *     properties:
+         *       columns:
+         *         type: array
+         *         items:
+         *           $ref: '#/definitions/TextColumn'
+         *       isComment:
+         *         type: boolean
+         *     required: [columns]
          *
          *   TextContent:
          *     type: object
          *     properties:
-         *       arabicText:
-         *         schema:
-         *           type: array
-         *           items:
-         *             $ref: '#/definitions/TextParagraph'
-         *       copticText:
-         *         schema:
-         *           type: array
-         *           items:
-         *             $ref: '#/definitions/TextParagraph'
-         *       englishText:
-         *         schema:
-         *           type: array
-         *           items:
-         *             $ref: '#/definitions/TextParagraph'
+         *       paragraphs:
+         *         type: array
+         *         items:
+         *           $ref: '#/definitions/TextParagraph'
+         *     required: [paragraphs]
          *
          *   HazzatContent:
          *     type: object
@@ -460,15 +462,14 @@ export class SeasonsController extends BaseController {
          *         type: string
          *
          *   HymnContent:
-         *     schema:
-         *       oneOf:
-         *         - $ref: '#/definitions/TextContent'
-         *         - $ref: '#/definitions/HazzatContent'
-         *         - $ref: '#/definitions/VerticalHazzatContent'
-         *         - $ref: '#/definitions/VideoContent'
-         *         - $ref: '#/definitions/InformationContent'
-         *       discriminator:
-         *         propertyName: contentType
+         *     oneOf:
+         *       - $ref: '#/definitions/TextContent'
+         *       - $ref: '#/definitions/HazzatContent'
+         *       - $ref: '#/definitions/VerticalHazzatContent'
+         *       - $ref: '#/definitions/VideoContent'
+         *       - $ref: '#/definitions/InformationContent'
+         *     discriminator:
+         *       propertyName: contentType
          *
          *   Variation:
          *     type: object

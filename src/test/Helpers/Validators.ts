@@ -77,21 +77,21 @@ export class Validators {
     }
 
     public static validateTextContentResponse(contentBody: any): void {
-        contentBody.should.have.property("arabicText");
-        contentBody.should.have.property("copticText");
-        contentBody.should.have.property("englishText");
+        contentBody.should.have.property("paragraphs");
         contentBody.should.have.property("contentType").eq(ContentType.TextContent);
+        Validators.validateTextParagraphArrayContent(contentBody.paragraphs);
     }
 
-    public static validateTextParagraphArrayContent(textContent: any): void {
-        textContent.should.be.a("array");
-        textContent[0].should.have.property("content");
+    public static validateTextParagraphArrayContent(textParagraphs: any): void {
+        textParagraphs.should.be.a("array");
+        textParagraphs[0].should.have.property("columns");
+        Validators.validateTextColumnArrayContent(textParagraphs[0].columns);
     }
 
-    public static validateTextParagraphArrayContentWithDescription(textContent: any): void {
-        textContent.should.be.a("array");
-        textContent[0].should.have.property("content");
-        textContent[0].should.have.property("description");
+    public static validateTextColumnArrayContent(textColumns: any): void {
+        textColumns.should.be.a("array");
+        textColumns[0].should.have.property("content");
+        textColumns[0].should.have.property("language");
     }
 
     public static validateHazzatContentResponse(contentBody: any): void {

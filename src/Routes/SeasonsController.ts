@@ -407,11 +407,9 @@ export class SeasonsController extends BaseController {
          *     type: object
          *     properties:
          *       columns:
-         *         schema:
-         *           type: array
-         *           items:
-         *             $ref: '#/definitions/TextColumn'
-         *         type: string
+         *         type: array
+         *         items:
+         *           $ref: '#/definitions/TextColumn'
          *       isComment:
          *         type: boolean
          *     required: [columns]
@@ -420,10 +418,9 @@ export class SeasonsController extends BaseController {
          *     type: object
          *     properties:
          *       paragraphs:
-         *         schema:
-         *           type: array
-         *           items:
-         *             $ref: '#/definitions/TextParagraph'
+         *         type: array
+         *         items:
+         *           $ref: '#/definitions/TextParagraph'
          *     required: [paragraphs]
          *
          *   HazzatContent:
@@ -465,15 +462,14 @@ export class SeasonsController extends BaseController {
          *         type: string
          *
          *   HymnContent:
-         *     schema:
-         *       oneOf:
-         *         - $ref: '#/definitions/TextContent'
-         *         - $ref: '#/definitions/HazzatContent'
-         *         - $ref: '#/definitions/VerticalHazzatContent'
-         *         - $ref: '#/definitions/VideoContent'
-         *         - $ref: '#/definitions/InformationContent'
-         *       discriminator:
-         *         propertyName: contentType
+         *     oneOf:
+         *       - $ref: '#/definitions/TextContent'
+         *       - $ref: '#/definitions/HazzatContent'
+         *       - $ref: '#/definitions/VerticalHazzatContent'
+         *       - $ref: '#/definitions/VideoContent'
+         *       - $ref: '#/definitions/InformationContent'
+         *     discriminator:
+         *       propertyName: contentType
          *
          *   Variation:
          *     type: object

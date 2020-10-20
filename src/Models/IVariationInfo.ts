@@ -5,7 +5,7 @@ export const enum ContentType {
     HazzatContent = "HazzatContent",
     VerticalHazzatContent = "VerticalHazzatContent",
     VideoContent = "VideoContent",
-    InformationContent = "VideoContent"
+    InformationContent = "InformationContent"
 }
 
 export interface TextColumn {

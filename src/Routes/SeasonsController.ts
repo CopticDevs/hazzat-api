@@ -1,5 +1,5 @@
 import * as express from "express";
-import { IDataProvider } from "../DataProviders/IDataProvider";
+import { IDataProvider } from "../Providers/DataProviders/IDataProvider";
 import { BaseController } from "./BaseController";
 import { ResourceTypes } from "./ResourceTypes";
 

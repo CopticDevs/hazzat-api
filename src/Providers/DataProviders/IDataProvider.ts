@@ -1,8 +1,8 @@
-﻿import { IFormatInfo } from "../Models/IFormatInfo";
-import { IHymnInfo } from "../Models/IHymnInfo";
-import { ISeasonInfo } from "../Models/ISeasonInfo";
-import { IServiceInfo } from "../Models/IServiceInfo";
-import { IHymnContent, IVariationInfo } from "../Models/IVariationInfo";
+﻿import { IFormatInfo } from "../../Models/IFormatInfo";
+import { IHymnInfo } from "../../Models/IHymnInfo";
+import { ISeasonInfo } from "../../Models/ISeasonInfo";
+import { IServiceInfo } from "../../Models/IServiceInfo";
+import { IHymnContent, IVariationInfo } from "../../Models/IVariationInfo";
 
 /**
  * Data Provider Interface

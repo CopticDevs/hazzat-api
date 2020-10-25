@@ -1,6 +1,6 @@
 import * as chai from "chai";
 import { ErrorCodes } from "../Common/Errors";
-import { Constants } from "../DataProviders/SqlDataProvider/SqlConstants";
+import { Constants } from "../Providers/DataProviders/SqlDataProvider/SqlConstants";
 import { ResourceTypes } from "../Routes/ResourceTypes";
 import { Validators } from "./Helpers/Validators";
 import chaiHttp = require("chai-http");

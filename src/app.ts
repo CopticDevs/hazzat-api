@@ -6,7 +6,7 @@ import * as swaggerUI from "swagger-ui-express";
 import { IConfiguration } from "./Common/Configuration";
 import { HttpError } from "./Common/HttpError";
 import { logger } from "./Common/Utils/Logger";
-import { IDataProvider } from "./DataProviders/IDataProvider";
+import { IDataProvider } from "./Providers/DataProviders/IDataProvider";
 import { myContainer } from "./inversify.config";
 import { HomeController } from "./Routes/HomeController";
 import { ResourceTypes } from "./Routes/ResourceTypes";

@@ -48,6 +48,8 @@
     <TypeScriptCompile Include="Models\IHymnInfo.ts" />
     <TypeScriptCompile Include="Models\IFormatInfo.ts" />
     <TypeScriptCompile Include="Models\IServiceInfo.ts" />
+    <TypeScriptCompile Include="Providers\ServiceProviders\HymnsProvider.ts" />
+    <TypeScriptCompile Include="Providers\ServiceProviders\IHymnsProvider.ts" />
     <TypeScriptCompile Include="Routes\ResourceTypes.ts" />
     <TypeScriptCompile Include="Routes\BaseController.ts" />
     <TypeScriptCompile Include="test\Helpers\Validators.ts" />
@@ -91,6 +93,7 @@
     <Folder Include="Providers\DataProviders\SqlDataProvider\" />
     <Folder Include="Configs\" />
     <Folder Include="Providers\" />
+    <Folder Include="Providers\ServiceProviders\" />
     <Folder Include="test\" />
     <Folder Include="Routes\" />
     <Folder Include="test\Helpers\" />

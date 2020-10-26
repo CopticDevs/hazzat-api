@@ -12,11 +12,15 @@ import { HomeController } from "./Routes/HomeController";
 import { ResourceTypes } from "./Routes/ResourceTypes";
 import { SeasonsController } from "./Routes/SeasonsController";
 import { TYPES } from "./types";
+import { IHymnsProvider } from "./Providers/ServiceProviders/IHymnsProvider";
 
 const configuration: IConfiguration = myContainer.get<IConfiguration>(TYPES.IConfiguration);
 const dataProvider: IDataProvider = myContainer.get<IDataProvider>(TYPES.IDataProvider);
+const hymnsProvider: IHymnsProvider = myContainer.get<IHymnsProvider>(TYPES.IHymnsProvider);
+
 const homeController = new HomeController();
-const seasonsController = new SeasonsController(dataProvider);
+// TODO: remove data provider from constructor parameters
+const seasonsController = new SeasonsController(hymnsProvider, dataProvider);
 
 const app = express();
 const port = configuration.port;

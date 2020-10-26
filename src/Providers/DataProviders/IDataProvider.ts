@@ -1,24 +1,21 @@
-﻿import { IFormatInfo } from "../../Models/IFormatInfo";
-import { IHymnInfo } from "../../Models/IHymnInfo";
-import { ISeasonInfo } from "../../Models/ISeasonInfo";
-import { IServiceInfo } from "../../Models/IServiceInfo";
-import { IHymnContent, IVariationInfo } from "../../Models/IVariationInfo";
+﻿import { IHymnContent, IVariationInfo } from "../../Models/IVariationInfo";
+import { HazzatDbSchema } from "./SqlDataProvider/HazzatDbSchema";
 
 /**
  * Data Provider Interface
  */
 export interface IDataProvider {
-    getSeasonList(): Promise<ISeasonInfo[]>;
-    getSeason(seasonId: string): Promise<ISeasonInfo>;
+    getSeasonList(): Promise<HazzatDbSchema.ISeason[]>;
+    getSeason(seasonId: string): Promise<HazzatDbSchema.ISeason>;
 
-    getSeasonServiceList(seasonId: string): Promise<IServiceInfo[]>;
-    getSeasonService(seasonId: string, serviceId: string): Promise<IServiceInfo>;
+    getSeasonServiceList(seasonId: string): Promise<HazzatDbSchema.IService[]>;
+    getSeasonService(seasonId: string, serviceId: string): Promise<HazzatDbSchema.IService>;
 
-    getServiceHymnList(seasonId: string, serviceId: string): Promise<IHymnInfo[]>;
-    getServiceHymn(seasonId: string, serviceId: string, hymnId: string): Promise<IHymnInfo>;
+    getServiceHymnList(seasonId: string, serviceId: string): Promise<HazzatDbSchema.IServiceHymn[]>;
+    getServiceHymn(seasonId: string, serviceId: string, hymnId: string): Promise<HazzatDbSchema.IServiceHymn>;
 
-    getServiceHymnFormatList(seasonId: string, serviceId: string, hymnId: string): Promise<IFormatInfo[]>;
-    getServiceHymnFormat(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IFormatInfo>;
+    getServiceHymnFormatList(seasonId: string, serviceId: string, hymnId: string): Promise<HazzatDbSchema.IServiceHymnFormat[]>;
+    getServiceHymnFormat(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<HazzatDbSchema.IServiceHymnFormat>;
 
     getServiceHymnsFormatVariationList<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IVariationInfo<T>[]>;
     getServiceHymnsFormatVariation<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string, contentId: string): Promise<IVariationInfo<T>>;

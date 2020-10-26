@@ -1,10 +1,10 @@
 import * as express from "express";
-import { IHymnsProvider } from "../Providers/ServiceProviders/IHymnsProvider";
+import { IHymnsServiceProvider } from "../Providers/ServiceProviders/IHymnsServiceProvider";
 import { BaseController } from "./BaseController";
 import { ResourceTypes } from "./ResourceTypes";
 
 export class SeasonsController extends BaseController {
-    constructor(hymnsProvider: IHymnsProvider) {
+    constructor(hymnsServiceProvider: IHymnsServiceProvider) {
         super();
 
         /**
@@ -43,7 +43,7 @@ export class SeasonsController extends BaseController {
          */
         this.router.get("/", async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsProvider.getSeasonList();
+                const result = await hymnsServiceProvider.getSeasonList();
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -84,7 +84,7 @@ export class SeasonsController extends BaseController {
          */
         this.router.get("/:seasonId(\\d+)", async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsProvider.getSeason(req.params.seasonId);
+                const result = await hymnsServiceProvider.getSeason(req.params.seasonId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -127,7 +127,7 @@ export class SeasonsController extends BaseController {
          */
         this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsProvider.getSeasonServiceList(req.params.seasonId);
+                const result = await hymnsServiceProvider.getSeasonServiceList(req.params.seasonId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -173,7 +173,7 @@ export class SeasonsController extends BaseController {
          */
         this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}/:serviceId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsProvider.getSeasonService(req.params.seasonId, req.params.serviceId);
+                const result = await hymnsServiceProvider.getSeasonService(req.params.seasonId, req.params.serviceId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -221,7 +221,7 @@ export class SeasonsController extends BaseController {
          */
         this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}/:serviceId(\\d+)/${ResourceTypes.Hymns}`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsProvider.getServiceHymnList(req.params.seasonId, req.params.serviceId);
+                const result = await hymnsServiceProvider.getServiceHymnList(req.params.seasonId, req.params.serviceId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -272,7 +272,7 @@ export class SeasonsController extends BaseController {
          */
         this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}/:serviceId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsProvider.getServiceHymn(req.params.seasonId, req.params.serviceId, req.params.hymnId);
+                const result = await hymnsServiceProvider.getServiceHymn(req.params.seasonId, req.params.serviceId, req.params.hymnId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -327,7 +327,7 @@ export class SeasonsController extends BaseController {
          */
         this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}/:serviceId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)/${ResourceTypes.Formats}`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsProvider.getServiceHymnFormatList(req.params.seasonId, req.params.serviceId, req.params.hymnId);
+                const result = await hymnsServiceProvider.getServiceHymnFormatList(req.params.seasonId, req.params.serviceId, req.params.hymnId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -383,7 +383,7 @@ export class SeasonsController extends BaseController {
          */
         this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}/:serviceId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)/${ResourceTypes.Formats}/:formatId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsProvider.getServiceHymnFormat(req.params.seasonId, req.params.serviceId, req.params.hymnId, req.params.formatId);
+                const result = await hymnsServiceProvider.getServiceHymnFormat(req.params.seasonId, req.params.serviceId, req.params.hymnId, req.params.formatId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -530,7 +530,7 @@ export class SeasonsController extends BaseController {
          */
         this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}/:serviceId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)/${ResourceTypes.Formats}/:formatId(\\d+)/${ResourceTypes.Variations}`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsProvider.getServiceHymnsFormatVariationList(req.params.seasonId, req.params.serviceId, req.params.hymnId, req.params.formatId);
+                const result = await hymnsServiceProvider.getServiceHymnsFormatVariationList(req.params.seasonId, req.params.serviceId, req.params.hymnId, req.params.formatId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -603,7 +603,7 @@ export class SeasonsController extends BaseController {
          */
         this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}/:serviceId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)/${ResourceTypes.Formats}/:formatId(\\d+)/${ResourceTypes.Variations}/:variationId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsProvider.getServiceHymnsFormatVariation(req.params.seasonId, req.params.serviceId, req.params.hymnId, req.params.formatId, req.params.variationId);
+                const result = await hymnsServiceProvider.getServiceHymnsFormatVariation(req.params.seasonId, req.params.serviceId, req.params.hymnId, req.params.formatId, req.params.variationId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

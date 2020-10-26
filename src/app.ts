@@ -7,14 +7,14 @@ import { IConfiguration } from "./Common/Configuration";
 import { HttpError } from "./Common/HttpError";
 import { logger } from "./Common/Utils/Logger";
 import { myContainer } from "./inversify.config";
-import { IHymnsProvider } from "./Providers/ServiceProviders/IHymnsProvider";
+import { IHymnsServiceProvider } from "./Providers/ServiceProviders/IHymnsServiceProvider";
 import { HomeController } from "./Routes/HomeController";
 import { ResourceTypes } from "./Routes/ResourceTypes";
 import { SeasonsController } from "./Routes/SeasonsController";
 import { TYPES } from "./types";
 
 const configuration: IConfiguration = myContainer.get<IConfiguration>(TYPES.IConfiguration);
-const hymnsProvider: IHymnsProvider = myContainer.get<IHymnsProvider>(TYPES.IHymnsProvider);
+const hymnsProvider: IHymnsServiceProvider = myContainer.get<IHymnsServiceProvider>(TYPES.IHymnsServiceProvider);
 
 const homeController = new HomeController();
 const seasonsController = new SeasonsController(hymnsProvider);

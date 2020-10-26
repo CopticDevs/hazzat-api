@@ -11,14 +11,14 @@ import { TYPES } from "../../types";
 import { IDataProvider } from "../DataProviders/IDataProvider";
 import { HazzatDbSchema } from "../DataProviders/SqlDataProvider/HazzatDbSchema";
 import { Constants } from "../DataProviders/SqlDataProvider/SqlConstants";
-import { IHymnsProvider } from "./IHymnsProvider";
+import { IHymnsServiceProvider } from "./IHymnsServiceProvider";
 
 /**
- * Hymns Provider
+ * Hymns Service Provider
  */
 @injectable()
-export class HymnsProvider implements IHymnsProvider {
-    private dataProvider: IDataProvider
+export class HymnsServiceProvider implements IHymnsServiceProvider {
+    private _dataProvider: IDataProvider
 
     private static _convertSeasonDbItemToSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason): ISeasonInfo {
         return {
@@ -73,7 +73,7 @@ export class HymnsProvider implements IHymnsProvider {
             const matchedString = matchGroups[0];
             const commonId = matchGroups[1];
 
-            const commonContent = await this.dataProvider.getCommonContent(commonId);
+            const commonContent = await this._dataProvider.getCommonContent(commonId);
 
             result = result.replace(matchedString, commonContent);
             matchGroups = result.match(commonContentRegEx);
@@ -301,7 +301,7 @@ export class HymnsProvider implements IHymnsProvider {
         let reasonInfo: HazzatDbSchema.IReason;
         const getReasonFunc = async () => {
             if (!reasonInfo) {
-                reasonInfo = await this.dataProvider.getReason(serviceHymnFormatContentDbItem.Reason_ID);
+                reasonInfo = await this._dataProvider.getReason(serviceHymnFormatContentDbItem.Reason_ID);
             }
             return reasonInfo;
         };
@@ -364,63 +364,63 @@ export class HymnsProvider implements IHymnsProvider {
     constructor(
         @inject(TYPES.IDataProvider) dataProvider: IDataProvider
     ) {
-        this.dataProvider = dataProvider;
+        this._dataProvider = dataProvider;
     }
 
     public async getSeasonList(): Promise<ISeasonInfo[]> {
-        const dbResult = await this.dataProvider.getSeasonList();
+        const dbResult = await this._dataProvider.getSeasonList();
 
         const seasons: ISeasonInfo[] = dbResult
-            .map((row) => HymnsProvider._convertSeasonDbItemToSeasonInfo(row));
+            .map((row) => HymnsServiceProvider._convertSeasonDbItemToSeasonInfo(row));
         return seasons;
     }
 
     public async getSeason(seasonId: string): Promise<ISeasonInfo> {
-        const dbResult = await this.dataProvider.getSeason(seasonId);
-        return HymnsProvider._convertSeasonDbItemToSeasonInfo(dbResult);
+        const dbResult = await this._dataProvider.getSeason(seasonId);
+        return HymnsServiceProvider._convertSeasonDbItemToSeasonInfo(dbResult);
     }
 
     public async getSeasonServiceList(seasonId: string): Promise<IServiceInfo[]> {
-        const dbResult = await this.dataProvider.getSeasonServiceList(seasonId);
+        const dbResult = await this._dataProvider.getSeasonServiceList(seasonId);
 
         const services: IServiceInfo[] = dbResult
-            .map((row) => HymnsProvider._convertServiceDbItemToServiceInfo(row));
+            .map((row) => HymnsServiceProvider._convertServiceDbItemToServiceInfo(row));
         return services;
     }
 
     public async getSeasonService(seasonId: string, serviceId: string): Promise<IServiceInfo> {
-        const dbResult = await this.dataProvider.getSeasonService(seasonId, serviceId);
-        return HymnsProvider._convertServiceDbItemToServiceInfo(dbResult);
+        const dbResult = await this._dataProvider.getSeasonService(seasonId, serviceId);
+        return HymnsServiceProvider._convertServiceDbItemToServiceInfo(dbResult);
     }
 
     public async getServiceHymnList(seasonId: string, serviceId: string): Promise<IHymnInfo[]> {
-        const dbResult = await this.dataProvider.getServiceHymnList(seasonId, serviceId);
+        const dbResult = await this._dataProvider.getServiceHymnList(seasonId, serviceId);
 
         const serviceHymns: IHymnInfo[] = dbResult
-            .map((row) => HymnsProvider._convertServiceHymnDbItemToHymnInfo(row));
+            .map((row) => HymnsServiceProvider._convertServiceHymnDbItemToHymnInfo(row));
         return serviceHymns;
     }
 
     public async getServiceHymn(seasonId: string, serviceId: string, hymnId: string): Promise<IHymnInfo> {
-        const dbResult = await this.dataProvider.getServiceHymn(seasonId, serviceId, hymnId);
-        return HymnsProvider._convertServiceHymnDbItemToHymnInfo(dbResult);
+        const dbResult = await this._dataProvider.getServiceHymn(seasonId, serviceId, hymnId);
+        return HymnsServiceProvider._convertServiceHymnDbItemToHymnInfo(dbResult);
     }
 
     public async getServiceHymnFormatList(seasonId: string, serviceId: string, hymnId: string): Promise<IFormatInfo[]> {
-        const dbResult = await this.dataProvider.getServiceHymnFormatList(seasonId, serviceId, hymnId);
+        const dbResult = await this._dataProvider.getServiceHymnFormatList(seasonId, serviceId, hymnId);
 
         const serviceHymns: IFormatInfo[] = dbResult
-            .map((row) => HymnsProvider._convertServiceHymnFormatDbItemToFormatInfo(row));
+            .map((row) => HymnsServiceProvider._convertServiceHymnFormatDbItemToFormatInfo(row));
         return serviceHymns;
     }
 
     public async getServiceHymnFormat(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IFormatInfo> {
-        const dbResult = await this.dataProvider.getServiceHymnFormat(seasonId, serviceId, hymnId, formatId);
-        return HymnsProvider._convertServiceHymnFormatDbItemToFormatInfo(dbResult);
+        const dbResult = await this._dataProvider.getServiceHymnFormat(seasonId, serviceId, hymnId, formatId);
+        return HymnsServiceProvider._convertServiceHymnFormatDbItemToFormatInfo(dbResult);
     }
 
     public async getServiceHymnsFormatVariationList<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IVariationInfo<T>[]> {
-        const dbResult = await this.dataProvider.getServiceHymnsFormatVariationList(seasonId, serviceId, hymnId, formatId);
+        const dbResult = await this._dataProvider.getServiceHymnsFormatVariationList(seasonId, serviceId, hymnId, formatId);
 
         const serviceHymns: IVariationInfo<T>[] = await Promise.all(dbResult
             .map((row) => this._convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo<T>(row)));
@@ -428,7 +428,7 @@ export class HymnsProvider implements IHymnsProvider {
     }
 
     public async getServiceHymnsFormatVariation<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string, contentId: string): Promise<IVariationInfo<T>> {
-        const dbResult = await this.dataProvider.getServiceHymnsFormatVariation(seasonId, serviceId, hymnId, formatId, contentId);
+        const dbResult = await this._dataProvider.getServiceHymnsFormatVariation(seasonId, serviceId, hymnId, formatId, contentId);
         return await this._convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo<T>(dbResult);
     }
 

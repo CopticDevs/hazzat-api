@@ -7,7 +7,7 @@ import { IHymnContent, IVariationInfo } from "../../Models/IVariationInfo";
 /**
  * Hymns Provider Interface
  */
-export interface IHymnsProvider {
+export interface IHymnsServiceProvider {
     getSeasonList(): Promise<ISeasonInfo[]>;
     getSeason(seasonId: string): Promise<ISeasonInfo>;
 
@@ -22,6 +22,4 @@ export interface IHymnsProvider {
 
     getServiceHymnsFormatVariationList<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IVariationInfo<T>[]>;
     getServiceHymnsFormatVariation<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string, contentId: string): Promise<IVariationInfo<T>>;
-
-    // getCommonContent(commonId: string): Promise<string>;
 }

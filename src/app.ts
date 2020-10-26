@@ -6,17 +6,18 @@ import * as swaggerUI from "swagger-ui-express";
 import { IConfiguration } from "./Common/Configuration";
 import { HttpError } from "./Common/HttpError";
 import { logger } from "./Common/Utils/Logger";
-import { IDataProvider } from "./DataProviders/IDataProvider";
 import { myContainer } from "./inversify.config";
+import { IHymnsServiceProvider } from "./Providers/ServiceProviders/IHymnsServiceProvider";
 import { HomeController } from "./Routes/HomeController";
 import { ResourceTypes } from "./Routes/ResourceTypes";
 import { SeasonsController } from "./Routes/SeasonsController";
 import { TYPES } from "./types";
 
 const configuration: IConfiguration = myContainer.get<IConfiguration>(TYPES.IConfiguration);
-const dataProvider: IDataProvider = myContainer.get<IDataProvider>(TYPES.IDataProvider);
+const hymnsProvider: IHymnsServiceProvider = myContainer.get<IHymnsServiceProvider>(TYPES.IHymnsServiceProvider);
+
 const homeController = new HomeController();
-const seasonsController = new SeasonsController(dataProvider);
+const seasonsController = new SeasonsController(hymnsProvider);
 
 const app = express();
 const port = configuration.port;

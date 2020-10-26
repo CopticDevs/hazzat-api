@@ -1,11 +1,10 @@
 import * as express from "express";
-import { IDataProvider } from "../Providers/DataProviders/IDataProvider";
 import { IHymnsProvider } from "../Providers/ServiceProviders/IHymnsProvider";
 import { BaseController } from "./BaseController";
 import { ResourceTypes } from "./ResourceTypes";
 
 export class SeasonsController extends BaseController {
-    constructor(hymnsProvider: IHymnsProvider, dataProvider: IDataProvider) {
+    constructor(hymnsProvider: IHymnsProvider) {
         super();
 
         /**
@@ -531,7 +530,7 @@ export class SeasonsController extends BaseController {
          */
         this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}/:serviceId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)/${ResourceTypes.Formats}/:formatId(\\d+)/${ResourceTypes.Variations}`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await dataProvider.getServiceHymnsFormatVariationList(req.params.seasonId, req.params.serviceId, req.params.hymnId, req.params.formatId);
+                const result = await hymnsProvider.getServiceHymnsFormatVariationList(req.params.seasonId, req.params.serviceId, req.params.hymnId, req.params.formatId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -604,7 +603,7 @@ export class SeasonsController extends BaseController {
          */
         this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}/:serviceId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)/${ResourceTypes.Formats}/:formatId(\\d+)/${ResourceTypes.Variations}/:variationId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await dataProvider.getServiceHymnsFormatVariation(req.params.seasonId, req.params.serviceId, req.params.hymnId, req.params.formatId, req.params.variationId);
+                const result = await hymnsProvider.getServiceHymnsFormatVariation(req.params.seasonId, req.params.serviceId, req.params.hymnId, req.params.formatId, req.params.variationId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

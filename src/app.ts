@@ -6,21 +6,18 @@ import * as swaggerUI from "swagger-ui-express";
 import { IConfiguration } from "./Common/Configuration";
 import { HttpError } from "./Common/HttpError";
 import { logger } from "./Common/Utils/Logger";
-import { IDataProvider } from "./Providers/DataProviders/IDataProvider";
 import { myContainer } from "./inversify.config";
+import { IHymnsProvider } from "./Providers/ServiceProviders/IHymnsProvider";
 import { HomeController } from "./Routes/HomeController";
 import { ResourceTypes } from "./Routes/ResourceTypes";
 import { SeasonsController } from "./Routes/SeasonsController";
 import { TYPES } from "./types";
-import { IHymnsProvider } from "./Providers/ServiceProviders/IHymnsProvider";
 
 const configuration: IConfiguration = myContainer.get<IConfiguration>(TYPES.IConfiguration);
-const dataProvider: IDataProvider = myContainer.get<IDataProvider>(TYPES.IDataProvider);
 const hymnsProvider: IHymnsProvider = myContainer.get<IHymnsProvider>(TYPES.IHymnsProvider);
 
 const homeController = new HomeController();
-// TODO: remove data provider from constructor parameters
-const seasonsController = new SeasonsController(hymnsProvider, dataProvider);
+const seasonsController = new SeasonsController(hymnsProvider);
 
 const app = express();
 const port = configuration.port;

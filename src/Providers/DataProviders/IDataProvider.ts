@@ -1,5 +1,4 @@
-﻿import { IHymnContent, IVariationInfo } from "../../Models/IVariationInfo";
-import { HazzatDbSchema } from "./SqlDataProvider/HazzatDbSchema";
+﻿import { HazzatDbSchema } from "./SqlDataProvider/HazzatDbSchema";
 
 /**
  * Data Provider Interface
@@ -17,8 +16,9 @@ export interface IDataProvider {
     getServiceHymnFormatList(seasonId: string, serviceId: string, hymnId: string): Promise<HazzatDbSchema.IServiceHymnFormat[]>;
     getServiceHymnFormat(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<HazzatDbSchema.IServiceHymnFormat>;
 
-    getServiceHymnsFormatVariationList<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IVariationInfo<T>[]>;
-    getServiceHymnsFormatVariation<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string, contentId: string): Promise<IVariationInfo<T>>;
+    getServiceHymnsFormatVariationList(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<HazzatDbSchema.IServiceHymnFormatContent[]>;
+    getServiceHymnsFormatVariation(seasonId: string, serviceId: string, hymnId: string, formatId: string, contentId: string): Promise<HazzatDbSchema.IServiceHymnFormatContent>;
 
     getCommonContent(commonId: string): Promise<string>;
+    getReason(reasonId: number): Promise<HazzatDbSchema.IReason>;
 }

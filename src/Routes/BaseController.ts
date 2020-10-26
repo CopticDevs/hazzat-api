@@ -17,6 +17,9 @@ export class BaseController {
                 case ErrorCodes[ErrorCodes.InvalidParameterError]:
                     res.status(400).send(ex);
                     break;
+                case ErrorCodes[ErrorCodes.NotSupportedError]:
+                    res.status(501).send(ex);
+                    break;
                 case ErrorCodes[ErrorCodes.NotFoundError]:
                     res.status(404).send(ex);
                     break;

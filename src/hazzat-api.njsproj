@@ -26,7 +26,7 @@
     <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
     <TypeScriptToolsVersion>3.9</TypeScriptToolsVersion>
     <EnableTypeScript>true</EnableTypeScript>
-    <StartWebBrowser>true</StartWebBrowser>
+    <StartWebBrowser>True</StartWebBrowser>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,37 +37,44 @@
   <ItemGroup>
     <TypeScriptCompile Include="Common\HttpError.ts" />
     <TypeScriptCompile Include="Common\Errors.ts" />
+    <TypeScriptCompile Include="Common\Types\Language.ts" />
     <TypeScriptCompile Include="Common\Types\FormatType.ts" />
     <TypeScriptCompile Include="Common\Types\StringMap.ts" />
     <TypeScriptCompile Include="Common\Utils\Logger.ts" />
     <TypeScriptCompile Include="Common\Utils\SqlHelpers.ts" />
-    <TypeScriptCompile Include="DataProviders\SqlDataProvider\SqlConstants.ts" />
+    <TypeScriptCompile Include="Providers\DataProviders\SqlDataProvider\SqlConstants.ts" />
     <TypeScriptCompile Include="inversify.config.ts" />
-    <TypeScriptCompile Include="Models\IServiceHymnInfo.ts" />
-    <TypeScriptCompile Include="Models\IServiceHymnFormatInfo.ts" />
+    <TypeScriptCompile Include="Models\IVariationInfo.ts" />
+    <TypeScriptCompile Include="Models\IHymnInfo.ts" />
+    <TypeScriptCompile Include="Models\IFormatInfo.ts" />
     <TypeScriptCompile Include="Models\IServiceInfo.ts" />
+    <TypeScriptCompile Include="Providers\ServiceProviders\HymnsServiceProvider.ts" />
+    <TypeScriptCompile Include="Providers\ServiceProviders\IHymnsServiceProvider.ts" />
+    <TypeScriptCompile Include="Routes\ResourceTypes.ts" />
     <TypeScriptCompile Include="Routes\BaseController.ts" />
     <TypeScriptCompile Include="test\Helpers\Validators.ts" />
     <TypeScriptCompile Include="test\seasons.spec.ts" />
     <TypeScriptCompile Include="types.ts" />
     <TypeScriptCompile Include="app.ts" />
     <TypeScriptCompile Include="Common\Configuration.ts" />
-    <TypeScriptCompile Include="DataProviders\SqlDataProvider\HazzatDbSchema.ts" />
+    <TypeScriptCompile Include="Providers\DataProviders\SqlDataProvider\HazzatDbSchema.ts" />
     <TypeScriptCompile Include="Models\ISeasonInfo.ts" />
-    <TypeScriptCompile Include="DataProviders\IDataProvider.ts" />
-    <TypeScriptCompile Include="DataProviders\SqlDataProvider\SqlDataProvider.ts" />
+    <TypeScriptCompile Include="Providers\DataProviders\IDataProvider.ts" />
+    <TypeScriptCompile Include="Providers\DataProviders\SqlDataProvider\SqlDataProvider.ts" />
     <TypeScriptCompile Include="Routes\HomeController.ts" />
     <TypeScriptCompile Include="Routes\SeasonsController.ts" />
-    <None Include="hazzat-api - Web Deploy.pubxml" />
     <Content Include="Configs\prod.json" />
-    <None Include="hazzat-api-ppe - Web Deploy.pubxml" />
-    <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.03.Uninstall.sql" />
-    <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.03.Install.sql" />
-    <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.02.Uninstall.sql" />
-    <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.02.Install.sql" />
-    <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.01.Install.sql" />
-    <Content Include="DataProviders\SqlDataProvider\Scripts\00.00.01.Uninstall.sql" />
-    <Content Include="DataProviders\SqlDataProvider\Scripts\SqlMetadata.sql" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.05.Uninstall.sql" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.05.Install.sql" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.04.Uninstall.sql" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.04.Install.sql" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.03.Uninstall.sql" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.03.Install.sql" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.02.Uninstall.sql" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.02.Install.sql" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.01.Install.sql" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.01.Uninstall.sql" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\SqlMetadata.sql" />
     <Content Include="tslint.json" />
     <Content Include="Configs\dev.json" />
     <Content Include="tsconfig.json" />
@@ -80,11 +87,13 @@
     <Folder Include="Common\" />
     <Folder Include="Common\Types\" />
     <Folder Include="Common\Utils\" />
-    <Folder Include="DataProviders\SqlDataProvider\Scripts\" />
+    <Folder Include="Providers\DataProviders\SqlDataProvider\Scripts\" />
     <Folder Include="Models\" />
-    <Folder Include="DataProviders\" />
-    <Folder Include="DataProviders\SqlDataProvider\" />
+    <Folder Include="Providers\DataProviders\" />
+    <Folder Include="Providers\DataProviders\SqlDataProvider\" />
     <Folder Include="Configs\" />
+    <Folder Include="Providers\" />
+    <Folder Include="Providers\ServiceProviders\" />
     <Folder Include="test\" />
     <Folder Include="Routes\" />
     <Folder Include="test\Helpers\" />

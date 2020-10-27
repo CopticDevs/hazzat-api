@@ -19,6 +19,7 @@
     "name": "Fady H. Wahba"
   },
   "dependencies": {
+    "diagnostics": "^2.0.2",
     "express": "^4.17.1",
     "inversify": "^5.0.1",
     "mssql": "^6.2.1",

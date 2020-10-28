@@ -22,7 +22,7 @@
     "diagnostics": "^2.0.2",
     "express": "^4.17.1",
     "inversify": "^5.0.1",
-    "mssql": "^6.2.1",
+    "mssql": "^6.2.3",
     "nconf": "^0.10.0",
     "q": "^1.5.1",
     "reflect-metadata": "^0.1.13",

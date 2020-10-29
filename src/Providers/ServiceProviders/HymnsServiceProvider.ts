@@ -1,4 +1,5 @@
 ﻿ import { inject, injectable } from "inversify";
+import { measure } from "../../Common/Utils/MeasureDecorator";
 import { IFormatInfo } from "../../Models/IFormatInfo";
 import { IHymnInfo } from "../../Models/IHymnInfo";
 import { ISeasonInfo } from "../../Models/ISeasonInfo";
@@ -6,7 +7,7 @@ import { IServiceInfo } from "../../Models/IServiceInfo";
 import { IHymnContent, IVariationInfo } from "../../Models/IVariationInfo";
 import { TYPES } from "../../types";
 import { IDataProvider } from "../DataProviders/IDataProvider";
-import { HazzatContentUtils } from "./Helpers/HazzatContentUrils";
+import { HazzatContentUtils } from "./Helpers/HazzatContentUtils";
 import { IHymnsServiceProvider } from "./IHymnsServiceProvider";
 
 /**
@@ -22,6 +23,7 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
         this._dataProvider = dataProvider;
     }
 
+    @measure
     public async getSeasonList(): Promise<ISeasonInfo[]> {
         const dbResult = await this._dataProvider.getSeasonList();
 
@@ -30,11 +32,13 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
         return seasons;
     }
 
+    @measure
     public async getSeason(seasonId: string): Promise<ISeasonInfo> {
         const dbResult = await this._dataProvider.getSeason(seasonId);
         return HazzatContentUtils.convertSeasonDbItemToSeasonInfo(dbResult);
     }
 
+    @measure
     public async getSeasonServiceList(seasonId: string): Promise<IServiceInfo[]> {
         const dbResult = await this._dataProvider.getSeasonServiceList(seasonId);
 
@@ -43,11 +47,13 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
         return services;
     }
 
+    @measure
     public async getSeasonService(seasonId: string, serviceId: string): Promise<IServiceInfo> {
         const dbResult = await this._dataProvider.getSeasonService(seasonId, serviceId);
         return HazzatContentUtils.convertServiceDbItemToServiceInfo(dbResult);
     }
 
+    @measure
     public async getServiceHymnList(seasonId: string, serviceId: string): Promise<IHymnInfo[]> {
         const dbResult = await this._dataProvider.getServiceHymnList(seasonId, serviceId);
 
@@ -56,11 +62,13 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
         return serviceHymns;
     }
 
+    @measure
     public async getServiceHymn(seasonId: string, serviceId: string, hymnId: string): Promise<IHymnInfo> {
         const dbResult = await this._dataProvider.getServiceHymn(seasonId, serviceId, hymnId);
         return HazzatContentUtils.convertServiceHymnDbItemToHymnInfo(dbResult);
     }
 
+    @measure
     public async getServiceHymnFormatList(seasonId: string, serviceId: string, hymnId: string): Promise<IFormatInfo[]> {
         const dbResult = await this._dataProvider.getServiceHymnFormatList(seasonId, serviceId, hymnId);
 
@@ -69,11 +77,13 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
         return serviceHymns;
     }
 
+    @measure
     public async getServiceHymnFormat(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IFormatInfo> {
         const dbResult = await this._dataProvider.getServiceHymnFormat(seasonId, serviceId, hymnId, formatId);
         return HazzatContentUtils.convertServiceHymnFormatDbItemToFormatInfo(dbResult);
     }
 
+    @measure
     public async getServiceHymnsFormatVariationList<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IVariationInfo<T>[]> {
         const dbResult = await this._dataProvider.getServiceHymnsFormatVariationList(seasonId, serviceId, hymnId, formatId);
 
@@ -82,6 +92,7 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
         return serviceHymns;
     }
 
+    @measure
     public async getServiceHymnsFormatVariation<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string, contentId: string): Promise<IVariationInfo<T>> {
         const dbResult = await this._dataProvider.getServiceHymnsFormatVariation(seasonId, serviceId, hymnId, formatId, contentId);
         return await HazzatContentUtils.convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo<T>(dbResult, this._dataProvider);

@@ -40,6 +40,7 @@
     <TypeScriptCompile Include="Common\Types\Language.ts" />
     <TypeScriptCompile Include="Common\Types\FormatType.ts" />
     <TypeScriptCompile Include="Common\Types\StringMap.ts" />
+    <TypeScriptCompile Include="Common\Utils\MeasureDecorator.ts" />
     <TypeScriptCompile Include="Common\Utils\Logger.ts" />
     <TypeScriptCompile Include="Common\Utils\SqlHelpers.ts" />
     <TypeScriptCompile Include="Providers\DataProviders\SqlDataProvider\SqlConstants.ts" />
@@ -48,6 +49,7 @@
     <TypeScriptCompile Include="Models\IHymnInfo.ts" />
     <TypeScriptCompile Include="Models\IFormatInfo.ts" />
     <TypeScriptCompile Include="Models\IServiceInfo.ts" />
+    <TypeScriptCompile Include="Providers\ServiceProviders\Helpers\HazzatContentUtils.ts" />
     <TypeScriptCompile Include="Providers\ServiceProviders\HymnsServiceProvider.ts" />
     <TypeScriptCompile Include="Providers\ServiceProviders\IHymnsServiceProvider.ts" />
     <TypeScriptCompile Include="Routes\ResourceTypes.ts" />
@@ -94,6 +96,7 @@
     <Folder Include="Configs\" />
     <Folder Include="Providers\" />
     <Folder Include="Providers\ServiceProviders\" />
+    <Folder Include="Providers\ServiceProviders\Helpers\" />
     <Folder Include="test\" />
     <Folder Include="Routes\" />
     <Folder Include="test\Helpers\" />

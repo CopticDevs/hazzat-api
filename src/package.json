@@ -26,7 +26,7 @@
     "nconf": "^0.11.0",
     "q": "^1.5.1",
     "reflect-metadata": "^0.1.13",
-    "tedious": "^9.2.1",
+    "tedious": "^9.2.3",
     "winston": "^3.3.3"
   },
   "devDependencies": {

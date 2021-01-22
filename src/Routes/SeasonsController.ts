@@ -443,6 +443,12 @@ export class SeasonsController extends BaseController {
          *       englishVerticalHazzat:
          *         type: string
          *
+         *   AudioContent:
+         *     type: object
+         *     properties:
+         *       audioFilePath:
+         *         type: string
+         *
          *   VideoContent:
          *     type: object
          *     properties:
@@ -466,6 +472,7 @@ export class SeasonsController extends BaseController {
          *       - $ref: '#/definitions/TextContent'
          *       - $ref: '#/definitions/HazzatContent'
          *       - $ref: '#/definitions/VerticalHazzatContent'
+         *       - $ref: '#/definitions/AudioContent'
          *       - $ref: '#/definitions/VideoContent'
          *       - $ref: '#/definitions/InformationContent'
          *     discriminator:

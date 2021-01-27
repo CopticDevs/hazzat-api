@@ -4,6 +4,7 @@ export const enum ContentType {
     TextContent = "TextContent",
     HazzatContent = "HazzatContent",
     VerticalHazzatContent = "VerticalHazzatContent",
+    AudioContent = "AudioContent",
     VideoContent = "VideoContent",
     InformationContent = "InformationContent"
 }
@@ -36,6 +37,10 @@ export interface IVerticalHazzatContent extends ContentCommon {
     arabicVerticalHazzat: string;
     copticVerticalHazzat: string;
     englishVerticalHazzat: string;
+}
+
+export interface IAudioContent extends ContentCommon {
+    audioFilePath: string;
 }
 
 export interface IVideoContent extends ContentCommon {

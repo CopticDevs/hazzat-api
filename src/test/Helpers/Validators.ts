@@ -108,6 +108,11 @@ export class Validators {
         contentBody.should.have.property("contentType").eq(ContentType.VerticalHazzatContent);
     }
 
+    public static validateAudioContentResponse(contentBody: any): void {
+        contentBody.should.have.property("audioFilePath");
+        contentBody.should.have.property("contentType").eq(ContentType.AudioContent);
+    }
+
     public static validateVideoContentResponse(contentBody: any): void {
         contentBody.should.have.property("arabicVideo");
         contentBody.should.have.property("copticVideo");

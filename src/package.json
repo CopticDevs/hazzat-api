@@ -23,10 +23,10 @@
     "express": "^4.17.1",
     "inversify": "^5.0.5",
     "mssql": "^6.3.1",
-    "nconf": "^0.11.1",
+    "nconf": "^0.11.2",
     "q": "^1.5.1",
     "reflect-metadata": "^0.1.13",
-    "tedious": "^9.2.3",
+    "tedious": "^11.0.1",
     "winston": "^3.3.3"
   },
   "devDependencies": {

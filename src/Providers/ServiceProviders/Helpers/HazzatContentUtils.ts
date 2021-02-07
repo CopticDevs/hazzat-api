@@ -4,7 +4,7 @@ import { IFormatInfo } from "../../../Models/IFormatInfo";
 import { IHymnInfo } from "../../../Models/IHymnInfo";
 import { ISeasonInfo } from "../../../Models/ISeasonInfo";
 import { IServiceInfo } from "../../../Models/IServiceInfo";
-import { ContentType, IHazzatContent, IHymnContent, IInformationContent, ITextContent, IVariationInfo, IVerticalHazzatContent, IVideoContent, TextColumn, TextParagraph } from "../../../Models/IVariationInfo";
+import { ContentType, IAudioContent, IHazzatContent, IHymnContent, IInformationContent, ITextContent, IVariationInfo, IVerticalHazzatContent, IVideoContent, TextColumn, TextParagraph } from "../../../Models/IVariationInfo";
 import { ResourceTypes } from "../../../Routes/ResourceTypes";
 import { IDataProvider } from "../../DataProviders/IDataProvider";
 import { HazzatDbSchema } from "../../DataProviders/SqlDataProvider/HazzatDbSchema";
@@ -330,6 +330,12 @@ export class HazzatContentUtils {
                     arabicVerticalHazzat: await HazzatContentUtils._prepareHazzatContent(serviceHymnFormatContentDbItem.Content_Arabic, dataProvider),
                     contentType: ContentType.VerticalHazzatContent
                 } as IVerticalHazzatContent;
+                break;
+            case 5: // Audio
+                content = {
+                    audioFilePath: serviceHymnFormatContentDbItem.Content,
+                    contentType: ContentType.AudioContent
+                } as IAudioContent;
                 break;
             case 6: // Video
                 content = {

@@ -1,0 +1,65 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "subscriptionId": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "location": {
+            "type": "string"
+        },
+        "hostingPlanName": {
+            "type": "string"
+        },
+        "serverFarmResourceGroup": {
+            "type": "string"
+        },
+        "alwaysOn": {
+            "type": "bool"
+        },
+        "currentStack": {
+            "type": "string"
+        },
+        "phpVersion": {
+            "type": "string"
+        },
+        "nodeVersion": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "apiVersion": "2018-11-01",
+            "name": "[parameters('name')]",
+            "type": "Microsoft.Web/sites",
+            "location": "[parameters('location')]",
+            "tags": {},
+            "dependsOn": [],
+            "properties": {
+                "name": "[parameters('name')]",
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "WEBSITE_NODE_DEFAULT_VERSION",
+                            "value": "[parameters('nodeVersion')]"
+                        }
+                    ],
+                    "metadata": [
+                        {
+                            "name": "CURRENT_STACK",
+                            "value": "[parameters('currentStack')]"
+                        }
+                    ],
+                    "phpVersion": "[parameters('phpVersion')]",
+                    "nodeVersion": "[parameters('nodeVersion')]",
+                    "alwaysOn": "[parameters('alwaysOn')]"
+                },
+                "serverFarmId": "[concat('/subscriptions/', parameters('subscriptionId'),'/resourcegroups/', parameters('serverFarmResourceGroup'), '/providers/Microsoft.Web/serverfarms/', parameters('hostingPlanName'))]",
+                "clientAffinityEnabled": true
+            }
+        }
+    ]
+}

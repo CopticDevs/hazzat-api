@@ -1,0 +1,33 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "subscriptionId": {
+            "value": "aa66068f-40d2-4779-ae87-5fa6b78694ef"
+        },
+        "name": {
+            "value": "hazzat-api"
+        },
+        "location": {
+            "value": "Central US"
+        },
+        "hostingPlanName": {
+            "value": "hazzat-apiPlan"
+        },
+        "serverFarmResourceGroup": {
+            "value": "hazzat-api-rg"
+        },
+        "alwaysOn": {
+            "value": false
+        },
+        "currentStack": {
+            "value": "node"
+        },
+        "phpVersion": {
+            "value": "OFF"
+        },
+        "nodeVersion": {
+            "value": "10.14.1"
+        }
+    }
+}

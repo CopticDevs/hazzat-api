@@ -64,4 +64,4 @@ steps:
     displayName: 'Publish Artifact: drop'
     inputs:
       path: '$(Build.ArtifactStagingDirectory)\ArtifactsToBePublished'
-      artifact: HazzatBuildPPE
+      artifact: HazzatBuildDEV

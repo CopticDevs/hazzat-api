@@ -12,7 +12,7 @@
     "prestart": "npm run build",
     "start": "node ./dist/app",
     "init": "npm install --no-color --no-optional",
-    "test": "mocha --timeout 20000 -r ts-node/register ./test/*.spec.ts"
+    "test": "mocha --reporter mocha-trx-reporter --reporter-options output=testResults.trx --timeout 20000 -r ts-node/register ./test/*.spec.ts"
   },
   "description": "hazzat-api",
   "author": {
@@ -26,7 +26,7 @@
     "nconf": "^0.11.2",
     "q": "^1.5.1",
     "reflect-metadata": "^0.1.13",
-    "tedious": "^11.0.1",
+    "tedious": "^11.0.3",
     "winston": "^3.3.3"
   },
   "devDependencies": {
@@ -35,13 +35,14 @@
     "@types/mocha": "^8.2.0",
     "@types/mssql": "^6.0.7",
     "@types/nconf": "^0.10.0",
-    "@types/node": "^14.14.22",
+    "@types/node": "^14.14.25",
     "@types/q": "^1.5.4",
-    "chai": "^4.2.0",
+    "chai": "^4.3.0",
     "chai-http": "^4.3.0",
     "copyfiles": "^2.4.1",
     "mkdirp": "^1.0.4",
     "mocha": "^8.2.1",
+    "mocha-trx-reporter": "^3.3.1",
     "swagger-jsdoc": "^4.0.0",
     "swagger-ui-express": "^4.1.4",
     "ts-node": "^9.1.1",

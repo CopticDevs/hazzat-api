@@ -1,5 +1,4 @@
-trigger:
-- develop
+trigger: none
 
 pr: none
 
@@ -11,8 +10,8 @@ steps:
   # Download Azure Key Vault secrets
   - task: AzureKeyVault@1
     inputs:
-      azureSubscription: 'hazzat-api-ppe - Azure'
-      keyVaultName: 'hazzat-api-ppe'
+      azureSubscription: 'hazzat-api-dev - Azure'
+      keyVaultName: 'hazzat-api-dev'
       secretsFilter: 'hazzat-db-ro-connectionString'
 
   - task: NodeTool@0
@@ -70,4 +69,4 @@ steps:
     displayName: 'Publish Artifact: drop'
     inputs:
       path: '$(Build.ArtifactStagingDirectory)\ArtifactsToBePublished'
-      artifact: HazzatBuildPPE
+      artifact: HazzatBuildDEV

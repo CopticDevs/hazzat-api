@@ -12,7 +12,7 @@
     "prestart": "npm run build",
     "start": "node ./dist/app",
     "init": "npm install --no-color --no-optional",
-    "test": "mocha --timeout 20000 -r ts-node/register ./test/*.spec.ts"
+    "test": "mocha --reporter mocha-trx-reporter --reporter-options output=testResults.trx --timeout 20000 -r ts-node/register ./test/*.spec.ts"
   },
   "description": "hazzat-api",
   "author": {
@@ -42,6 +42,7 @@
     "copyfiles": "^2.4.1",
     "mkdirp": "^1.0.4",
     "mocha": "^8.2.1",
+    "mocha-trx-reporter": "^3.3.1",
     "swagger-jsdoc": "^4.0.0",
     "swagger-ui-express": "^4.1.4",
     "ts-node": "^9.1.1",

@@ -47,6 +47,11 @@ steps:
     env:
       CUSTOMCONNSTR_DBCONNECTIONSTRING: $(hazzat-db-ro-connectionString)
 
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'VSTest'
+      testResultsFiles: '**/testResults.trx'
+
   - task: PowerShell@1
     displayName: 'Generate Deployment Archive'
     inputs:

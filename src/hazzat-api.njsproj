@@ -43,6 +43,7 @@
     <TypeScriptCompile Include="Common\Utils\MeasureDecorator.ts" />
     <TypeScriptCompile Include="Common\Utils\Logger.ts" />
     <TypeScriptCompile Include="Common\Utils\SqlHelpers.ts" />
+    <TypeScriptCompile Include="Models\ITuneInfo.ts" />
     <TypeScriptCompile Include="Models\ITypeInfo.ts" />
     <TypeScriptCompile Include="Providers\DataProviders\SqlDataProvider\SqlConstants.ts" />
     <TypeScriptCompile Include="inversify.config.ts" />
@@ -55,6 +56,7 @@
     <TypeScriptCompile Include="Providers\ServiceProviders\IHymnsServiceProvider.ts" />
     <TypeScriptCompile Include="Routes\ResourceTypes.ts" />
     <TypeScriptCompile Include="Routes\BaseController.ts" />
+    <TypeScriptCompile Include="Routes\TunesController.ts" />
     <TypeScriptCompile Include="Routes\TypesController.ts" />
     <TypeScriptCompile Include="test\Helpers\Validators.ts" />
     <TypeScriptCompile Include="test\seasons.spec.ts" />

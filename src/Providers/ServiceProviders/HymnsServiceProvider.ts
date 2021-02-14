@@ -4,6 +4,7 @@ import { IFormatInfo } from "../../Models/IFormatInfo";
 import { IHymnInfo } from "../../Models/IHymnInfo";
 import { ISeasonInfo } from "../../Models/ISeasonInfo";
 import { IServiceInfo } from "../../Models/IServiceInfo";
+import { ITuneInfo } from "../../Models/ITuneInfo";
 import { ITypeInfo } from "../../Models/ITypeInfo";
 import { IHymnContent, IVariationInfo } from "../../Models/IVariationInfo";
 import { TYPES } from "../../types";
@@ -105,6 +106,15 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
 
         const types: ITypeInfo[] = dbResult
             .map((row) => HazzatContentUtils.convertTypeDbItemToTypeInfo(row));
+        return types;
+    }
+
+    @measure
+    public async getTuneList(): Promise<ITuneInfo[]> {
+        const dbResult = await this._dataProvider.getTuneList();
+
+        const types: ITuneInfo[] = dbResult
+            .map((row) => HazzatContentUtils.convertTuneDbItemToTypeInfo(row));
         return types;
     }
 }

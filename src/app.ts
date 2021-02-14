@@ -11,6 +11,7 @@ import { IHymnsServiceProvider } from "./Providers/ServiceProviders/IHymnsServic
 import { HomeController } from "./Routes/HomeController";
 import { ResourceTypes } from "./Routes/ResourceTypes";
 import { SeasonsController } from "./Routes/SeasonsController";
+import { TunesController } from "./Routes/TunesController";
 import { TypesController } from "./Routes/TypesController";
 import { TYPES } from "./types";
 
@@ -20,6 +21,7 @@ const hymnsProvider: IHymnsServiceProvider = myContainer.get<IHymnsServiceProvid
 const homeController = new HomeController();
 const seasonsController = new SeasonsController(hymnsProvider);
 const typesController = new TypesController(hymnsProvider);
+const tunesController = new TunesController(hymnsProvider);
 
 const app = express();
 const port = configuration.port;
@@ -53,6 +55,7 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.use("/", homeController.router);
 app.use(`/${ResourceTypes.Seasons}`, seasonsController.router);
 app.use(`/${ResourceTypes.Types}`, typesController.router);
+app.use(`/${ResourceTypes.Tunes}`, tunesController.router);
 
 // Allow Let's Encrypt to access challenge static content
 app.use("/.well-known/acme-challenge", express.static(__dirname + "/.well-known/acme-challenge"));

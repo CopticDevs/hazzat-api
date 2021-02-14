@@ -396,6 +396,19 @@ export class SqlDataProvider implements IDataProvider {
         });
     }
 
+    public async getTuneList(): Promise<HazzatDbSchema.ITune[]> {
+        return this._connectAndExecute<HazzatDbSchema.ITune[]>(async (cp: ConnectionPool) => {
+            const result = await cp.request()
+                .execute<HazzatDbSchema.ITune>(this._getQualifiedName(Constants.StoredProcedures.TuneListSelect));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(ErrorCodes[ErrorCodes.DatabaseError], "Unexpected database error");
+            }
+
+            return result.recordsets[0];
+        });
+    }
+
     public getCommonContent(commonId: string): Promise<string> {
         return this._connectAndExecute<string>(async (cp: ConnectionPool) => {
             if (!SqlHelpers.isValidPositiveIntParameter(commonId)) {

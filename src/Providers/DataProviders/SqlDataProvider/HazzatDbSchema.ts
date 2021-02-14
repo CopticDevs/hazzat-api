@@ -85,4 +85,11 @@ export namespace HazzatDbSchema {
         Type_Order: number;
         ServiceHymnsCount: number;
     }
+
+    export interface ITune {
+        ItemId: number;
+        Name: string;
+        Tune_Order: number;
+        ServiceHymnsCount: number;
+    }
 }

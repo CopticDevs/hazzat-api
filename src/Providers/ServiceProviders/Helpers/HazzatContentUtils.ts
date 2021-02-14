@@ -4,6 +4,7 @@ import { IFormatInfo } from "../../../Models/IFormatInfo";
 import { IHymnInfo } from "../../../Models/IHymnInfo";
 import { ISeasonInfo } from "../../../Models/ISeasonInfo";
 import { IServiceInfo } from "../../../Models/IServiceInfo";
+import { ITuneInfo } from "../../../Models/ITuneInfo";
 import { ITypeInfo } from "../../../Models/ITypeInfo";
 import { ContentType, IAudioContent, IHazzatContent, IHymnContent, IInformationContent, IMusicalNotesContent, ITextContent, IVariationInfo, IVerticalHazzatContent, IVideoContent, TextColumn, TextParagraph } from "../../../Models/IVariationInfo";
 import { ResourceTypes } from "../../../Routes/ResourceTypes";
@@ -380,6 +381,15 @@ export class HazzatContentUtils {
             nameSingular: typeDbItem.Name_Short,
             order: typeDbItem.Type_Order,
             hymnCount: typeDbItem.ServiceHymnsCount
+        };
+    }
+
+    public static convertTuneDbItemToTypeInfo(tuneDbItem: HazzatDbSchema.ITune): ITuneInfo {
+        return {
+            id: `/${ResourceTypes.Tunes}/${tuneDbItem.ItemId}`,
+            name: tuneDbItem.Name,
+            order: tuneDbItem.Tune_Order,
+            hymnCount: tuneDbItem.ServiceHymnsCount
         };
     }
 }

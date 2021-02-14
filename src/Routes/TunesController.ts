@@ -2,7 +2,7 @@ import * as express from "express";
 import { IHymnsServiceProvider } from "../Providers/ServiceProviders/IHymnsServiceProvider";
 import { BaseController } from "./BaseController";
 
-export class TypesController extends BaseController {
+export class TunesController extends BaseController {
     constructor(hymnsServiceProvider: IHymnsServiceProvider) {
         super();
 
@@ -10,24 +10,22 @@ export class TypesController extends BaseController {
          * @swagger
          *
          * definitions:
-         *   Type:
+         *   Tune:
          *     type: object
          *     properties:
          *       id:
          *         type: string
          *       name:
          *         type: string
-         *       nameSingular:
-         *         type: string
          *       order:
          *         type: integer
          *       hymnCount:
          *         type: integer
-         *     required: [id, name, nameSingular, order, hymnCount]
+         *     required: [id, name, order, hymnCount]
          *
-         * /types:
+         * /tunes:
          *   get:
-         *     description: Gets a list of hymn types
+         *     description: Gets a list of hymn tunes
          *     produces:
          *       - application/json
          *     responses:
@@ -36,12 +34,12 @@ export class TypesController extends BaseController {
          *         schema:
          *           type: array
          *           items:
-         *             $ref: '#/definitions/Type'
+         *             $ref: '#/definitions/Tune'
          *
          */
         this.router.get("/", async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getTypeList();
+                const result = await hymnsServiceProvider.getTuneList();
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

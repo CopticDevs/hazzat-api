@@ -21,4 +21,6 @@ export interface IDataProvider {
 
     getCommonContent(commonId: string): Promise<string>;
     getReason(reasonId: number): Promise<HazzatDbSchema.IReason>;
+
+    getTypeList(): Promise<HazzatDbSchema.IType[]>;
 }

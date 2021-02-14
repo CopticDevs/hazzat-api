@@ -3,5 +3,6 @@ export const enum ResourceTypes {
     Services = "services",
     Hymns = "hymns",
     Formats = "formats",
-    Variations = "variations"
+    Variations = "variations",
+    Types = "types"
 }

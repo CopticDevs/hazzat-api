@@ -77,4 +77,12 @@ export namespace HazzatDbSchema {
         Short_Coptic: string;
         Short_Arabic: string;
     }
+
+    export interface IType {
+        ItemId: number;
+        Name: string;
+        Name_Short: string;
+        Type_Order: number;
+        ServiceHymnsCount: number;
+    }
 }

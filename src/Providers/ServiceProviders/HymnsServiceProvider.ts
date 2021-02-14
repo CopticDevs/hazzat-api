@@ -4,6 +4,7 @@ import { IFormatInfo } from "../../Models/IFormatInfo";
 import { IHymnInfo } from "../../Models/IHymnInfo";
 import { ISeasonInfo } from "../../Models/ISeasonInfo";
 import { IServiceInfo } from "../../Models/IServiceInfo";
+import { ITypeInfo } from "../../Models/ITypeInfo";
 import { IHymnContent, IVariationInfo } from "../../Models/IVariationInfo";
 import { TYPES } from "../../types";
 import { IDataProvider } from "../DataProviders/IDataProvider";
@@ -96,5 +97,14 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
     public async getServiceHymnsFormatVariation<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string, contentId: string): Promise<IVariationInfo<T>> {
         const dbResult = await this._dataProvider.getServiceHymnsFormatVariation(seasonId, serviceId, hymnId, formatId, contentId);
         return await HazzatContentUtils.convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo<T>(dbResult, this._dataProvider);
+    }
+
+    @measure
+    public async getTypeList(): Promise<ITypeInfo[]> {
+        const dbResult = await this._dataProvider.getTypeList();
+
+        const types: ITypeInfo[] = dbResult
+            .map((row) => HazzatContentUtils.convertTypeDbItemToTypeInfo(row));
+        return types;
     }
 }

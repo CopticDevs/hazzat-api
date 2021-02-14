@@ -43,6 +43,7 @@
     <TypeScriptCompile Include="Common\Utils\MeasureDecorator.ts" />
     <TypeScriptCompile Include="Common\Utils\Logger.ts" />
     <TypeScriptCompile Include="Common\Utils\SqlHelpers.ts" />
+    <TypeScriptCompile Include="Models\ITypeInfo.ts" />
     <TypeScriptCompile Include="Providers\DataProviders\SqlDataProvider\SqlConstants.ts" />
     <TypeScriptCompile Include="inversify.config.ts" />
     <TypeScriptCompile Include="Models\IVariationInfo.ts" />
@@ -54,6 +55,7 @@
     <TypeScriptCompile Include="Providers\ServiceProviders\IHymnsServiceProvider.ts" />
     <TypeScriptCompile Include="Routes\ResourceTypes.ts" />
     <TypeScriptCompile Include="Routes\BaseController.ts" />
+    <TypeScriptCompile Include="Routes\TypesController.ts" />
     <TypeScriptCompile Include="test\Helpers\Validators.ts" />
     <TypeScriptCompile Include="test\seasons.spec.ts" />
     <TypeScriptCompile Include="types.ts" />
@@ -66,9 +68,11 @@
     <TypeScriptCompile Include="Routes\HomeController.ts" />
     <TypeScriptCompile Include="Routes\SeasonsController.ts" />
     <Content Include="Configs\prod.json" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.09.Install.sql" />
     <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.08.Install.sql" />
     <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.07.Install.sql" />
     <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.06.Install.sql" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.09.Uninstall.sql" />
     <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.08.Uninstall.sql" />
     <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.07.Uninstall.sql" />
     <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.06.Uninstall.sql" />

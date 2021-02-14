@@ -4,6 +4,7 @@ import { IFormatInfo } from "../../../Models/IFormatInfo";
 import { IHymnInfo } from "../../../Models/IHymnInfo";
 import { ISeasonInfo } from "../../../Models/ISeasonInfo";
 import { IServiceInfo } from "../../../Models/IServiceInfo";
+import { ITypeInfo } from "../../../Models/ITypeInfo";
 import { ContentType, IAudioContent, IHazzatContent, IHymnContent, IInformationContent, IMusicalNotesContent, ITextContent, IVariationInfo, IVerticalHazzatContent, IVideoContent, TextColumn, TextParagraph } from "../../../Models/IVariationInfo";
 import { ResourceTypes } from "../../../Routes/ResourceTypes";
 import { IDataProvider } from "../../DataProviders/IDataProvider";
@@ -369,6 +370,16 @@ export class HazzatContentUtils {
             id: `/${ResourceTypes.Seasons}/${serviceHymnFormatContentDbItem.Season_ID}/${ResourceTypes.Services}/${serviceHymnFormatContentDbItem.Service_ID}/${ResourceTypes.Hymns}/${serviceHymnFormatContentDbItem.ServiceHymn_ID}/${ResourceTypes.Formats}/${serviceHymnFormatContentDbItem.Format_ID}/${ResourceTypes.Variations}/${serviceHymnFormatContentDbItem.ItemId}`,
             name: serviceHymnFormatContentDbItem.Content_Name,
             content
+        };
+    }
+
+    public static convertTypeDbItemToTypeInfo(typeDbItem: HazzatDbSchema.IType): ITypeInfo {
+        return {
+            id: `/${ResourceTypes.Types}/${typeDbItem.ItemId}`,
+            name: typeDbItem.Name,
+            nameSingular: typeDbItem.Name_Short,
+            order: typeDbItem.Type_Order,
+            hymnCount: typeDbItem.ServiceHymnsCount
         };
     }
 }

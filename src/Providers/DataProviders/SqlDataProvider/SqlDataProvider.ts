@@ -2,10 +2,8 @@ import { inject, injectable } from "inversify";
 import * as Sql from "mssql";
 import { IConfiguration } from "../../../Common/Configuration";
 import { ErrorCodes, HazzatApplicationError } from "../../../Common/Errors";
-import { Language } from "../../../Common/Types/Language";
 import { Log } from "../../../Common/Utils/Logger";
 import { SqlHelpers } from "../../../Common/Utils/SqlHelpers";
-import { TextColumn, TextParagraph } from "../../../Models/IVariationInfo";
 import { TYPES } from "../../../types";
 import { IDataProvider } from "../IDataProvider";
 import { HazzatDbSchema } from "./HazzatDbSchema";
@@ -382,6 +380,19 @@ export class SqlDataProvider implements IDataProvider {
                     `Unable to find hymn variation with season id '${seasonId}', service id '${serviceId}, hymn id '${hymnId}', format id '${formatId}', and variation id '${variationId}'`);
             }
             return row;
+        });
+    }
+
+    public async getTypeList(): Promise<HazzatDbSchema.IType[]> {
+        return this._connectAndExecute<HazzatDbSchema.IType[]>(async (cp: ConnectionPool) => {
+            const result = await cp.request()
+                .execute<HazzatDbSchema.IType>(this._getQualifiedName(Constants.StoredProcedures.TypeListSelect));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(ErrorCodes[ErrorCodes.DatabaseError], "Unexpected database error");
+            }
+
+            return result.recordsets[0];
         });
     }
 

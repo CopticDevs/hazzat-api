@@ -26,6 +26,8 @@ export interface IHymnsServiceProvider {
     getServiceHymnsFormatVariation<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string, contentId: string): Promise<IVariationInfo<T>>;
 
     getTypeList(): Promise<ITypeInfo[]>;
+    getType(typeId: string): Promise<ITypeInfo>;
 
     getTuneList(): Promise<ITuneInfo[]>;
+    getTune(tuneId: string): Promise<ITuneInfo>;
 }

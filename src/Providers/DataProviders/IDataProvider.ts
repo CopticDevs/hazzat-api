@@ -23,6 +23,8 @@ export interface IDataProvider {
     getReason(reasonId: number): Promise<HazzatDbSchema.IReason>;
 
     getTypeList(): Promise<HazzatDbSchema.IType[]>;
+    getType(typeId: string): Promise<HazzatDbSchema.IType>;
 
     getTuneList(): Promise<HazzatDbSchema.ITune[]>;
+    getTune(tuneId: string): Promise<HazzatDbSchema.ITune>;
 }

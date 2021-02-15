@@ -8,3 +8,13 @@ DROP PROCEDURE [dbo].[Hymns_TuneListSelect]
 GO
 
 
+/****** Object:  StoredProcedure [dbo].[Hymns_TypeSelect]    Script Date: 2/15/2021 10:36:53 AM ******/
+DROP PROCEDURE [dbo].[Hymns_TypeSelect]
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Hymns_TuneSelect]    Script Date: 2/15/2021 10:37:09 AM ******/
+DROP PROCEDURE [dbo].[Hymns_TuneSelect]
+GO
+
+

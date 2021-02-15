@@ -45,5 +45,46 @@ export class TunesController extends BaseController {
                 BaseController._OnError(ex, res);
             }
         });
+
+        /**
+         * @swagger
+         *
+         * /tunes/[tuneId]:
+         *   get:
+         *     description: Returns the details of the given tune id
+         *     produces:
+         *       - application/json
+         *     parameters:
+         *       - name: tuneId
+         *         description: Tune ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *     responses:
+         *       200:
+         *         description: Tune
+         *         schema:
+         *           type: object
+         *           items:
+         *             $ref: '#/definitions/Tune'
+         *
+         *       404:
+         *         description: A Tune detail was not found.
+         *         schema:
+         *           type: object
+         *           properties:
+         *             errorCode:
+         *               type: string
+         *             message:
+         *               type: string
+         */
+        this.router.get("/:tuneId(\\d+)", async (req: express.Request, res: express.Response) => {
+            try {
+                const result = await hymnsServiceProvider.getTune(req.params.tuneId);
+                res.send(result);
+            } catch (ex) {
+                BaseController._OnError(ex, res);
+            }
+        });
     }
 }

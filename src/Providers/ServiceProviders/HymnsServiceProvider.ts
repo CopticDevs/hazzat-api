@@ -110,11 +110,23 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
     }
 
     @measure
+    public async getType(typeId: string): Promise<ITypeInfo> {
+        const dbResult = await this._dataProvider.getType(typeId);
+        return HazzatContentUtils.convertTypeDbItemToTypeInfo(dbResult);
+    }
+
+    @measure
     public async getTuneList(): Promise<ITuneInfo[]> {
         const dbResult = await this._dataProvider.getTuneList();
 
         const types: ITuneInfo[] = dbResult
             .map((row) => HazzatContentUtils.convertTuneDbItemToTypeInfo(row));
         return types;
+    }
+
+    @measure
+    public async getTune(tuneId: string): Promise<ITuneInfo> {
+        const dbResult = await this._dataProvider.getTune(tuneId);
+        return HazzatContentUtils.convertTuneDbItemToTypeInfo(dbResult);
     }
 }

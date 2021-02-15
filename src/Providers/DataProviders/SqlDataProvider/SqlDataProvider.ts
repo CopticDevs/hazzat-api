@@ -396,6 +396,35 @@ export class SqlDataProvider implements IDataProvider {
         });
     }
 
+    public async getType(typeId: string): Promise<HazzatDbSchema.IType> {
+        return this._connectAndExecute<HazzatDbSchema.IType>(async (cp: ConnectionPool) => {
+            if (!SqlHelpers.isValidPositiveIntParameter(typeId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid type id specified.",
+                    `Type id: '${typeId}'`);
+            }
+            const result = await cp.request()
+                .input("ID", Sql.Int, typeId)
+                .execute<HazzatDbSchema.IType>(this._getQualifiedName(Constants.StoredProcedures.TypeSelect));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.DatabaseError],
+                    "Unexpected database error");
+            }
+
+            const row = result.recordsets[0][0];
+            if (!row) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.NotFoundError],
+                    `Unable to find type with id '${typeId}'`);
+            }
+
+            return row;
+        });
+    }
+
     public async getTuneList(): Promise<HazzatDbSchema.ITune[]> {
         return this._connectAndExecute<HazzatDbSchema.ITune[]>(async (cp: ConnectionPool) => {
             const result = await cp.request()
@@ -406,6 +435,35 @@ export class SqlDataProvider implements IDataProvider {
             }
 
             return result.recordsets[0];
+        });
+    }
+
+    public async getTune(tuneId: string): Promise<HazzatDbSchema.ITune> {
+        return this._connectAndExecute<HazzatDbSchema.ITune>(async (cp: ConnectionPool) => {
+            if (!SqlHelpers.isValidPositiveIntParameter(tuneId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid tune id specified.",
+                    `Tune id: '${tuneId}'`);
+            }
+            const result = await cp.request()
+                .input("ID", Sql.Int, tuneId)
+                .execute<HazzatDbSchema.ITune>(this._getQualifiedName(Constants.StoredProcedures.TuneSelect));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.DatabaseError],
+                    "Unexpected database error");
+            }
+
+            const row = result.recordsets[0][0];
+            if (!row) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.NotFoundError],
+                    `Unable to find te with id '${tuneId}'`);
+            }
+
+            return row;
         });
     }
 

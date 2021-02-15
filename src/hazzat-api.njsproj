@@ -59,6 +59,8 @@
     <TypeScriptCompile Include="Routes\TunesController.ts" />
     <TypeScriptCompile Include="Routes\TypesController.ts" />
     <TypeScriptCompile Include="test\Helpers\Validators.ts" />
+    <TypeScriptCompile Include="test\tunes.spec.ts" />
+    <TypeScriptCompile Include="test\types.spec.ts" />
     <TypeScriptCompile Include="test\seasons.spec.ts" />
     <TypeScriptCompile Include="types.ts" />
     <TypeScriptCompile Include="app.ts" />

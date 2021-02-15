@@ -11,7 +11,9 @@ export namespace Constants {
         export const HymnContentListSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId = "HymnContentListSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId";
         export const HymnContentSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId = "HymnContentSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId";
         export const TypeListSelect = "TypeListSelect";
+        export const TypeSelect = "TypeSelect";
         export const TuneListSelect = "TuneListSelect";
+        export const TuneSelect = "TuneSelect";
         export const CommonSelect = "CommonSelect";
         export const ReasonSelect = "ReasonSelect";
 

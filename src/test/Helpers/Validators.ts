@@ -132,6 +132,27 @@ export class Validators {
         contentBody.should.have.property("contentType").eq(ContentType.InformationContent);
     }
 
+    public static validateTypeResponse(resBody: any, resourceId: string = null): void {
+        resBody.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Types}\/[0-9]+$`));
+        if (!!resourceId) {
+            resBody.should.have.property("id").eq(resourceId);
+        }
+        resBody.should.have.property("name");
+        resBody.should.have.property("nameSingular");
+        resBody.should.have.property("order");
+        resBody.should.have.property("hymnCount");
+    }
+
+    public static validateTuneResponse(resBody: any, resourceId: string = null): void {
+        resBody.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Tunes}\/[0-9]+$`));
+        if (!!resourceId) {
+            resBody.should.have.property("id").eq(resourceId);
+        }
+        resBody.should.have.property("name");
+        resBody.should.have.property("order");
+        resBody.should.have.property("hymnCount");
+    }
+
     public static validateDoesNotInclude(contentString: string, searchString: string): void {
         if (!contentString) {
             return;

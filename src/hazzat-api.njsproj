@@ -7,6 +7,9 @@
     <RootNamespace>hazzat-api</RootNamespace>
     <LastActiveSolutionConfig>Debug|Any CPU</LastActiveSolutionConfig>
     <NameOfLastUsedPublishProfile>hazzat-api-ppe - Web Deploy</NameOfLastUsedPublishProfile>
+    <JavaScriptTestRoot>test\</JavaScriptTestRoot>
+    <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
+    <JavaScriptTestFramework>mocha</JavaScriptTestFramework>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -59,9 +62,15 @@
     <TypeScriptCompile Include="Routes\TunesController.ts" />
     <TypeScriptCompile Include="Routes\TypesController.ts" />
     <TypeScriptCompile Include="test\Helpers\Validators.ts" />
-    <TypeScriptCompile Include="test\tunes.spec.ts" />
-    <TypeScriptCompile Include="test\types.spec.ts" />
-    <TypeScriptCompile Include="test\seasons.spec.ts" />
+    <TypeScriptCompile Include="test\tunes.spec.ts">
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="test\types.spec.ts">
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="test\seasons.spec.ts">
+      <TestFramework>Mocha</TestFramework>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="types.ts" />
     <TypeScriptCompile Include="app.ts" />
     <TypeScriptCompile Include="Common\Configuration.ts" />

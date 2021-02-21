@@ -1,4 +1,5 @@
 import { inject, injectable } from "inversify";
+import "reflect-metadata";
 import * as Sql from "mssql";
 import { IConfiguration } from "../../../Common/Configuration";
 import { ErrorCodes, HazzatApplicationError } from "../../../Common/Errors";

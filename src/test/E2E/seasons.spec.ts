@@ -1,10 +1,10 @@
 import * as chai from "chai";
-import { ErrorCodes } from "../Common/Errors";
-import { Constants } from "../Providers/DataProviders/SqlDataProvider/SqlConstants";
-import { ResourceTypes } from "../Routes/ResourceTypes";
-import { Validators } from "./Helpers/Validators";
+import { ErrorCodes } from "../../Common/Errors";
+import { Constants } from "../../Providers/DataProviders/SqlDataProvider/SqlConstants";
+import { ResourceTypes } from "../../Routes/ResourceTypes";
+import { Validators } from "../Helpers/Validators";
 import chaiHttp = require("chai-http");
-import server = require("../app");
+import server = require("../../app");
 
 process.env.NODE_ENV = "test";
 

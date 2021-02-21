@@ -12,8 +12,9 @@
     "prestart": "npm run build",
     "start": "node ./dist/app",
     "init": "npm install --no-color --no-optional",
-    "test-e2e": "mocha --reporter mocha-trx-reporter --reporter-options output=testResultsE2E.trx --timeout 20000 -r ts-node/register ./test/E2E/*.spec.ts",
-    "test-unit": "mocha --reporter mocha-trx-reporter --reporter-options output=testResultsUnit.trx --timeout 20000 -r ts-node/register ./test/UnitTests/*.spec.ts"
+    "test": "mocha --reporter mocha-trx-reporter --reporter-options output=testResultsAll.trx --timeout 20000 -r ts-node/register ./test/**/*.spec.ts",
+    "test-unit": "mocha --reporter mocha-trx-reporter --reporter-options output=testResultsUnit.trx --timeout 20000 -r ts-node/register ./test/UnitTests/*.spec.ts",
+    "test-int": "mocha --reporter mocha-trx-reporter --reporter-options output=testResultsE2E.trx --timeout 20000 -r ts-node/register ./test/E2E/*.spec.ts"
   },
   "description": "hazzat-api",
   "author": {
@@ -54,6 +55,6 @@
     "typescript": "^4.1.5"
   },
   "engines": {
-    "node": "^8.0.0"
+    "node": "^10.15.0"
   }
 }

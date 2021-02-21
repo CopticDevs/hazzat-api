@@ -5,10 +5,18 @@ import { ContentType } from "../../Models/IVariationInfo";
 const should = chai.should();
 
 export class Validators {
+    public static validateObject(value: any): void {
+        value.should.be.a("object");
+        value.should.not.be.a("array");
+    }
+
+    public static validateArray(arr: any): void {
+        arr.should.be.a("array");
+    }
+
     public static validateErrorResponse(res: any, statusCode: number, errorCode?: ErrorCodes): void {
         res.should.have.status(statusCode);
-        res.body.should.be.a("object");
-        res.body.should.not.be.a("array");
+        Validators.validateObject(res.body);
         if (errorCode !== null && errorCode !== undefined) {
             res.body.should.have.property("errorCode");
             res.body.should.have.property("errorCode").eql(ErrorCodes[errorCode]);
@@ -18,14 +26,13 @@ export class Validators {
 
     public static validateArrayResponse(res: any, isEmpty: boolean = false): void {
         res.should.have.status(200);
-        res.body.should.be.a("array");
+        Validators.validateArray(res.body);
         isEmpty ? res.body.length.should.be.eql(0) : res.body.length.should.be.not.eql(0);
     }
 
     public static validateObjectResponse(res: any): void {
         res.should.have.status(200);
-        res.body.should.be.a("object");
-        res.body.should.not.be.a("array");
+        Validators.validateObject(res.body);
     }
 
     public static validateSeasonResponse(resBody: any, resourceId: string = null): void {
@@ -83,13 +90,13 @@ export class Validators {
     }
 
     public static validateTextParagraphArrayContent(textParagraphs: any): void {
-        textParagraphs.should.be.a("array");
+        Validators.validateArray(textParagraphs);
         textParagraphs[0].should.have.property("columns");
         Validators.validateTextColumnArrayContent(textParagraphs[0].columns);
     }
 
     public static validateTextColumnArrayContent(textColumns: any): void {
-        textColumns.should.be.a("array");
+        Validators.validateArray(textColumns);
         textColumns[0].should.have.property("content");
         textColumns[0].should.have.property("language");
     }

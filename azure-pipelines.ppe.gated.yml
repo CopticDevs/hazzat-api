@@ -37,16 +37,25 @@ steps:
       customCommand: 'run build'
 
   - task: Npm@1
-    displayName: 'npm test'
+    displayName: 'Unit Tests'
     inputs:
       command: custom
       workingDir: src
       verbose: false
-      customCommand: 'run test'
+      customCommand: 'run test-unit'
+
+
+  - task: Npm@1
+    displayName: 'Integration Tests'
+    inputs:
+      command: custom
+      workingDir: src
+      verbose: false
+      customCommand: 'run test-int'
     env:
       CUSTOMCONNSTR_DBCONNECTIONSTRING: $(hazzat-db-ro-connectionString)
 
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'VSTest'
-      testResultsFiles: '**/testResults.trx'
+      testResultsFiles: '**/testResults*.trx'

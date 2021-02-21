@@ -14,7 +14,7 @@
     "init": "npm install --no-color --no-optional",
     "test": "mocha --reporter mocha-trx-reporter --reporter-options output=testResultsAll.trx --timeout 20000 -r ts-node/register ./test/**/*.spec.ts",
     "test-unit": "mocha --reporter mocha-trx-reporter --reporter-options output=testResultsUnit.trx --timeout 20000 -r ts-node/register ./test/UnitTests/*.spec.ts",
-    "test-int": "mocha --reporter mocha-trx-reporter --reporter-options output=testResultsE2E.trx --timeout 20000 -r ts-node/register ./test/E2E/*.spec.ts"
+    "test-int": "mocha --reporter mocha-trx-reporter --reporter-options output=testResultsE2E.trx --timeout 20000 -r ts-node/register ./test/Integration/*.spec.ts"
   },
   "description": "hazzat-api",
   "author": {

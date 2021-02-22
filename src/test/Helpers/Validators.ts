@@ -55,38 +55,38 @@ export class Validators {
         value.should.have.property("order");
     }
 
-    public static validateServiceHymnResponse(resBody: any, resourceId: string = null): void {
-        resBody.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+$`));
+    public static validateServiceHymn(value: any, resourceId: string = null): void {
+        value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+$`));
         if (!!resourceId) {
-            resBody.should.have.property("id").eq(resourceId);
+            value.should.have.property("id").eq(resourceId);
         }
-        resBody.should.have.property("name");
-        resBody.should.have.property("order");
+        value.should.have.property("name");
+        value.should.have.property("order");
     }
 
-    public static validateServiceHymnFormatResponse(resBody: any, resourceId: string = null): void {
-        resBody.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+\/${ResourceTypes.Formats}\/[0-9]+$`));
+    public static validateServiceHymnFormat(value: any, resourceId: string = null): void {
+        value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+\/${ResourceTypes.Formats}\/[0-9]+$`));
         if (!!resourceId) {
-            resBody.should.have.property("id").eq(resourceId);
+            value.should.have.property("id").eq(resourceId);
         }
-        resBody.should.have.property("name");
-        resBody.should.have.property("variationCount");
-        resBody.should.have.property("order");
+        value.should.have.property("name");
+        value.should.have.property("variationCount");
+        value.should.have.property("order");
     }
 
-    public static validateServiceHymnFormatVariationResponse(resBody: any, resourceId: string = null): void {
-        resBody.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+\/${ResourceTypes.Formats}\/[0-9]+\/${ResourceTypes.Variations}\/[0-9]+$`));
+    public static validateServiceHymnFormatVariation(value: any, resourceId: string = null): void {
+        value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+\/${ResourceTypes.Formats}\/[0-9]+\/${ResourceTypes.Variations}\/[0-9]+$`));
         if (!!resourceId) {
-            resBody.should.have.property("id").eq(resourceId);
+            value.should.have.property("id").eq(resourceId);
         }
-        resBody.should.have.property("name");
-        resBody.should.have.property("content");
+        value.should.have.property("name");
+        value.should.have.property("content");
     }
 
-    public static validateTextContentResponse(contentBody: any): void {
-        contentBody.should.have.property("paragraphs");
-        contentBody.should.have.property("contentType").eq(ContentType.TextContent);
-        Validators.validateTextParagraphArrayContent(contentBody.paragraphs);
+    public static validateTextContent(value: any): void {
+        value.should.have.property("paragraphs");
+        value.should.have.property("contentType").eq(ContentType.TextContent);
+        Validators.validateTextParagraphArrayContent(value.paragraphs);
     }
 
     public static validateTextParagraphArrayContent(textParagraphs: any): void {

@@ -63,6 +63,7 @@
     <TypeScriptCompile Include="Routes\TypesController.ts" />
     <TypeScriptCompile Include="test\Helpers\SqlDataProviderMock.ts" />
     <TypeScriptCompile Include="test\Helpers\Validators.ts" />
+    <TypeScriptCompile Include="test\UnitTests\seasonsServiceProvider.spec.ts" />
     <TypeScriptCompile Include="test\UnitTests\typesServiceProvider.spec.ts" />
     <TypeScriptCompile Include="test\UnitTests\tunesServiceProvider.spec.ts" />
     <TypeScriptCompile Include="test\Integration\tunes.spec.ts">

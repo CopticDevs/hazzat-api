@@ -17,7 +17,7 @@ describe("Tunes controller", () => {
                 .get(`/${ResourceTypes.Tunes}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateTuneResponse(res.body[0]);
+                    Validators.validateHymnTune(res.body[0]);
                     done();
                 });
         });
@@ -30,7 +30,7 @@ describe("Tunes controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateTuneResponse(res.body, resourceId);
+                    Validators.validateHymnTune(res.body, resourceId);
                     done();
                 });
         });

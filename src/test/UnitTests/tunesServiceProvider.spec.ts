@@ -31,7 +31,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             const tunesList = await hymnsProvider.getTuneList();
             Validators.validateArray(tunesList);
             tunesList.length.should.be.eql(3);
-            tunesList.forEach((tune) => Validators.validateTuneResponse(tune));
+            tunesList.forEach((tune) => Validators.validateHymnTune(tune));
         });
 
         it("should get tunes with empty results", async () => {
@@ -49,9 +49,22 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTune', SqlDataProviderMock.getDbTune());
 
-            const tune = await hymnsProvider.getTune("1");
+            const tune = await hymnsProvider.getTune("tuneId");
             Validators.validateObject(tune);
-            Validators.validateTuneResponse(tune);
+            Validators.validateHymnTune(tune);
+        });
+
+        it("should have correct db to contract hymn tune mapping", async () => {
+            // Setup mocked result
+            mockManager.mock('getTune', SqlDataProviderMock.getDbTune());
+
+            const tuneDb = SqlDataProviderMock.getDbTune();
+            const tune = await hymnsProvider.getTune("tuneId");
+
+            // Validate that the contract was mapped out correctly from db results
+            tune.name.should.be.equal(tuneDb.Name);
+            tune.hymnCount.should.be.equal(tuneDb.ServiceHymnsCount);
+            tune.order.should.be.equal(tuneDb.Tune_Order);
         });
     });
 });

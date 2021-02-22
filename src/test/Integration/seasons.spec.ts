@@ -17,7 +17,7 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateSeasonResponse(res.body[0]);
+                    Validators.validateSeason(res.body[0]);
                     done();
                 });
         });
@@ -30,7 +30,7 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateSeasonResponse(res.body, resourceId);
+                    Validators.validateSeason(res.body, resourceId);
                     done();
                 });
         });
@@ -69,7 +69,7 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateServiceResponse(res.body[0]);
+                    Validators.validateService(res.body[0]);
                     done();
                 });
         });
@@ -109,7 +109,7 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateServiceResponse(res.body, resourceId);
+                    Validators.validateService(res.body, resourceId);
                     done();
                 });
         });

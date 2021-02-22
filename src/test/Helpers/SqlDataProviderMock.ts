@@ -1,6 +1,56 @@
 import { HazzatDbSchema } from "../../Providers/DataProviders/SqlDataProvider/HazzatDbSchema";
 
 export class SqlDataProviderMock {
+    private static _season1: HazzatDbSchema.ISeason = {
+        ItemId: 1,
+        Name: "First Season",
+        Date_Specific: true,
+        Reason_ID: 2,
+        Reason_Name: "Some Reason Name",
+        Verse: "First Verse",
+        Season_Order: 1
+    };
+    private static _season2: HazzatDbSchema.ISeason = {
+        ItemId: 5,
+        Name: "Second Season",
+        Date_Specific: true,
+        Reason_ID: 2,
+        Reason_Name: "Some Reason Name",
+        Verse: "Second Verse",
+        Season_Order: 2
+    };
+    private static _season3: HazzatDbSchema.ISeason = {
+        ItemId: 4,
+        Name: "Third Season",
+        Date_Specific: false,
+        Reason_ID: 3,
+        Reason_Name: "Some Other Reason Name",
+        Verse: "Third Verse",
+        Season_Order: 3
+    };
+
+    private static _service1: HazzatDbSchema.IService = {
+        ItemId: 1,
+        Season_ID: 2,
+        Season_Name: "Some Season Name",
+        Service_Name: "First Service Name",
+        Service_Order: 1
+    };
+    private static _service2: HazzatDbSchema.IService = {
+        ItemId: 90,
+        Season_ID: 2,
+        Season_Name: "Some Season Name",
+        Service_Name: "Second Service Name",
+        Service_Order: 2
+    };
+    private static _service3: HazzatDbSchema.IService = {
+        ItemId: 4,
+        Season_ID: 1,
+        Season_Name: "Another Season Name",
+        Service_Name: "Third Service Name",
+        Service_Order: 3
+    };
+
     private static _tune1: HazzatDbSchema.ITune = {
         ItemId: 1,
         Name: "First Tune",
@@ -41,6 +91,30 @@ export class SqlDataProviderMock {
         ServiceHymnsCount: 7,
         Type_Order: 3
     };
+
+    public static getDbSeasonsList(): HazzatDbSchema.ISeason[] {
+        return [
+            SqlDataProviderMock._season1,
+            SqlDataProviderMock._season2,
+            SqlDataProviderMock._season3
+        ];
+    }
+
+    public static getDbSeason(dateSpecific: boolean = false): HazzatDbSchema.ISeason {
+        return dateSpecific ? SqlDataProviderMock._season1 : SqlDataProviderMock._season3;
+    }
+
+    public static getDbSeasonServiceList(): HazzatDbSchema.IService[] {
+        return [
+            SqlDataProviderMock._service1,
+            SqlDataProviderMock._service2,
+            SqlDataProviderMock._service3
+        ];
+    }
+
+    public static getDbSeasonService(): HazzatDbSchema.IService {
+        return SqlDataProviderMock._service1;
+    }
 
     public static getDbTunesList(): HazzatDbSchema.ITune[] {
         return [

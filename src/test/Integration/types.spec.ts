@@ -17,7 +17,7 @@ describe("Types controller", () => {
                 .get(`/${ResourceTypes.Types}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateTypeResponse(res.body[0]);
+                    Validators.validateHymnType(res.body[0]);
                     done();
                 });
         });
@@ -30,7 +30,7 @@ describe("Types controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateTypeResponse(res.body, resourceId);
+                    Validators.validateHymnType(res.body, resourceId);
                     done();
                 });
         });

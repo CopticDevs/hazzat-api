@@ -31,7 +31,7 @@ describe("Types Service Provider Unit Tests", () => {
             const typesList = await hymnsProvider.getTypeList();
             Validators.validateArray(typesList);
             typesList.length.should.be.eql(3);
-            typesList.forEach((type) => Validators.validateTypeResponse(type));
+            typesList.forEach((type) => Validators.validateHymnType(type));
         });
 
         it("should get types with empty results", async () => {
@@ -49,9 +49,23 @@ describe("Types Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getType', SqlDataProviderMock.getDbType());
 
-            const type = await hymnsProvider.getType("1");
+            const type = await hymnsProvider.getType("typeId");
             Validators.validateObject(type);
-            Validators.validateTypeResponse(type);
+            Validators.validateHymnType(type);
+        });
+
+        it("should have correct db to contract hymn type mapping", async () => {
+            // Setup mocked result
+            mockManager.mock('getType', SqlDataProviderMock.getDbType());
+
+            const typeDb = SqlDataProviderMock.getDbType();
+            const type = await hymnsProvider.getType("typeId");
+
+            // Validate that the contract was mapped out correctly from db results
+            type.name.should.be.equal(typeDb.Name);
+            type.nameSingular.should.be.equal(typeDb.Name_Short);
+            type.hymnCount.should.be.equal(typeDb.ServiceHymnsCount);
+            type.order.should.be.equal(typeDb.Type_Order);
         });
     });
 });

@@ -1,7 +1,7 @@
 import * as chai from "chai";
 import { ImportMock, MockManager } from 'ts-mock-imports';
 import { Language } from "../../Common/Types/Language";
-import { IAudioContent, IHazzatContent, IMusicalNotesContent, ITextContent, IVerticalHazzatContent } from '../../Models/IVariationInfo';
+import { IAudioContent, IHazzatContent, IInformationContent, IMusicalNotesContent, ITextContent, IVerticalHazzatContent, IVideoContent } from '../../Models/IVariationInfo';
 import { Constants as SqlConstants } from "../../Providers/DataProviders/SqlDataProvider/SqlConstants";
 import * as SqlDataProviderModule from '../../Providers/DataProviders/SqlDataProvider/SqlDataProvider';
 import { HymnsServiceProvider } from "../../Providers/ServiceProviders/HymnsServiceProvider";
@@ -1141,6 +1141,138 @@ describe("Seasons Service Provider Unit Tests", () => {
             // Validate that the contract was mapped out correctly from db results
             variationContent.name.should.be.equal(contentDb.Content_Name);
             variationContent.content.audioFilePath.should.be.equal(contentDb.Audio_Path);
+        });
+    });
+
+    describe("A single variation (Video)", () => {
+        it("should get a video with", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 6; // Video
+            contentDb.Content_Arabic = "Some Arabic content";
+            contentDb.Content_English = "Some English content";
+            contentDb.Content_Coptic = "Some Coptic content";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<IVideoContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateVideoContent(variationContent.content);
+
+            // Validate that the contract was mapped out correctly from db results
+            variationContent.name.should.be.equal(contentDb.Content_Name);
+            variationContent.content.arabicVideo.should.be.equal(contentDb.Content_Arabic);
+            variationContent.content.copticVideo.should.be.equal(contentDb.Content_Coptic);
+            variationContent.content.englishVideo.should.be.equal(contentDb.Content_English);
+        });
+
+        it("should get a video with only Arabic content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 6; // Video
+            contentDb.Content_Arabic = "Some Arabic content";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<IVideoContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateVideoContent(variationContent.content);
+
+            // Validate that there's only Arabic
+            variationContent.content.arabicVideo.should.be.equal(contentDb.Content_Arabic);
+            chai.assert(variationContent.content.copticVideo === null);
+            chai.assert(variationContent.content.englishVideo === null);
+        });
+
+        it("should get a video with only Coptic content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 6; // Video
+            contentDb.Content_Coptic = "Some Coptic content";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<IVideoContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateVideoContent(variationContent.content);
+
+            // Validate that there's only Coptic
+            chai.assert(variationContent.content.arabicVideo === null);
+            variationContent.content.copticVideo.should.be.equal(contentDb.Content_Coptic);
+            chai.assert(variationContent.content.englishVideo === null);
+        });
+
+        it("should get a video with only English content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 6; // Video
+            contentDb.Content_English = "Some English content";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<IVideoContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateVideoContent(variationContent.content);
+
+            // Validate that there's only English
+            chai.assert(variationContent.content.copticVideo === null);
+            chai.assert(variationContent.content.arabicVideo === null);
+            variationContent.content.englishVideo.should.be.equal(contentDb.Content_English);
+        });
+    });
+
+    describe("A single variation (Information)", () => {
+        it("should get an Information with", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 7; // Information
+            contentDb.Content_Arabic = "Some Arabic content";
+            contentDb.Content_English = "Some English content";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<IInformationContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateInformationContent(variationContent.content);
+
+            // Validate that the contract was mapped out correctly from db results
+            variationContent.name.should.be.equal(contentDb.Content_Name);
+            variationContent.content.arabicInformation.should.be.equal(contentDb.Content_Arabic);
+            variationContent.content.englishInformation.should.be.equal(contentDb.Content_English);
+        });
+
+        it("should get an Information with only Arabic content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 7; // Information
+            contentDb.Content_Arabic = "Some Arabic content";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<IInformationContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateInformationContent(variationContent.content);
+
+            // Validate that there's only Arabic
+            variationContent.content.arabicInformation.should.be.equal(contentDb.Content_Arabic);
+            chai.assert(variationContent.content.englishInformation === null);
+        });
+
+        it("should get an Information with only English content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 7; // Information
+            contentDb.Content_English = "Some English content";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<IInformationContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateInformationContent(variationContent.content);
+
+            // Validate that there's only English
+            chai.assert(variationContent.content.arabicInformation === null);
+            variationContent.content.englishInformation.should.be.equal(contentDb.Content_English);
         });
     });
 });

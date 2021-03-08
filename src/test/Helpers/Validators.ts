@@ -126,17 +126,17 @@ export class Validators {
         value.should.have.property("contentType").eq(ContentType.AudioContent);
     }
 
-    public static validateVideoContentResponse(contentBody: any): void {
-        contentBody.should.have.property("arabicVideo");
-        contentBody.should.have.property("copticVideo");
-        contentBody.should.have.property("englishVideo");
-        contentBody.should.have.property("contentType").eq(ContentType.VideoContent);
+    public static validateVideoContent(value: any): void {
+        value.should.have.property("arabicVideo");
+        value.should.have.property("copticVideo");
+        value.should.have.property("englishVideo");
+        value.should.have.property("contentType").eq(ContentType.VideoContent);
     }
 
-    public static validateInformationContentResponse(contentBody: any): void {
-        contentBody.should.have.property("arabicInformation");
-        contentBody.should.have.property("englishInformation");
-        contentBody.should.have.property("contentType").eq(ContentType.InformationContent);
+    public static validateInformationContent(value: any): void {
+        value.should.have.property("arabicInformation");
+        value.should.have.property("englishInformation");
+        value.should.have.property("contentType").eq(ContentType.InformationContent);
     }
 
     public static validateHymnType(value: any, resourceId: string = null): void {

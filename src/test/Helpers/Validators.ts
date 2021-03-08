@@ -108,11 +108,11 @@ export class Validators {
         value.should.have.property("contentType").eq(ContentType.HazzatContent);
     }
 
-    public static validateVerticalHazzatContentResponse(contentBody: any): void {
-        contentBody.should.have.property("arabicVerticalHazzat");
-        contentBody.should.have.property("copticVerticalHazzat");
-        contentBody.should.have.property("englishVerticalHazzat");
-        contentBody.should.have.property("contentType").eq(ContentType.VerticalHazzatContent);
+    public static validateVerticalHazzatContent(value: any): void {
+        value.should.have.property("arabicVerticalHazzat");
+        value.should.have.property("copticVerticalHazzat");
+        value.should.have.property("englishVerticalHazzat");
+        value.should.have.property("contentType").eq(ContentType.VerticalHazzatContent);
     }
 
     public static validateMusicalNotesContentResponse(contentBody: any): void {

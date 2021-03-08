@@ -659,7 +659,7 @@ describe("Seasons controller", () => {
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
-                    Validators.validateVerticalHazzatContentResponse(res.body[0].content);
+                    Validators.validateVerticalHazzatContent(res.body[0].content);
                     done();
                 });
         });
@@ -670,7 +670,7 @@ describe("Seasons controller", () => {
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
-                    Validators.validateVerticalHazzatContentResponse(res.body[0].content);
+                    Validators.validateVerticalHazzatContent(res.body[0].content);
                     Validators.validateDoesNotInclude(res.body[0].content.arabicVerticalHazzat, "<common=");
                     Validators.validateDoesNotInclude(res.body[0].content.copticVerticalHazzat, "<common=");
                     Validators.validateDoesNotInclude(res.body[0].content.englishVerticalHazzat, "<common=");
@@ -956,7 +956,7 @@ describe("Seasons controller", () => {
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
-                    Validators.validateVerticalHazzatContentResponse(res.body.content);
+                    Validators.validateVerticalHazzatContent(res.body.content);
                     done();
                 });
         });
@@ -968,7 +968,7 @@ describe("Seasons controller", () => {
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
-                    Validators.validateVerticalHazzatContentResponse(res.body.content);
+                    Validators.validateVerticalHazzatContent(res.body.content);
                     Validators.validateDoesNotInclude(res.body.content.arabicVerticalHazzat, "<common=");
                     Validators.validateDoesNotInclude(res.body.content.copticVerticalHazzat, "<common=");
                     Validators.validateDoesNotInclude(res.body.content.englishVerticalHazzat, "<common=");

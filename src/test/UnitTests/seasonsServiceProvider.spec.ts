@@ -1,7 +1,7 @@
 import * as chai from "chai";
 import { ImportMock, MockManager } from 'ts-mock-imports';
 import { Language } from "../../Common/Types/Language";
-import { ContentType, IHazzatContent, ITextContent } from '../../Models/IVariationInfo';
+import { ContentType, IHazzatContent, ITextContent, IVerticalHazzatContent } from '../../Models/IVariationInfo';
 import * as SqlDataProviderModule from '../../Providers/DataProviders/SqlDataProvider/SqlDataProvider';
 import { HymnsServiceProvider } from "../../Providers/ServiceProviders/HymnsServiceProvider";
 import { IHymnsServiceProvider } from "../../Providers/ServiceProviders/IHymnsServiceProvider";
@@ -938,6 +938,169 @@ describe("Seasons Service Provider Unit Tests", () => {
 
             // Validate that all common content has been replaced
             variationContent.content.englishHazzat.should.be.equal(expectedContent);
+        });
+    });
+
+    describe("A single variation (Vertical Hazzat)", () => {
+        it("should get a vertical hazzat with one paragraph", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 3; // Vertical Hazzat
+            contentDb.Content_Arabic = "Some Arabic content";
+            contentDb.Content_English = "Some English content";
+            contentDb.Content_Coptic = "Some Coptic content";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<IVerticalHazzatContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateVerticalHazzatContent(variationContent.content);
+
+            // Validate that the contract was mapped out correctly from db results
+            variationContent.name.should.be.equal(contentDb.Content_Name);
+            variationContent.content.arabicVerticalHazzat.should.be.equal(contentDb.Content_Arabic);
+            variationContent.content.copticVerticalHazzat.should.be.equal(contentDb.Content_Coptic);
+            variationContent.content.englishVerticalHazzat.should.be.equal(contentDb.Content_English);
+        });
+
+        it("should get a vertical hazzat with only Arabic content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 3; // Vertical Hazzat
+            contentDb.Content_Arabic = "Some Arabic content";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<IVerticalHazzatContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateVerticalHazzatContent(variationContent.content);
+
+            // Validate that there's only Arabic
+            variationContent.content.arabicVerticalHazzat.should.be.equal(contentDb.Content_Arabic);
+            chai.assert(variationContent.content.copticVerticalHazzat === null);
+            chai.assert(variationContent.content.englishVerticalHazzat === null);
+        });
+
+        it("should get a vertical hazzat with only Coptic content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 3; // Vertical Hazzat
+            contentDb.Content_Coptic = "Some Coptic content";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<IVerticalHazzatContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateVerticalHazzatContent(variationContent.content);
+
+            // Validate that there's only Coptic
+            chai.assert(variationContent.content.arabicVerticalHazzat === null);
+            variationContent.content.copticVerticalHazzat.should.be.equal(contentDb.Content_Coptic);
+            chai.assert(variationContent.content.englishVerticalHazzat === null);
+        });
+
+        it("should get a vertical hazzat with only English content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 3; // Vertical Hazzat
+            contentDb.Content_English = "Some English content";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<IVerticalHazzatContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateVerticalHazzatContent(variationContent.content);
+
+            // Validate that there's only English
+            chai.assert(variationContent.content.arabicVerticalHazzat === null);
+            chai.assert(variationContent.content.copticVerticalHazzat === null);
+            variationContent.content.englishVerticalHazzat.should.be.equal(contentDb.Content_English);
+        });
+
+        it("should get a vertical hazzat with common Coptic content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 3; // Vertical Hazzat
+            contentDb.Content_Coptic = "Some Coptic content. <common=123>";
+            const commonContent = "Common content.";
+            const expectedContent = "Some Coptic content. Common content.";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+            mockManager.mock('getCommonContent', commonContent);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<IVerticalHazzatContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateVerticalHazzatContent(variationContent.content);
+
+            // Validate that common content has been replaced
+            variationContent.content.copticVerticalHazzat.should.be.equal(expectedContent);
+        });
+
+        it("should get a vertical hazzat with common Arabic content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 3; // Vertical Hazzat
+            contentDb.Content_Arabic = "Some Arabic content. <common=123>";
+            const commonContent = "Common content.";
+            const expectedContent = "Some Arabic content. Common content.";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+            mockManager.mock('getCommonContent', commonContent);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<IVerticalHazzatContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateVerticalHazzatContent(variationContent.content);
+
+            // Validate that common content has been replaced
+            variationContent.content.arabicVerticalHazzat.should.be.equal(expectedContent);
+        });
+
+        it("should get a vertical hazzat with multiple common English content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 3; // Vertical Hazzat
+            contentDb.Content_English = "Some English content. <common=123><common=456>";
+            const commonContent = "Common content.";
+            const expectedContent = "Some English content. Common content.Common content.";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+            mockManager.mock('getCommonContent', commonContent);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<IVerticalHazzatContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateVerticalHazzatContent(variationContent.content);
+
+            // Validate that all common content has been replaced
+            variationContent.content.englishVerticalHazzat.should.be.equal(expectedContent);
+        });
+
+        it("should get a vertical hazzat with nested common English content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 3; // Vertical Hazzat
+            contentDb.Content_English = "Some English content. <common=123>";
+            const parentCommonContent = "Common content. <common=456>";
+            const nestedCommonContent = "Nested common content.";
+            const expectedContent = "Some English content. Common content. Nested common content.";
+
+            const mockedGetCommonContent = (commonIdStr: string): string => {
+                // TODO: No idea why commonIdStr is not just 123
+                console.log(`common id is '${commonIdStr}'`);
+                if (commonIdStr === "<common=123>") {
+                    return parentCommonContent;
+                }
+                return nestedCommonContent;
+            };
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+            mockManager.mock('getCommonContent', (commonId) => mockedGetCommonContent(commonId));
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<IVerticalHazzatContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateVerticalHazzatContent(variationContent.content);
+
+            // Validate that all common content has been replaced
+            variationContent.content.englishVerticalHazzat.should.be.equal(expectedContent);
         });
     });
 });

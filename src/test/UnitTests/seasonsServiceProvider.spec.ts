@@ -7,6 +7,7 @@ import { HymnsServiceProvider } from "../../Providers/ServiceProviders/HymnsServ
 import { IHymnsServiceProvider } from "../../Providers/ServiceProviders/IHymnsServiceProvider";
 import { SqlDataProviderMock } from "../Helpers/SqlDataProviderMock";
 import { Validators } from "../Helpers/Validators";
+import { Constants as SqlConstants } from "../../Providers/DataProviders/SqlDataProvider/SqlConstants";
 
 process.env.NODE_ENV = "test";
 
@@ -64,7 +65,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             const season = await hymnsProvider.getSeason("seasonId");
             Validators.validateObject(season);
             Validators.validateSeason(season);
-            season.isDateSpecific.should.be.true;
+            chai.assert(season.isDateSpecific);
         });
 
         it("should get a non-date-specific season", async () => {
@@ -74,7 +75,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             const season = await hymnsProvider.getSeason("seasonId");
             Validators.validateObject(season);
             Validators.validateSeason(season);
-            season.isDateSpecific.should.be.false;
+            chai.assert(!season.isDateSpecific);
         });
     });
 
@@ -269,20 +270,511 @@ describe("Seasons Service Provider Unit Tests", () => {
                         chai.assert(false, `Unexpected language encountered '${col.language}'`);
                 }
             });
+        });
 
-            // Other text test cases:
-            // with comment
-            // without comment
-            // With only arabic paragraph
-            // with only english paragraph
-            // with only coptic paragraph
-            // with english & arabic only multiple paragraphs
-            // with coptic not having all paragraphs
-            // With common
-            // with multiple common
-            // with nested common
-            // with reason
-            // with common containing reason
+        it("should get a text with a comment", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 1; // Text
+            contentDb.Content_English = "<comment=Some Comment Text>Some English content";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<ITextContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateTextContent(variationContent.content);
+
+            // Validate comment
+            variationContent.content.paragraphs.length.should.be.equal(2);
+            chai.assert(variationContent.content.paragraphs[0].isComment);
+        });
+
+        it("should get a text without a comment", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 1; // Text
+            contentDb.Content_English = "Some English content";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<ITextContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateTextContent(variationContent.content);
+
+            // Validate comment
+            variationContent.content.paragraphs.length.should.be.equal(1);
+            chai.assert(!variationContent.content.paragraphs[0].isComment);
+        });
+
+        it("should get a text with only Arabic paragraph", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 1; // Text
+            contentDb.Content_Arabic = "Some Arabic content";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<ITextContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateTextContent(variationContent.content);
+
+            // Validate that there's only one paragraph
+            variationContent.content.paragraphs.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns[0].content.should.be.equal(contentDb.Content_Arabic);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.Arabic);
+        });
+
+        it("should get a text with only Coptic paragraph", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 1; // Text
+            contentDb.Content_Coptic = "Some Coptic content";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<ITextContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateTextContent(variationContent.content);
+
+            // Validate that there's only one paragraph
+            variationContent.content.paragraphs.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns[0].content.should.be.equal(contentDb.Content_Coptic);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.Coptic);
+        });
+
+        it("should get a text with only English paragraph", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 1; // Text
+            contentDb.Content_English = "Some English content";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<ITextContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateTextContent(variationContent.content);
+
+            // Validate that there's only one paragraph
+            variationContent.content.paragraphs.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns[0].content.should.be.equal(contentDb.Content_English);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.English);
+        });
+
+        it("should get a text with only English & Arabic only, multiple paragraphs", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 1; // Text
+            const englishParagraphs = [
+                "English paragraph one.",
+                "English paragraph two.",
+                "English paragraph three.",
+            ];
+            const arabicParagraphs = [
+                "Arabic paragraph one.",
+                "Arabic paragraph two.",
+                "Arabic paragraph three.",
+            ];
+            contentDb.Content_English = englishParagraphs.join(SqlConstants.Tokens.ParagraphSeparator);
+            contentDb.Content_Arabic = arabicParagraphs.join(SqlConstants.Tokens.ParagraphSeparator);
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<ITextContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateTextContent(variationContent.content);
+
+            // Validate paragraphs
+            variationContent.content.paragraphs.length.should.be.equal(3);
+
+            for (let i = 0; i < variationContent.content.paragraphs.length; i++) {
+                const paragraph = variationContent.content.paragraphs[i];
+
+                paragraph.columns.length.should.be.equal(2);
+
+                paragraph.columns.forEach((col) => {
+                    switch (col.language) {
+                        case Language.Arabic:
+                            col.content.should.be.equal(arabicParagraphs[i]);
+                            break;
+                        case Language.English:
+                            col.content.should.be.equal(englishParagraphs[i]);
+                            break;
+                        default:
+                            chai.assert(false, `Unexpected language encountered '${col.language}'`);
+                    }
+                });
+            }
+        });
+
+        it("should get a text with only Coptic not having all paragraphs", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 1; // Text
+            const englishParagraphs = [
+                "English paragraph one.",
+                "English paragraph two.",
+                "English paragraph three.",
+            ];
+            const arabicParagraphs = [
+                "Arabic paragraph one.",
+                "Arabic paragraph two.",
+                "Arabic paragraph three.",
+            ];
+            const copticParagraphs = [
+                "Coptic paragraph one.",
+                "",
+                "Coptic paragraph three.",
+            ];
+            contentDb.Content_English = englishParagraphs.join(SqlConstants.Tokens.ParagraphSeparator);
+            contentDb.Content_Arabic = arabicParagraphs.join(SqlConstants.Tokens.ParagraphSeparator);
+            contentDb.Content_Coptic = copticParagraphs.join(SqlConstants.Tokens.ParagraphSeparator);
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<ITextContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateTextContent(variationContent.content);
+
+            // Validate paragraphs
+            variationContent.content.paragraphs.length.should.be.equal(3);
+
+            // First paragraph should have all 3 cols
+            let pIdx = 0;
+            let paragraph = variationContent.content.paragraphs[pIdx];
+            paragraph.columns.length.should.be.equal(3);
+
+            paragraph.columns.forEach((col) => {
+                switch (col.language) {
+                    case Language.Arabic:
+                        col.content.should.be.equal(arabicParagraphs[pIdx]);
+                        break;
+                    case Language.Coptic:
+                        col.content.should.be.equal(copticParagraphs[pIdx]);
+                        break;
+                    case Language.English:
+                        col.content.should.be.equal(englishParagraphs[pIdx]);
+                        break;
+                    default:
+                        chai.assert(false, `Unexpected language encountered '${col.language}'`);
+                }
+            });
+
+            // Second paragraph should not have Coptic
+            pIdx = 1;
+            paragraph = variationContent.content.paragraphs[pIdx];
+            paragraph.columns.length.should.be.equal(2);
+
+            paragraph.columns.forEach((col) => {
+                switch (col.language) {
+                    case Language.Arabic:
+                        col.content.should.be.equal(arabicParagraphs[pIdx]);
+                        break;
+                    case Language.English:
+                        col.content.should.be.equal(englishParagraphs[pIdx]);
+                        break;
+                    default:
+                        chai.assert(false, `Unexpected language encountered '${col.language}'`);
+                }
+            });
+
+            // Third paragraph should have all 3 cols again
+            pIdx = 2;
+            paragraph = variationContent.content.paragraphs[pIdx];
+            paragraph.columns.length.should.be.equal(3);
+
+            paragraph.columns.forEach((col) => {
+                switch (col.language) {
+                    case Language.Arabic:
+                        col.content.should.be.equal(arabicParagraphs[pIdx]);
+                        break;
+                    case Language.Coptic:
+                        col.content.should.be.equal(copticParagraphs[pIdx]);
+                        break;
+                    case Language.English:
+                        col.content.should.be.equal(englishParagraphs[pIdx]);
+                        break;
+                    default:
+                        chai.assert(false, `Unexpected language encountered '${col.language}'`);
+                }
+            });
+        });
+
+        it("should get a text with common English content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 1; // Text
+            contentDb.Content_English = "Some English content. <common=123>";
+            const commonContent = "Common content.";
+            const expectedContent = "Some English content. Common content.";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+            mockManager.mock('getCommonContent', commonContent);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<ITextContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateTextContent(variationContent.content);
+
+            // Validate that there's only one paragraph
+            variationContent.content.paragraphs.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.English);
+        });
+
+        it("should get a text with common Coptic content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 1; // Text
+            contentDb.Content_Coptic = "Some Coptic content. <common=123>";
+            const commonContent = "Common content.";
+            const expectedContent = "Some Coptic content. Common content.";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+            mockManager.mock('getCommonContent', commonContent);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<ITextContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateTextContent(variationContent.content);
+
+            // Validate that there's only one paragraph
+            variationContent.content.paragraphs.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.Coptic);
+        });
+
+        it("should get a text with common Arabic content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 1; // Text
+            contentDb.Content_Arabic = "Some Arabic content. <common=123>";
+            const commonContent = "Common content.";
+            const expectedContent = "Some Arabic content. Common content.";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+            mockManager.mock('getCommonContent', commonContent);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<ITextContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateTextContent(variationContent.content);
+
+            // Validate that there's only one paragraph
+            variationContent.content.paragraphs.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.Arabic);
+        });
+
+        it("should get a text with multiple common English content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 1; // Text
+            contentDb.Content_English = "Some English content. <common=123><common=456>";
+            const commonContent = "Common content.";
+            const expectedContent = "Some English content. Common content.Common content.";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+            mockManager.mock('getCommonContent', commonContent);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<ITextContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateTextContent(variationContent.content);
+
+            // Validate that there's only one paragraph
+            variationContent.content.paragraphs.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.English);
+        });
+
+        it("should get a text with nested common English content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 1; // Text
+            contentDb.Content_English = "Some English content. <common=123>";
+            const parentCommonContent = "Common content. <common=456>";
+            const nestedCommonContent = "Nested common content.";
+            const expectedContent = "Some English content. Common content. Nested common content.";
+
+            const mockedGetCommonContent = (commonId: string): string => {
+                // TODO: No idea why commonId is not just 123
+                if (commonId === "<common=123>") {
+                    return parentCommonContent;
+                }
+                return nestedCommonContent;
+            };
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+            mockManager.mock('getCommonContent', (commonId) => mockedGetCommonContent(commonId));
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<ITextContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateTextContent(variationContent.content);
+
+            // Validate that there's only one paragraph
+            variationContent.content.paragraphs.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.English);
+        });
+
+        it("should get a text with English long reason content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            const reasonDb = SqlDataProviderMock.getDbReason();
+            contentDb.Format_ID = 1; // Text
+            contentDb.Content_English = "Some English content with <reason_long>.";
+            const expectedContent = `Some English content with ${reasonDb.Long_English}.`;
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+            mockManager.mock('getReason', reasonDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<ITextContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateTextContent(variationContent.content);
+
+            // Validate that there's only one paragraph
+            variationContent.content.paragraphs.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.English);
+        });
+
+        it("should get a text with English short reason content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            const reasonDb = SqlDataProviderMock.getDbReason();
+            contentDb.Format_ID = 1; // Text
+            contentDb.Content_English = "Some English content with <reason_short>.";
+            const expectedContent = `Some English content with ${reasonDb.Short_English}.`;
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+            mockManager.mock('getReason', reasonDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<ITextContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateTextContent(variationContent.content);
+
+            // Validate that there's only one paragraph
+            variationContent.content.paragraphs.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.English);
+        });
+
+        it("should get a text with Coptic long reason content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            const reasonDb = SqlDataProviderMock.getDbReason();
+            contentDb.Format_ID = 1; // Text
+            contentDb.Content_Coptic = "Some Coptic content with <reason_long>.";
+            const expectedContent = `Some Coptic content with ${reasonDb.Long_Coptic}.`;
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+            mockManager.mock('getReason', reasonDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<ITextContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateTextContent(variationContent.content);
+
+            // Validate that there's only one paragraph
+            variationContent.content.paragraphs.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.Coptic);
+        });
+
+        it("should get a text with Coptic short reason content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            const reasonDb = SqlDataProviderMock.getDbReason();
+            contentDb.Format_ID = 1; // Text
+            contentDb.Content_Coptic = "Some Coptic content with <reason_short>.";
+            const expectedContent = `Some Coptic content with ${reasonDb.Short_Coptic}.`;
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+            mockManager.mock('getReason', reasonDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<ITextContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateTextContent(variationContent.content);
+
+            // Validate that there's only one paragraph
+            variationContent.content.paragraphs.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.Coptic);
+        });
+
+        it("should get a text with Arabic long reason content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            const reasonDb = SqlDataProviderMock.getDbReason();
+            contentDb.Format_ID = 1; // Text
+            contentDb.Content_Arabic = "Some Arabic content with <reason_long>.";
+            const expectedContent = `Some Arabic content with ${reasonDb.Long_Arabic}.`;
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+            mockManager.mock('getReason', reasonDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<ITextContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateTextContent(variationContent.content);
+
+            // Validate that there's only one paragraph
+            variationContent.content.paragraphs.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.Arabic);
+        });
+
+        it("should get a text with Arabic short reason content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            const reasonDb = SqlDataProviderMock.getDbReason();
+            contentDb.Format_ID = 1; // Text
+            contentDb.Content_Arabic = "Some Arabic content with <reason_short>.";
+            const expectedContent = `Some Arabic content with ${reasonDb.Short_Arabic}.`;
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+            mockManager.mock('getReason', reasonDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<ITextContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateTextContent(variationContent.content);
+
+            // Validate that there's only one paragraph
+            variationContent.content.paragraphs.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.Arabic);
+        });
+
+        it("should get a text with common English content containing a reason", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            const reasonDb = SqlDataProviderMock.getDbReason();
+            contentDb.Format_ID = 1; // Text
+            contentDb.Content_English = "Some English content. <common=123>";
+            const commonContent = "Common content with <reason_long>.";
+            const expectedContent = `Some English content. Common content with ${reasonDb.Long_English}.`;
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+            mockManager.mock('getCommonContent', commonContent);
+            mockManager.mock('getReason', reasonDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<ITextContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateTextContent(variationContent.content);
+
+            // Validate that there's only one paragraph
+            variationContent.content.paragraphs.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
+            variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.English);
         });
     });
 });

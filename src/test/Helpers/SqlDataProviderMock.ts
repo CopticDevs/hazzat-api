@@ -289,6 +289,19 @@ export class SqlDataProviderMock {
         };
     }
 
+    public static getDbReason(): HazzatDbSchema.IReason {
+        return {
+            ItemId: 12,
+            Name: "Reason Name",
+            Long_Arabic: "Long Arabic reason",
+            Long_Coptic: "Long Coptic reason",
+            Long_English: "Long English reason",
+            Short_Arabic: "Short Arabic reason",
+            Short_Coptic: "Short Coptic reason",
+            Short_English: "Short English reason"
+        };
+    }
+
     public static getDbTunesList(): HazzatDbSchema.ITune[] {
         return [
             SqlDataProviderMock._tune1,

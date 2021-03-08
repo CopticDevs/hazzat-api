@@ -684,7 +684,7 @@ describe("Seasons controller", () => {
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
-                    Validators.validateMusicalNotesContentResponse(res.body[0].content);
+                    Validators.validateMusicalNotesContent(res.body[0].content);
                     done();
                 });
         });
@@ -695,7 +695,7 @@ describe("Seasons controller", () => {
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
-                    Validators.validateAudioContentResponse(res.body[0].content);
+                    Validators.validateAudioContent(res.body[0].content);
                     done();
                 });
         });
@@ -983,7 +983,7 @@ describe("Seasons controller", () => {
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
-                    Validators.validateMusicalNotesContentResponse(res.body.content);
+                    Validators.validateMusicalNotesContent(res.body.content);
                     done();
                 });
         });
@@ -995,7 +995,7 @@ describe("Seasons controller", () => {
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
-                    Validators.validateAudioContentResponse(res.body.content);
+                    Validators.validateAudioContent(res.body.content);
                     done();
                 });
         });

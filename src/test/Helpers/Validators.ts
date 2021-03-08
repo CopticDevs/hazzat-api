@@ -115,15 +115,15 @@ export class Validators {
         value.should.have.property("contentType").eq(ContentType.VerticalHazzatContent);
     }
 
-    public static validateMusicalNotesContentResponse(contentBody: any): void {
-        contentBody.should.have.property("musicFilePath");
-        contentBody.should.have.property("audioFilePath");
-        contentBody.should.have.property("contentType").eq(ContentType.MusicalNotesContent);
+    public static validateMusicalNotesContent(value: any): void {
+        value.should.have.property("musicFilePath");
+        value.should.have.property("audioFilePath");
+        value.should.have.property("contentType").eq(ContentType.MusicalNotesContent);
     }
 
-    public static validateAudioContentResponse(contentBody: any): void {
-        contentBody.should.have.property("audioFilePath");
-        contentBody.should.have.property("contentType").eq(ContentType.AudioContent);
+    public static validateAudioContent(value: any): void {
+        value.should.have.property("audioFilePath");
+        value.should.have.property("contentType").eq(ContentType.AudioContent);
     }
 
     public static validateVideoContentResponse(contentBody: any): void {

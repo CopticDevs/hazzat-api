@@ -1,13 +1,13 @@
 import * as chai from "chai";
 import { ImportMock, MockManager } from 'ts-mock-imports';
 import { Language } from "../../Common/Types/Language";
-import { ContentType, IHazzatContent, ITextContent, IVerticalHazzatContent } from '../../Models/IVariationInfo';
+import { IAudioContent, IHazzatContent, IMusicalNotesContent, ITextContent, IVerticalHazzatContent } from '../../Models/IVariationInfo';
+import { Constants as SqlConstants } from "../../Providers/DataProviders/SqlDataProvider/SqlConstants";
 import * as SqlDataProviderModule from '../../Providers/DataProviders/SqlDataProvider/SqlDataProvider';
 import { HymnsServiceProvider } from "../../Providers/ServiceProviders/HymnsServiceProvider";
 import { IHymnsServiceProvider } from "../../Providers/ServiceProviders/IHymnsServiceProvider";
 import { SqlDataProviderMock } from "../Helpers/SqlDataProviderMock";
 import { Validators } from "../Helpers/Validators";
-import { Constants as SqlConstants } from "../../Providers/DataProviders/SqlDataProvider/SqlConstants";
 
 process.env.NODE_ENV = "test";
 
@@ -1101,6 +1101,46 @@ describe("Seasons Service Provider Unit Tests", () => {
 
             // Validate that all common content has been replaced
             variationContent.content.englishVerticalHazzat.should.be.equal(expectedContent);
+        });
+    });
+
+    describe("A single variation (Musical Notes)", () => {
+        it("should get a Musical Notes", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 4; // Musical Notes
+            contentDb.Music_Path = "Some Music Path";
+            contentDb.Audio_Path = "Some Audio Path";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<IMusicalNotesContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateMusicalNotesContent(variationContent.content);
+
+            // Validate that the contract was mapped out correctly from db results
+            variationContent.name.should.be.equal(contentDb.Content_Name);
+            variationContent.content.musicFilePath.should.be.equal(contentDb.Music_Path);
+            variationContent.content.audioFilePath.should.be.equal(contentDb.Audio_Path);
+        });
+    });
+
+    describe("A single variation (Autio)", () => {
+        it("should get an Audio content", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
+            contentDb.Format_ID = 5; // Audio
+            contentDb.Audio_Path = "Some Audio Path";
+            mockManager.mock('getServiceHymnsFormatVariation', contentDb);
+
+            const variationContent = await hymnsProvider.getServiceHymnsFormatVariation<IAudioContent>("seasonId", "serviceId", "hymnId", "formatId", "contentId");
+            Validators.validateObject(variationContent);
+            Validators.validateServiceHymnFormatVariation(variationContent);
+            Validators.validateAudioContent(variationContent.content);
+
+            // Validate that the contract was mapped out correctly from db results
+            variationContent.name.should.be.equal(contentDb.Content_Name);
+            variationContent.content.audioFilePath.should.be.equal(contentDb.Audio_Path);
         });
     });
 });

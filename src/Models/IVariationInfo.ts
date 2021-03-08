@@ -64,6 +64,8 @@ export declare type IHymnContent =
     ITextContent |
     IHazzatContent |
     IVerticalHazzatContent |
+    IMusicalNotesContent |
+    IAudioContent |
     IVideoContent |
     IInformationContent;
 

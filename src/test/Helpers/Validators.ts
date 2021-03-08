@@ -101,11 +101,11 @@ export class Validators {
         textColumns[0].should.have.property("language");
     }
 
-    public static validateHazzatContentResponse(contentBody: any): void {
-        contentBody.should.have.property("arabicHazzat");
-        contentBody.should.have.property("copticHazzat");
-        contentBody.should.have.property("englishHazzat");
-        contentBody.should.have.property("contentType").eq(ContentType.HazzatContent);
+    public static validateHazzatContent(value: any): void {
+        value.should.have.property("arabicHazzat");
+        value.should.have.property("copticHazzat");
+        value.should.have.property("englishHazzat");
+        value.should.have.property("contentType").eq(ContentType.HazzatContent);
     }
 
     public static validateVerticalHazzatContentResponse(contentBody: any): void {

@@ -1,61 +1,61 @@
 import * as chai from "chai";
-import { ErrorCodes } from "../Common/Errors";
-import { ResourceTypes } from "../Routes/ResourceTypes";
-import { Validators } from "./Helpers/Validators";
+import { ErrorCodes } from "../../Common/Errors";
+import { ResourceTypes } from "../../Routes/ResourceTypes";
+import { Validators } from "../Helpers/Validators";
 import chaiHttp = require("chai-http");
-import server = require("../app");
+import server = require("../../app");
 
 process.env.NODE_ENV = "test";
 
 chai.use(chaiHttp);
 
-describe("Types controller", () => {
+describe("Tunes controller", () => {
 
-    describe("/GET all types", () => {
-        it("should get all types", (done) => {
+    describe("/GET all tunes", () => {
+        it("should get all tunes", (done) => {
             chai.request(server)
-                .get(`/${ResourceTypes.Types}`)
+                .get(`/${ResourceTypes.Tunes}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateTypeResponse(res.body[0]);
+                    Validators.validateHymnTune(res.body[0]);
                     done();
                 });
         });
     });
 
-    describe("/GET a type", () => {
-        it("should get a single type", (done) => {
-            const resourceId = `/${ResourceTypes.Types}/1`;
+    describe("/GET a tune", () => {
+        it("should get a single tune", (done) => {
+            const resourceId = `/${ResourceTypes.Tunes}/1`;
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateTypeResponse(res.body, resourceId);
+                    Validators.validateHymnTune(res.body, resourceId);
                     done();
                 });
         });
 
-        it("should return a 404 for non existing types", (done) => {
+        it("should return a 404 for non existing tunes", (done) => {
             chai.request(server)
-                .get(`/${ResourceTypes.Types}/1234`)
+                .get(`/${ResourceTypes.Tunes}/1234`)
                 .end((err, res) => {
                     Validators.validateErrorResponse(res, 404, ErrorCodes.NotFoundError);
                     done();
                 });
         });
 
-        it("should return a 404 for negative type ids", (done) => {
+        it("should return a 404 for negative tune ids", (done) => {
             chai.request(server)
-                .get(`/${ResourceTypes.Types}/-1`)
+                .get(`/${ResourceTypes.Tunes}/-1`)
                 .end((err, res) => {
                     Validators.validateErrorResponse(res, 404);
                     done();
                 });
         });
 
-        it("should return a 404 for non integer type ids", (done) => {
+        it("should return a 404 for non integer tune ids", (done) => {
             chai.request(server)
-                .get(`/${ResourceTypes.Types}/badInput`)
+                .get(`/${ResourceTypes.Tunes}/badInput`)
                 .end((err, res) => {
                     Validators.validateErrorResponse(res, 404);
                     done();

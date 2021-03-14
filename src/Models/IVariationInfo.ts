@@ -64,6 +64,8 @@ export declare type IHymnContent =
     ITextContent |
     IHazzatContent |
     IVerticalHazzatContent |
+    IMusicalNotesContent |
+    IAudioContent |
     IVideoContent |
     IInformationContent;
 
@@ -73,5 +75,5 @@ export declare type IHymnContent =
 export interface IVariationInfo<T extends IHymnContent> {
     id: string;
     name: string;
-    content: T;  // TODO: Not sure how I feel about having this being polymorphic.  Bad design?
+    content: T;
 }

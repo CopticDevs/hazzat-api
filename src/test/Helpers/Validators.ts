@@ -5,10 +5,18 @@ import { ContentType } from "../../Models/IVariationInfo";
 const should = chai.should();
 
 export class Validators {
+    public static validateObject(value: any): void {
+        value.should.be.a("object");
+        value.should.not.be.a("array");
+    }
+
+    public static validateArray(arr: any): void {
+        arr.should.be.a("array");
+    }
+
     public static validateErrorResponse(res: any, statusCode: number, errorCode?: ErrorCodes): void {
         res.should.have.status(statusCode);
-        res.body.should.be.a("object");
-        res.body.should.not.be.a("array");
+        Validators.validateObject(res.body);
         if (errorCode !== null && errorCode !== undefined) {
             res.body.should.have.property("errorCode");
             res.body.should.have.property("errorCode").eql(ErrorCodes[errorCode]);
@@ -18,139 +26,138 @@ export class Validators {
 
     public static validateArrayResponse(res: any, isEmpty: boolean = false): void {
         res.should.have.status(200);
-        res.body.should.be.a("array");
+        Validators.validateArray(res.body);
         isEmpty ? res.body.length.should.be.eql(0) : res.body.length.should.be.not.eql(0);
     }
 
     public static validateObjectResponse(res: any): void {
         res.should.have.status(200);
-        res.body.should.be.a("object");
-        res.body.should.not.be.a("array");
+        Validators.validateObject(res.body);
     }
 
-    public static validateSeasonResponse(resBody: any, resourceId: string = null): void {
-        resBody.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+$`));
+    public static validateSeason(value: any, resourceId: string = null): void {
+        value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+$`));
         if (!!resourceId) {
-            resBody.should.have.property("id").eq(resourceId);
+            value.should.have.property("id").eq(resourceId);
         }
-        resBody.should.have.property("name");
-        resBody.should.have.property("order");
-        resBody.should.have.property("verse");
-        resBody.should.have.property("isDateSpecific");
+        value.should.have.property("name");
+        value.should.have.property("order");
+        value.should.have.property("verse");
+        value.should.have.property("isDateSpecific");
     }
 
-    public static validateServiceResponse(resBody: any, resourceId: string = null): void {
-        resBody.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+$`));
+    public static validateService(value: any, resourceId: string = null): void {
+        value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+$`));
         if (!!resourceId) {
-            resBody.should.have.property("id").eq(resourceId);
+            value.should.have.property("id").eq(resourceId);
         }
-        resBody.should.have.property("name");
-        resBody.should.have.property("order");
+        value.should.have.property("name");
+        value.should.have.property("order");
     }
 
-    public static validateServiceHymnResponse(resBody: any, resourceId: string = null): void {
-        resBody.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+$`));
+    public static validateServiceHymn(value: any, resourceId: string = null): void {
+        value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+$`));
         if (!!resourceId) {
-            resBody.should.have.property("id").eq(resourceId);
+            value.should.have.property("id").eq(resourceId);
         }
-        resBody.should.have.property("name");
-        resBody.should.have.property("order");
+        value.should.have.property("name");
+        value.should.have.property("order");
     }
 
-    public static validateServiceHymnFormatResponse(resBody: any, resourceId: string = null): void {
-        resBody.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+\/${ResourceTypes.Formats}\/[0-9]+$`));
+    public static validateServiceHymnFormat(value: any, resourceId: string = null): void {
+        value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+\/${ResourceTypes.Formats}\/[0-9]+$`));
         if (!!resourceId) {
-            resBody.should.have.property("id").eq(resourceId);
+            value.should.have.property("id").eq(resourceId);
         }
-        resBody.should.have.property("name");
-        resBody.should.have.property("variationCount");
-        resBody.should.have.property("order");
+        value.should.have.property("name");
+        value.should.have.property("variationCount");
+        value.should.have.property("order");
     }
 
-    public static validateServiceHymnFormatVariationResponse(resBody: any, resourceId: string = null): void {
-        resBody.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+\/${ResourceTypes.Formats}\/[0-9]+\/${ResourceTypes.Variations}\/[0-9]+$`));
+    public static validateServiceHymnFormatVariation(value: any, resourceId: string = null): void {
+        value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+\/${ResourceTypes.Formats}\/[0-9]+\/${ResourceTypes.Variations}\/[0-9]+$`));
         if (!!resourceId) {
-            resBody.should.have.property("id").eq(resourceId);
+            value.should.have.property("id").eq(resourceId);
         }
-        resBody.should.have.property("name");
-        resBody.should.have.property("content");
+        value.should.have.property("name");
+        value.should.have.property("content");
     }
 
-    public static validateTextContentResponse(contentBody: any): void {
-        contentBody.should.have.property("paragraphs");
-        contentBody.should.have.property("contentType").eq(ContentType.TextContent);
-        Validators.validateTextParagraphArrayContent(contentBody.paragraphs);
+    public static validateTextContent(value: any): void {
+        value.should.have.property("paragraphs");
+        value.should.have.property("contentType").eq(ContentType.TextContent);
+        Validators.validateTextParagraphArrayContent(value.paragraphs);
     }
 
     public static validateTextParagraphArrayContent(textParagraphs: any): void {
-        textParagraphs.should.be.a("array");
+        Validators.validateArray(textParagraphs);
         textParagraphs[0].should.have.property("columns");
         Validators.validateTextColumnArrayContent(textParagraphs[0].columns);
     }
 
     public static validateTextColumnArrayContent(textColumns: any): void {
-        textColumns.should.be.a("array");
+        Validators.validateArray(textColumns);
         textColumns[0].should.have.property("content");
         textColumns[0].should.have.property("language");
     }
 
-    public static validateHazzatContentResponse(contentBody: any): void {
-        contentBody.should.have.property("arabicHazzat");
-        contentBody.should.have.property("copticHazzat");
-        contentBody.should.have.property("englishHazzat");
-        contentBody.should.have.property("contentType").eq(ContentType.HazzatContent);
+    public static validateHazzatContent(value: any): void {
+        value.should.have.property("arabicHazzat");
+        value.should.have.property("copticHazzat");
+        value.should.have.property("englishHazzat");
+        value.should.have.property("contentType").eq(ContentType.HazzatContent);
     }
 
-    public static validateVerticalHazzatContentResponse(contentBody: any): void {
-        contentBody.should.have.property("arabicVerticalHazzat");
-        contentBody.should.have.property("copticVerticalHazzat");
-        contentBody.should.have.property("englishVerticalHazzat");
-        contentBody.should.have.property("contentType").eq(ContentType.VerticalHazzatContent);
+    public static validateVerticalHazzatContent(value: any): void {
+        value.should.have.property("arabicVerticalHazzat");
+        value.should.have.property("copticVerticalHazzat");
+        value.should.have.property("englishVerticalHazzat");
+        value.should.have.property("contentType").eq(ContentType.VerticalHazzatContent);
     }
 
-    public static validateMusicalNotesContentResponse(contentBody: any): void {
-        contentBody.should.have.property("musicFilePath");
-        contentBody.should.have.property("audioFilePath");
-        contentBody.should.have.property("contentType").eq(ContentType.MusicalNotesContent);
+    public static validateMusicalNotesContent(value: any): void {
+        value.should.have.property("musicFilePath");
+        value.should.have.property("audioFilePath");
+        value.should.have.property("contentType").eq(ContentType.MusicalNotesContent);
     }
 
-    public static validateAudioContentResponse(contentBody: any): void {
-        contentBody.should.have.property("audioFilePath");
-        contentBody.should.have.property("contentType").eq(ContentType.AudioContent);
+    public static validateAudioContent(value: any): void {
+        value.should.have.property("audioFilePath");
+        value.should.have.property("contentType").eq(ContentType.AudioContent);
     }
 
-    public static validateVideoContentResponse(contentBody: any): void {
-        contentBody.should.have.property("arabicVideo");
-        contentBody.should.have.property("copticVideo");
-        contentBody.should.have.property("englishVideo");
-        contentBody.should.have.property("contentType").eq(ContentType.VideoContent);
+    public static validateVideoContent(value: any): void {
+        value.should.have.property("arabicVideo");
+        value.should.have.property("copticVideo");
+        value.should.have.property("englishVideo");
+        value.should.have.property("contentType").eq(ContentType.VideoContent);
     }
 
-    public static validateInformationContentResponse(contentBody: any): void {
-        contentBody.should.have.property("arabicInformation");
-        contentBody.should.have.property("englishInformation");
-        contentBody.should.have.property("contentType").eq(ContentType.InformationContent);
+    public static validateInformationContent(value: any): void {
+        value.should.have.property("arabicInformation");
+        value.should.have.property("englishInformation");
+        value.should.have.property("contentType").eq(ContentType.InformationContent);
     }
 
-    public static validateTypeResponse(resBody: any, resourceId: string = null): void {
-        resBody.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Types}\/[0-9]+$`));
+    public static validateHymnType(value: any, resourceId: string = null): void {
+        value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Types}\/[0-9]+$`));
         if (!!resourceId) {
-            resBody.should.have.property("id").eq(resourceId);
+            value.should.have.property("id").eq(resourceId);
         }
-        resBody.should.have.property("name");
-        resBody.should.have.property("nameSingular");
-        resBody.should.have.property("order");
-        resBody.should.have.property("hymnCount");
+        value.should.have.property("name");
+        value.should.have.property("nameSingular");
+        value.should.have.property("order");
+        value.should.have.property("hymnCount");
     }
 
-    public static validateTuneResponse(resBody: any, resourceId: string = null): void {
-        resBody.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Tunes}\/[0-9]+$`));
+    public static validateHymnTune(value: any, resourceId: string = null): void {
+        value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Tunes}\/[0-9]+$`));
         if (!!resourceId) {
-            resBody.should.have.property("id").eq(resourceId);
+            value.should.have.property("id").eq(resourceId);
         }
-        resBody.should.have.property("name");
-        resBody.should.have.property("order");
-        resBody.should.have.property("hymnCount");
+        value.should.have.property("name");
+        value.should.have.property("order");
+        value.should.have.property("hymnCount");
     }
 
     public static validateDoesNotInclude(contentString: string, searchString: string): void {

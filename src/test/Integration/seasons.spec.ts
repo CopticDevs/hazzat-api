@@ -1,10 +1,10 @@
 import * as chai from "chai";
-import { ErrorCodes } from "../Common/Errors";
-import { Constants } from "../Providers/DataProviders/SqlDataProvider/SqlConstants";
-import { ResourceTypes } from "../Routes/ResourceTypes";
-import { Validators } from "./Helpers/Validators";
+import { ErrorCodes } from "../../Common/Errors";
+import { Constants } from "../../Providers/DataProviders/SqlDataProvider/SqlConstants";
+import { ResourceTypes } from "../../Routes/ResourceTypes";
+import { Validators } from "../Helpers/Validators";
 import chaiHttp = require("chai-http");
-import server = require("../app");
+import server = require("../../app");
 
 process.env.NODE_ENV = "test";
 
@@ -17,7 +17,7 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateSeasonResponse(res.body[0]);
+                    Validators.validateSeason(res.body[0]);
                     done();
                 });
         });
@@ -30,7 +30,7 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateSeasonResponse(res.body, resourceId);
+                    Validators.validateSeason(res.body, resourceId);
                     done();
                 });
         });
@@ -69,7 +69,7 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateServiceResponse(res.body[0]);
+                    Validators.validateService(res.body[0]);
                     done();
                 });
         });
@@ -109,7 +109,7 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateServiceResponse(res.body, resourceId);
+                    Validators.validateService(res.body, resourceId);
                     done();
                 });
         });
@@ -175,7 +175,7 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateServiceHymnResponse(res.body[0]);
+                    Validators.validateServiceHymn(res.body[0]);
                     done();
                 });
         });
@@ -242,7 +242,7 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateServiceHymnResponse(res.body, resourceId);
+                    Validators.validateServiceHymn(res.body, resourceId);
                     done();
                 });
         });
@@ -335,7 +335,7 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateServiceHymnFormatResponse(res.body[0]);
+                    Validators.validateServiceHymnFormat(res.body[0]);
                     done();
                 });
         });
@@ -429,7 +429,7 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateServiceHymnFormatResponse(res.body, resourceId);
+                    Validators.validateServiceHymnFormat(res.body, resourceId);
                     done();
                 });
         });
@@ -549,8 +549,8 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
-                    Validators.validateTextContentResponse(res.body[0].content);
+                    Validators.validateServiceHymnFormatVariation(res.body[0]);
+                    Validators.validateTextContent(res.body[0].content);
                     done();
                 });
         });
@@ -560,8 +560,8 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}/24/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/284/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
-                    Validators.validateTextContentResponse(res.body[0].content);
+                    Validators.validateServiceHymnFormatVariation(res.body[0]);
+                    Validators.validateTextContent(res.body[0].content);
 
                     res.body[0].content.paragraphs[0].should.have.property("isComment");
                     Validators.validateDoesNotInclude(res.body[0].content.paragraphs[0].columns[0].content, Constants.Tokens.commentStartTag);
@@ -574,8 +574,8 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}/33/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/460/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
-                    Validators.validateTextContentResponse(res.body[0].content);
+                    Validators.validateServiceHymnFormatVariation(res.body[0]);
+                    Validators.validateTextContent(res.body[0].content);
                     Validators.validateDoesNotInclude(res.body[0].content.arabicText, "<common=");
                     Validators.validateDoesNotInclude(res.body[0].content.copticText, "<common=");
                     Validators.validateDoesNotInclude(res.body[0].content.englishText, "<common=");
@@ -588,8 +588,8 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}/6/${ResourceTypes.Services}/3/${ResourceTypes.Hymns}/48/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
-                    Validators.validateTextContentResponse(res.body[0].content);
+                    Validators.validateServiceHymnFormatVariation(res.body[0]);
+                    Validators.validateTextContent(res.body[0].content);
                     Validators.validateDoesNotInclude(res.body[0].content.arabicText, Constants.Tokens.ReasonShort);
                     Validators.validateDoesNotInclude(res.body[0].content.copticText, Constants.Tokens.ReasonShort);
                     Validators.validateDoesNotInclude(res.body[0].content.englishText, Constants.Tokens.ReasonShort);
@@ -602,8 +602,8 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/2/${ResourceTypes.Hymns}/331/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
-                    Validators.validateTextContentResponse(res.body[0].content);
+                    Validators.validateServiceHymnFormatVariation(res.body[0]);
+                    Validators.validateTextContent(res.body[0].content);
                     Validators.validateDoesNotInclude(res.body[0].content.arabicText, Constants.Tokens.ReasonLong);
                     Validators.validateDoesNotInclude(res.body[0].content.copticText, Constants.Tokens.ReasonLong);
                     Validators.validateDoesNotInclude(res.body[0].content.englishText, Constants.Tokens.ReasonLong);
@@ -616,8 +616,8 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}/33/${ResourceTypes.Services}/24/${ResourceTypes.Hymns}/456/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
-                    Validators.validateTextContentResponse(res.body[0].content);
+                    Validators.validateServiceHymnFormatVariation(res.body[0]);
+                    Validators.validateTextContent(res.body[0].content);
                     Validators.validateDoesNotInclude(res.body[0].content.arabicText, "<common=");
                     Validators.validateDoesNotInclude(res.body[0].content.copticText, "<common=");
                     Validators.validateDoesNotInclude(res.body[0].content.englishText, "<common=");
@@ -633,8 +633,8 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/2/${ResourceTypes.Variations}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
-                    Validators.validateHazzatContentResponse(res.body[0].content);
+                    Validators.validateServiceHymnFormatVariation(res.body[0]);
+                    Validators.validateHazzatContent(res.body[0].content);
                     done();
                 });
         });
@@ -644,8 +644,8 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/21/${ResourceTypes.Hymns}/377/${ResourceTypes.Formats}/2/${ResourceTypes.Variations}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
-                    Validators.validateHazzatContentResponse(res.body[0].content);
+                    Validators.validateServiceHymnFormatVariation(res.body[0]);
+                    Validators.validateHazzatContent(res.body[0].content);
                     Validators.validateDoesNotInclude(res.body[0].content.arabicHazzat, "<common=");
                     Validators.validateDoesNotInclude(res.body[0].content.copticHazzat, "<common=");
                     Validators.validateDoesNotInclude(res.body[0].content.englishHazzat, "<common=");
@@ -658,8 +658,8 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/2/${ResourceTypes.Hymns}/279/${ResourceTypes.Formats}/3/${ResourceTypes.Variations}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
-                    Validators.validateVerticalHazzatContentResponse(res.body[0].content);
+                    Validators.validateServiceHymnFormatVariation(res.body[0]);
+                    Validators.validateVerticalHazzatContent(res.body[0].content);
                     done();
                 });
         });
@@ -669,8 +669,8 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/21/${ResourceTypes.Hymns}/377/${ResourceTypes.Formats}/3/${ResourceTypes.Variations}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
-                    Validators.validateVerticalHazzatContentResponse(res.body[0].content);
+                    Validators.validateServiceHymnFormatVariation(res.body[0]);
+                    Validators.validateVerticalHazzatContent(res.body[0].content);
                     Validators.validateDoesNotInclude(res.body[0].content.arabicVerticalHazzat, "<common=");
                     Validators.validateDoesNotInclude(res.body[0].content.copticVerticalHazzat, "<common=");
                     Validators.validateDoesNotInclude(res.body[0].content.englishVerticalHazzat, "<common=");
@@ -683,8 +683,8 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}/32/${ResourceTypes.Services}/17/${ResourceTypes.Hymns}/334/${ResourceTypes.Formats}/4/${ResourceTypes.Variations}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
-                    Validators.validateMusicalNotesContentResponse(res.body[0].content);
+                    Validators.validateServiceHymnFormatVariation(res.body[0]);
+                    Validators.validateMusicalNotesContent(res.body[0].content);
                     done();
                 });
         });
@@ -694,8 +694,8 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}/14/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/162/${ResourceTypes.Formats}/5/${ResourceTypes.Variations}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
-                    Validators.validateAudioContentResponse(res.body[0].content);
+                    Validators.validateServiceHymnFormatVariation(res.body[0]);
+                    Validators.validateAudioContent(res.body[0].content);
                     done();
                 });
         });
@@ -705,8 +705,8 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}/14/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/162/${ResourceTypes.Formats}/6/${ResourceTypes.Variations}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
-                    Validators.validateVideoContentResponse(res.body[0].content);
+                    Validators.validateServiceHymnFormatVariation(res.body[0]);
+                    Validators.validateVideoContent(res.body[0].content);
                     done();
                 });
         });
@@ -716,8 +716,8 @@ describe("Seasons controller", () => {
                 .get(`/${ResourceTypes.Seasons}/14/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/162/${ResourceTypes.Formats}/7/${ResourceTypes.Variations}`)
                 .end((err, res) => {
                     Validators.validateArrayResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body[0]);
-                    Validators.validateInformationContentResponse(res.body[0].content);
+                    Validators.validateServiceHymnFormatVariation(res.body[0]);
+                    Validators.validateInformationContent(res.body[0].content);
                     done();
                 });
         });
@@ -838,8 +838,8 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
-                    Validators.validateTextContentResponse(res.body.content);
+                    Validators.validateServiceHymnFormatVariation(res.body, resourceId);
+                    Validators.validateTextContent(res.body.content);
                     done();
                 });
         });
@@ -850,8 +850,8 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
-                    Validators.validateTextContentResponse(res.body.content);
+                    Validators.validateServiceHymnFormatVariation(res.body, resourceId);
+                    Validators.validateTextContent(res.body.content);
 
                     res.body.content.paragraphs[0].should.have.property("isComment");
                     Validators.validateDoesNotInclude(res.body.content.paragraphs[0].columns[0].content, Constants.Tokens.commentStartTag);
@@ -865,8 +865,8 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
-                    Validators.validateTextContentResponse(res.body.content);
+                    Validators.validateServiceHymnFormatVariation(res.body, resourceId);
+                    Validators.validateTextContent(res.body.content);
                     Validators.validateDoesNotInclude(res.body.content.arabicText, "<common=");
                     Validators.validateDoesNotInclude(res.body.content.copticText, "<common=");
                     Validators.validateDoesNotInclude(res.body.content.englishText, "<common=");
@@ -880,8 +880,8 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
-                    Validators.validateTextContentResponse(res.body.content);
+                    Validators.validateServiceHymnFormatVariation(res.body, resourceId);
+                    Validators.validateTextContent(res.body.content);
                     Validators.validateDoesNotInclude(res.body.content.arabicText, Constants.Tokens.ReasonShort);
                     Validators.validateDoesNotInclude(res.body.content.copticText, Constants.Tokens.ReasonShort);
                     Validators.validateDoesNotInclude(res.body.content.englishText, Constants.Tokens.ReasonShort);
@@ -895,8 +895,8 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
-                    Validators.validateTextContentResponse(res.body.content);
+                    Validators.validateServiceHymnFormatVariation(res.body, resourceId);
+                    Validators.validateTextContent(res.body.content);
                     Validators.validateDoesNotInclude(res.body.content.arabicText, Constants.Tokens.ReasonLong);
                     Validators.validateDoesNotInclude(res.body.content.copticText, Constants.Tokens.ReasonLong);
                     Validators.validateDoesNotInclude(res.body.content.englishText, Constants.Tokens.ReasonLong);
@@ -910,8 +910,8 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
-                    Validators.validateTextContentResponse(res.body.content);
+                    Validators.validateServiceHymnFormatVariation(res.body, resourceId);
+                    Validators.validateTextContent(res.body.content);
                     Validators.validateDoesNotInclude(res.body.content.arabicText, "<common=");
                     Validators.validateDoesNotInclude(res.body.content.copticText, "<common=");
                     Validators.validateDoesNotInclude(res.body.content.englishText, "<common=");
@@ -928,8 +928,8 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
-                    Validators.validateHazzatContentResponse(res.body.content);
+                    Validators.validateServiceHymnFormatVariation(res.body, resourceId);
+                    Validators.validateHazzatContent(res.body.content);
                     done();
                 });
         });
@@ -940,8 +940,8 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
-                    Validators.validateHazzatContentResponse(res.body.content);
+                    Validators.validateServiceHymnFormatVariation(res.body, resourceId);
+                    Validators.validateHazzatContent(res.body.content);
                     Validators.validateDoesNotInclude(res.body.content.arabicHazzat, "<common=");
                     Validators.validateDoesNotInclude(res.body.content.copticHazzat, "<common=");
                     Validators.validateDoesNotInclude(res.body.content.englishHazzat, "<common=");
@@ -955,8 +955,8 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
-                    Validators.validateVerticalHazzatContentResponse(res.body.content);
+                    Validators.validateServiceHymnFormatVariation(res.body, resourceId);
+                    Validators.validateVerticalHazzatContent(res.body.content);
                     done();
                 });
         });
@@ -967,8 +967,8 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
-                    Validators.validateVerticalHazzatContentResponse(res.body.content);
+                    Validators.validateServiceHymnFormatVariation(res.body, resourceId);
+                    Validators.validateVerticalHazzatContent(res.body.content);
                     Validators.validateDoesNotInclude(res.body.content.arabicVerticalHazzat, "<common=");
                     Validators.validateDoesNotInclude(res.body.content.copticVerticalHazzat, "<common=");
                     Validators.validateDoesNotInclude(res.body.content.englishVerticalHazzat, "<common=");
@@ -982,8 +982,8 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
-                    Validators.validateMusicalNotesContentResponse(res.body.content);
+                    Validators.validateServiceHymnFormatVariation(res.body, resourceId);
+                    Validators.validateMusicalNotesContent(res.body.content);
                     done();
                 });
         });
@@ -994,8 +994,8 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
-                    Validators.validateAudioContentResponse(res.body.content);
+                    Validators.validateServiceHymnFormatVariation(res.body, resourceId);
+                    Validators.validateAudioContent(res.body.content);
                     done();
                 });
         });
@@ -1006,8 +1006,8 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
-                    Validators.validateVideoContentResponse(res.body.content);
+                    Validators.validateServiceHymnFormatVariation(res.body, resourceId);
+                    Validators.validateVideoContent(res.body.content);
                     done();
                 });
         });
@@ -1018,8 +1018,8 @@ describe("Seasons controller", () => {
                 .get(resourceId)
                 .end((err, res) => {
                     Validators.validateObjectResponse(res);
-                    Validators.validateServiceHymnFormatVariationResponse(res.body, resourceId);
-                    Validators.validateInformationContentResponse(res.body.content);
+                    Validators.validateServiceHymnFormatVariation(res.body, resourceId);
+                    Validators.validateInformationContent(res.body.content);
                     done();
                 });
         });

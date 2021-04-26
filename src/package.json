@@ -23,7 +23,7 @@
   "dependencies": {
     "diagnostics": "^2.0.2",
     "express": "^4.17.1",
-    "inversify": "^5.0.5",
+    "inversify": "^5.1.1",
     "mssql": "^6.3.1",
     "nconf": "^0.11.2",
     "q": "^1.5.1",

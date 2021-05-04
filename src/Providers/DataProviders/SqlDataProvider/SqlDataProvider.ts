@@ -549,6 +549,11 @@ export class SqlDataProvider implements IDataProvider {
         let connection: ConnectionPool;
         try {
             connection = this._getConnectionPool();
+            while (connection.connecting) {
+                await this._delay(100);
+                connection = this._getConnectionPool();
+            }
+
             if (!connection.connected) {
                 Log.verbose("SqlDataProvider", "_connectAndExecute", "Establishing sql connection.");
                 await connection.connect();
@@ -568,5 +573,9 @@ export class SqlDataProvider implements IDataProvider {
 
     private _getQualifiedName(sp: string): string {
         return `${this.tablePrefix}${sp}`;
+    }
+
+    private _delay(ms: number): Promise<void> {
+        return new Promise((resolve) => setTimeout(resolve, ms));
     }
 }

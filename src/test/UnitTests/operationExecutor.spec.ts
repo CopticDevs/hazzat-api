@@ -1,4 +1,3 @@
-// tslint:disable:no-empty
 import { assert } from "chai";
 import { ImportMock, MockManager } from 'ts-mock-imports';
 import * as AsyncDelayerModule from "../../Common/Utils/AsyncDelayer";

@@ -10,6 +10,7 @@ import { IDataProvider } from "../IDataProvider";
 import { HazzatDbSchema } from "./HazzatDbSchema";
 import { Constants } from "./SqlConstants";
 import ConnectionPool = Sql.ConnectionPool;
+import { AsyncDelayer } from "../../../Common/Utils/AsyncDelayer";
 
 /*
  * Sql Data Provider
@@ -549,6 +550,11 @@ export class SqlDataProvider implements IDataProvider {
         let connection: ConnectionPool;
         try {
             connection = this._getConnectionPool();
+            while (connection.connecting) {
+                await AsyncDelayer.delay(100);
+                connection = this._getConnectionPool();
+            }
+
             if (!connection.connected) {
                 Log.verbose("SqlDataProvider", "_connectAndExecute", "Establishing sql connection.");
                 await connection.connect();

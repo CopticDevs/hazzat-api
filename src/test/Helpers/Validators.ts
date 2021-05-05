@@ -2,6 +2,7 @@ import * as chai from "chai";
 import { ErrorCodes } from "../../Common/Errors";
 import { ResourceTypes } from "../../Routes/ResourceTypes";
 import { ContentType } from "../../Models/IVariationInfo";
+import { assert } from "chai";
 const should = chai.should();
 
 export class Validators {
@@ -10,27 +11,36 @@ export class Validators {
         value.should.not.be.a("array");
     }
 
-    public static validateArray(arr: any): void {
+    public static validateArray(arr: any, isEmpty: boolean = false): void {
         arr.should.be.a("array");
+        isEmpty ? arr.length.should.be.eql(0) : arr.length.should.be.not.eql(0);
     }
 
-    public static validateErrorResponse(res: any, statusCode: number, errorCode?: ErrorCodes): void {
+    public static validateErrorAxiosResponse(res: any, statusCode: number, errorCode?: ErrorCodes): void {
+        assert.equal(statusCode, res.status);
+        Validators.validateError(res.data, errorCode);
+    }
+
+    public static validateErrorChaiResponse(res: any, statusCode: number, errorCode?: ErrorCodes): void {
         res.should.have.status(statusCode);
-        Validators.validateObject(res.body);
+        Validators.validateError(res.body, errorCode);
+    }
+
+    public static validateError(value: any, errorCode?: ErrorCodes): void {
+        Validators.validateObject(value);
         if (errorCode !== null && errorCode !== undefined) {
-            res.body.should.have.property("errorCode");
-            res.body.should.have.property("errorCode").eql(ErrorCodes[errorCode]);
+            value.should.have.property("errorCode");
+            value.should.have.property("errorCode").eql(ErrorCodes[errorCode]);
         }
-        res.body.should.have.property("message");
+        value.should.have.property("message");
     }
 
-    public static validateArrayResponse(res: any, isEmpty: boolean = false): void {
+    public static validateArrayChaiResponse(res: any, isEmpty: boolean = false): void {
         res.should.have.status(200);
-        Validators.validateArray(res.body);
-        isEmpty ? res.body.length.should.be.eql(0) : res.body.length.should.be.not.eql(0);
+        Validators.validateArray(res.body, isEmpty);
     }
 
-    public static validateObjectResponse(res: any): void {
+    public static validateObjectChaiResponse(res: any): void {
         res.should.have.status(200);
         Validators.validateObject(res.body);
     }

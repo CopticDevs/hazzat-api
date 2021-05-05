@@ -39,8 +39,7 @@ describe("Types Service Provider Unit Tests", () => {
             mockManager.mock('getTypeList', []);
 
             const typesList = await hymnsProvider.getTypeList();
-            Validators.validateArray(typesList);
-            typesList.length.should.be.eql(0);
+            Validators.validateArray(typesList, true);
         });
     });
 

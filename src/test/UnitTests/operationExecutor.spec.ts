@@ -232,7 +232,7 @@ describe("Operation Executor Unit Tests", () => {
             assert.equal(actualResult, expectedResult);
         });
 
-        it("should fail for methods taking longer than specified timeout period", async () => {
+        it.only("should fail for methods taking longer than specified timeout period", async () => {
             retryPolicy.attemptTimeoutMs = 10;
             const action = () => {
                 return new Promise<string>((resolve) => setTimeout(resolve, 20));
@@ -243,7 +243,7 @@ describe("Operation Executor Unit Tests", () => {
                 throw new Error("Expected action to fail, but it succeeded");
             }
             catch (ex) {
-                assert.notEqual(ex, "Error: Expected action to fail, but it succeeded");
+                assert.equal(ex, "Action timed out.");
             }
         });
 
@@ -260,6 +260,5 @@ describe("Operation Executor Unit Tests", () => {
                 assert.equal(ex, expectedResult);
             }
         });
-
     });
 });

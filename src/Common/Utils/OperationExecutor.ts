@@ -57,7 +57,9 @@ export class OperationExecutor {
     }
 
     public static async callActionWithTimeout<T>(action: () => Promise<T>, timeoutMs: number): Promise<T> {
-        const timerPromise = new Promise<T>((_r, rej) => setTimeout(rej, timeoutMs));
+        const timerPromise = new Promise<T>((_r, rej) => setTimeout(() => {
+            rej('Action timed out.');
+        }, timeoutMs));
         return Promise.race<T>([action(), timerPromise]);
     }
 }

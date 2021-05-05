@@ -1,6 +1,4 @@
-import axios from "axios";
 import * as nconf from "nconf";
-import { AsyncDelayer } from "../../Common/Utils/AsyncDelayer";
 
 /*
  * Test Configuration
@@ -51,31 +49,5 @@ export class TestConfiguration {
         nconf.required(TestConfiguration.requiredConfigKeys);
 
         this.baseTestUrl = nconf.get(TestConfiguration.configKeys.baseTestUrl);
-    }
-
-    public async ensureServiceIsAwake(): Promise<void> {
-        if (!this.baseTestUrl) {
-            throw new Error("Base Test URL is not set.  Need to call Initialize() on the test configuration first.");
-        }
-
-        let isAwake = false;
-        let attemptNumber = 0;
-        const maxAttempts = 5;
-        const delayer = new AsyncDelayer();
-        while (!isAwake) {
-            try {
-                console.log(`Making a get call to ${this.baseTestUrl}`);
-                await axios.get(`${this.baseTestUrl}`);
-                isAwake = true;
-            }
-            catch (ex) {
-                console.log(`Attempting to wake up service #${attemptNumber}/${maxAttempts}`);
-                if (attemptNumber >= maxAttempts) {
-                    throw ex;
-                }
-                await delayer.delay(5000);
-                attemptNumber++;
-            }
-        }
     }
 }

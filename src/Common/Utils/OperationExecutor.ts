@@ -12,6 +12,9 @@ export class OperationExecutor {
      * @param retryPolicy The retry policy to be used.
      */
     public static async execute<T>(action: () => Promise<T>, retryPolicy: IRetryPolicy): Promise<T> {
+        if (!action) {
+            throw new Error("Action was not specified");
+        }
         if (!retryPolicy) {
             throw new Error("Retry policy not specified");
         }
@@ -24,12 +27,21 @@ export class OperationExecutor {
             throw new Error(`Invalid retry delay specified: ${retryPolicy.retryDelayMs}`);
         }
 
+        if (retryPolicy.attemptTimeoutMs && retryPolicy.attemptTimeoutMs < 0) {
+            throw new Error(`Invalid timeout specified: ${retryPolicy.attemptTimeoutMs}`);
+        }
+
         let attempts = 1;
         const delayer = new AsyncDelayer();
         while (true) {
             try {
-                Log.verbose("OperationExecutor", "execute", "Calling action");
-                return await action();
+                if (!retryPolicy.attemptTimeoutMs) {
+                    Log.verbose("OperationExecutor", "execute", "Calling action");
+                    return await action();
+                } else {
+                    Log.verbose("OperationExecutor", "execute", `Calling action with timeout ${retryPolicy.attemptTimeoutMs}`);
+                    return await this.callActionWithTimeout(action, retryPolicy.attemptTimeoutMs);
+                }
             }
             catch (ex) {
                 Log.verbose("OperationExecutor", "execute", `Operation failed on attempt #${attempts}/${retryPolicy.retryCount}`);
@@ -42,5 +54,10 @@ export class OperationExecutor {
                 await delayer.delay(retryPolicy.retryDelayMs);
             }
         }
+    }
+
+    public static async callActionWithTimeout<T>(action: () => Promise<T>, timeoutMs: number): Promise<T> {
+        const timerPromise = new Promise<T>((_r, rej) => setTimeout(rej, timeoutMs));
+        return Promise.race<T>([action(), timerPromise]);
     }
 }

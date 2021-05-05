@@ -1,8 +1,9 @@
 import { inject, injectable } from "inversify";
-import "reflect-metadata";
 import * as Sql from "mssql";
+import "reflect-metadata";
 import { IConfiguration } from "../../../Common/Configuration";
 import { ErrorCodes, HazzatApplicationError } from "../../../Common/Errors";
+import { AsyncDelayer } from "../../../Common/Utils/AsyncDelayer";
 import { Log } from "../../../Common/Utils/Logger";
 import { SqlHelpers } from "../../../Common/Utils/SqlHelpers";
 import { TYPES } from "../../../types";
@@ -10,7 +11,6 @@ import { IDataProvider } from "../IDataProvider";
 import { HazzatDbSchema } from "./HazzatDbSchema";
 import { Constants } from "./SqlConstants";
 import ConnectionPool = Sql.ConnectionPool;
-import { AsyncDelayer } from "../../../Common/Utils/AsyncDelayer";
 
 /*
  * Sql Data Provider

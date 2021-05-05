@@ -43,6 +43,9 @@
     <TypeScriptCompile Include="Common\Types\Language.ts" />
     <TypeScriptCompile Include="Common\Types\FormatType.ts" />
     <TypeScriptCompile Include="Common\Types\StringMap.ts" />
+    <TypeScriptCompile Include="Common\Utils\IRetryPolicy.ts" />
+    <TypeScriptCompile Include="Common\Utils\OperationExecutor.ts" />
+    <TypeScriptCompile Include="Common\Utils\AsyncDelayer.ts" />
     <TypeScriptCompile Include="Common\Utils\MeasureDecorator.ts" />
     <TypeScriptCompile Include="Common\Utils\Logger.ts" />
     <TypeScriptCompile Include="Common\Utils\SqlHelpers.ts" />
@@ -64,9 +67,11 @@
     <TypeScriptCompile Include="test\E2ETests\ApiValidator.ts" />
     <TypeScriptCompile Include="test\E2ETests\TestConfiguration.ts" />
     <TypeScriptCompile Include="test\E2ETests\seasons.spec.ts" />
+    <TypeScriptCompile Include="test\E2ETests\types.spec.ts" />
     <TypeScriptCompile Include="test\E2ETests\tunes.spec.ts" />
     <TypeScriptCompile Include="test\Helpers\SqlDataProviderMock.ts" />
     <TypeScriptCompile Include="test\Helpers\Validators.ts" />
+    <TypeScriptCompile Include="test\UnitTests\operationExecutor.spec.ts" />
     <TypeScriptCompile Include="test\UnitTests\seasonsServiceProvider.spec.ts" />
     <TypeScriptCompile Include="test\UnitTests\typesServiceProvider.spec.ts" />
     <TypeScriptCompile Include="test\UnitTests\tunesServiceProvider.spec.ts" />

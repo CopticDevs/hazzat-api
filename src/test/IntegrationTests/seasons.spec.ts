@@ -5,6 +5,7 @@ import { ResourceTypes } from "../../Routes/ResourceTypes";
 import { Validators } from "../Helpers/Validators";
 import chaiHttp = require("chai-http");
 import server = require("../../app");
+import { ITextContent } from "../../Models/IVariationInfo";
 
 process.env.NODE_ENV = "test";
 
@@ -576,9 +577,12 @@ describe("Seasons controller", () => {
                     Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
                     Validators.validateTextContent(res.body[0].content);
-                    Validators.validateDoesNotInclude(res.body[0].content.arabicText, "<common=");
-                    Validators.validateDoesNotInclude(res.body[0].content.copticText, "<common=");
-                    Validators.validateDoesNotInclude(res.body[0].content.englishText, "<common=");
+
+                    res.body[0].content.paragraphs.forEach((paragraph) => {
+                        paragraph.columns.forEach((col) => {
+                            Validators.validateDoesNotInclude(col.content, "<common=");
+                        });
+                    });
                     done();
                 });
         });
@@ -590,9 +594,12 @@ describe("Seasons controller", () => {
                     Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
                     Validators.validateTextContent(res.body[0].content);
-                    Validators.validateDoesNotInclude(res.body[0].content.arabicText, Constants.Tokens.ReasonShort);
-                    Validators.validateDoesNotInclude(res.body[0].content.copticText, Constants.Tokens.ReasonShort);
-                    Validators.validateDoesNotInclude(res.body[0].content.englishText, Constants.Tokens.ReasonShort);
+
+                    res.body[0].content.paragraphs.forEach((paragraph) => {
+                        paragraph.columns.forEach((col) => {
+                            Validators.validateDoesNotInclude(col.content, Constants.Tokens.ReasonShort);
+                        });
+                    });
                     done();
                 });
         });
@@ -604,9 +611,12 @@ describe("Seasons controller", () => {
                     Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
                     Validators.validateTextContent(res.body[0].content);
-                    Validators.validateDoesNotInclude(res.body[0].content.arabicText, Constants.Tokens.ReasonLong);
-                    Validators.validateDoesNotInclude(res.body[0].content.copticText, Constants.Tokens.ReasonLong);
-                    Validators.validateDoesNotInclude(res.body[0].content.englishText, Constants.Tokens.ReasonLong);
+
+                    res.body[0].content.paragraphs.forEach((paragraph) => {
+                        paragraph.columns.forEach((col) => {
+                            Validators.validateDoesNotInclude(col.content, Constants.Tokens.ReasonLong);
+                        });
+                    });
                     done();
                 });
         });
@@ -618,12 +628,13 @@ describe("Seasons controller", () => {
                     Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
                     Validators.validateTextContent(res.body[0].content);
-                    Validators.validateDoesNotInclude(res.body[0].content.arabicText, "<common=");
-                    Validators.validateDoesNotInclude(res.body[0].content.copticText, "<common=");
-                    Validators.validateDoesNotInclude(res.body[0].content.englishText, "<common=");
-                    Validators.validateDoesNotInclude(res.body[0].content.arabicText, "<reason_");
-                    Validators.validateDoesNotInclude(res.body[0].content.copticText, "<reason_");
-                    Validators.validateDoesNotInclude(res.body[0].content.englishText, "<reason_");
+
+                    res.body[0].content.paragraphs.forEach((paragraph) => {
+                        paragraph.columns.forEach((col) => {
+                            Validators.validateDoesNotInclude(col.content, "<common=");
+                            Validators.validateDoesNotInclude(col.content, "<reason_");
+                        });
+                    });
                     done();
                 });
         });
@@ -867,9 +878,12 @@ describe("Seasons controller", () => {
                     Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
                     Validators.validateTextContent(res.body.content);
-                    Validators.validateDoesNotInclude(res.body.content.arabicText, "<common=");
-                    Validators.validateDoesNotInclude(res.body.content.copticText, "<common=");
-                    Validators.validateDoesNotInclude(res.body.content.englishText, "<common=");
+
+                    res.body.content.paragraphs.forEach((paragraph) => {
+                        paragraph.columns.forEach((col) => {
+                            Validators.validateDoesNotInclude(col.content, "<common=");
+                        });
+                    });
                     done();
                 });
         });
@@ -882,9 +896,12 @@ describe("Seasons controller", () => {
                     Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
                     Validators.validateTextContent(res.body.content);
-                    Validators.validateDoesNotInclude(res.body.content.arabicText, Constants.Tokens.ReasonShort);
-                    Validators.validateDoesNotInclude(res.body.content.copticText, Constants.Tokens.ReasonShort);
-                    Validators.validateDoesNotInclude(res.body.content.englishText, Constants.Tokens.ReasonShort);
+
+                    res.body.content.paragraphs.forEach((paragraph) => {
+                        paragraph.columns.forEach((col) => {
+                            Validators.validateDoesNotInclude(col.content, Constants.Tokens.ReasonShort);
+                        });
+                    });
                     done();
                 });
         });
@@ -897,9 +914,12 @@ describe("Seasons controller", () => {
                     Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
                     Validators.validateTextContent(res.body.content);
-                    Validators.validateDoesNotInclude(res.body.content.arabicText, Constants.Tokens.ReasonLong);
-                    Validators.validateDoesNotInclude(res.body.content.copticText, Constants.Tokens.ReasonLong);
-                    Validators.validateDoesNotInclude(res.body.content.englishText, Constants.Tokens.ReasonLong);
+
+                    res.body.content.paragraphs.forEach((paragraph) => {
+                        paragraph.columns.forEach((col) => {
+                            Validators.validateDoesNotInclude(col.content, Constants.Tokens.ReasonLong);
+                        });
+                    });
                     done();
                 });
         });
@@ -912,12 +932,13 @@ describe("Seasons controller", () => {
                     Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
                     Validators.validateTextContent(res.body.content);
-                    Validators.validateDoesNotInclude(res.body.content.arabicText, "<common=");
-                    Validators.validateDoesNotInclude(res.body.content.copticText, "<common=");
-                    Validators.validateDoesNotInclude(res.body.content.englishText, "<common=");
-                    Validators.validateDoesNotInclude(res.body.content.arabicText, "<reason_");
-                    Validators.validateDoesNotInclude(res.body.content.copticText, "<reason_");
-                    Validators.validateDoesNotInclude(res.body.content.englishText, "<reason_");
+
+                    res.body.content.paragraphs.forEach((paragraph) => {
+                        paragraph.columns.forEach((col) => {
+                            Validators.validateDoesNotInclude(col.content, "<common=");
+                            Validators.validateDoesNotInclude(col.content, "<reason_");
+                        });
+                    });
                     done();
                 });
         });

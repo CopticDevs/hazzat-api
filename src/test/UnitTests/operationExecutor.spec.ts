@@ -223,7 +223,7 @@ describe("Operation Executor Unit Tests", () => {
         });
 
         it("should succeed for methods completing withing the specified timeout period", async () => {
-            retryPolicy.attemptTimeoutMs = 20;
+            retryPolicy.attemptTimeoutMs = 200;
             const successfulAction = () => {
                 return Promise.resolve(expectedResult);
             };
@@ -232,10 +232,10 @@ describe("Operation Executor Unit Tests", () => {
             assert.equal(actualResult, expectedResult);
         });
 
-        it.only("should fail for methods taking longer than specified timeout period", async () => {
-            retryPolicy.attemptTimeoutMs = 10;
+        it("should fail for methods taking longer than specified timeout period", async () => {
+            retryPolicy.attemptTimeoutMs = 100;
             const action = () => {
-                return new Promise<string>((resolve) => setTimeout(resolve, 20));
+                return new Promise<string>((resolve) => setTimeout(resolve, 200));
             };
 
             try {

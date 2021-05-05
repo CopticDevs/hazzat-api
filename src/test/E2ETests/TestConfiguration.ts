@@ -61,6 +61,7 @@ export class TestConfiguration {
         let isAwake = false;
         let attemptNumber = 0;
         const maxAttempts = 5;
+        const delayer = new AsyncDelayer();
         while (!isAwake) {
             try {
                 console.log(`Making a get call to ${this.baseTestUrl}`);
@@ -72,7 +73,7 @@ export class TestConfiguration {
                 if (attemptNumber >= maxAttempts) {
                     throw ex;
                 }
-                await AsyncDelayer.delay(5000);
+                await delayer.delay(5000);
                 attemptNumber++;
             }
         }

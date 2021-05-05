@@ -1,0 +1,46 @@
+import { Log } from "./Logger";
+import { IRetryPolicy } from "./IRetryPolicy";
+import { AsyncDelayer } from "./AsyncDelayer";
+
+/**
+ * A class to execute an async operation with a retry policy.
+ */
+export class OperationExecutor {
+    /**
+     * Execute the given operation with the given retry policy.
+     * @param action The operation to be executed.
+     * @param retryPolicy The retry policy to be used.
+     */
+    public static async execute<T>(action: () => Promise<T>, retryPolicy: IRetryPolicy): Promise<T> {
+        if (!retryPolicy) {
+            throw new Error("Retry policy not specified");
+        }
+
+        if (!retryPolicy.retryCount || retryPolicy.retryCount < 0) {
+            throw new Error(`Invalid retry count specified: ${retryPolicy.retryCount}`);
+        }
+
+        if (!retryPolicy.retryDelayMs || retryPolicy.retryDelayMs < 0) {
+            throw new Error(`Invalid retry delay specified: ${retryPolicy.retryDelayMs}`);
+        }
+
+        let attempts = 1;
+        const delayer = new AsyncDelayer();
+        while (true) {
+            try {
+                Log.verbose("OperationExecutor", "execute", "Calling action");
+                return await action();
+            }
+            catch (ex) {
+                Log.verbose("OperationExecutor", "execute", `Operation failed on attempt #${attempts}/${retryPolicy.retryCount}`);
+                Log.exception("OperationExecutor", "execute", ex);
+                attempts++;
+
+                if (attempts > retryPolicy.retryCount) {
+                    throw ex;
+                }
+                await delayer.delay(retryPolicy.retryDelayMs);
+            }
+        }
+    }
+}

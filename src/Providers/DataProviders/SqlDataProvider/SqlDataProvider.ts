@@ -548,10 +548,11 @@ export class SqlDataProvider implements IDataProvider {
      */
     private async _connectAndExecute<TResult>(action: (cp: ConnectionPool) => Promise<TResult>): Promise<TResult> {
         let connection: ConnectionPool;
+        const delayer = new AsyncDelayer();
         try {
             connection = this._getConnectionPool();
             while (connection.connecting) {
-                await AsyncDelayer.delay(100);
+                await delayer.delay(100);
                 connection = this._getConnectionPool();
             }
 

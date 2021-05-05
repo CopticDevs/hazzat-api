@@ -1,6 +1,7 @@
 import { AxiosResponse, default as axios } from "axios";
 import { assert } from "chai";
 import { ErrorCodes } from "../../Common/Errors";
+import { AsyncDelayer } from "../../Common/Utils/AsyncDelayer";
 import { IFormatInfo } from "../../Models/IFormatInfo";
 import { IHymnInfo } from "../../Models/IHymnInfo";
 import { ISeasonInfo } from "../../Models/ISeasonInfo";
@@ -9,78 +10,8 @@ import { IAudioContent, IHazzatContent, IInformationContent, IMusicalNotesConten
 import { Constants } from "../../Providers/DataProviders/SqlDataProvider/SqlConstants";
 import { ResourceTypes } from "../../Routes/ResourceTypes";
 import { Validators } from "../Helpers/Validators";
+import { ApiValidator, TestCaseType } from "./ApiValidator";
 import { TestConfiguration } from "./TestConfiguration";
-
-interface ResourcePart {
-    typeName: string;
-    value: string;
-}
-
-enum TestCaseType {
-    Negative,
-    NonInteger,
-    NonExisting
-}
-
-interface ApiTestCase {
-    description: string;
-    resourceId: string;
-    partUnderTest: string;
-    testCase: TestCaseType;
-}
-
-export class ApiValidator {
-    private parts: ResourcePart[] = [];
-
-    public withPart(resourcePart: ResourcePart): ApiValidator {
-        this.parts.push(resourcePart);
-        return this;
-    }
-
-    public reset(): void {
-        this.parts = [];
-    }
-
-    private generateResourceIdForTest(indexUnderTest: number, testValue: string): string {
-        let resourceId = "";
-        this.parts.forEach((resourcePart, j) => {
-            const valueUsed = (indexUnderTest === j) ? testValue : resourcePart.value;
-            resourceId += `/${resourcePart.typeName}/${valueUsed}`;
-        });
-        return resourceId;
-    }
-
-    public generate(): ApiTestCase[] {
-        if (this.parts.length === 0) {
-            assert.fail("Invalid test setup.  Nothing to validate.");
-        }
-
-        const cases: ApiTestCase[] = [];
-
-        this.parts.forEach((partUnderTest, i) => {
-            cases.push({
-                description: `should return a 404 for negative ${partUnderTest.typeName} ids`,
-                resourceId: this.generateResourceIdForTest(i, "-1"),
-                partUnderTest: partUnderTest.typeName,
-                testCase: TestCaseType.Negative
-            });
-            cases.push({
-                description: `should return a 404 for non integer ${partUnderTest.typeName} ids`,
-                resourceId: this.generateResourceIdForTest(i, "badInput"),
-                partUnderTest: partUnderTest.typeName,
-                testCase: TestCaseType.NonInteger
-            });
-            cases.push({
-                description: `should return a 404 for non existing ${partUnderTest.typeName} ids`,
-                resourceId: this.generateResourceIdForTest(i, "99999"),
-                partUnderTest: partUnderTest.typeName,
-                testCase: TestCaseType.NonExisting
-            });
-        });
-
-        return cases;
-    }
-}
 
 describe("Seasons controller", () => {
     let tc: TestConfiguration;
@@ -92,7 +23,7 @@ describe("Seasons controller", () => {
         console.log(`Using baseurl ${tc.baseTestUrl}`);
 
         // Wake up the service before first test
-        await axios.get(`${tc.baseTestUrl}`);
+        await tc.ensureServiceIsAwake();
     });
 
     describe("/GET all seasons", () => {

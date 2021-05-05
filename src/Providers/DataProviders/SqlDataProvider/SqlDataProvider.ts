@@ -10,6 +10,7 @@ import { IDataProvider } from "../IDataProvider";
 import { HazzatDbSchema } from "./HazzatDbSchema";
 import { Constants } from "./SqlConstants";
 import ConnectionPool = Sql.ConnectionPool;
+import { AsyncDelayer } from "../../../Common/Utils/AsyncDelayer";
 
 /*
  * Sql Data Provider
@@ -550,7 +551,7 @@ export class SqlDataProvider implements IDataProvider {
         try {
             connection = this._getConnectionPool();
             while (connection.connecting) {
-                await this._delay(100);
+                await AsyncDelayer.delay(100);
                 connection = this._getConnectionPool();
             }
 
@@ -573,9 +574,5 @@ export class SqlDataProvider implements IDataProvider {
 
     private _getQualifiedName(sp: string): string {
         return `${this.tablePrefix}${sp}`;
-    }
-
-    private _delay(ms: number): Promise<void> {
-        return new Promise((resolve) => setTimeout(resolve, ms));
     }
 }

@@ -5,6 +5,7 @@ import { ResourceTypes } from "../../Routes/ResourceTypes";
 import { Validators } from "../Helpers/Validators";
 import chaiHttp = require("chai-http");
 import server = require("../../app");
+import { ITextContent } from "../../Models/IVariationInfo";
 
 process.env.NODE_ENV = "test";
 
@@ -16,7 +17,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateSeason(res.body[0]);
                     done();
                 });
@@ -29,7 +30,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateSeason(res.body, resourceId);
                     done();
                 });
@@ -39,7 +40,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1234`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404, ErrorCodes.NotFoundError);
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
                     done();
                 });
         });
@@ -48,7 +49,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/-1`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -57,7 +58,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/badInput`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -68,7 +69,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateService(res.body[0]);
                     done();
                 });
@@ -78,7 +79,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/-1/${ResourceTypes.Services}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -87,7 +88,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/badInput/${ResourceTypes.Services}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -96,7 +97,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1234/${ResourceTypes.Services}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res, true);
+                    Validators.validateArrayChaiResponse(res, true);
                     done();
                 });
         });
@@ -108,7 +109,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateService(res.body, resourceId);
                     done();
                 });
@@ -118,7 +119,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/-1/${ResourceTypes.Services}/1`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -127,7 +128,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/-1`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -136,7 +137,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/badInput/${ResourceTypes.Services}/1`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -145,7 +146,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/badInput`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -154,7 +155,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1234/${ResourceTypes.Services}/1`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404, ErrorCodes.NotFoundError);
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
                     done();
                 });
         });
@@ -163,7 +164,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/1234`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404, ErrorCodes.NotFoundError);
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
                     done();
                 });
         });
@@ -174,7 +175,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymn(res.body[0]);
                     done();
                 });
@@ -184,7 +185,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/-1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -193,7 +194,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/-1/${ResourceTypes.Hymns}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -202,7 +203,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/badInput/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -211,7 +212,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/badInput/${ResourceTypes.Hymns}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -220,7 +221,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1234/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res, true);
+                    Validators.validateArrayChaiResponse(res, true);
                     done();
                 });
         });
@@ -229,7 +230,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/1234/${ResourceTypes.Hymns}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res, true);
+                    Validators.validateArrayChaiResponse(res, true);
                     done();
                 });
         });
@@ -241,7 +242,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymn(res.body, resourceId);
                     done();
                 });
@@ -251,7 +252,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/-1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -260,7 +261,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/-1/${ResourceTypes.Hymns}/311`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -269,7 +270,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/-1`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -278,7 +279,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/badInput/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -287,7 +288,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/badInput/${ResourceTypes.Hymns}/311`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -296,7 +297,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/badInput`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -305,7 +306,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1234/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404, ErrorCodes.NotFoundError);
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
                     done();
                 });
         });
@@ -314,7 +315,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/1234/${ResourceTypes.Hymns}/311`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404, ErrorCodes.NotFoundError);
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
                     done();
                 });
         });
@@ -323,7 +324,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/1234`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404, ErrorCodes.NotFoundError);
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
                     done();
                 });
         });
@@ -334,7 +335,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymnFormat(res.body[0]);
                     done();
                 });
@@ -344,7 +345,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/-1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -353,7 +354,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/-1/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -362,7 +363,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/-1/${ResourceTypes.Formats}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -371,7 +372,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/badInput/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -380,7 +381,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/badInput/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -389,7 +390,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/badInput/${ResourceTypes.Formats}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -398,7 +399,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1234/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res, true);
+                    Validators.validateArrayChaiResponse(res, true);
                     done();
                 });
         });
@@ -407,7 +408,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/1234/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res, true);
+                    Validators.validateArrayChaiResponse(res, true);
                     done();
                 });
         });
@@ -416,7 +417,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/1234/${ResourceTypes.Formats}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res, true);
+                    Validators.validateArrayChaiResponse(res, true);
                     done();
                 });
         });
@@ -428,7 +429,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymnFormat(res.body, resourceId);
                     done();
                 });
@@ -438,7 +439,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/-1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -447,7 +448,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/-1/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -456,7 +457,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/-1/${ResourceTypes.Formats}/1`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -465,7 +466,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/-1`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -474,7 +475,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/badInput/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -483,7 +484,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/badInput/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -492,7 +493,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/badInput/${ResourceTypes.Formats}/1`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -501,7 +502,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/badInput`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -510,7 +511,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1234/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404, ErrorCodes.NotFoundError);
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
                     done();
                 });
         });
@@ -519,7 +520,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/1234/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404, ErrorCodes.NotFoundError);
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
                     done();
                 });
         });
@@ -528,7 +529,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/1234/${ResourceTypes.Formats}/1`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404, ErrorCodes.NotFoundError);
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
                     done();
                 });
         });
@@ -537,7 +538,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1234`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404, ErrorCodes.NotFoundError);
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
                     done();
                 });
         });
@@ -548,7 +549,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
                     Validators.validateTextContent(res.body[0].content);
                     done();
@@ -559,7 +560,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/24/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/284/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
                     Validators.validateTextContent(res.body[0].content);
 
@@ -573,12 +574,15 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/33/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/460/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
                     Validators.validateTextContent(res.body[0].content);
-                    Validators.validateDoesNotInclude(res.body[0].content.arabicText, "<common=");
-                    Validators.validateDoesNotInclude(res.body[0].content.copticText, "<common=");
-                    Validators.validateDoesNotInclude(res.body[0].content.englishText, "<common=");
+
+                    res.body[0].content.paragraphs.forEach((paragraph) => {
+                        paragraph.columns.forEach((col) => {
+                            Validators.validateDoesNotInclude(col.content, "<common=");
+                        });
+                    });
                     done();
                 });
         });
@@ -587,12 +591,15 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/6/${ResourceTypes.Services}/3/${ResourceTypes.Hymns}/48/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
                     Validators.validateTextContent(res.body[0].content);
-                    Validators.validateDoesNotInclude(res.body[0].content.arabicText, Constants.Tokens.ReasonShort);
-                    Validators.validateDoesNotInclude(res.body[0].content.copticText, Constants.Tokens.ReasonShort);
-                    Validators.validateDoesNotInclude(res.body[0].content.englishText, Constants.Tokens.ReasonShort);
+
+                    res.body[0].content.paragraphs.forEach((paragraph) => {
+                        paragraph.columns.forEach((col) => {
+                            Validators.validateDoesNotInclude(col.content, Constants.Tokens.ReasonShort);
+                        });
+                    });
                     done();
                 });
         });
@@ -601,12 +608,15 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/2/${ResourceTypes.Hymns}/331/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
                     Validators.validateTextContent(res.body[0].content);
-                    Validators.validateDoesNotInclude(res.body[0].content.arabicText, Constants.Tokens.ReasonLong);
-                    Validators.validateDoesNotInclude(res.body[0].content.copticText, Constants.Tokens.ReasonLong);
-                    Validators.validateDoesNotInclude(res.body[0].content.englishText, Constants.Tokens.ReasonLong);
+
+                    res.body[0].content.paragraphs.forEach((paragraph) => {
+                        paragraph.columns.forEach((col) => {
+                            Validators.validateDoesNotInclude(col.content, Constants.Tokens.ReasonLong);
+                        });
+                    });
                     done();
                 });
         });
@@ -615,15 +625,16 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/33/${ResourceTypes.Services}/24/${ResourceTypes.Hymns}/456/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
                     Validators.validateTextContent(res.body[0].content);
-                    Validators.validateDoesNotInclude(res.body[0].content.arabicText, "<common=");
-                    Validators.validateDoesNotInclude(res.body[0].content.copticText, "<common=");
-                    Validators.validateDoesNotInclude(res.body[0].content.englishText, "<common=");
-                    Validators.validateDoesNotInclude(res.body[0].content.arabicText, "<reason_");
-                    Validators.validateDoesNotInclude(res.body[0].content.copticText, "<reason_");
-                    Validators.validateDoesNotInclude(res.body[0].content.englishText, "<reason_");
+
+                    res.body[0].content.paragraphs.forEach((paragraph) => {
+                        paragraph.columns.forEach((col) => {
+                            Validators.validateDoesNotInclude(col.content, "<common=");
+                            Validators.validateDoesNotInclude(col.content, "<reason_");
+                        });
+                    });
                     done();
                 });
         });
@@ -632,7 +643,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/2/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
                     Validators.validateHazzatContent(res.body[0].content);
                     done();
@@ -643,7 +654,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/21/${ResourceTypes.Hymns}/377/${ResourceTypes.Formats}/2/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
                     Validators.validateHazzatContent(res.body[0].content);
                     Validators.validateDoesNotInclude(res.body[0].content.arabicHazzat, "<common=");
@@ -657,7 +668,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/2/${ResourceTypes.Hymns}/279/${ResourceTypes.Formats}/3/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
                     Validators.validateVerticalHazzatContent(res.body[0].content);
                     done();
@@ -668,7 +679,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/21/${ResourceTypes.Hymns}/377/${ResourceTypes.Formats}/3/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
                     Validators.validateVerticalHazzatContent(res.body[0].content);
                     Validators.validateDoesNotInclude(res.body[0].content.arabicVerticalHazzat, "<common=");
@@ -682,7 +693,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/32/${ResourceTypes.Services}/17/${ResourceTypes.Hymns}/334/${ResourceTypes.Formats}/4/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
                     Validators.validateMusicalNotesContent(res.body[0].content);
                     done();
@@ -693,7 +704,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/14/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/162/${ResourceTypes.Formats}/5/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
                     Validators.validateAudioContent(res.body[0].content);
                     done();
@@ -704,7 +715,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/14/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/162/${ResourceTypes.Formats}/6/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
                     Validators.validateVideoContent(res.body[0].content);
                     done();
@@ -715,7 +726,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/14/${ResourceTypes.Services}/4/${ResourceTypes.Hymns}/162/${ResourceTypes.Formats}/7/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body[0]);
                     Validators.validateInformationContent(res.body[0].content);
                     done();
@@ -726,7 +737,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/-1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -735,7 +746,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/-1/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -744,7 +755,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/-1/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -753,7 +764,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/-1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -762,7 +773,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/badInput/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -771,7 +782,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/badInput/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -780,7 +791,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/badInput/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -789,7 +800,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/badInput/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -798,7 +809,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1234/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res, true);
+                    Validators.validateArrayChaiResponse(res, true);
                     done();
                 });
         });
@@ -807,7 +818,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/1234/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res, true);
+                    Validators.validateArrayChaiResponse(res, true);
                     done();
                 });
         });
@@ -816,7 +827,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/1234/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res, true);
+                    Validators.validateArrayChaiResponse(res, true);
                     done();
                 });
         });
@@ -825,7 +836,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1234/${ResourceTypes.Variations}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res, true);
+                    Validators.validateArrayChaiResponse(res, true);
                     done();
                 });
         });
@@ -837,7 +848,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
                     Validators.validateTextContent(res.body.content);
                     done();
@@ -849,7 +860,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
                     Validators.validateTextContent(res.body.content);
 
@@ -864,12 +875,15 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
                     Validators.validateTextContent(res.body.content);
-                    Validators.validateDoesNotInclude(res.body.content.arabicText, "<common=");
-                    Validators.validateDoesNotInclude(res.body.content.copticText, "<common=");
-                    Validators.validateDoesNotInclude(res.body.content.englishText, "<common=");
+
+                    res.body.content.paragraphs.forEach((paragraph) => {
+                        paragraph.columns.forEach((col) => {
+                            Validators.validateDoesNotInclude(col.content, "<common=");
+                        });
+                    });
                     done();
                 });
         });
@@ -879,12 +893,15 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
                     Validators.validateTextContent(res.body.content);
-                    Validators.validateDoesNotInclude(res.body.content.arabicText, Constants.Tokens.ReasonShort);
-                    Validators.validateDoesNotInclude(res.body.content.copticText, Constants.Tokens.ReasonShort);
-                    Validators.validateDoesNotInclude(res.body.content.englishText, Constants.Tokens.ReasonShort);
+
+                    res.body.content.paragraphs.forEach((paragraph) => {
+                        paragraph.columns.forEach((col) => {
+                            Validators.validateDoesNotInclude(col.content, Constants.Tokens.ReasonShort);
+                        });
+                    });
                     done();
                 });
         });
@@ -894,12 +911,15 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
                     Validators.validateTextContent(res.body.content);
-                    Validators.validateDoesNotInclude(res.body.content.arabicText, Constants.Tokens.ReasonLong);
-                    Validators.validateDoesNotInclude(res.body.content.copticText, Constants.Tokens.ReasonLong);
-                    Validators.validateDoesNotInclude(res.body.content.englishText, Constants.Tokens.ReasonLong);
+
+                    res.body.content.paragraphs.forEach((paragraph) => {
+                        paragraph.columns.forEach((col) => {
+                            Validators.validateDoesNotInclude(col.content, Constants.Tokens.ReasonLong);
+                        });
+                    });
                     done();
                 });
         });
@@ -909,15 +929,16 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
                     Validators.validateTextContent(res.body.content);
-                    Validators.validateDoesNotInclude(res.body.content.arabicText, "<common=");
-                    Validators.validateDoesNotInclude(res.body.content.copticText, "<common=");
-                    Validators.validateDoesNotInclude(res.body.content.englishText, "<common=");
-                    Validators.validateDoesNotInclude(res.body.content.arabicText, "<reason_");
-                    Validators.validateDoesNotInclude(res.body.content.copticText, "<reason_");
-                    Validators.validateDoesNotInclude(res.body.content.englishText, "<reason_");
+
+                    res.body.content.paragraphs.forEach((paragraph) => {
+                        paragraph.columns.forEach((col) => {
+                            Validators.validateDoesNotInclude(col.content, "<common=");
+                            Validators.validateDoesNotInclude(col.content, "<reason_");
+                        });
+                    });
                     done();
                 });
         });
@@ -927,7 +948,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
                     Validators.validateHazzatContent(res.body.content);
                     done();
@@ -939,7 +960,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
                     Validators.validateHazzatContent(res.body.content);
                     Validators.validateDoesNotInclude(res.body.content.arabicHazzat, "<common=");
@@ -954,7 +975,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
                     Validators.validateVerticalHazzatContent(res.body.content);
                     done();
@@ -966,7 +987,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
                     Validators.validateVerticalHazzatContent(res.body.content);
                     Validators.validateDoesNotInclude(res.body.content.arabicVerticalHazzat, "<common=");
@@ -981,7 +1002,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
                     Validators.validateMusicalNotesContent(res.body.content);
                     done();
@@ -993,7 +1014,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
                     Validators.validateAudioContent(res.body.content);
                     done();
@@ -1005,7 +1026,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
                     Validators.validateVideoContent(res.body.content);
                     done();
@@ -1017,7 +1038,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateServiceHymnFormatVariation(res.body, resourceId);
                     Validators.validateInformationContent(res.body.content);
                     done();
@@ -1028,7 +1049,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/-1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -1037,7 +1058,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/-1/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -1046,7 +1067,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/-1/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288` )
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -1055,7 +1076,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/-1/${ResourceTypes.Variations}/288`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -1064,7 +1085,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/-1`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -1073,7 +1094,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/badInput/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -1082,7 +1103,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/badInput/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -1091,7 +1112,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/badInput/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -1100,7 +1121,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/badInput/${ResourceTypes.Variations}/288`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -1109,7 +1130,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/badInput`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -1118,7 +1139,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1234/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404, ErrorCodes.NotFoundError);
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
                     done();
                 });
         });
@@ -1127,7 +1148,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/1234/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404, ErrorCodes.NotFoundError);
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
                     done();
                 });
         });
@@ -1136,7 +1157,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/1234/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404, ErrorCodes.NotFoundError);
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
                     done();
                 });
         });
@@ -1145,7 +1166,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1234/${ResourceTypes.Variations}/288`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404, ErrorCodes.NotFoundError);
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
                     done();
                 });
         });
@@ -1154,7 +1175,7 @@ describe("Seasons controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/1234`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404, ErrorCodes.NotFoundError);
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
                     done();
                 });
         });

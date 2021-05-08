@@ -16,7 +16,7 @@ describe("Types controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Types}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateHymnType(res.body[0]);
                     done();
                 });
@@ -29,7 +29,7 @@ describe("Types controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateHymnType(res.body, resourceId);
                     done();
                 });
@@ -39,7 +39,7 @@ describe("Types controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Types}/1234`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404, ErrorCodes.NotFoundError);
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
                     done();
                 });
         });
@@ -48,7 +48,7 @@ describe("Types controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Types}/-1`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -57,7 +57,7 @@ describe("Types controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Types}/badInput`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });

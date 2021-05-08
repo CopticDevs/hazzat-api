@@ -16,7 +16,7 @@ describe("Tunes controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Tunes}`)
                 .end((err, res) => {
-                    Validators.validateArrayResponse(res);
+                    Validators.validateArrayChaiResponse(res);
                     Validators.validateHymnTune(res.body[0]);
                     done();
                 });
@@ -29,7 +29,7 @@ describe("Tunes controller", () => {
             chai.request(server)
                 .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateObjectResponse(res);
+                    Validators.validateObjectChaiResponse(res);
                     Validators.validateHymnTune(res.body, resourceId);
                     done();
                 });
@@ -39,7 +39,7 @@ describe("Tunes controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Tunes}/1234`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404, ErrorCodes.NotFoundError);
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
                     done();
                 });
         });
@@ -48,7 +48,7 @@ describe("Tunes controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Tunes}/-1`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });
@@ -57,7 +57,7 @@ describe("Tunes controller", () => {
             chai.request(server)
                 .get(`/${ResourceTypes.Tunes}/badInput`)
                 .end((err, res) => {
-                    Validators.validateErrorResponse(res, 404);
+                    Validators.validateErrorChaiResponse(res, 404);
                     done();
                 });
         });

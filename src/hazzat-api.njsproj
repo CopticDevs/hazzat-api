@@ -43,6 +43,9 @@
     <TypeScriptCompile Include="Common\Types\Language.ts" />
     <TypeScriptCompile Include="Common\Types\FormatType.ts" />
     <TypeScriptCompile Include="Common\Types\StringMap.ts" />
+    <TypeScriptCompile Include="Common\Utils\IRetryPolicy.ts" />
+    <TypeScriptCompile Include="Common\Utils\OperationExecutor.ts" />
+    <TypeScriptCompile Include="Common\Utils\AsyncDelayer.ts" />
     <TypeScriptCompile Include="Common\Utils\MeasureDecorator.ts" />
     <TypeScriptCompile Include="Common\Utils\Logger.ts" />
     <TypeScriptCompile Include="Common\Utils\SqlHelpers.ts" />
@@ -61,18 +64,24 @@
     <TypeScriptCompile Include="Routes\BaseController.ts" />
     <TypeScriptCompile Include="Routes\TunesController.ts" />
     <TypeScriptCompile Include="Routes\TypesController.ts" />
+    <TypeScriptCompile Include="test\E2ETests\ApiValidator.ts" />
+    <TypeScriptCompile Include="test\E2ETests\TestConfiguration.ts" />
+    <TypeScriptCompile Include="test\E2ETests\seasons.spec.ts" />
+    <TypeScriptCompile Include="test\E2ETests\types.spec.ts" />
+    <TypeScriptCompile Include="test\E2ETests\tunes.spec.ts" />
     <TypeScriptCompile Include="test\Helpers\SqlDataProviderMock.ts" />
     <TypeScriptCompile Include="test\Helpers\Validators.ts" />
+    <TypeScriptCompile Include="test\UnitTests\operationExecutor.spec.ts" />
     <TypeScriptCompile Include="test\UnitTests\seasonsServiceProvider.spec.ts" />
     <TypeScriptCompile Include="test\UnitTests\typesServiceProvider.spec.ts" />
     <TypeScriptCompile Include="test\UnitTests\tunesServiceProvider.spec.ts" />
-    <TypeScriptCompile Include="test\Integration\tunes.spec.ts">
+    <TypeScriptCompile Include="test\IntegrationTests\tunes.spec.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="test\Integration\types.spec.ts">
+    <TypeScriptCompile Include="test\IntegrationTests\types.spec.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="test\Integration\seasons.spec.ts">
+    <TypeScriptCompile Include="test\IntegrationTests\seasons.spec.ts">
       <TestFramework>Mocha</TestFramework>
     </TypeScriptCompile>
     <TypeScriptCompile Include="types.ts" />
@@ -104,6 +113,10 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.01.Install.sql" />
     <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.01.Uninstall.sql" />
     <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\SqlMetadata.sql" />
+    <Content Include="test\E2ETests\local.json" />
+    <Content Include="test\E2ETests\prod.json" />
+    <Content Include="test\E2ETests\ppe.json" />
+    <Content Include="test\E2ETests\dev.json" />
     <Content Include="tslint.json" />
     <Content Include="Configs\dev.json" />
     <Content Include="tsconfig.json" />
@@ -127,7 +140,8 @@
     <Folder Include="test\" />
     <Folder Include="Routes\" />
     <Folder Include="test\Helpers\" />
-    <Folder Include="test\Integration\" />
+    <Folder Include="test\IntegrationTests\" />
+    <Folder Include="test\E2ETests\" />
     <Folder Include="test\UnitTests\" />
   </ItemGroup>
   <!-- Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them. -->

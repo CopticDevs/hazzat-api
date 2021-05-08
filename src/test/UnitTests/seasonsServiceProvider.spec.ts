@@ -43,8 +43,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             mockManager.mock('getSeasonList', []);
 
             const seasonsList = await hymnsProvider.getSeasonList();
-            Validators.validateArray(seasonsList);
-            seasonsList.length.should.be.eql(0);
+            Validators.validateArray(seasonsList, true);
         });
     });
 
@@ -95,8 +94,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             mockManager.mock('getSeasonServiceList', []);
 
             const serviceList = await hymnsProvider.getSeasonServiceList("seasonId");
-            Validators.validateArray(serviceList);
-            serviceList.length.should.be.eql(0);
+            Validators.validateArray(serviceList, true);
         });
     });
 
@@ -139,8 +137,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             mockManager.mock('getServiceHymnList', []);
 
             const hymnList = await hymnsProvider.getServiceHymnList("seasonId", "serviceId");
-            Validators.validateArray(hymnList);
-            hymnList.length.should.be.eql(0);
+            Validators.validateArray(hymnList, true);
         });
     });
 
@@ -183,8 +180,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             mockManager.mock('getServiceHymnFormatList', []);
 
             const formatList = await hymnsProvider.getServiceHymnFormatList("seasonId", "serviceId", "hymnId");
-            Validators.validateArray(formatList);
-            formatList.length.should.be.eql(0);
+            Validators.validateArray(formatList, true);
         });
     });
 
@@ -228,8 +224,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             mockManager.mock('getServiceHymnsFormatVariationList', []);
 
             const variationList = await hymnsProvider.getServiceHymnsFormatVariationList("seasonId", "serviceId", "hymnId", "formatId");
-            Validators.validateArray(variationList);
-            variationList.length.should.be.eql(0);
+            Validators.validateArray(variationList, true);
         });
     });
 

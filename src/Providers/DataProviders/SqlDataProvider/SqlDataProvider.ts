@@ -1,8 +1,9 @@
 import { inject, injectable } from "inversify";
-import "reflect-metadata";
 import * as Sql from "mssql";
+import "reflect-metadata";
 import { IConfiguration } from "../../../Common/Configuration";
 import { ErrorCodes, HazzatApplicationError } from "../../../Common/Errors";
+import { AsyncDelayer } from "../../../Common/Utils/AsyncDelayer";
 import { Log } from "../../../Common/Utils/Logger";
 import { SqlHelpers } from "../../../Common/Utils/SqlHelpers";
 import { TYPES } from "../../../types";
@@ -547,8 +548,14 @@ export class SqlDataProvider implements IDataProvider {
      */
     private async _connectAndExecute<TResult>(action: (cp: ConnectionPool) => Promise<TResult>): Promise<TResult> {
         let connection: ConnectionPool;
+        const delayer = new AsyncDelayer();
         try {
             connection = this._getConnectionPool();
+            while (connection.connecting) {
+                await delayer.delay(100);
+                connection = this._getConnectionPool();
+            }
+
             if (!connection.connected) {
                 Log.verbose("SqlDataProvider", "_connectAndExecute", "Establishing sql connection.");
                 await connection.connect();

@@ -39,8 +39,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneList', []);
 
             const tunesList = await hymnsProvider.getTuneList();
-            Validators.validateArray(tunesList);
-            tunesList.length.should.be.eql(0);
+            Validators.validateArray(tunesList, true);
         });
     });
 

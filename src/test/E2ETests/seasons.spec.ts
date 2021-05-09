@@ -1,7 +1,7 @@
 import { AxiosResponse, default as axios } from "axios";
 import { assert } from "chai";
 import { ErrorCodes } from "../../Common/Errors";
-import { AsyncDelayer } from "../../Common/Utils/AsyncDelayer";
+import { OperationExecutor } from "../../Common/Utils/OperationExecutor";
 import { IFormatInfo } from "../../Models/IFormatInfo";
 import { IHymnInfo } from "../../Models/IHymnInfo";
 import { ISeasonInfo } from "../../Models/ISeasonInfo";
@@ -23,7 +23,11 @@ describe("Seasons controller", () => {
         console.log(`Using baseurl ${tc.baseTestUrl}`);
 
         // Wake up the service before first test
-        await tc.ensureServiceIsAwake();
+        await OperationExecutor.execute(() => axios.get(`${tc.baseTestUrl}`), {
+            retryCount: 4,
+            retryDelayMs: 5000,
+            attemptTimeoutMs: 10000
+        });
     });
 
     describe("/GET all seasons", () => {

@@ -27,7 +27,6 @@
   "dependencies": {
     "diagnostics": "^2.0.2",
     "express": "^4.17.1",
-    "extend-node": "^0.0.1",
     "inversify": "^5.1.1",
     "mssql": "^7.0.0",
     "nconf": "^0.11.2",

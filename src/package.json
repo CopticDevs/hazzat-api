@@ -27,7 +27,7 @@
   "dependencies": {
     "diagnostics": "^2.0.2",
     "express": "^4.17.1",
-    "inversify": "^5.0.5",
+    "inversify": "^5.1.1",
     "mssql": "^6.3.1",
     "nconf": "^0.11.2",
     "q": "^1.5.1",
@@ -38,7 +38,7 @@
   "devDependencies": {
     "@types/express": "^4.17.11",
     "@types/mime": "^2.0.3",
-    "@types/mocha": "^8.2.1",
+    "@types/mocha": "^8.2.2",
     "@types/mssql": "^6.0.7",
     "@types/nconf": "^0.10.0",
     "@types/node": "^14.14.34",
@@ -49,7 +49,7 @@
     "chai-http": "^4.3.0",
     "copyfiles": "^2.4.1",
     "mkdirp": "^1.0.4",
-    "mocha": "^8.3.2",
+    "mocha": "^8.4.0",
     "mocha-trx-reporter": "^3.3.1",
     "sinon": "^10.0.0",
     "swagger-jsdoc": "^4.0.0",
@@ -57,7 +57,7 @@
     "ts-mock-imports": "^1.3.4",
     "ts-node": "^9.1.1",
     "tslint": "^6.1.3",
-    "typescript": "^4.2.3"
+    "typescript": "^4.2.4"
   },
   "engines": {
     "node": "^10.15.0"

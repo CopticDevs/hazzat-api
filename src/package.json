@@ -29,7 +29,7 @@
     "express": "^4.17.1",
     "inversify": "^5.1.1",
     "mssql": "^7.3.0",
-    "nconf": "^0.11.2",
+    "nconf": "^0.11.3",
     "q": "^1.5.1",
     "reflect-metadata": "^0.1.13",
     "tedious": "^11.0.8",

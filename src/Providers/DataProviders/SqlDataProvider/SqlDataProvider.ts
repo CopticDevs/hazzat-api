@@ -555,7 +555,10 @@ export class SqlDataProvider implements IDataProvider {
             if (!connection.connected) {
                 if (!connection.connecting) {
                     Log.verbose("SqlDataProvider", "_connectAndExecute", "Establishing sql connection.");
-                    this.connectionPromise = OperationExecutor.executeAsync<Sql.ConnectionPool>(() => connection.connect(), {
+                    await OperationExecutor.executeAsync<Sql.ConnectionPool>(() => {
+                        this.connectionPromise = connection.connect();
+                        return this.connectionPromise;
+                    }, {
                         retryCount: 10,
                         retryDelayMs: 10000,
                         attemptTimeoutMs: null
@@ -570,10 +573,6 @@ export class SqlDataProvider implements IDataProvider {
         } catch (ex) {
             Log.error("SqlDataProvider", "_connectAndExecute", "Error occured: " + JSON.stringify(ex));
             throw ex;
-        } finally {
-            Log.verbose("SqlDataProvider", "_connectAndExecute", "Action successfully executed.  Closing SQL connection.");
-            await connection.close();
-            Log.verbose("SqlDataProvider", "_connectAndExecute", "SQL connection successfully closed.");
         }
     }
 

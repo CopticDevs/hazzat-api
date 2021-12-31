@@ -45,7 +45,7 @@ export class OperationExecutor {
             }
             catch (ex) {
                 Log.verbose("OperationExecutor", "execute", `Operation failed on attempt #${attempts}/${retryPolicy.retryCount}`);
-                Log.exception("OperationExecutor", "execute", ex);
+                Log.exception("OperationExecutor", "execute", JSON.stringify(ex));
                 attempts++;
 
                 if (attempts > retryPolicy.retryCount) {

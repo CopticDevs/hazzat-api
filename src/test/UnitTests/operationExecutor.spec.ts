@@ -28,7 +28,7 @@ describe("Operation Executor Unit Tests", () => {
     describe("Validate inputs", () => {
         it("should throw for null action", async () => {
             try {
-                await OperationExecutor.execute(null, retryPolicy);
+                await OperationExecutor.executeAsync(null, retryPolicy);
                 assert.fail("Expected failure, but it succeeded");
             }
             catch (ex) {
@@ -38,7 +38,7 @@ describe("Operation Executor Unit Tests", () => {
 
         it("should throw for undefined action", async () => {
             try {
-                await OperationExecutor.execute(undefined, retryPolicy);
+                await OperationExecutor.executeAsync(undefined, retryPolicy);
                 assert.fail("Expected failure, but it succeeded");
             }
             catch (ex) {
@@ -51,7 +51,7 @@ describe("Operation Executor Unit Tests", () => {
                 return Promise.resolve(expectedResult);
             };
             try {
-                await OperationExecutor.execute(successfulAction, null);
+                await OperationExecutor.executeAsync(successfulAction, null);
                 assert.fail("Expected failure, but it succeeded");
             }
             catch (ex) {
@@ -64,7 +64,7 @@ describe("Operation Executor Unit Tests", () => {
                 return Promise.resolve(expectedResult);
             };
             try {
-                await OperationExecutor.execute(successfulAction, undefined);
+                await OperationExecutor.executeAsync(successfulAction, undefined);
                 assert.fail("Expected failure, but it succeeded");
             }
             catch (ex) {
@@ -78,7 +78,7 @@ describe("Operation Executor Unit Tests", () => {
             };
             retryPolicy.retryCount = null;
             try {
-                await OperationExecutor.execute(successfulAction, retryPolicy);
+                await OperationExecutor.executeAsync(successfulAction, retryPolicy);
                 assert.fail("Expected failure, but it succeeded");
             }
             catch (ex) {
@@ -92,7 +92,7 @@ describe("Operation Executor Unit Tests", () => {
             };
             retryPolicy.retryCount = undefined;
             try {
-                await OperationExecutor.execute(successfulAction, retryPolicy);
+                await OperationExecutor.executeAsync(successfulAction, retryPolicy);
                 assert.fail("Expected failure, but it succeeded");
             }
             catch (ex) {
@@ -106,7 +106,7 @@ describe("Operation Executor Unit Tests", () => {
             };
             retryPolicy.retryCount = 0;
             try {
-                await OperationExecutor.execute(successfulAction, retryPolicy);
+                await OperationExecutor.executeAsync(successfulAction, retryPolicy);
                 assert.fail("Expected failure, but it succeeded");
             }
             catch (ex) {
@@ -120,7 +120,7 @@ describe("Operation Executor Unit Tests", () => {
             };
             retryPolicy.retryCount = -5;
             try {
-                await OperationExecutor.execute(successfulAction, retryPolicy);
+                await OperationExecutor.executeAsync(successfulAction, retryPolicy);
                 assert.fail("Expected failure, but it succeeded");
             }
             catch (ex) {
@@ -134,7 +134,7 @@ describe("Operation Executor Unit Tests", () => {
             };
             retryPolicy.retryCount = null;
             try {
-                await OperationExecutor.execute(successfulAction, retryPolicy);
+                await OperationExecutor.executeAsync(successfulAction, retryPolicy);
                 assert.fail("Expected failure, but it succeeded");
             }
             catch (ex) {
@@ -148,7 +148,7 @@ describe("Operation Executor Unit Tests", () => {
             };
             retryPolicy.retryDelayMs = undefined;
             try {
-                await OperationExecutor.execute(successfulAction, retryPolicy);
+                await OperationExecutor.executeAsync(successfulAction, retryPolicy);
                 assert.fail("Expected failure, but it succeeded");
             }
             catch (ex) {
@@ -162,7 +162,7 @@ describe("Operation Executor Unit Tests", () => {
             };
             retryPolicy.retryDelayMs = 0;
             try {
-                await OperationExecutor.execute(successfulAction, retryPolicy);
+                await OperationExecutor.executeAsync(successfulAction, retryPolicy);
                 assert.fail("Expected failure, but it succeeded");
             }
             catch (ex) {
@@ -176,7 +176,7 @@ describe("Operation Executor Unit Tests", () => {
             };
             retryPolicy.retryDelayMs = -5;
             try {
-                await OperationExecutor.execute(successfulAction, retryPolicy);
+                await OperationExecutor.executeAsync(successfulAction, retryPolicy);
                 assert.fail("Expected failure, but it succeeded");
             }
             catch (ex) {
@@ -190,7 +190,7 @@ describe("Operation Executor Unit Tests", () => {
             };
             retryPolicy.attemptTimeoutMs = -5;
             try {
-                await OperationExecutor.execute(successfulAction, retryPolicy);
+                await OperationExecutor.executeAsync(successfulAction, retryPolicy);
                 assert.fail("Expected failure, but it succeeded");
             }
             catch (ex) {
@@ -204,7 +204,7 @@ describe("Operation Executor Unit Tests", () => {
             const successfulAction = () => {
                 return Promise.resolve(expectedResult);
             };
-            const actualResult = await OperationExecutor.execute<string>(successfulAction, retryPolicy);
+            const actualResult = await OperationExecutor.executeAsync<string>(successfulAction, retryPolicy);
             assert.equal(actualResult, expectedResult);
         });
 
@@ -214,7 +214,7 @@ describe("Operation Executor Unit Tests", () => {
             };
 
             try {
-                await OperationExecutor.execute<string>(action, retryPolicy);
+                await OperationExecutor.executeAsync<string>(action, retryPolicy);
                 assert.fail("Expected action to fail, but it succeeded");
             }
             catch (ex) {
@@ -228,7 +228,7 @@ describe("Operation Executor Unit Tests", () => {
                 return Promise.resolve(expectedResult);
             };
 
-            const actualResult = await OperationExecutor.execute<string>(successfulAction, retryPolicy);
+            const actualResult = await OperationExecutor.executeAsync<string>(successfulAction, retryPolicy);
             assert.equal(actualResult, expectedResult);
         });
 
@@ -239,7 +239,7 @@ describe("Operation Executor Unit Tests", () => {
             };
 
             try {
-                await OperationExecutor.execute<string>(action, retryPolicy);
+                await OperationExecutor.executeAsync<string>(action, retryPolicy);
                 throw new Error("Expected action to fail, but it succeeded");
             }
             catch (ex) {
@@ -253,7 +253,7 @@ describe("Operation Executor Unit Tests", () => {
                 return Promise.reject(expectedResult);
             };
             try {
-                await OperationExecutor.execute<string>(action, retryPolicy);
+                await OperationExecutor.executeAsync<string>(action, retryPolicy);
                 assert.fail("Expected action to fail, but it succeeded");
             }
             catch (ex) {

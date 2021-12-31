@@ -18,7 +18,7 @@ describe("Tunes controller", () => {
         console.log(`Using baseurl ${tc.baseTestUrl}`);
 
         // Wake up the service before first test
-        await OperationExecutor.execute(() => axios.get(`${tc.baseTestUrl}`), {
+        await OperationExecutor.executeAsync(() => axios.get(`${tc.baseTestUrl}`), {
             retryCount: 4,
             retryDelayMs: 5000,
             attemptTimeoutMs: 10000

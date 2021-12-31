@@ -59,3 +59,4 @@ steps:
     inputs:
       testResultsFormat: 'VSTest'
       testResultsFiles: '**/testResults*.trx'
+      failTaskOnFailedTests: false

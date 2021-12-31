@@ -58,6 +58,7 @@ steps:
     inputs:
       testResultsFormat: 'VSTest'
       testResultsFiles: '**/testResults*.trx'
+      failTaskOnFailedTests: false
 
   - task: PowerShell@1
     displayName: 'Generate Deployment Archive'

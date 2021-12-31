@@ -553,8 +553,9 @@ export class SqlDataProvider implements IDataProvider {
             connection = this._getConnectionPool();
 
             if (!connection.connected) {
+                Log.verbose("SqlDataProvider", "_connectAndExecute", "Establishing sql connection.");
                 if (!connection.connecting) {
-                    Log.verbose("SqlDataProvider", "_connectAndExecute", "Establishing sql connection.");
+                    Log.verbose("SqlDataProvider", "_connectAndExecute", "Starting sql connection w/ retries.");
                     await OperationExecutor.executeAsync<Sql.ConnectionPool>(() => {
                         this.connectionPromise = connection.connect();
                         return this.connectionPromise;
@@ -564,6 +565,7 @@ export class SqlDataProvider implements IDataProvider {
                         attemptTimeoutMs: null
                     });
                 } else {
+                    Log.verbose("SqlDataProvider", "_connectAndExecute", "Waiting on previous connection attempt.");
                     await this.connectionPromise;
                 }
             }

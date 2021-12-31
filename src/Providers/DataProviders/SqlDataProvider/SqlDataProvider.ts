@@ -18,6 +18,7 @@ import ConnectionPool = Sql.ConnectionPool;
 @injectable()
 export class SqlDataProvider implements IDataProvider {
     private connectionPool: ConnectionPool;
+    private connectionPromise: Promise<ConnectionPool>;
     private configuration: IConfiguration;
     private tablePrefix: string = "Hymns_";
 
@@ -552,12 +553,16 @@ export class SqlDataProvider implements IDataProvider {
             connection = this._getConnectionPool();
 
             if (!connection.connected) {
-                Log.verbose("SqlDataProvider", "_connectAndExecute", "Establishing sql connection.");
-                await OperationExecutor.executeAsync(() => connection.connect(), {
-                    retryCount: 10,
-                    retryDelayMs: 10000,
-                    attemptTimeoutMs: null
-                });
+                if (!connection.connecting) {
+                    Log.verbose("SqlDataProvider", "_connectAndExecute", "Establishing sql connection.");
+                    this.connectionPromise = OperationExecutor.executeAsync<Sql.ConnectionPool>(() => connection.connect(), {
+                        retryCount: 10,
+                        retryDelayMs: 10000,
+                        attemptTimeoutMs: null
+                    });
+                } else {
+                    await this.connectionPromise;
+                }
             }
 
             Log.verbose("SqlDataProvider", "_connectAndExecute", "Sql connection established.  Executing action.");

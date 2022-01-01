@@ -555,19 +555,15 @@ export class SqlDataProvider implements IDataProvider {
             if (!connection.connected) {
                 Log.verbose("SqlDataProvider", "_connectAndExecute", "Establishing sql connection.");
                 if (!connection.connecting) {
-                    Log.verbose("SqlDataProvider", "_connectAndExecute", "Starting sql connection w/ retries.");
-                    await OperationExecutor.executeAsync<Sql.ConnectionPool>(() => {
-                        this.connectionPromise = connection.connect();
-                        return this.connectionPromise;
-                    }, {
-                        retryCount: 10,
-                        retryDelayMs: 10000,
-                        attemptTimeoutMs: null
-                    });
+                    Log.verbose("SqlDataProvider", "_connectAndExecute", "Starting sql connection.");
+                    this.connectionPromise = connection.connect();
                 } else {
                     Log.verbose("SqlDataProvider", "_connectAndExecute", "Waiting on previous connection attempt.");
-                    await this.connectionPromise;
                 }
+                await this.connectionPromise;
+                Log.verbose("SqlDataProvider", "_connectAndExecute", "Successfully connected.");
+            } else {
+                Log.verbose("SqlDataProvider", "_connectAndExecute", "Sql connection already connected.");
             }
 
             Log.verbose("SqlDataProvider", "_connectAndExecute", "Sql connection established.  Executing action.");

@@ -35,8 +35,33 @@ steps:
       verbose: false
       customCommand: 'run build'
 
+  - task: Npm@1
+    displayName: 'Unit Tests'
+    inputs:
+      command: custom
+      workingDir: src
+      verbose: false
+      customCommand: 'run test-unit'
+
+  - task: Npm@1
+    displayName: 'Integration Tests'
+    inputs:
+      command: custom
+      workingDir: src
+      verbose: false
+      customCommand: 'run test-int'
+    env:
+      CUSTOMCONNSTR_DBCONNECTIONSTRING: $(hazzat-db-ro-connectionString)
+
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
+    inputs:
+      testResultsFormat: 'VSTest'
+      testResultsFiles: '**/testResults*.trx'
+      failTaskOnFailedTests: false
+
   - script: |
-      echo "$ARCHIVE_FILE_PATH"
+      echo "Creating deployment archive file $ARCHIVE_FILE_PATH"
       cd src
       zip -r $ARCHIVE_FILE_PATH dist/ node_modules/ package.json
     displayName: 'Generate Deployment Archive'

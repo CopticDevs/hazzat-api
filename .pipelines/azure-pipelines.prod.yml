@@ -57,6 +57,7 @@ steps:
       CUSTOMCONNSTR_DBCONNECTIONSTRING: $(hazzat-db-ro-connectionString)
 
   - task: PublishTestResults@2
+    condition: succeededOrFailed()
     inputs:
       testResultsFormat: 'VSTest'
       testResultsFiles: '**/testResults*.trx'

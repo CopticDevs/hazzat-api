@@ -1,7 +1,7 @@
-trigger: none
-
-pr:
+trigger:
 - develop
+
+pr: none
 
 pool:
   vmImage: 'windows-2019'
@@ -44,7 +44,6 @@ steps:
       verbose: false
       customCommand: 'run test-unit'
 
-
   - task: Npm@1
     displayName: 'Integration Tests'
     inputs:
@@ -56,7 +55,29 @@ steps:
       CUSTOMCONNSTR_DBCONNECTIONSTRING: $(hazzat-db-ro-connectionString)
 
   - task: PublishTestResults@2
+    condition: succeededOrFailed()
     inputs:
       testResultsFormat: 'VSTest'
       testResultsFiles: '**/testResults*.trx'
       failTaskOnFailedTests: false
+
+  - task: PowerShell@1
+    displayName: 'Generate Deployment Archive'
+    inputs:
+      scriptName: .build/createDeploymentArchive.ps1
+    env:
+      ARCHIVE_FILE_PATH: $(Build.ArtifactStagingDirectory)\$(Build.BuildId).zip
+      ENLISTMENT_ROOT: $(System.DefaultWorkingDirectory)
+
+  - task: CopyFiles@2
+    displayName: 'Copy Output Files to: $(TargetFolder)'
+    inputs:
+      SourceFolder: '$(Build.ArtifactStagingDirectory)'
+      Contents: '$(Build.BuildId).zip'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)\ArtifactsToBePublished'
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Artifact: drop'
+    inputs:
+      path: '$(Build.ArtifactStagingDirectory)\ArtifactsToBePublished'
+      artifact: HazzatBuildPPE

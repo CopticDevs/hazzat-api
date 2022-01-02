@@ -1,10 +1,10 @@
-trigger: none
-
-pr:
+trigger:
 - develop
 
+pr: none
+
 pool:
-  vmImage: 'windows-2019'
+  vmImage: 'ubuntu-latest'
 
 steps:
   # Azure Key Vault
@@ -17,7 +17,7 @@ steps:
 
   - task: NodeTool@0
     inputs:
-      versionSpec: '10.x'
+      versionSpec: '14.x'
     displayName: 'Install Node.js'
 
   - task: Npm@1
@@ -44,7 +44,6 @@ steps:
       verbose: false
       customCommand: 'run test-unit'
 
-
   - task: Npm@1
     displayName: 'Integration Tests'
     inputs:
@@ -56,7 +55,23 @@ steps:
       CUSTOMCONNSTR_DBCONNECTIONSTRING: $(hazzat-db-ro-connectionString)
 
   - task: PublishTestResults@2
+    condition: succeededOrFailed()
     inputs:
       testResultsFormat: 'VSTest'
       testResultsFiles: '**/testResults*.trx'
       failTaskOnFailedTests: false
+
+  - script: |
+      echo "Creating deployment archive file $ARCHIVE_FILE_PATH"
+      cd src
+      zip -r $ARCHIVE_FILE_PATH dist/ node_modules/ package.json
+    displayName: 'Generate Deployment Archive'
+    env:
+      ARCHIVE_FILE_PATH: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+      ENLISTMENT_ROOT: $(System.DefaultWorkingDirectory)
+
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Artifact: drop'
+    inputs:
+      path: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+      artifact: HazzatBuildPPE

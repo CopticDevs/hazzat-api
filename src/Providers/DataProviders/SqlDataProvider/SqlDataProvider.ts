@@ -1,11 +1,11 @@
 import { inject, injectable } from "inversify";
 import * as Sql from "mssql";
+import "reflect-metadata";
 import { IConfiguration } from "../../../Common/Configuration";
 import { ErrorCodes, HazzatApplicationError } from "../../../Common/Errors";
-import { Language } from "../../../Common/Types/Language";
 import { Log } from "../../../Common/Utils/Logger";
+import { OperationExecutor } from "../../../Common/Utils/OperationExecutor";
 import { SqlHelpers } from "../../../Common/Utils/SqlHelpers";
-import { TextColumn, TextParagraph } from "../../../Models/IVariationInfo";
 import { TYPES } from "../../../types";
 import { IDataProvider } from "../IDataProvider";
 import { HazzatDbSchema } from "./HazzatDbSchema";
@@ -18,6 +18,7 @@ import ConnectionPool = Sql.ConnectionPool;
 @injectable()
 export class SqlDataProvider implements IDataProvider {
     private connectionPool: ConnectionPool;
+    private connectionPromise: Promise<ConnectionPool>;
     private configuration: IConfiguration;
     private tablePrefix: string = "Hymns_";
 
@@ -385,6 +386,90 @@ export class SqlDataProvider implements IDataProvider {
         });
     }
 
+    public async getTypeList(): Promise<HazzatDbSchema.IType[]> {
+        return this._connectAndExecute<HazzatDbSchema.IType[]>(async (cp: ConnectionPool) => {
+            const result = await cp.request()
+                .execute<HazzatDbSchema.IType>(this._getQualifiedName(Constants.StoredProcedures.TypeListSelect));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(ErrorCodes[ErrorCodes.DatabaseError], "Unexpected database error");
+            }
+
+            return result.recordsets[0];
+        });
+    }
+
+    public async getType(typeId: string): Promise<HazzatDbSchema.IType> {
+        return this._connectAndExecute<HazzatDbSchema.IType>(async (cp: ConnectionPool) => {
+            if (!SqlHelpers.isValidPositiveIntParameter(typeId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid type id specified.",
+                    `Type id: '${typeId}'`);
+            }
+            const result = await cp.request()
+                .input("ID", Sql.Int, typeId)
+                .execute<HazzatDbSchema.IType>(this._getQualifiedName(Constants.StoredProcedures.TypeSelect));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.DatabaseError],
+                    "Unexpected database error");
+            }
+
+            const row = result.recordsets[0][0];
+            if (!row) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.NotFoundError],
+                    `Unable to find type with id '${typeId}'`);
+            }
+
+            return row;
+        });
+    }
+
+    public async getTuneList(): Promise<HazzatDbSchema.ITune[]> {
+        return this._connectAndExecute<HazzatDbSchema.ITune[]>(async (cp: ConnectionPool) => {
+            const result = await cp.request()
+                .execute<HazzatDbSchema.ITune>(this._getQualifiedName(Constants.StoredProcedures.TuneListSelect));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(ErrorCodes[ErrorCodes.DatabaseError], "Unexpected database error");
+            }
+
+            return result.recordsets[0];
+        });
+    }
+
+    public async getTune(tuneId: string): Promise<HazzatDbSchema.ITune> {
+        return this._connectAndExecute<HazzatDbSchema.ITune>(async (cp: ConnectionPool) => {
+            if (!SqlHelpers.isValidPositiveIntParameter(tuneId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid tune id specified.",
+                    `Tune id: '${tuneId}'`);
+            }
+            const result = await cp.request()
+                .input("ID", Sql.Int, tuneId)
+                .execute<HazzatDbSchema.ITune>(this._getQualifiedName(Constants.StoredProcedures.TuneSelect));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.DatabaseError],
+                    "Unexpected database error");
+            }
+
+            const row = result.recordsets[0][0];
+            if (!row) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.NotFoundError],
+                    `Unable to find te with id '${tuneId}'`);
+            }
+
+            return row;
+        });
+    }
+
     public getCommonContent(commonId: string): Promise<string> {
         return this._connectAndExecute<string>(async (cp: ConnectionPool) => {
             if (!SqlHelpers.isValidPositiveIntParameter(commonId)) {
@@ -466,9 +551,19 @@ export class SqlDataProvider implements IDataProvider {
         let connection: ConnectionPool;
         try {
             connection = this._getConnectionPool();
+
             if (!connection.connected) {
                 Log.verbose("SqlDataProvider", "_connectAndExecute", "Establishing sql connection.");
-                await connection.connect();
+                if (!connection.connecting) {
+                    Log.verbose("SqlDataProvider", "_connectAndExecute", "Starting sql connection.");
+                    this.connectionPromise = connection.connect();
+                } else {
+                    Log.verbose("SqlDataProvider", "_connectAndExecute", "Waiting on previous connection attempt.");
+                }
+                await this.connectionPromise;
+                Log.verbose("SqlDataProvider", "_connectAndExecute", "Successfully connected.");
+            } else {
+                Log.verbose("SqlDataProvider", "_connectAndExecute", "Sql connection already connected.");
             }
 
             Log.verbose("SqlDataProvider", "_connectAndExecute", "Sql connection established.  Executing action.");
@@ -476,10 +571,6 @@ export class SqlDataProvider implements IDataProvider {
         } catch (ex) {
             Log.error("SqlDataProvider", "_connectAndExecute", "Error occured: " + JSON.stringify(ex));
             throw ex;
-        } finally {
-            Log.verbose("SqlDataProvider", "_connectAndExecute", "Action successfully executed.  Closing SQL connection.");
-            await connection.close();
-            Log.verbose("SqlDataProvider", "_connectAndExecute", "SQL connection successfully closed.");
         }
     }
 

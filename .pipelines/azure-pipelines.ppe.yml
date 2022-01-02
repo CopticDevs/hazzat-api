@@ -4,7 +4,7 @@ trigger:
 pr: none
 
 pool:
-  vmImage: 'windows-2019'
+  vmImage: 'ubuntu-latest'
 
 steps:
   # Azure Key Vault
@@ -17,7 +17,7 @@ steps:
 
   - task: NodeTool@0
     inputs:
-      versionSpec: '10.x'
+      versionSpec: '14.x'
     displayName: 'Install Node.js'
 
   - task: Npm@1
@@ -61,23 +61,17 @@ steps:
       testResultsFiles: '**/testResults*.trx'
       failTaskOnFailedTests: false
 
-  - task: PowerShell@1
+  - script: |
+      echo "Creating deployment archive file $ARCHIVE_FILE_PATH"
+      cd src
+      zip -r $ARCHIVE_FILE_PATH dist/ node_modules/ package.json
     displayName: 'Generate Deployment Archive'
-    inputs:
-      scriptName: .build/createDeploymentArchive.ps1
     env:
-      ARCHIVE_FILE_PATH: $(Build.ArtifactStagingDirectory)\$(Build.BuildId).zip
+      ARCHIVE_FILE_PATH: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       ENLISTMENT_ROOT: $(System.DefaultWorkingDirectory)
-
-  - task: CopyFiles@2
-    displayName: 'Copy Output Files to: $(TargetFolder)'
-    inputs:
-      SourceFolder: '$(Build.ArtifactStagingDirectory)'
-      Contents: '$(Build.BuildId).zip'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)\ArtifactsToBePublished'
 
   - task: PublishPipelineArtifact@1
     displayName: 'Publish Artifact: drop'
     inputs:
-      path: '$(Build.ArtifactStagingDirectory)\ArtifactsToBePublished'
+      path: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
       artifact: HazzatBuildPPE

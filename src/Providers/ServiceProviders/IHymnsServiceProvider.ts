@@ -29,9 +29,11 @@ export interface IHymnsServiceProvider {
     getType(typeId: string): Promise<ITypeInfo>;
 
     getTypeSeasonList(typeId: string): Promise<ISeasonInfo[]>;
+    getTypeSeason(typeId: string, seasonId: string): Promise<ISeasonInfo>;
 
     getTuneList(): Promise<ITuneInfo[]>;
     getTune(tuneId: string): Promise<ITuneInfo>;
 
     getTuneSeasonList(tuneId: string): Promise<ISeasonInfo[]>;
+    getTuneSeason(tuneId: string, seasonId: string): Promise<ISeasonInfo>;
 }

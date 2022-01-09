@@ -449,6 +449,42 @@ export class SqlDataProvider implements IDataProvider {
         });
     }
 
+    public async getTypeSeason(typeId: string, seasonId: string): Promise<HazzatDbSchema.ISeason> {
+        return this._connectAndExecute<HazzatDbSchema.ISeason>(async (cp: ConnectionPool) => {
+            if (!SqlHelpers.isValidPositiveIntParameter(typeId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid type id specified.",
+                    `Type id: '${typeId}'`);
+            }
+            if (!SqlHelpers.isValidPositiveIntParameter(seasonId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid season id specified.",
+                    `Season id: '${seasonId}'`);
+            }
+            const result = await cp.request()
+                .input(Constants.Parameters.TypeId, Sql.Int, typeId)
+                .input(Constants.Parameters.SeasonId, Sql.Int, seasonId)
+                .execute<HazzatDbSchema.ISeason>(this._getQualifiedName(Constants.StoredProcedures.SeasonSelectByTypeIdAndSeasonId));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.DatabaseError],
+                    "Unexpected database error");
+            }
+
+            const row = result.recordsets[0][0];
+            if (!row) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.NotFoundError],
+                    `Unable to find season with type with id '${typeId}' and seasonId ${seasonId}`);
+            }
+
+            return row;
+        });
+    }
+
     public async getTuneList(): Promise<HazzatDbSchema.ITune[]> {
         return this._connectAndExecute<HazzatDbSchema.ITune[]>(async (cp: ConnectionPool) => {
             const result = await cp.request()
@@ -510,6 +546,42 @@ export class SqlDataProvider implements IDataProvider {
             }
 
             return result.recordsets[0];
+        });
+    }
+
+    public async getTuneSeason(tuneId: string, seasonId: string): Promise<HazzatDbSchema.ISeason> {
+        return this._connectAndExecute<HazzatDbSchema.ISeason>(async (cp: ConnectionPool) => {
+            if (!SqlHelpers.isValidPositiveIntParameter(tuneId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid type id specified.",
+                    `Type id: '${tuneId}'`);
+            }
+            if (!SqlHelpers.isValidPositiveIntParameter(seasonId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid season id specified.",
+                    `Season id: '${seasonId}'`);
+            }
+            const result = await cp.request()
+                .input(Constants.Parameters.TuneId, Sql.Int, tuneId)
+                .input(Constants.Parameters.SeasonId, Sql.Int, seasonId)
+                .execute<HazzatDbSchema.ISeason>(this._getQualifiedName(Constants.StoredProcedures.SeasonSelectByTuneIdAndSeasonId));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.DatabaseError],
+                    "Unexpected database error");
+            }
+
+            const row = result.recordsets[0][0];
+            if (!row) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.NotFoundError],
+                    `Unable to find season with tune with id '${tuneId}' and seasonId ${seasonId}`);
+            }
+
+            return row;
         });
     }
 

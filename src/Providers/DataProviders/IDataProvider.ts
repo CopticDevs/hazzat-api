@@ -24,9 +24,13 @@ export interface IDataProvider {
 
     getTypeList(): Promise<HazzatDbSchema.IType[]>;
     getType(typeId: string): Promise<HazzatDbSchema.IType>;
+
     getTypeSeasonList(typeId: string): Promise<HazzatDbSchema.ISeason[]>;
+    getTypeSeason(typeId: string, seasonId: string): Promise<HazzatDbSchema.ISeason>;
 
     getTuneList(): Promise<HazzatDbSchema.ITune[]>;
     getTune(tuneId: string): Promise<HazzatDbSchema.ITune>;
+
     getTuneSeasonList(tuneId: string): Promise<HazzatDbSchema.ISeason[]>;
+    getTuneSeason(tuneId: string, seasonId: string): Promise<HazzatDbSchema.ISeason>;
 }

@@ -120,5 +120,43 @@ export class TunesController extends BaseController {
                 BaseController._OnError(ex, res);
             }
         });
+
+        /**
+         * @swagger
+         *
+         * /tunes/[tuneId]/seasons/[seasonId]:
+         *   get:
+         *     description: Gets a Season
+         *     produces:
+         *       - application/json
+         *     parameters:
+         *       - name: tuneId
+         *         description: Tune ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: seasonId
+         *         description: Season ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *     responses:
+         *       200:
+         *         description: Season
+         *         schema:
+         *           type: object
+         *           items:
+         *             $ref: '#/definitions/Season'
+         *
+         *
+         */
+        this.router.get(`/:tuneId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)`, async (req: express.Request, res: express.Response) => {
+            try {
+                const result = await hymnsServiceProvider.getTuneSeason(req.params.tuneId, req.params.seasonId);
+                res.send(result);
+            } catch (ex) {
+                BaseController._OnError(ex, res);
+            }
+        });
     }
 }

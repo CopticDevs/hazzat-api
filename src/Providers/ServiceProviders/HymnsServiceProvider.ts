@@ -120,8 +120,14 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
         const dbResult = await this._dataProvider.getTypeSeasonList(typeId);
 
         const seasons: ISeasonInfo[] = dbResult
-            .map((row) => HazzatContentUtils.convertSeasonDbItemToSeasonInfo(row));
+            .map((row) => HazzatContentUtils.convertSeasonDbItemToTypeSeasonInfo(row, typeId));
         return seasons;
+    }
+
+    @measure
+    public async getTypeSeason(typeId: string, seasonId: string): Promise<ISeasonInfo> {
+        const dbResult = await this._dataProvider.getTypeSeason(typeId, seasonId);
+        return HazzatContentUtils.convertSeasonDbItemToTypeSeasonInfo(dbResult, typeId);
     }
 
     @measure
@@ -144,7 +150,13 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
         const dbResult = await this._dataProvider.getTuneSeasonList(tuneId);
 
         const seasons: ISeasonInfo[] = dbResult
-            .map((row) => HazzatContentUtils.convertSeasonDbItemToSeasonInfo(row));
+            .map((row) => HazzatContentUtils.convertSeasonDbItemToTuneSeasonInfo(row, tuneId));
         return seasons;
+    }
+
+    @measure
+    public async getTuneSeason(tuneId: string, seasonId: string): Promise<ISeasonInfo> {
+        const dbResult = await this._dataProvider.getTuneSeason(tuneId, seasonId);
+        return HazzatContentUtils.convertSeasonDbItemToTuneSeasonInfo(dbResult, tuneId);
     }
 }

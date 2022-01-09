@@ -122,5 +122,43 @@ export class TypesController extends BaseController {
                 BaseController._OnError(ex, res);
             }
         });
+
+        /**
+         * @swagger
+         *
+         * /types/[typeId]/seasons/[seasonId]:
+         *   get:
+         *     description: Gets a Season
+         *     produces:
+         *       - application/json
+         *     parameters:
+         *       - name: typeId
+         *         description: Type ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: seasonId
+         *         description: Season ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *     responses:
+         *       200:
+         *         description: Season
+         *         schema:
+         *           type: object
+         *           items:
+         *             $ref: '#/definitions/Season'
+         *
+         *
+         */
+        this.router.get(`/:typeId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)`, async (req: express.Request, res: express.Response) => {
+            try {
+                const result = await hymnsServiceProvider.getTypeSeason(req.params.typeId, req.params.seasonId);
+                res.send(result);
+            } catch (ex) {
+                BaseController._OnError(ex, res);
+            }
+        });
     }
 }

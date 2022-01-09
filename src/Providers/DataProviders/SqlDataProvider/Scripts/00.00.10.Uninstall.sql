@@ -103,3 +103,13 @@ DROP PROCEDURE [dbo].[Hymns_SeasonListSelectByTypeID]
 GO
 
 
+/****** Object:  StoredProcedure [dbo].[Hymns_SeasonSelectByTuneIDAndSeasonID]    Script Date: 1/8/2022 5:45:53 PM ******/
+DROP PROCEDURE [dbo].[Hymns_SeasonSelectByTuneIDAndSeasonID]
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Hymns_SeasonSelectByTypeIDAndSeasonID]    Script Date: 1/8/2022 5:46:27 PM ******/
+DROP PROCEDURE [dbo].[Hymns_SeasonSelectByTypeIDAndSeasonID]
+GO
+
+

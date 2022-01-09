@@ -1,6 +1,7 @@
 import * as express from "express";
 import { IHymnsServiceProvider } from "../Providers/ServiceProviders/IHymnsServiceProvider";
 import { BaseController } from "./BaseController";
+import { ResourceTypes } from "./ResourceTypes";
 
 export class TunesController extends BaseController {
     constructor(hymnsServiceProvider: IHymnsServiceProvider) {
@@ -81,6 +82,39 @@ export class TunesController extends BaseController {
         this.router.get("/:tuneId(\\d+)", async (req: express.Request, res: express.Response) => {
             try {
                 const result = await hymnsServiceProvider.getTune(req.params.tuneId);
+                res.send(result);
+            } catch (ex) {
+                BaseController._OnError(ex, res);
+            }
+        });
+
+        /**
+         * @swagger
+         *
+         * /tunes/[tuneId]/seasons:
+         *   get:
+         *     description: Gets a list of Seasons
+         *     produces:
+         *       - application/json
+         *     parameters:
+         *       - name: tuneId
+         *         description: Tune ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *     responses:
+         *       200:
+         *         description: Seasons
+         *         schema:
+         *           type: array
+         *           items:
+         *             $ref: '#/definitions/Season'
+         *
+         *
+         */
+        this.router.get(`/:tuneId(\\d+)/${ResourceTypes.Seasons}`, async (req: express.Request, res: express.Response) => {
+            try {
+                const result = await hymnsServiceProvider.getTuneSeasonList(req.params.tuneId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

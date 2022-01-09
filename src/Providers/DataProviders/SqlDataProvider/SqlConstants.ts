@@ -12,8 +12,10 @@ export namespace Constants {
         export const HymnContentSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId = "HymnContentSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId";
         export const TypeListSelect = "TypeListSelect";
         export const TypeSelect = "TypeSelect";
+        export const SeasonListSelectByTypeId = "SeasonListSelectByTypeID"
         export const TuneListSelect = "TuneListSelect";
         export const TuneSelect = "TuneSelect";
+        export const SeasonListSelectByTuneId = "SeasonListSelectByTuneID"
         export const CommonSelect = "CommonSelect";
         export const ReasonSelect = "ReasonSelect";
 
@@ -28,6 +30,8 @@ export namespace Constants {
         export const ContentId = "Content_ID";
         export const CommonId = "Common_ID";
         export const ReasonId = "Reason_ID";
+        export const TypeId = "Type_ID";
+        export const TuneId = "Tune_ID";
     }
 
     export namespace Tokens {

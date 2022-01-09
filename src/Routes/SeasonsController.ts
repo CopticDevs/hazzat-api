@@ -1,5 +1,4 @@
 import * as express from "express";
-import { Log } from "../Common/Utils/Logger";
 import { IHymnsServiceProvider } from "../Providers/ServiceProviders/IHymnsServiceProvider";
 import { BaseController } from "./BaseController";
 import { ResourceTypes } from "./ResourceTypes";

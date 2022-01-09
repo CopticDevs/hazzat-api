@@ -67,4 +67,47 @@ describe("Types Service Provider Unit Tests", () => {
             type.order.should.be.equal(typeDb.Type_Order);
         });
     });
+
+    describe("All seasons in a type", () => {
+        it("should get all seasons for a type with results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTypeSeasonList', SqlDataProviderMock.getDbTypeSeasonList());
+
+            const seasonList = await hymnsProvider.getTypeSeasonList("12");
+            Validators.validateArray(seasonList);
+            seasonList.length.should.be.eql(3);
+            seasonList.forEach((season) => Validators.validateTypeSeason(season));
+        });
+
+        it("should get all seasons for a type with empty results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTypeSeasonList', []);
+
+            const seasonList = await hymnsProvider.getTypeSeasonList("typeId");
+            Validators.validateArray(seasonList, true);
+        });
+    });
+
+    describe("A single season in a type", () => {
+        it("should get a single season for a type", async () => {
+            // Setup mocked result
+            mockManager.mock('getTypeSeason', SqlDataProviderMock.getDbTypeSeason());
+
+            const season = await hymnsProvider.getTypeSeason("12", "seasonId");
+            Validators.validateObject(season);
+            Validators.validateTypeSeason(season);
+        });
+
+        it("should have correct db to contract service mapping", async () => {
+            // Setup mocked result
+            mockManager.mock('getTypeSeason', SqlDataProviderMock.getDbTypeSeason());
+
+            const seasonDb = SqlDataProviderMock.getDbTypeSeason();
+            const season = await hymnsProvider.getTypeSeason("typeId", "seasonId");
+
+            // Validate that the contract was mapped out correctly from db results
+            season.name.should.be.equal(seasonDb.Name);
+            season.verse.should.be.equal(seasonDb.Verse);
+        });
+    });
 });

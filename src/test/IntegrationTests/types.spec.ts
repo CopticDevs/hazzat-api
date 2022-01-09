@@ -62,4 +62,110 @@ describe("Types controller", () => {
                 });
         });
     });
+
+    describe("/GET all type seasons", () => {
+        it("should get all type seasons", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}`)
+                .end((err, res) => {
+                    Validators.validateArrayChaiResponse(res);
+                    Validators.validateTypeSeason(res.body[0]);
+                    done();
+                });
+        });
+
+        it("should return a 404 for negative type ids", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/-1/${ResourceTypes.Seasons}`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404);
+                    done();
+                });
+        });
+
+        it("should return a 404 for non integer type ids", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/badInput/${ResourceTypes.Seasons}`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404);
+                    done();
+                });
+        });
+
+        it("should return an empty array for non existing type ids", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/1234/${ResourceTypes.Seasons}`)
+                .end((err, res) => {
+                    Validators.validateArrayChaiResponse(res, true);
+                    done();
+                });
+        });
+    });
+
+    describe("/GET a type season", () => {
+        it("should get a type season", (done) => {
+            const resourceId = `/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/1`;
+            chai.request(server)
+                .get(resourceId)
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateTypeSeason(res.body, resourceId);
+                    done();
+                });
+        });
+
+        it("should return a 404 for negative type ids", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/-1/${ResourceTypes.Seasons}/1`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404);
+                    done();
+                });
+        });
+
+        it("should return a 404 for negative season ids", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/-1`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404);
+                    done();
+                });
+        });
+
+        it("should return a 404 for non integer type ids", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/badInput/${ResourceTypes.Seasons}/1`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404);
+                    done();
+                });
+        });
+
+        it("should return a 404 for non integer season ids", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/badInput`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404);
+                    done();
+                });
+        });
+
+        it("should return a 404 for non existing type id", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/1234/${ResourceTypes.Seasons}/1`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
+                    done();
+                });
+        });
+
+        it("should return a 404 for non existing season", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/1234`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
+                    done();
+                });
+        });
+    });
 });

@@ -18,8 +18,20 @@ import { Constants } from "../../DataProviders/SqlDataProvider/SqlConstants";
 export class HazzatContentUtils {
 
     public static convertSeasonDbItemToSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason): ISeasonInfo {
+        return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(seasonDbItem, `/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
+    }
+
+    public static convertSeasonDbItemToTuneSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason, tuneId: string): ISeasonInfo {
+        return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(seasonDbItem, `/${ResourceTypes.Tunes}/${tuneId}/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
+    }
+
+    public static convertSeasonDbItemToTypeSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason, typeId: string): ISeasonInfo {
+        return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(seasonDbItem, `/${ResourceTypes.Types}/${typeId}/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
+    }
+
+    private static _convertSeasonDbItemToSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason, id: string): ISeasonInfo {
         return {
-            id: `/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`,
+            id,
             isDateSpecific: seasonDbItem.Date_Specific,
             name: seasonDbItem.Name,
             order: seasonDbItem.Season_Order,

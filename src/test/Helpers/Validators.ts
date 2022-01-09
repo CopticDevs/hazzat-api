@@ -47,6 +47,20 @@ export class Validators {
 
     public static validateSeason(value: any, resourceId: string = null): void {
         value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+$`));
+        Validators._validateSeason(value, resourceId);
+    }
+
+    public static validateTuneSeason(value: any, resourceId: string = null): void {
+        value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Tunes}\/[0-9]+\/${ResourceTypes.Seasons}\/[0-9]+$`));
+        Validators._validateSeason(value, resourceId);
+    }
+
+    public static validateTypeSeason(value: any, resourceId: string = null): void {
+        value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Types}\/[0-9]+\/${ResourceTypes.Seasons}\/[0-9]+$`));
+        Validators._validateSeason(value, resourceId);
+    }
+
+    private static _validateSeason(value: any, resourceId: string = null): void {
         if (!!resourceId) {
             value.should.have.property("id").eq(resourceId);
         }

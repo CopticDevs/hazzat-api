@@ -322,6 +322,14 @@ export class SqlDataProviderMock {
         return SqlDataProviderMock.getDbSeason();
     }
 
+    public static getDbTuneSeasonServiceHymnList(): HazzatDbSchema.IServiceHymn[] {
+        return SqlDataProviderMock.getDbServiceHymnList();
+    }
+
+    public static getDbTuneSeasonServiceHymn(): HazzatDbSchema.IServiceHymn {
+        return SqlDataProviderMock.getDbServiceHymn();
+    }
+
     public static getDbTypesList(): HazzatDbSchema.IType[] {
         return [
             SqlDataProviderMock._type1,
@@ -340,5 +348,13 @@ export class SqlDataProviderMock {
 
     public static getDbTypeSeason(): HazzatDbSchema.ISeason {
         return SqlDataProviderMock.getDbSeason();
+    }
+
+    public static getDbTypeSeasonServiceHymnList(): HazzatDbSchema.IServiceHymn[] {
+        return SqlDataProviderMock.getDbServiceHymnList();
+    }
+
+    public static getDbTypeSeasonServiceHymn(): HazzatDbSchema.IServiceHymn {
+        return SqlDataProviderMock.getDbServiceHymn();
     }
 }

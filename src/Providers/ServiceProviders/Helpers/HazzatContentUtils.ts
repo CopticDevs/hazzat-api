@@ -1,7 +1,7 @@
 ﻿ import { ErrorCodes, HazzatApplicationError } from "../../../Common/Errors";
 import { Language } from "../../../Common/Types/Language";
 import { IFormatInfo } from "../../../Models/IFormatInfo";
-import { IHymnInfo } from "../../../Models/IHymnInfo";
+import { IHymnInfo, IHymnInfoWithServiceDetails } from "../../../Models/IHymnInfo";
 import { ISeasonInfo } from "../../../Models/ISeasonInfo";
 import { IServiceInfo } from "../../../Models/IServiceInfo";
 import { ITuneInfo } from "../../../Models/ITuneInfo";
@@ -50,8 +50,39 @@ export class HazzatContentUtils {
     public static convertServiceHymnDbItemToHymnInfo(
         serviceHymnDbItem: HazzatDbSchema.IServiceHymn
     ): IHymnInfo {
+        return HazzatContentUtils._convertServiceHymnDbItemToHymnInfo(serviceHymnDbItem, `/${ResourceTypes.Seasons}/${serviceHymnDbItem.Season_ID}/${ResourceTypes.Services}/${serviceHymnDbItem.Service_ID}/${ResourceTypes.Hymns}/${serviceHymnDbItem.ItemId}`);
+    }
+
+    public static convertTypeServiceHymnDbItemToHymnInfoWithServiceDetails(
+        serviceHymnDbItem: HazzatDbSchema.IServiceHymn,
+        typeId: string
+    ): IHymnInfoWithServiceDetails {
+        const hymnInfo = HazzatContentUtils._convertServiceHymnDbItemToHymnInfo(serviceHymnDbItem, `/${ResourceTypes.Types}/${typeId}/${ResourceTypes.Seasons}/${serviceHymnDbItem.Season_ID}/${ResourceTypes.Hymns}/${serviceHymnDbItem.ItemId}`);
         return {
-            id: `/${ResourceTypes.Seasons}/${serviceHymnDbItem.Season_ID}/${ResourceTypes.Services}/${serviceHymnDbItem.Service_ID}/${ResourceTypes.Hymns}/${serviceHymnDbItem.ItemId}`,
+            ...hymnInfo,
+            serviceId: serviceHymnDbItem.Service_ID,
+            serviceName: serviceHymnDbItem.Service_Name
+        };
+    }
+
+    public static convertTuneServiceHymnDbItemToHymnInfoWithServiceDetails(
+        serviceHymnDbItem: HazzatDbSchema.IServiceHymn,
+        tuneId: string
+    ): IHymnInfoWithServiceDetails {
+        const hymnInfo = HazzatContentUtils._convertServiceHymnDbItemToHymnInfo(serviceHymnDbItem, `/${ResourceTypes.Tunes}/${tuneId}/${ResourceTypes.Seasons}/${serviceHymnDbItem.Season_ID}/${ResourceTypes.Hymns}/${serviceHymnDbItem.ItemId}`);
+        return {
+            ...hymnInfo,
+            serviceId: serviceHymnDbItem.Service_ID,
+            serviceName: serviceHymnDbItem.Service_Name
+        };
+    }
+
+    private static _convertServiceHymnDbItemToHymnInfo(
+        serviceHymnDbItem: HazzatDbSchema.IServiceHymn,
+        id: string
+    ): IHymnInfo {
+        return {
+            id,
             name: serviceHymnDbItem.Title,
             order: serviceHymnDbItem.Hymn_Order
         };

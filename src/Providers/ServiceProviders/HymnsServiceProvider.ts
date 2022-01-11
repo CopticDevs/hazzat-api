@@ -1,7 +1,7 @@
 ﻿ import { inject, injectable } from "inversify";
 import { measure } from "../../Common/Utils/MeasureDecorator";
 import { IFormatInfo } from "../../Models/IFormatInfo";
-import { IHymnInfo } from "../../Models/IHymnInfo";
+import { IHymnInfo, IHymnInfoWithServiceDetails } from "../../Models/IHymnInfo";
 import { ISeasonInfo } from "../../Models/ISeasonInfo";
 import { IServiceInfo } from "../../Models/IServiceInfo";
 import { ITuneInfo } from "../../Models/ITuneInfo";
@@ -131,6 +131,15 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
     }
 
     @measure
+    public async getTypeSeasonServiceHymnList(typeId: string, seasonId: string): Promise<IHymnInfoWithServiceDetails[]> {
+        const dbResult = await this._dataProvider.getTypeSeasonServiceHymnList(typeId, seasonId);
+
+        const serviceHymns: IHymnInfoWithServiceDetails[] = dbResult
+            .map((row) => HazzatContentUtils.convertTypeServiceHymnDbItemToHymnInfoWithServiceDetails(row, typeId));
+        return serviceHymns;
+    }
+
+    @measure
     public async getTuneList(): Promise<ITuneInfo[]> {
         const dbResult = await this._dataProvider.getTuneList();
 
@@ -158,5 +167,14 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
     public async getTuneSeason(tuneId: string, seasonId: string): Promise<ISeasonInfo> {
         const dbResult = await this._dataProvider.getTuneSeason(tuneId, seasonId);
         return HazzatContentUtils.convertSeasonDbItemToTuneSeasonInfo(dbResult, tuneId);
+    }
+
+    @measure
+    public async getTuneSeasonServiceHymnList(tuneId: string, seasonId: string): Promise<IHymnInfoWithServiceDetails[]> {
+        const dbResult = await this._dataProvider.getTuneSeasonServiceHymnList(tuneId, seasonId);
+
+        const serviceHymns: IHymnInfoWithServiceDetails[] = dbResult
+            .map((row) => HazzatContentUtils.convertTuneServiceHymnDbItemToHymnInfoWithServiceDetails(row, tuneId));
+        return serviceHymns;
     }
 }

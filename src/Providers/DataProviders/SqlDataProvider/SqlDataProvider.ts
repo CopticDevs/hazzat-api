@@ -485,6 +485,35 @@ export class SqlDataProvider implements IDataProvider {
         });
     }
 
+    getTypeSeasonServiceHymnList(typeId: string, seasonId: string): Promise<HazzatDbSchema.IServiceHymn[]> {
+        return this._connectAndExecute<HazzatDbSchema.IServiceHymn[]>(async (cp: ConnectionPool) => {
+            if (!SqlHelpers.isValidPositiveIntParameter(typeId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid type id specified.",
+                    `Type id: '${typeId}'`);
+            }
+            if (!SqlHelpers.isValidPositiveIntParameter(seasonId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid season id specified.",
+                    `Season id: '${seasonId}'`);
+            }
+            const result = await cp.request()
+                .input(Constants.Parameters.TuneId, Sql.Int, typeId)
+                .input(Constants.Parameters.SeasonId, Sql.Int, seasonId)
+                .execute<HazzatDbSchema.IServiceHymn>(this._getQualifiedName(Constants.StoredProcedures.ServiceHymnListSelectByTypeIdAndSeasonId));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.DatabaseError],
+                    "Unexpected database error");
+            }
+
+            return result.recordsets[0];
+        });
+    }
+
     public async getTuneList(): Promise<HazzatDbSchema.ITune[]> {
         return this._connectAndExecute<HazzatDbSchema.ITune[]>(async (cp: ConnectionPool) => {
             const result = await cp.request()
@@ -582,6 +611,35 @@ export class SqlDataProvider implements IDataProvider {
             }
 
             return row;
+        });
+    }
+
+    getTuneSeasonServiceHymnList(tuneId: string, seasonId: string): Promise<HazzatDbSchema.IServiceHymn[]> {
+        return this._connectAndExecute<HazzatDbSchema.IServiceHymn[]>(async (cp: ConnectionPool) => {
+            if (!SqlHelpers.isValidPositiveIntParameter(tuneId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid tune id specified.",
+                    `Tune id: '${tuneId}'`);
+            }
+            if (!SqlHelpers.isValidPositiveIntParameter(seasonId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid season id specified.",
+                    `Season id: '${seasonId}'`);
+            }
+            const result = await cp.request()
+                .input(Constants.Parameters.TuneId, Sql.Int, tuneId)
+                .input(Constants.Parameters.SeasonId, Sql.Int, seasonId)
+                .execute<HazzatDbSchema.IServiceHymn>(this._getQualifiedName(Constants.StoredProcedures.ServiceHymnListSelectByTuneIdAndSeasonId));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.DatabaseError],
+                    "Unexpected database error");
+            }
+
+            return result.recordsets[0];
         });
     }
 

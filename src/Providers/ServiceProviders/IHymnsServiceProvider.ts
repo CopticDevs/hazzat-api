@@ -32,6 +32,7 @@ export interface IHymnsServiceProvider {
     getTypeSeason(typeId: string, seasonId: string): Promise<ISeasonInfo>;
 
     getTypeSeasonServiceHymnList(typeId: string, seasonId: string): Promise<IHymnInfoWithServiceDetails[]>;
+    getTypeSeasonServiceHymn(typeId: string, seasonId: string, hymnId: string): Promise<IHymnInfoWithServiceDetails>;
 
     getTuneList(): Promise<ITuneInfo[]>;
     getTune(tuneId: string): Promise<ITuneInfo>;
@@ -40,4 +41,5 @@ export interface IHymnsServiceProvider {
     getTuneSeason(tuneId: string, seasonId: string): Promise<ISeasonInfo>;
 
     getTuneSeasonServiceHymnList(tuneId: string, seasonId: string): Promise<IHymnInfoWithServiceDetails[]>;
+    getTuneSeasonServiceHymn(tuneId: string, seasonId: string, hymnId: string): Promise<IHymnInfoWithServiceDetails>;
 }

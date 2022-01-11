@@ -140,6 +140,12 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
     }
 
     @measure
+    public async getTypeSeasonServiceHymn(typeId: string, seasonId: string, hymnId: string): Promise<IHymnInfoWithServiceDetails> {
+        const dbResult = await this._dataProvider.getTypeSeasonServiceHymn(typeId, seasonId, hymnId);
+        return HazzatContentUtils.convertTypeServiceHymnDbItemToHymnInfoWithServiceDetails(dbResult, typeId);
+    }
+
+    @measure
     public async getTuneList(): Promise<ITuneInfo[]> {
         const dbResult = await this._dataProvider.getTuneList();
 
@@ -176,5 +182,11 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
         const serviceHymns: IHymnInfoWithServiceDetails[] = dbResult
             .map((row) => HazzatContentUtils.convertTuneServiceHymnDbItemToHymnInfoWithServiceDetails(row, tuneId));
         return serviceHymns;
+    }
+
+    @measure
+    public async getTuneSeasonServiceHymn(tuneId: string, seasonId: string, hymnId: string): Promise<IHymnInfoWithServiceDetails> {
+        const dbResult = await this._dataProvider.getTuneSeasonServiceHymn(tuneId, seasonId, hymnId);
+        return HazzatContentUtils.convertTuneServiceHymnDbItemToHymnInfoWithServiceDetails(dbResult, tuneId);
     }
 }

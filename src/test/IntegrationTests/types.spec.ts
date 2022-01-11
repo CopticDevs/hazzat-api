@@ -168,4 +168,164 @@ describe("Types controller", () => {
                 });
         });
     });
+
+    describe("/GET all hymns in a type season", () => {
+        it("should get all hymns in a type season", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/1/${ResourceTypes.Hymns}`)
+                .end((err, res) => {
+                    Validators.validateArrayChaiResponse(res);
+                    Validators.validateTypeServiceHymnWithServiceDetails(res.body[0]);
+                    done();
+                });
+        });
+
+        it("should return a 404 for negative type ids", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/-1/${ResourceTypes.Seasons}/1/${ResourceTypes.Hymns}`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404);
+                    done();
+                });
+        });
+
+        it("should return a 404 for negative season ids", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/-1/${ResourceTypes.Hymns}`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404);
+                    done();
+                });
+        });
+
+        it("should return a 404 for non integer type ids", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/badInput/${ResourceTypes.Seasons}/1/${ResourceTypes.Hymns}`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404);
+                    done();
+                });
+        });
+
+        it("should return a 404 for non integer season ids", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/badInput/${ResourceTypes.Hymns}`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404);
+                    done();
+                });
+        });
+
+        it("should return an empty array for non existing type ids", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/1234/${ResourceTypes.Seasons}/1/${ResourceTypes.Hymns}`)
+                .end((err, res) => {
+                    Validators.validateArrayChaiResponse(res, true);
+                    done();
+                });
+        });
+
+        it("should return an empty array for non existing season ids", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/1234/${ResourceTypes.Hymns}`)
+                .end((err, res) => {
+                    Validators.validateArrayChaiResponse(res, true);
+                    done();
+                });
+        });
+    });
+
+    describe("/GET a hymn type season", () => {
+        it("should get a hymn type season", (done) => {
+            const resourceId = `/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/1/${ResourceTypes.Hymns}/311`;
+            chai.request(server)
+                .get(resourceId)
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateTypeServiceHymnWithServiceDetails(res.body, resourceId);
+                    done();
+                });
+        });
+
+        it("should return a 404 for negative type ids", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/-1/${ResourceTypes.Seasons}/1/${ResourceTypes.Hymns}/311`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404);
+                    done();
+                });
+        });
+
+        it("should return a 404 for negative season ids", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/-1/${ResourceTypes.Hymns}/311`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404);
+                    done();
+                });
+        });
+
+        it("should return a 404 for negative hymn ids", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/1/${ResourceTypes.Hymns}/-1`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404);
+                    done();
+                });
+        });
+
+        it("should return a 404 for non integer type ids", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/badInput/${ResourceTypes.Seasons}/1/${ResourceTypes.Hymns}/311`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404);
+                    done();
+                });
+        });
+
+        it("should return a 404 for non integer season ids", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/badInput/${ResourceTypes.Hymns}/311`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404);
+                    done();
+                });
+        });
+
+        it("should return a 404 for non integer hymn ids", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/1/${ResourceTypes.Hymns}/badInput`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404);
+                    done();
+                });
+        });
+
+        it("should return a 404 for non existing type id", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/1234/${ResourceTypes.Seasons}/1/${ResourceTypes.Hymns}/311`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
+                    done();
+                });
+        });
+
+        it("should return a 404 for non existing season", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/1234/${ResourceTypes.Hymns}/311`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
+                    done();
+                });
+        });
+
+        it("should return a 404 for non existing hymn", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/1/${ResourceTypes.Hymns}/1234`)
+                .end((err, res) => {
+                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
+                    done();
+                });
+        });
+    });
 });

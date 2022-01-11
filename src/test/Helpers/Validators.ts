@@ -81,6 +81,24 @@ export class Validators {
 
     public static validateServiceHymn(value: any, resourceId: string = null): void {
         value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+$`));
+        Validators._validateServiceHymn(value, resourceId);
+    }
+
+    public static validateTuneServiceHymnWithServiceDetails(value: any, resourceId: string = null): void {
+        value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Tunes}\/[0-9]+\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+$`));
+        Validators._validateServiceHymn(value, resourceId);
+        value.should.have.property("serviceId");
+        value.should.have.property("serviceName");
+    }
+
+    public static validateTypeServiceHymnWithServiceDetails(value: any, resourceId: string = null): void {
+        value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Types}\/[0-9]+\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+$`));
+        Validators._validateServiceHymn(value, resourceId);
+        value.should.have.property("serviceId");
+        value.should.have.property("serviceName");
+    }
+
+    private static _validateServiceHymn(value: any, resourceId: string = null): void {
         if (!!resourceId) {
             value.should.have.property("id").eq(resourceId);
         }

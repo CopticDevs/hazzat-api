@@ -36,7 +36,6 @@ export class TunesController extends BaseController {
          *           type: array
          *           items:
          *             $ref: '#/definitions/Tune'
-         *
          */
         this.router.get("/", async (req: express.Request, res: express.Response) => {
             try {
@@ -109,8 +108,6 @@ export class TunesController extends BaseController {
          *           type: array
          *           items:
          *             $ref: '#/definitions/Season'
-         *
-         *
          */
         this.router.get(`/:tuneId(\\d+)/${ResourceTypes.Seasons}`, async (req: express.Request, res: express.Response) => {
             try {
@@ -147,12 +144,87 @@ export class TunesController extends BaseController {
          *           type: object
          *           items:
          *             $ref: '#/definitions/Season'
-         *
-         *
          */
         this.router.get(`/:tuneId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
                 const result = await hymnsServiceProvider.getTuneSeason(req.params.tuneId, req.params.seasonId);
+                res.send(result);
+            } catch (ex) {
+                BaseController._OnError(ex, res);
+            }
+        });
+
+        /**
+         * @swagger
+         *
+         * /tunes/[tuneId]/seasons/[seasonId]/hymns:
+         *   get:
+         *     description: Gets a list of hymns of the specified tune in the specified Season
+         *     produces:
+         *       - application/json
+         *     parameters:
+         *       - name: tuneId
+         *         description: Tune ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: seasonId
+         *         description: Season ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *     responses:
+         *       200:
+         *         description: Hymns with Service Details
+         *         schema:
+         *           type: array
+         *           items:
+         *             $ref: '#/definitions/HymnWithServiceDetails'
+         */
+        this.router.get(`/:tuneId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)/${ResourceTypes.Hymns}`, async (req: express.Request, res: express.Response) => {
+            try {
+                const result = await hymnsServiceProvider.getTuneSeasonServiceHymnList(req.params.tuneId, req.params.seasonId);
+                res.send(result);
+            } catch (ex) {
+                BaseController._OnError(ex, res);
+            }
+        });
+
+        /**
+         * @swagger
+         *
+         * /tunes/[tuneId]/seasons/[seasonId]/hymns/[hymnId]:
+         *   get:
+         *     description: Gets a hymn of the specified tune in the specified Season
+         *     produces:
+         *       - application/json
+         *     parameters:
+         *       - name: tuneId
+         *         description: Tune ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: seasonId
+         *         description: Season ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: hymnId
+         *         description: Service hymn ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *     responses:
+         *       200:
+         *         description: Hymn with Service Details
+         *         schema:
+         *           type: object
+         *           items:
+         *             $ref: '#/definitions/HymnWithServiceDetails'
+         */
+        this.router.get(`/:tuneId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)`, async (req: express.Request, res: express.Response) => {
+            try {
+                const result = await hymnsServiceProvider.getTuneSeasonServiceHymn(req.params.tuneId, req.params.seasonId, req.params.hymnId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

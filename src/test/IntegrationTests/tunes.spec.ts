@@ -1,9 +1,11 @@
 import * as chai from "chai";
+import { assert } from "chai";
 import { ErrorCodes } from "../../Common/Errors";
 import { ResourceTypes } from "../../Routes/ResourceTypes";
 import { Validators } from "../Helpers/Validators";
 import chaiHttp = require("chai-http");
 import server = require("../../app");
+import { ApiValidator, TestCaseType } from "../Helpers/ApiValidator";
 
 process.env.NODE_ENV = "test";
 
@@ -35,32 +37,29 @@ describe("Tunes controller", () => {
                 });
         });
 
-        it("should return a 404 for non existing tunes", (done) => {
-            chai.request(server)
-                .get(`/${ResourceTypes.Tunes}/1234`)
-                .end((err, res) => {
-                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
-                    done();
+        const apiValidator = new ApiValidator();
+        apiValidator
+            .withPart({ typeName: ResourceTypes.Tunes, value: "1" })
+            .generate().forEach((testCase) => {
+                it(testCase.description, (done) => {
+                    try {
+                        chai.request(server)
+                            .get(testCase.resourceId)
+                            .end((err, res) => {
+                                if (testCase.testCase === TestCaseType.NonExisting) {
+                                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
+                                }
+                                else {
+                                    Validators.validateErrorChaiResponse(res, 404);
+                                }
+                                done();
+                            });
+                    }
+                    catch (ex) {
+                        assert.fail();
+                    }
                 });
-        });
-
-        it("should return a 404 for negative tune ids", (done) => {
-            chai.request(server)
-                .get(`/${ResourceTypes.Tunes}/-1`)
-                .end((err, res) => {
-                    Validators.validateErrorChaiResponse(res, 404);
-                    done();
-                });
-        });
-
-        it("should return a 404 for non integer tune ids", (done) => {
-            chai.request(server)
-                .get(`/${ResourceTypes.Tunes}/badInput`)
-                .end((err, res) => {
-                    Validators.validateErrorChaiResponse(res, 404);
-                    done();
-                });
-        });
+            });
     });
 
     describe("/GET all tune seasons", () => {
@@ -74,32 +73,36 @@ describe("Tunes controller", () => {
                 });
         });
 
-        it("should return a 404 for negative tune ids", (done) => {
-            chai.request(server)
-                .get(`/${ResourceTypes.Tunes}/-1/${ResourceTypes.Seasons}`)
-                .end((err, res) => {
-                    Validators.validateErrorChaiResponse(res, 404);
-                    done();
-                });
-        });
-
-        it("should return a 404 for non integer tune ids", (done) => {
-            chai.request(server)
-                .get(`/${ResourceTypes.Tunes}/badInput/${ResourceTypes.Seasons}`)
-                .end((err, res) => {
-                    Validators.validateErrorChaiResponse(res, 404);
-                    done();
-                });
-        });
-
-        it("should return an empty array for non existing tune ids", (done) => {
-            chai.request(server)
-                .get(`/${ResourceTypes.Tunes}/1234/${ResourceTypes.Seasons}`)
-                .end((err, res) => {
-                    Validators.validateArrayChaiResponse(res, true);
-                    done();
-                });
-        });
+        const apiValidator = new ApiValidator();
+        apiValidator
+            .withPart({ typeName: ResourceTypes.Tunes, value: "1" })
+            .generate().forEach((testCase) => {
+                if (testCase.testCase === TestCaseType.NonExisting) {
+                    it(`should return an empty array for non existing ${testCase.partUnderTest} ids`, (done) => {
+                        chai.request(server)
+                            .get(`${testCase.resourceId}/${ResourceTypes.Seasons}`)
+                            .end((err, res) => {
+                                Validators.validateArrayChaiResponse(res, true);
+                                done();
+                            });
+                    });
+                }
+                else {
+                    it(testCase.description, (done) => {
+                        try {
+                            chai.request(server)
+                                .get(`${testCase.resourceId}/${ResourceTypes.Seasons}`)
+                                .end((err, res) => {
+                                    Validators.validateErrorChaiResponse(res, 404);
+                                    done();
+                                });
+                        }
+                        catch (ex) {
+                            assert.fail();
+                        }
+                    });
+                }
+            });
     });
 
     describe("/GET a tune season", () => {
@@ -114,58 +117,112 @@ describe("Tunes controller", () => {
                 });
         });
 
-        it("should return a 404 for negative tune ids", (done) => {
+        const apiValidator = new ApiValidator();
+        apiValidator
+            .withPart({ typeName: ResourceTypes.Tunes, value: "1" })
+            .withPart({ typeName: ResourceTypes.Seasons, value: "33" })
+            .generate().forEach((testCase) => {
+                it(testCase.description, (done) => {
+                    try {
+                        chai.request(server)
+                            .get(testCase.resourceId)
+                            .end((err, res) => {
+                                if (testCase.testCase === TestCaseType.NonExisting) {
+                                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
+                                }
+                                else {
+                                    Validators.validateErrorChaiResponse(res, 404);
+                                }
+                                done();
+                            });
+                    }
+                    catch (ex) {
+                        assert.fail();
+                    }
+                });
+            });
+    });
+
+    describe("/GET all hymns in a tune season", () => {
+        it("should get all hymns in a tune season", (done) => {
             chai.request(server)
-                .get(`/${ResourceTypes.Tunes}/-1/${ResourceTypes.Seasons}/33`)
+                .get(`/${ResourceTypes.Tunes}/1/${ResourceTypes.Seasons}/33/${ResourceTypes.Hymns}`)
                 .end((err, res) => {
-                    Validators.validateErrorChaiResponse(res, 404);
+                    Validators.validateArrayChaiResponse(res);
+                    Validators.validateTuneServiceHymnWithServiceDetails(res.body[0]);
                     done();
                 });
         });
 
-        it("should return a 404 for negative season ids", (done) => {
+        const apiValidator = new ApiValidator();
+        apiValidator
+            .withPart({ typeName: ResourceTypes.Tunes, value: "1" })
+            .withPart({ typeName: ResourceTypes.Seasons, value: "33" })
+            .generate().forEach((testCase) => {
+                if (testCase.testCase === TestCaseType.NonExisting) {
+                    it(`should return an empty array for non existing ${testCase.partUnderTest} ids`, (done) => {
+                        chai.request(server)
+                            .get(`${testCase.resourceId}/${ResourceTypes.Hymns}`)
+                            .end((err, res) => {
+                                Validators.validateArrayChaiResponse(res, true);
+                                done();
+                            });
+                    });
+                }
+                else {
+                    it(testCase.description, (done) => {
+                        try {
+                            chai.request(server)
+                                .get(`${testCase.resourceId}/${ResourceTypes.Seasons}`)
+                                .end((err, res) => {
+                                    Validators.validateErrorChaiResponse(res, 404);
+                                    done();
+                                });
+                        }
+                        catch (ex) {
+                            assert.fail();
+                        }
+                    });
+                }
+            });
+    });
+
+    describe("/GET a hymn tune season", () => {
+        it("should get a hymn tune season", (done) => {
+            const resourceId = `/${ResourceTypes.Tunes}/1/${ResourceTypes.Seasons}/33/${ResourceTypes.Hymns}/456`;
             chai.request(server)
-                .get(`/${ResourceTypes.Tunes}/1/${ResourceTypes.Seasons}/-1`)
+                .get(resourceId)
                 .end((err, res) => {
-                    Validators.validateErrorChaiResponse(res, 404);
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateTuneServiceHymnWithServiceDetails(res.body, resourceId);
                     done();
                 });
         });
 
-        it("should return a 404 for non integer tune ids", (done) => {
-            chai.request(server)
-                .get(`/${ResourceTypes.Tunes}/badInput/${ResourceTypes.Seasons}/33`)
-                .end((err, res) => {
-                    Validators.validateErrorChaiResponse(res, 404);
-                    done();
+        const apiValidator = new ApiValidator();
+        apiValidator
+            .withPart({ typeName: ResourceTypes.Tunes, value: "1" })
+            .withPart({ typeName: ResourceTypes.Seasons, value: "33" })
+            .withPart({ typeName: ResourceTypes.Hymns, value: "456" })
+            .generate().forEach((testCase) => {
+                it(testCase.description, (done) => {
+                    try {
+                        chai.request(server)
+                            .get(testCase.resourceId)
+                            .end((err, res) => {
+                                if (testCase.testCase === TestCaseType.NonExisting) {
+                                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
+                                }
+                                else {
+                                    Validators.validateErrorChaiResponse(res, 404);
+                                }
+                                done();
+                            });
+                    }
+                    catch (ex) {
+                        assert.fail();
+                    }
                 });
-        });
-
-        it("should return a 404 for non integer season ids", (done) => {
-            chai.request(server)
-                .get(`/${ResourceTypes.Tunes}/1/${ResourceTypes.Seasons}/badInput`)
-                .end((err, res) => {
-                    Validators.validateErrorChaiResponse(res, 404);
-                    done();
-                });
-        });
-
-        it("should return a 404 for non existing tune id", (done) => {
-            chai.request(server)
-                .get(`/${ResourceTypes.Tunes}/1234/${ResourceTypes.Seasons}/33`)
-                .end((err, res) => {
-                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
-                    done();
-                });
-        });
-
-        it("should return a 404 for non existing season", (done) => {
-            chai.request(server)
-                .get(`/${ResourceTypes.Tunes}/1/${ResourceTypes.Seasons}/1234`)
-                .end((err, res) => {
-                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
-                    done();
-                });
-        });
+            });
     });
 });

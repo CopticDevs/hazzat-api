@@ -10,7 +10,7 @@ import { IAudioContent, IHazzatContent, IInformationContent, IMusicalNotesConten
 import { Constants } from "../../Providers/DataProviders/SqlDataProvider/SqlConstants";
 import { ResourceTypes } from "../../Routes/ResourceTypes";
 import { Validators } from "../Helpers/Validators";
-import { ApiValidator, TestCaseType } from "./ApiValidator";
+import { ApiValidator, TestCaseType } from "../Helpers/ApiValidator";
 import { TestConfiguration } from "./TestConfiguration";
 
 describe("Seasons controller", () => {

@@ -247,7 +247,7 @@ export class SeasonsController extends BaseController {
          *         in:  url
          *         required: true
          *         type: integer
-         *       - name: serviceHymnId
+         *       - name: hymnId
          *         description: Service hymn ID
          *         in:  url
          *         required: true
@@ -312,7 +312,7 @@ export class SeasonsController extends BaseController {
          *         in:  url
          *         required: true
          *         type: integer
-         *       - name: serviceHymnId
+         *       - name: hymnId
          *         description: Service hymn ID
          *         in:  url
          *         required: true
@@ -353,7 +353,7 @@ export class SeasonsController extends BaseController {
          *         in:  url
          *         required: true
          *         type: integer
-         *       - name: serviceHymnId
+         *       - name: hymnId
          *         description: Service hymn ID
          *         in:  url
          *         required: true
@@ -514,7 +514,7 @@ export class SeasonsController extends BaseController {
          *         in:  url
          *         required: true
          *         type: integer
-         *       - name: serviceHymnId
+         *       - name: hymnId
          *         description: Service hymn ID
          *         in:  url
          *         required: true
@@ -572,7 +572,7 @@ export class SeasonsController extends BaseController {
          *         in:  url
          *         required: true
          *         type: integer
-         *       - name: serviceHymnId
+         *       - name: hymnId
          *         description: Service hymn ID
          *         in:  url
          *         required: true

@@ -64,7 +64,7 @@
     <TypeScriptCompile Include="Routes\BaseController.ts" />
     <TypeScriptCompile Include="Routes\TunesController.ts" />
     <TypeScriptCompile Include="Routes\TypesController.ts" />
-    <TypeScriptCompile Include="test\E2ETests\ApiValidator.ts" />
+    <TypeScriptCompile Include="test\Helpers\ApiValidator.ts" />
     <TypeScriptCompile Include="test\E2ETests\TestConfiguration.ts" />
     <TypeScriptCompile Include="test\E2ETests\seasons.spec.ts" />
     <TypeScriptCompile Include="test\E2ETests\types.spec.ts" />
@@ -94,6 +94,8 @@
     <TypeScriptCompile Include="Routes\HomeController.ts" />
     <TypeScriptCompile Include="Routes\SeasonsController.ts" />
     <Content Include="Configs\prod.json" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.11.Uninstall.sql" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.11.Install.sql" />
     <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.10.Install.sql" />
     <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.09.Install.sql" />
     <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.08.Install.sql" />

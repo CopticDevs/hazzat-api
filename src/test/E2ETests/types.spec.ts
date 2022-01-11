@@ -6,7 +6,7 @@ import { ISeasonInfo } from "../../Models/ISeasonInfo";
 import { ITypeInfo } from "../../Models/ITypeInfo";
 import { ResourceTypes } from "../../Routes/ResourceTypes";
 import { Validators } from "../Helpers/Validators";
-import { ApiValidator, TestCaseType } from "./ApiValidator";
+import { ApiValidator, TestCaseType } from "../Helpers/ApiValidator";
 import { TestConfiguration } from "./TestConfiguration";
 
 describe("Types controller", () => {

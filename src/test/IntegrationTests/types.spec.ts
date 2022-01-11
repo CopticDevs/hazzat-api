@@ -60,7 +60,6 @@ describe("Types controller", () => {
                     }
                 });
             });
-        
     });
 
     describe("/GET all type seasons", () => {

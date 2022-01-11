@@ -110,4 +110,49 @@ describe("Types Service Provider Unit Tests", () => {
             season.verse.should.be.equal(seasonDb.Verse);
         });
     });
+
+    describe("All hymns in a type season", () => {
+        it("should get all hymns for a type for a season with results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTypeSeasonServiceHymnList', SqlDataProviderMock.getDbTypeSeasonServiceHymnList());
+
+            const serviceHymnList = await hymnsProvider.getTypeSeasonServiceHymnList("12", "seasonId");
+            Validators.validateArray(serviceHymnList);
+            serviceHymnList.length.should.be.eql(3);
+            serviceHymnList.forEach((serviceHymn) => Validators.validateTypeServiceHymnWithServiceDetails(serviceHymn));
+        });
+
+        it("should get all hymns for a type for a season with empty results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTypeSeasonServiceHymnList', []);
+
+            const seasonList = await hymnsProvider.getTypeSeasonServiceHymnList("typeId", "seasonId");
+            Validators.validateArray(seasonList, true);
+        });
+    });
+
+    describe("A single hymn in a type in a season", () => {
+        it("should get a single hymn for a type in a season", async () => {
+            // Setup mocked result
+            mockManager.mock('getTypeSeasonServiceHymn', SqlDataProviderMock.getDbTypeSeasonServiceHymn());
+
+            const serviceHymn = await hymnsProvider.getTypeSeasonServiceHymn("12", "seasonId", "hymnId");
+            Validators.validateObject(serviceHymn);
+            Validators.validateTypeServiceHymnWithServiceDetails(serviceHymn);
+        });
+
+        it("should have correct db to contract service mapping", async () => {
+            // Setup mocked result
+            mockManager.mock('getTypeSeasonServiceHymn', SqlDataProviderMock.getDbTypeSeasonServiceHymn());
+
+            const serviceHymnDb = SqlDataProviderMock.getDbTypeSeasonServiceHymn();
+            const serviceHymn = await hymnsProvider.getTypeSeasonServiceHymn("typeId", "seasonId", "hymnId");
+
+            // Validate that the contract was mapped out correctly from db results
+            serviceHymn.name.should.be.equal(serviceHymnDb.Title);
+            serviceHymn.serviceId.should.be.equal(serviceHymnDb.Service_ID);
+            serviceHymn.serviceName.should.be.equal(serviceHymnDb.Service_Name);
+            serviceHymn.order.should.be.equal(serviceHymnDb.Hymn_Order);
+        });
+    });
 });

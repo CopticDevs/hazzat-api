@@ -16,12 +16,16 @@ export namespace Constants {
         export const SeasonSelectByTypeIdAndSeasonId = "SeasonSelectByTypeIdAndSeasonId";
         export const ServiceHymnListSelectByTypeIdAndSeasonId = "ServiceHymnListSelectByTypeIdAndSeasonId";
         export const ServiceHymnSelectByTypeIdAndSeasonIdAndServiceHymnId = "ServiceHymnSelectByTypeIdAndSeasonIdAndServiceHymnId";
+        export const FormatListSelectByByTypeIdAndSeasonIdAndServiceHymnId = "FormatListSelectByByTypeIdAndSeasonIdAndServiceHymnId";
+        export const FormatSelectByByTypeIdAndSeasonIdAndServiceHymnIdAndFormatId = "FormatSelectByByTypeIdAndSeasonIdAndServiceHymnIdAndFormatId"
         export const TuneListSelect = "TuneListSelect";
         export const TuneSelect = "TuneSelect";
         export const SeasonListSelectByTuneId = "SeasonListSelectByTuneId";
         export const SeasonSelectByTuneIdAndSeasonId = "SeasonSelectByTuneIdAndSeasonId";
         export const ServiceHymnListSelectByTuneIdAndSeasonId = "ServiceHymnListSelectByTuneIdAndSeasonId";
         export const ServiceHymnSelectByTuneIdAndSeasonIdAndServiceHymnId = "ServiceHymnSelectByTuneIdAndSeasonIdAndServiceHymnId";
+        export const FormatListSelectByByTuneIdAndSeasonIdAndServiceHymnId = "FormatListSelectByByTuneIdAndSeasonIdAndServiceHymnId";
+        export const FormatSelectByByTuneIdAndSeasonIdAndServiceHymnIdAndFormatId = "FormatSelectByByTuneIdAndSeasonIdAndServiceHymnIdAndFormatId";
         export const CommonSelect = "CommonSelect";
         export const ReasonSelect = "ReasonSelect";
 

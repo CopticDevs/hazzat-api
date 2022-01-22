@@ -155,4 +155,47 @@ describe("Types Service Provider Unit Tests", () => {
             serviceHymn.order.should.be.equal(serviceHymnDb.Hymn_Order);
         });
     });
+
+    describe("All formats in a type season hymn", () => {
+        it("should get all formats for a type for a season for a hymn with results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTypeSeasonServiceHymnFormatList', SqlDataProviderMock.getDbTypeSeasonServiceHymnFormatList());
+
+            const formatList = await hymnsProvider.getTypeSeasonServiceHymnFormatList("12", "seasonId", "hymnId");
+            Validators.validateArray(formatList);
+            formatList.length.should.be.eql(3);
+            formatList.forEach((format) => Validators.validateTypeServiceHymnFormat(format));
+        });
+
+        it("should get all formats for a type for a season for a hymn with empty results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTypeSeasonServiceHymnFormatList', []);
+
+            const formatList = await hymnsProvider.getTypeSeasonServiceHymnFormatList("typeId", "seasonId", "hymnId");
+            Validators.validateArray(formatList, true);
+        });
+    });
+
+    describe("A single format in a type in a season in a hymn", () => {
+        it("should get a single format for a type in a season in a hymn", async () => {
+            // Setup mocked result
+            mockManager.mock('getTypeSeasonServiceHymnFormat', SqlDataProviderMock.getDbTypeSeasonServiceHymnFormat());
+
+            const format = await hymnsProvider.getTypeSeasonServiceHymnFormat("12", "seasonId", "hymnId", "formatId");
+            Validators.validateObject(format);
+            Validators.validateTypeServiceHymnFormat(format);
+        });
+
+        it("should have correct db to contract service mapping", async () => {
+            // Setup mocked result
+            mockManager.mock('getTypeSeasonServiceHymnFormat', SqlDataProviderMock.getDbTypeSeasonServiceHymnFormat());
+
+            const formatDb = SqlDataProviderMock.getDbTypeSeasonServiceHymnFormat();
+            const format = await hymnsProvider.getTypeSeasonServiceHymnFormat("typeId", "seasonId", "hymnId", "formatId");
+
+            // Validate that the contract was mapped out correctly from db results
+            format.name.should.be.equal(formatDb.Format_Name);
+            format.variationCount.should.be.equal(formatDb.Content_Count);
+        });
+    });
 });

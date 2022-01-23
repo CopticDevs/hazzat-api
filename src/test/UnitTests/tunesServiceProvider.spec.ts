@@ -125,8 +125,8 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneSeasonServiceHymnList', []);
 
-            const seasonList = await hymnsProvider.getTuneSeasonServiceHymnList("tuneId", "seasonId");
-            Validators.validateArray(seasonList, true);
+            const hymnList = await hymnsProvider.getTuneSeasonServiceHymnList("tuneId", "seasonId");
+            Validators.validateArray(hymnList, true);
         });
     });
 
@@ -152,6 +152,49 @@ describe("Tunes Service Provider Unit Tests", () => {
             serviceHymn.serviceId.should.be.equal(serviceHymnDb.Service_ID);
             serviceHymn.serviceName.should.be.equal(serviceHymnDb.Service_Name);
             serviceHymn.order.should.be.equal(serviceHymnDb.Hymn_Order);
+        });
+    });
+
+    describe("All formats in a tune season hymn", () => {
+        it("should get all formats for a tune for a season for a hymn with results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonServiceHymnFormatList', SqlDataProviderMock.getDbTuneSeasonServiceHymnFormatList());
+
+            const formatList = await hymnsProvider.getTuneSeasonServiceHymnFormatList("12", "seasonId", "hymnId");
+            Validators.validateArray(formatList);
+            formatList.length.should.be.eql(3);
+            formatList.forEach((format) => Validators.validateTuneServiceHymnFormat(format));
+        });
+
+        it("should get all formats for a tune for a season for a hymn with empty results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonServiceHymnFormatList', []);
+
+            const formatList = await hymnsProvider.getTuneSeasonServiceHymnFormatList("tuneId", "seasonId", "hymnId");
+            Validators.validateArray(formatList, true);
+        });
+    });
+
+    describe("A single format in a tune in a season in a hymn", () => {
+        it("should get a single format for a tune in a season in a hymn", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonServiceHymnFormat', SqlDataProviderMock.getDbTuneSeasonServiceHymnFormat());
+
+            const format = await hymnsProvider.getTuneSeasonServiceHymnFormat("12", "seasonId", "hymnId", "formatId");
+            Validators.validateObject(format);
+            Validators.validateTuneServiceHymnFormat(format);
+        });
+
+        it("should have correct db to contract service mapping", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonServiceHymnFormat', SqlDataProviderMock.getDbTuneSeasonServiceHymnFormat());
+
+            const formatDb = SqlDataProviderMock.getDbTuneSeasonServiceHymnFormat();
+            const format = await hymnsProvider.getTuneSeasonServiceHymnFormat("tuneId", "seasonId", "hymnId", "formatId");
+
+            // Validate that the contract was mapped out correctly from db results
+            format.name.should.be.equal(formatDb.Format_Name);
+            format.variationCount.should.be.equal(formatDb.Content_Count);
         });
     });
 });

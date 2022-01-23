@@ -91,8 +91,35 @@ export class HazzatContentUtils {
     public static convertServiceHymnFormatDbItemToFormatInfo(
         serviceHymnFormatDbItem: HazzatDbSchema.IServiceHymnFormat
     ): IFormatInfo {
+        return HazzatContentUtils._convertServiceHymnFormatDbItemToFormatInfo(
+            serviceHymnFormatDbItem,
+            `/${ResourceTypes.Seasons}/${serviceHymnFormatDbItem.Season_ID}/${ResourceTypes.Services}/${serviceHymnFormatDbItem.Service_ID}/${ResourceTypes.Hymns}/${serviceHymnFormatDbItem.ServiceHymn_ID}/${ResourceTypes.Formats}/${serviceHymnFormatDbItem.ItemId}`);
+    }
+
+    public static convertServiceHymnFormatDbItemToTuneFormatInfo(
+        serviceHymnFormatDbItem: HazzatDbSchema.IServiceHymnFormat,
+        tuneId: string
+    ): IFormatInfo {
+        return HazzatContentUtils._convertServiceHymnFormatDbItemToFormatInfo(
+            serviceHymnFormatDbItem,
+            `/${ResourceTypes.Tunes}/${tuneId}/${ResourceTypes.Seasons}/${serviceHymnFormatDbItem.Season_ID}/${ResourceTypes.Hymns}/${serviceHymnFormatDbItem.ServiceHymn_ID}/${ResourceTypes.Formats}/${serviceHymnFormatDbItem.ItemId}`);
+    }
+
+    public static convertServiceHymnFormatDbItemToTypeFormatInfo(
+        serviceHymnFormatDbItem: HazzatDbSchema.IServiceHymnFormat,
+        typeId: string
+    ): IFormatInfo {
+        return HazzatContentUtils._convertServiceHymnFormatDbItemToFormatInfo(
+            serviceHymnFormatDbItem,
+            `/${ResourceTypes.Types}/${typeId}/${ResourceTypes.Seasons}/${serviceHymnFormatDbItem.Season_ID}/${ResourceTypes.Hymns}/${serviceHymnFormatDbItem.ServiceHymn_ID}/${ResourceTypes.Formats}/${serviceHymnFormatDbItem.ItemId}`);
+    }
+
+    private static _convertServiceHymnFormatDbItemToFormatInfo(
+        serviceHymnFormatDbItem: HazzatDbSchema.IServiceHymnFormat,
+        id: string
+    ): IFormatInfo {
         return {
-            id: `/${ResourceTypes.Seasons}/${serviceHymnFormatDbItem.Season_ID}/${ResourceTypes.Services}/${serviceHymnFormatDbItem.Service_ID}/${ResourceTypes.Hymns}/${serviceHymnFormatDbItem.ServiceHymn_ID}/${ResourceTypes.Formats}/${serviceHymnFormatDbItem.ItemId}`,
+            id,
             name: serviceHymnFormatDbItem.Format_Name,
             order: serviceHymnFormatDbItem.ItemId,
             variationCount: serviceHymnFormatDbItem.Content_Count

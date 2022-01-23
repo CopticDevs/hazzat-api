@@ -514,7 +514,7 @@ export class SqlDataProvider implements IDataProvider {
         });
     }
 
-    public getTypeSeasonServiceHymn(typeId: string, seasonId: string, hymnId: string): Promise<HazzatDbSchema.IServiceHymn> { // TODO: remove async
+    public getTypeSeasonServiceHymn(typeId: string, seasonId: string, hymnId: string): Promise<HazzatDbSchema.IServiceHymn> {
         return this._connectAndExecute<HazzatDbSchema.IServiceHymn>(async (cp: ConnectionPool) => {
             if (!SqlHelpers.isValidPositiveIntParameter(typeId)) {
                 throw new HazzatApplicationError(
@@ -551,6 +551,92 @@ export class SqlDataProvider implements IDataProvider {
                 throw new HazzatApplicationError(
                     ErrorCodes[ErrorCodes.NotFoundError],
                     `Unable to find hymn with type with id '${typeId}' and seasonId ${seasonId} and hymn id '${hymnId}'`);
+            }
+
+            return row;
+        });
+    }
+
+    public getTypeSeasonServiceHymnFormatList(typeId: string, seasonId: string, hymnId: string): Promise<HazzatDbSchema.IServiceHymnFormat[]> {
+        return this._connectAndExecute<HazzatDbSchema.IServiceHymnFormat[]>(async (cp: ConnectionPool) => {
+            if (!SqlHelpers.isValidPositiveIntParameter(typeId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid type id specified.",
+                    `Type id: '${typeId}'`);
+            }
+            if (!SqlHelpers.isValidPositiveIntParameter(seasonId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid season id specified.",
+                    `Season id: '${seasonId}'`);
+            }
+            if (!SqlHelpers.isValidPositiveIntParameter(hymnId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid hymn id specified.",
+                    `Hymn id: '${hymnId}'`);
+            }
+            const result = await cp.request()
+                .input(Constants.Parameters.TypeId, Sql.Int, typeId)
+                .input(Constants.Parameters.SeasonId, Sql.Int, seasonId)
+                .input(Constants.Parameters.ServiceHymnId, Sql.Int, hymnId)
+                .execute<HazzatDbSchema.IServiceHymnFormat>(this._getQualifiedName(Constants.StoredProcedures.FormatListSelectByByTypeIdAndSeasonIdAndServiceHymnId));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.DatabaseError],
+                    "Unexpected database error");
+            }
+
+            return result.recordsets[0];
+        });
+    }
+
+    public getTypeSeasonServiceHymnFormat(typeId: string, seasonId: string, hymnId: string, formatId: string): Promise<HazzatDbSchema.IServiceHymnFormat> {
+        return this._connectAndExecute<HazzatDbSchema.IServiceHymnFormat>(async (cp: ConnectionPool) => {
+            if (!SqlHelpers.isValidPositiveIntParameter(typeId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid type id specified.",
+                    `Type id: '${typeId}'`);
+            }
+            if (!SqlHelpers.isValidPositiveIntParameter(seasonId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid season id specified.",
+                    `Season id: '${seasonId}'`);
+            }
+            if (!SqlHelpers.isValidPositiveIntParameter(hymnId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid hymn id specified.",
+                    `Hymn id: '${hymnId}'`);
+            }
+            if (!SqlHelpers.isValidPositiveIntParameter(formatId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid format id specified.",
+                    `Format id: '${formatId}'`);
+            }
+            const result = await cp.request()
+                .input(Constants.Parameters.TypeId, Sql.Int, typeId)
+                .input(Constants.Parameters.SeasonId, Sql.Int, seasonId)
+                .input(Constants.Parameters.ServiceHymnId, Sql.Int, hymnId)
+                .input(Constants.Parameters.FormatId, Sql.Int, formatId)
+                .execute<HazzatDbSchema.IServiceHymnFormat>(this._getQualifiedName(Constants.StoredProcedures.FormatSelectByByTypeIdAndSeasonIdAndServiceHymnIdAndFormatId));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.DatabaseError],
+                    "Unexpected database error");
+            }
+
+            const row = result.recordsets[0][0];
+            if (!row) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.NotFoundError],
+                    `Unable to find hymn with type with id '${typeId}' and seasonId ${seasonId} and hymn id '${hymnId}' and formatId ${formatId}`);
             }
 
             return row;
@@ -723,6 +809,92 @@ export class SqlDataProvider implements IDataProvider {
                 throw new HazzatApplicationError(
                     ErrorCodes[ErrorCodes.NotFoundError],
                     `Unable to find hymn with tune with id '${tuneId}' and seasonId ${seasonId} and hymn id '${hymnId}'`);
+            }
+
+            return row;
+        });
+    }
+
+    public getTuneSeasonServiceHymnFormatList(tuneId: string, seasonId: string, hymnId: string): Promise<HazzatDbSchema.IServiceHymnFormat[]> {
+        return this._connectAndExecute<HazzatDbSchema.IServiceHymnFormat[]>(async (cp: ConnectionPool) => {
+            if (!SqlHelpers.isValidPositiveIntParameter(tuneId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid tune id specified.",
+                    `Tune id: '${tuneId}'`);
+            }
+            if (!SqlHelpers.isValidPositiveIntParameter(seasonId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid season id specified.",
+                    `Season id: '${seasonId}'`);
+            }
+            if (!SqlHelpers.isValidPositiveIntParameter(hymnId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid hymn id specified.",
+                    `Hymn id: '${hymnId}'`);
+            }
+            const result = await cp.request()
+                .input(Constants.Parameters.TuneId, Sql.Int, tuneId)
+                .input(Constants.Parameters.SeasonId, Sql.Int, seasonId)
+                .input(Constants.Parameters.ServiceHymnId, Sql.Int, hymnId)
+                .execute<HazzatDbSchema.IServiceHymnFormat>(this._getQualifiedName(Constants.StoredProcedures.FormatListSelectByByTuneIdAndSeasonIdAndServiceHymnId));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.DatabaseError],
+                    "Unexpected database error");
+            }
+
+            return result.recordsets[0];
+        });
+    }
+
+    public getTuneSeasonServiceHymnFormat(tuneId: string, seasonId: string, hymnId: string, formatId: string): Promise<HazzatDbSchema.IServiceHymnFormat> {
+        return this._connectAndExecute<HazzatDbSchema.IServiceHymnFormat>(async (cp: ConnectionPool) => {
+            if (!SqlHelpers.isValidPositiveIntParameter(tuneId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid tune id specified.",
+                    `Tune id: '${tuneId}'`);
+            }
+            if (!SqlHelpers.isValidPositiveIntParameter(seasonId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid season id specified.",
+                    `Season id: '${seasonId}'`);
+            }
+            if (!SqlHelpers.isValidPositiveIntParameter(hymnId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid hymn id specified.",
+                    `Hymn id: '${hymnId}'`);
+            }
+            if (!SqlHelpers.isValidPositiveIntParameter(formatId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid format id specified.",
+                    `Format id: '${formatId}'`);
+            }
+            const result = await cp.request()
+                .input(Constants.Parameters.TuneId, Sql.Int, tuneId)
+                .input(Constants.Parameters.SeasonId, Sql.Int, seasonId)
+                .input(Constants.Parameters.ServiceHymnId, Sql.Int, hymnId)
+                .input(Constants.Parameters.FormatId, Sql.Int, formatId)
+                .execute<HazzatDbSchema.IServiceHymnFormat>(this._getQualifiedName(Constants.StoredProcedures.FormatSelectByByTuneIdAndSeasonIdAndServiceHymnIdAndFormatId));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.DatabaseError],
+                    "Unexpected database error");
+            }
+
+            const row = result.recordsets[0][0];
+            if (!row) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.NotFoundError],
+                    `Unable to find hymn with tune with id '${tuneId}' and seasonId ${seasonId} and hymn id '${hymnId}' and formatId ${formatId}`);
             }
 
             return row;

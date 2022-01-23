@@ -225,4 +225,89 @@ describe("Tunes controller", () => {
                 });
             });
     });
+
+    describe("/GET all formats in a tune season hymn", () => {
+        it("should get all formats in a tune season hymn", (done) => {
+            chai.request(server)
+                .get(`/${ResourceTypes.Tunes}/1/${ResourceTypes.Seasons}/33/${ResourceTypes.Hymns}/456/${ResourceTypes.Formats}`)
+                .end((err, res) => {
+                    Validators.validateArrayChaiResponse(res);
+                    Validators.validateTuneServiceHymnFormat(res.body[0]);
+                    done();
+                });
+        });
+
+        const apiValidator = new ApiValidator();
+        apiValidator
+            .withPart({ typeName: ResourceTypes.Tunes, value: "1" })
+            .withPart({ typeName: ResourceTypes.Seasons, value: "33" })
+            .withPart({ typeName: ResourceTypes.Hymns, value: "456" })
+            .generate().forEach((testCase) => {
+                if (testCase.testCase === TestCaseType.NonExisting) {
+                    it(`should return an empty array for non existing ${testCase.partUnderTest} ids`, (done) => {
+                        chai.request(server)
+                            .get(`${testCase.resourceId}/${ResourceTypes.Formats}`)
+                            .end((err, res) => {
+                                Validators.validateArrayChaiResponse(res, true);
+                                done();
+                            });
+                    });
+                }
+                else {
+                    it(testCase.description, (done) => {
+                        try {
+                            chai.request(server)
+                                .get(`${testCase.resourceId}/${ResourceTypes.Formats}`)
+                                .end((err, res) => {
+                                    Validators.validateErrorChaiResponse(res, 404);
+                                    done();
+                                });
+                        }
+                        catch (ex) {
+                            assert.fail();
+                        }
+                    });
+                }
+            });
+    });
+
+    describe("/GET a format tune season hymn", () => {
+        it("should get a format tune season hymn", (done) => {
+            const resourceId = `/${ResourceTypes.Tunes}/1/${ResourceTypes.Seasons}/33/${ResourceTypes.Hymns}/456/${ResourceTypes.Formats}/1`;
+            chai.request(server)
+                .get(resourceId)
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateTuneServiceHymnFormat(res.body, resourceId);
+                    done();
+                });
+        });
+
+        const apiValidator = new ApiValidator();
+        apiValidator
+            .withPart({ typeName: ResourceTypes.Tunes, value: "1" })
+            .withPart({ typeName: ResourceTypes.Seasons, value: "33" })
+            .withPart({ typeName: ResourceTypes.Hymns, value: "456" })
+            .withPart({ typeName: ResourceTypes.Formats, value: "1" })
+            .generate().forEach((testCase) => {
+                it(testCase.description, (done) => {
+                    try {
+                        chai.request(server)
+                            .get(testCase.resourceId)
+                            .end((err, res) => {
+                                if (testCase.testCase === TestCaseType.NonExisting) {
+                                    Validators.validateErrorChaiResponse(res, 404, ErrorCodes.NotFoundError);
+                                }
+                                else {
+                                    Validators.validateErrorChaiResponse(res, 404);
+                                }
+                                done();
+                            });
+                    }
+                    catch (ex) {
+                        assert.fail();
+                    }
+                });
+            });
+    });
 });

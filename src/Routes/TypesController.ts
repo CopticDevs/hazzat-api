@@ -150,7 +150,15 @@ export class TypesController extends BaseController {
          *           items:
          *             $ref: '#/definitions/Season'
          *
-         *
+         *       404:
+         *         description: A Season detail was not found.
+         *         schema:
+         *           type: object
+         *           properties:
+         *             errorCode:
+         *               type: string
+         *             message:
+         *               type: string
          */
         this.router.get(`/:typeId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
@@ -244,10 +252,117 @@ export class TypesController extends BaseController {
          *           type: object
          *           items:
          *             $ref: '#/definitions/HymnWithServiceDetails'
+         *
+         *       404:
+         *         description: A hymn detail was not found.
+         *         schema:
+         *           type: object
+         *           properties:
+         *             errorCode:
+         *               type: string
+         *             message:
+         *               type: string
          */
         this.router.get(`/:typeId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
                 const result = await hymnsServiceProvider.getTypeSeasonServiceHymn(req.params.typeId, req.params.seasonId, req.params.hymnId);
+                res.send(result);
+            } catch (ex) {
+                BaseController._OnError(ex, res);
+            }
+        });
+
+        /**
+         * @swagger
+         *
+         * /types/[typeId]/seasons/[seasonId]/hymns/[hymnId]/formats:
+         *   get:
+         *     description: Gets a list of formats of the specified type in the specified Season and hymn
+         *     produces:
+         *       - application/json
+         *     parameters:
+         *       - name: typeId
+         *         description: Type ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: seasonId
+         *         description: Season ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: hymnId
+         *         description: Service hymn ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *     responses:
+         *       200:
+         *         description: Hymn formats
+         *         schema:
+         *           type: array
+         *           items:
+         *             $ref: '#/definitions/Format'
+         */
+        this.router.get(`/:typeId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)/${ResourceTypes.Formats}`, async (req: express.Request, res: express.Response) => {
+            try {
+                const result = await hymnsServiceProvider.getTypeSeasonServiceHymnFormatList(req.params.typeId, req.params.seasonId, req.params.hymnId);
+                res.send(result);
+            } catch (ex) {
+                BaseController._OnError(ex, res);
+            }
+        });
+
+        /**
+         * @swagger
+         *
+         * /types/[typeId]/seasons/[seasonId]/hymns/[hymnId]/formats/[formatId]:
+         *   get:
+         *     description: Gets a format of the specified type in the specified Season and hymn
+         *     produces:
+         *       - application/json
+         *     parameters:
+         *       - name: typeId
+         *         description: Type ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: seasonId
+         *         description: Season ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: hymnId
+         *         description: Service hymn ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: formatId
+         *         description: Format ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *     responses:
+         *       200:
+         *         description: Format
+         *         schema:
+         *           type: object
+         *           items:
+         *             $ref: '#/definitions/Format'
+         *
+         *       404:
+         *         description: A format detail was not found.
+         *         schema:
+         *           type: object
+         *           properties:
+         *             errorCode:
+         *               type: string
+         *             message:
+         *               type: string
+         */
+        this.router.get(`/:typeId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)/${ResourceTypes.Formats}/:formatId(\\d+)`, async (req: express.Request, res: express.Response) => {
+            try {
+                const result = await hymnsServiceProvider.getTypeSeasonServiceHymnFormat(req.params.typeId, req.params.seasonId, req.params.hymnId, req.params.formatId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

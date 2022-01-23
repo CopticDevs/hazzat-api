@@ -2,11 +2,12 @@ import { AxiosResponse, default as axios } from "axios";
 import { assert } from "chai";
 import { ErrorCodes } from "../../Common/Errors";
 import { OperationExecutor } from "../../Common/Utils/OperationExecutor";
+import { IFormatInfo } from "../../Models/IFormatInfo";
 import { ISeasonInfo } from "../../Models/ISeasonInfo";
 import { ITuneInfo } from "../../Models/ITuneInfo";
 import { ResourceTypes } from "../../Routes/ResourceTypes";
-import { Validators } from "../Helpers/Validators";
 import { ApiValidator, TestCaseType } from "../Helpers/ApiValidator";
+import { Validators } from "../Helpers/Validators";
 import { TestConfiguration } from "./TestConfiguration";
 
 describe("Tunes controller", () => {
@@ -152,7 +153,7 @@ describe("Tunes controller", () => {
                 else {
                     it(testCase.description, async () => {
                         try {
-                            await axios.get(`${tc.baseTestUrl}${testCase.resourceId}/${ResourceTypes.Seasons}`);
+                            await axios.get(`${tc.baseTestUrl}${testCase.resourceId}/${ResourceTypes.Hymns}`);
                             assert.fail();
                         }
                         catch (ex) {
@@ -177,6 +178,74 @@ describe("Tunes controller", () => {
             .withPart({ typeName: ResourceTypes.Tunes, value: "1" })
             .withPart({ typeName: ResourceTypes.Seasons, value: "33" })
             .withPart({ typeName: ResourceTypes.Hymns, value: "456" })
+            .generate().forEach((testCase) => {
+                it(testCase.description, async () => {
+                    try {
+                        await axios.get(`${tc.baseTestUrl}${testCase.resourceId}`);
+                        assert.fail();
+                    }
+                    catch (ex) {
+                        if (testCase.testCase === TestCaseType.NonExisting) {
+                            Validators.validateErrorAxiosResponse(ex.response, 404, ErrorCodes.NotFoundError);
+                        }
+                        else {
+                            Validators.validateErrorAxiosResponse(ex.response, 404);
+                        }
+                    }
+                });
+            });
+    });
+
+    describe("/GET all tune season hymn formats", () => {
+        it("should get all tune season hymn formats", async () => {
+            const response: AxiosResponse<IFormatInfo[]> = await axios.get(`${tc.baseTestUrl}/${ResourceTypes.Tunes}/1/${ResourceTypes.Seasons}/33/${ResourceTypes.Hymns}/456/${ResourceTypes.Formats}`);
+
+            Validators.validateArray(response.data);
+            response.data.forEach((format) => Validators.validateTuneServiceHymnFormat(format));
+        });
+
+        const apiValidator = new ApiValidator();
+        apiValidator
+            .withPart({ typeName: ResourceTypes.Tunes, value: "1" })
+            .withPart({ typeName: ResourceTypes.Seasons, value: "33" })
+            .withPart({ typeName: ResourceTypes.Hymns, value: "456" })
+            .generate().forEach((testCase) => {
+                if (testCase.testCase === TestCaseType.NonExisting) {
+                    it(`should return an empty array for non existing ${testCase.partUnderTest} ids`, async () => {
+                        const response: AxiosResponse<IFormatInfo[]> = await axios.get(`${tc.baseTestUrl}${testCase.resourceId}/${ResourceTypes.Formats}`);
+
+                        Validators.validateArray(response.data, true);
+                    });
+                }
+                else {
+                    it(testCase.description, async () => {
+                        try {
+                            await axios.get(`${tc.baseTestUrl}${testCase.resourceId}/${ResourceTypes.Formats}`);
+                            assert.fail();
+                        }
+                        catch (ex) {
+                            Validators.validateErrorAxiosResponse(ex.response, 404);
+                        }
+                    });
+                }
+            });
+    });
+
+    describe("/GET a tune season hymn format", () => {
+        it("should get a tune season hymn format", async () => {
+            const resourceId = `/${ResourceTypes.Tunes}/1/${ResourceTypes.Seasons}/33/${ResourceTypes.Hymns}/456/${ResourceTypes.Formats}/1`;
+            const response: AxiosResponse<IFormatInfo[]> = await axios.get(`${tc.baseTestUrl}${resourceId}`);
+
+            Validators.validateObject(response.data);
+            Validators.validateTuneServiceHymnFormat(response.data, resourceId);
+        });
+
+        const apiValidator = new ApiValidator();
+        apiValidator
+            .withPart({ typeName: ResourceTypes.Tunes, value: "1" })
+            .withPart({ typeName: ResourceTypes.Seasons, value: "33" })
+            .withPart({ typeName: ResourceTypes.Hymns, value: "456" })
+            .withPart({ typeName: ResourceTypes.Formats, value: "1" })
             .generate().forEach((testCase) => {
                 it(testCase.description, async () => {
                     try {

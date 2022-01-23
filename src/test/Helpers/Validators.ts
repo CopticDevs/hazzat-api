@@ -108,6 +108,20 @@ export class Validators {
 
     public static validateServiceHymnFormat(value: any, resourceId: string = null): void {
         value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Services}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+\/${ResourceTypes.Formats}\/[0-9]+$`));
+        Validators._validateServiceHymnFormat(value, resourceId);
+    }
+
+    public static validateTuneServiceHymnFormat(value: any, resourceId: string = null): void {
+        value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Tunes}\/[0-9]+\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+\/${ResourceTypes.Formats}\/[0-9]+$`));
+        Validators._validateServiceHymnFormat(value, resourceId);
+    }
+
+    public static validateTypeServiceHymnFormat(value: any, resourceId: string = null): void {
+        value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Types}\/[0-9]+\/${ResourceTypes.Seasons}\/[0-9]+\/${ResourceTypes.Hymns}\/[0-9]+\/${ResourceTypes.Formats}\/[0-9]+$`));
+        Validators._validateServiceHymnFormat(value, resourceId);
+    }
+
+    private static _validateServiceHymnFormat(value: any, resourceId: string = null): void {
         if (!!resourceId) {
             value.should.have.property("id").eq(resourceId);
         }

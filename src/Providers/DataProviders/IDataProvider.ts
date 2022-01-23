@@ -31,6 +31,9 @@ export interface IDataProvider {
     getTypeSeasonServiceHymnList(typeId: string, seasonId: string): Promise<HazzatDbSchema.IServiceHymn[]>;
     getTypeSeasonServiceHymn(typeId: string, seasonId: string, hymnId: string): Promise<HazzatDbSchema.IServiceHymn>;
 
+    getTypeSeasonServiceHymnFormatList(typeId: string, seasonId: string, hymnId: string): Promise<HazzatDbSchema.IServiceHymnFormat[]>;
+    getTypeSeasonServiceHymnFormat(typeId: string, seasonId: string, hymnId: string, formatId: string): Promise<HazzatDbSchema.IServiceHymnFormat>;
+
     getTuneList(): Promise<HazzatDbSchema.ITune[]>;
     getTune(tuneId: string): Promise<HazzatDbSchema.ITune>;
 
@@ -39,4 +42,7 @@ export interface IDataProvider {
 
     getTuneSeasonServiceHymnList(tuneId: string, seasonId: string): Promise<HazzatDbSchema.IServiceHymn[]>;
     getTuneSeasonServiceHymn(tuneId: string, seasonId: string, hymnId: string): Promise<HazzatDbSchema.IServiceHymn>;
+
+    getTuneSeasonServiceHymnFormatList(tuneId: string, seasonId: string, hymnId: string): Promise<HazzatDbSchema.IServiceHymnFormat[]>;
+    getTuneSeasonServiceHymnFormat(tuneId: string, seasonId: string, hymnId: string, formatId: string): Promise<HazzatDbSchema.IServiceHymnFormat>;
 }

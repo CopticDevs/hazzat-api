@@ -32,24 +32,24 @@
     "nconf": "^0.11.3",
     "q": "^1.5.1",
     "reflect-metadata": "^0.1.13",
-    "tedious": "^14.0.0",
-    "winston": "^3.3.4"
+    "tedious": "^14.1.0",
+    "winston": "^3.4.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
     "@types/mime": "^2.0.3",
-    "@types/mocha": "^9.0.0",
+    "@types/mocha": "^9.1.0",
     "@types/mssql": "^7.1.4",
     "@types/nconf": "^0.10.1",
-    "@types/node": "^17.0.8",
+    "@types/node": "^17.0.10",
     "@types/q": "^1.5.5",
-    "@types/sinon": "^10.0.6",
-    "axios": "^0.24.0",
+    "@types/sinon": "^10.0.8",
+    "axios": "^0.25.0",
     "chai": "^4.3.4",
     "chai-http": "^4.3.0",
     "copyfiles": "^2.4.1",
     "mkdirp": "^1.0.4",
-    "mocha": "^9.1.3",
+    "mocha": "^9.1.4",
     "mocha-trx-reporter": "^3.3.1",
     "sinon": "^12.0.1",
     "swagger-jsdoc": "^4.0.0",
@@ -57,7 +57,7 @@
     "ts-mock-imports": "^1.3.8",
     "ts-node": "^10.4.0",
     "tslint": "^6.1.3",
-    "typescript": "^4.5.4"
+    "typescript": "^4.5.5"
   },
   "engines": {
     "node": "^10.15.0"

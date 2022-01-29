@@ -363,6 +363,39 @@ export class HazzatContentUtils {
         serviceHymnFormatContentDbItem: HazzatDbSchema.IServiceHymnFormatContent,
         dataProvider: IDataProvider
     ): Promise<IVariationInfo<T>> {
+        return HazzatContentUtils._convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo(
+            serviceHymnFormatContentDbItem,
+            dataProvider,
+            `/${ResourceTypes.Seasons}/${serviceHymnFormatContentDbItem.Season_ID}/${ResourceTypes.Services}/${serviceHymnFormatContentDbItem.Service_ID}/${ResourceTypes.Hymns}/${serviceHymnFormatContentDbItem.ServiceHymn_ID}/${ResourceTypes.Formats}/${serviceHymnFormatContentDbItem.Format_ID}/${ResourceTypes.Variations}/${serviceHymnFormatContentDbItem.ItemId}`);
+    }
+
+    public static async convertServiceHymnFormatContentDbItemToTuneServiceHymnFormatContentInfo<T extends IHymnContent>(
+        serviceHymnFormatContentDbItem: HazzatDbSchema.IServiceHymnFormatContent,
+        dataProvider: IDataProvider,
+        tuneId: string
+    ): Promise<IVariationInfo<T>> {
+        return HazzatContentUtils._convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo(
+            serviceHymnFormatContentDbItem,
+            dataProvider,
+            `/${ResourceTypes.Tunes}/${tuneId}/${ResourceTypes.Seasons}/${serviceHymnFormatContentDbItem.Season_ID}/${ResourceTypes.Hymns}/${serviceHymnFormatContentDbItem.ServiceHymn_ID}/${ResourceTypes.Formats}/${serviceHymnFormatContentDbItem.Format_ID}/${ResourceTypes.Variations}/${serviceHymnFormatContentDbItem.ItemId}`);
+    }
+
+    public static async convertServiceHymnFormatContentDbItemToTypeServiceHymnFormatContentInfo<T extends IHymnContent>(
+        serviceHymnFormatContentDbItem: HazzatDbSchema.IServiceHymnFormatContent,
+        dataProvider: IDataProvider,
+        typeId: string
+    ): Promise<IVariationInfo<T>> {
+        return HazzatContentUtils._convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo(
+            serviceHymnFormatContentDbItem,
+            dataProvider,
+            `/${ResourceTypes.Types}/${typeId}/${ResourceTypes.Seasons}/${serviceHymnFormatContentDbItem.Season_ID}/${ResourceTypes.Hymns}/${serviceHymnFormatContentDbItem.ServiceHymn_ID}/${ResourceTypes.Formats}/${serviceHymnFormatContentDbItem.Format_ID}/${ResourceTypes.Variations}/${serviceHymnFormatContentDbItem.ItemId}`);
+    }
+
+    private static async _convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo<T extends IHymnContent>(
+        serviceHymnFormatContentDbItem: HazzatDbSchema.IServiceHymnFormatContent,
+        dataProvider: IDataProvider,
+        id: string
+    ): Promise<IVariationInfo<T>> {
 
         let content: any = null;
 
@@ -438,7 +471,7 @@ export class HazzatContentUtils {
                     `format id: '${serviceHymnFormatContentDbItem.Format_ID}'`);
         }
         return {
-            id: `/${ResourceTypes.Seasons}/${serviceHymnFormatContentDbItem.Season_ID}/${ResourceTypes.Services}/${serviceHymnFormatContentDbItem.Service_ID}/${ResourceTypes.Hymns}/${serviceHymnFormatContentDbItem.ServiceHymn_ID}/${ResourceTypes.Formats}/${serviceHymnFormatContentDbItem.Format_ID}/${ResourceTypes.Variations}/${serviceHymnFormatContentDbItem.ItemId}`,
+            id,
             name: serviceHymnFormatContentDbItem.Content_Name,
             content
         };

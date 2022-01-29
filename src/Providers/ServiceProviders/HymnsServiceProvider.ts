@@ -95,8 +95,8 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
     }
 
     @measure
-    public async getServiceHymnsFormatVariation<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string, contentId: string): Promise<IVariationInfo<T>> {
-        const dbResult = await this._dataProvider.getServiceHymnsFormatVariation(seasonId, serviceId, hymnId, formatId, contentId);
+    public async getServiceHymnsFormatVariation<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string, variationId: string): Promise<IVariationInfo<T>> {
+        const dbResult = await this._dataProvider.getServiceHymnsFormatVariation(seasonId, serviceId, hymnId, formatId, variationId);
         return await HazzatContentUtils.convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo<T>(dbResult, this._dataProvider);
     }
 
@@ -170,6 +170,12 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
     }
 
     @measure
+    public async getTypeSeasonServiceHymnFormatVariation<T extends IHymnContent>(typeId: string, seasonId: string, hymnId: string, formatId: string, variationId: string): Promise<IVariationInfo<T>> {
+        const dbResult = await this._dataProvider.getTypeSeasonServiceHymnFormatVariation(typeId, seasonId, hymnId, formatId, variationId);
+        return HazzatContentUtils.convertServiceHymnFormatContentDbItemToTypeServiceHymnFormatContentInfo<T>(dbResult, this._dataProvider, typeId);
+    }
+
+    @measure
     public async getTuneList(): Promise<ITuneInfo[]> {
         const dbResult = await this._dataProvider.getTuneList();
 
@@ -236,5 +242,11 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
         const variations: IVariationInfo<T>[] = await Promise.all(dbResult
             .map((row) => HazzatContentUtils.convertServiceHymnFormatContentDbItemToTuneServiceHymnFormatContentInfo<T>(row, this._dataProvider, tuneId)))
         return variations;
+    }
+
+    @measure
+    public async getTuneSeasonServiceHymnFormatVariation<T extends IHymnContent>(tuneId: string, seasonId: string, hymnId: string, formatId: string, variationId: string): Promise<IVariationInfo<T>> {
+        const dbResult = await this._dataProvider.getTuneSeasonServiceHymnFormatVariation(tuneId, seasonId, hymnId, formatId, variationId);
+        return HazzatContentUtils.convertServiceHymnFormatContentDbItemToTuneServiceHymnFormatContentInfo<T>(dbResult, this._dataProvider, tuneId);
     }
 }

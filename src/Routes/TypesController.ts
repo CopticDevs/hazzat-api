@@ -426,5 +426,78 @@ export class TypesController extends BaseController {
                 BaseController._OnError(ex, res);
             }
         });
+
+        /**
+         * @swagger
+         *
+         * /types/[typeId]/seasons/[seasonId]/hymns/[hymnId]/formats/[formatId]/variations/[variationId]:
+         *   get:
+         *     description: Gets a variation of the specified type in the specified Season, hymn, format, and variation
+         *     produces:
+         *       - application/json
+         *     parameters:
+         *       - name: typeId
+         *         description: Type ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: seasonId
+         *         description: Season ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: hymnId
+         *         description: Service hymn ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: formatId
+         *         description: Format ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *       - name: variationId
+         *         description: Variation ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *     responses:
+         *       200:
+         *         description: Variation
+         *         schema:
+         *           type: object
+         *           items:
+         *             $ref: '#/definitions/Variation'
+         *
+         *       404:
+         *         description: A variation detail was not found.
+         *         schema:
+         *           type: object
+         *           properties:
+         *             errorCode:
+         *               type: string
+         *             message:
+         *               type: string
+         *
+         *       501:
+         *         description: Format content is not supported at this time
+         *         schema:
+         *           type: object
+         *           properties:
+         *             errorCode:
+         *               type: string
+         *             message:
+         *               type: string
+         *             details:
+         *               type: string
+         */
+        this.router.get(`/:typeId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)/${ResourceTypes.Formats}/:formatId(\\d+)/${ResourceTypes.Variations}/:variationId(\\d+)`, async (req: express.Request, res: express.Response) => {
+            try {
+                const result = await hymnsServiceProvider.getTypeSeasonServiceHymnFormatVariation(req.params.typeId, req.params.seasonId, req.params.hymnId, req.params.formatId, req.params.variationId);
+                res.send(result);
+            } catch (ex) {
+                BaseController._OnError(ex, res);
+            }
+        });
     }
 }

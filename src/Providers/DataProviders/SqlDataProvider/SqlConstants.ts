@@ -9,7 +9,7 @@ export namespace Constants {
         export const HymnFormatListSelectBySeasonIdAndServiceIdAndServiceHymnId = "HymnFormatListSelectBySeasonIdAndServiceIdAndServiceHymnId";
         export const HymnFormatSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId = "HymnFormatSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId";
         export const HymnContentListSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId = "HymnContentListSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId";
-        export const HymnContentSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId = "HymnContentSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatId";
+        export const HymnContentSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatIdAndContentId = "HymnContentSelectBySeasonIdAndServiceIdAndServiceHymnIdAndFormatIdAndContentId";
         export const TypeListSelect = "TypeListSelect";
         export const TypeSelect = "TypeSelect";
         export const SeasonListSelectByTypeId = "SeasonListSelectByTypeId";
@@ -19,6 +19,7 @@ export namespace Constants {
         export const FormatListSelectByTypeIdAndSeasonIdAndServiceHymnId = "FormatListSelectByTypeIdAndSeasonIdAndServiceHymnId";
         export const FormatSelectByTypeIdAndSeasonIdAndServiceHymnIdAndFormatId = "FormatSelectByTypeIdAndSeasonIdAndServiceHymnIdAndFormatId";
         export const HymnContentListSelectByTypeIdAndSeasonIdAndServiceHymnIdAndFormatId = "HymnContentListSelectByTypeIdAndSeasonIdAndServiceHymnIdAndFormatId";
+        export const HymnContentSelectByTypeIdAndSeasonIdAndServiceHymnIdAndFormatIdAndContentId = "HymnContentSelectByTypeIdAndSeasonIdAndServiceHymnIdAndFormatIdAndContentId";
         export const TuneListSelect = "TuneListSelect";
         export const TuneSelect = "TuneSelect";
         export const SeasonListSelectByTuneId = "SeasonListSelectByTuneId";
@@ -28,6 +29,7 @@ export namespace Constants {
         export const FormatListSelectByTuneIdAndSeasonIdAndServiceHymnId = "FormatListSelectByTuneIdAndSeasonIdAndServiceHymnId";
         export const FormatSelectByTuneIdAndSeasonIdAndServiceHymnIdAndFormatId = "FormatSelectByTuneIdAndSeasonIdAndServiceHymnIdAndFormatId";
         export const HymnContentListSelectByTuneIdAndSeasonIdAndServiceHymnIdAndFormatId = "HymnContentListSelectByTuneIdAndSeasonIdAndServiceHymnIdAndFormatId";
+        export const HymnContentSelectByTuneIdAndSeasonIdAndServiceHymnIdAndFormatIdAndContentId = "HymnContentSelectByTuneIdAndSeasonIdAndServiceHymnIdAndFormatIdAndContentId";
         export const CommonSelect = "CommonSelect";
         export const ReasonSelect = "ReasonSelect";
 

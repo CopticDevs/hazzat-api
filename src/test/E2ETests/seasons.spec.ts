@@ -446,14 +446,12 @@ describe("Seasons controller", () => {
 
     describe("/GET a season service hymn format variation", () => {
         it("should get a season service hymn content (text)", async () => {
-            it("should get a season service hymn", async () => {
-                const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288`;
-                const response: AxiosResponse<IVariationInfo<ITextContent>> = await axios.get(`${tc.baseTestUrl}${resourceId}`);
+            const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288`;
+            const response: AxiosResponse<IVariationInfo<ITextContent>> = await axios.get(`${tc.baseTestUrl}${resourceId}`);
 
-                Validators.validateObject(response.data);
-                Validators.validateServiceHymnFormatVariation(response.data, resourceId);
-                Validators.validateTextContent(response.data.content);
-            });
+            Validators.validateObject(response.data);
+            Validators.validateServiceHymnFormatVariation(response.data, resourceId);
+            Validators.validateTextContent(response.data.content);
         });
 
         it("should get a season service hymn content (text) with comment content", async () => {

@@ -17,7 +17,7 @@ export interface IDataProvider {
     getServiceHymnFormat(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<HazzatDbSchema.IServiceHymnFormat>;
 
     getServiceHymnsFormatVariationList(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<HazzatDbSchema.IServiceHymnFormatContent[]>;
-    getServiceHymnsFormatVariation(seasonId: string, serviceId: string, hymnId: string, formatId: string, contentId: string): Promise<HazzatDbSchema.IServiceHymnFormatContent>;
+    getServiceHymnsFormatVariation(seasonId: string, serviceId: string, hymnId: string, formatId: string, variationId: string): Promise<HazzatDbSchema.IServiceHymnFormatContent>;
 
     getCommonContent(commonId: string): Promise<string>;
     getReason(reasonId: number): Promise<HazzatDbSchema.IReason>;
@@ -34,6 +34,9 @@ export interface IDataProvider {
     getTypeSeasonServiceHymnFormatList(typeId: string, seasonId: string, hymnId: string): Promise<HazzatDbSchema.IServiceHymnFormat[]>;
     getTypeSeasonServiceHymnFormat(typeId: string, seasonId: string, hymnId: string, formatId: string): Promise<HazzatDbSchema.IServiceHymnFormat>;
 
+    getTypeSeasonServiceHymnFormatVariationList(typeId: string, seasonId: string, hymnId: string, formatId: string): Promise<HazzatDbSchema.IServiceHymnFormatContent[]>;
+    getTypeSeasonServiceHymnFormatVariation(typeId: string, seasonId: string, hymnId: string, formatId: string, variationId: string): Promise<HazzatDbSchema.IServiceHymnFormatContent>;
+
     getTuneList(): Promise<HazzatDbSchema.ITune[]>;
     getTune(tuneId: string): Promise<HazzatDbSchema.ITune>;
 
@@ -45,4 +48,7 @@ export interface IDataProvider {
 
     getTuneSeasonServiceHymnFormatList(tuneId: string, seasonId: string, hymnId: string): Promise<HazzatDbSchema.IServiceHymnFormat[]>;
     getTuneSeasonServiceHymnFormat(tuneId: string, seasonId: string, hymnId: string, formatId: string): Promise<HazzatDbSchema.IServiceHymnFormat>;
+
+    getTuneSeasonServiceHymnFormatVariationList(tuneId: string, seasonId: string, hymnId: string, formatId: string): Promise<HazzatDbSchema.IServiceHymnFormatContent[]>;
+    getTuneSeasonServiceHymnFormatVariation(tuneId: string, seasonId: string, hymnId: string, formatId: string, variationId: string): Promise<HazzatDbSchema.IServiceHymnFormatContent>;
 }

@@ -338,6 +338,14 @@ export class SqlDataProviderMock {
         return SqlDataProviderMock.getDbServiceHymnFormat();
     }
 
+    public static getDbTuneServiceHymnsFormatVariationList(): HazzatDbSchema.IServiceHymnFormatContent[] {
+        return SqlDataProviderMock.getDbServiceHymnsFormatVariationList();
+    }
+
+    public static getDbTypeServiceHymnsFormatVariationList(): HazzatDbSchema.IServiceHymnFormatContent[] {
+        return SqlDataProviderMock.getDbServiceHymnsFormatVariationList();
+    }
+
     public static getDbTypesList(): HazzatDbSchema.IType[] {
         return [
             SqlDataProviderMock._type1,

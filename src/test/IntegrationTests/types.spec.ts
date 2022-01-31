@@ -312,9 +312,6 @@ describe("Types controller", () => {
             });
     });
 
-
-
-
     describe("/GET all type season service hymn format variations", () => {
         it("should get a type season service hymn format variations (text)", (done) => {
             chai.request(server)
@@ -744,8 +741,8 @@ describe("Types controller", () => {
 
         const apiValidator = new ApiValidator();
         apiValidator
-            .withPart({ typeName: ResourceTypes.Seasons, value: "17" })
-            .withPart({ typeName: ResourceTypes.Services, value: "1" })
+            .withPart({ typeName: ResourceTypes.Types, value: "17" })
+            .withPart({ typeName: ResourceTypes.Seasons, value: "1" })
             .withPart({ typeName: ResourceTypes.Hymns, value: "311" })
             .withPart({ typeName: ResourceTypes.Formats, value: "1" })
             .withPart({ typeName: ResourceTypes.Variations, value: "288" })

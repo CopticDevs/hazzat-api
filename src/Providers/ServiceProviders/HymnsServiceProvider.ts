@@ -259,4 +259,10 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
             .map((row) => HazzatContentUtils.convertBookletDbItemToBookletInfo(row)))
         return variations;
     }
+
+    @measure
+    public async getBooklet(bookletId: string): Promise<IBookletInfo> {
+        const dbResult = await this._dataProvider.getBooklet(bookletId);
+        return HazzatContentUtils.convertBookletDbItemToBookletInfo(dbResult);
+    }
 }

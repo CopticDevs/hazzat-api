@@ -35,7 +35,7 @@ export class BookletsController extends BaseController {
          *         type: string
          *     required: [id, name, summary, order, sourcePath, displayPath, printPath, thumbnailPath, fullPicturePath, releaseDate]
          *
-         * /seasons:
+         * /booklets:
          *   get:
          *     description: Gets a list of Booklets
          *     produces:
@@ -51,6 +51,47 @@ export class BookletsController extends BaseController {
         this.router.get("/", async (req: express.Request, res: express.Response) => {
             try {
                 const result = await hymnsServiceProvider.getBookletList();
+                res.send(result);
+            } catch (ex) {
+                BaseController._OnError(ex, res);
+            }
+        });
+
+        /**
+         * @swagger
+         *
+         * /booklets/[bookletId]:
+         *   get:
+         *     description: Returns the details of the given booklet id
+         *     produces:
+         *       - application/json
+         *     parameters:
+         *       - name: bookletId
+         *         description: Booklet ID
+         *         in:  url
+         *         required: true
+         *         type: integer
+         *     responses:
+         *       200:
+         *         description: Booklet
+         *         schema:
+         *           type: object
+         *           items:
+         *             $ref: '#/definitions/Booklet'
+         *
+         *       404:
+         *         description: A Booklet detail was not found.
+         *         schema:
+         *           type: object
+         *           properties:
+         *             errorCode:
+         *               type: string
+         *             message:
+         *               type: string
+         */
+        this.router.get("/:bookletId(\\d+)", async (req: express.Request, res: express.Response) => {
+            try {
+                const result = await hymnsServiceProvider.getBooklet(req.params.bookletId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

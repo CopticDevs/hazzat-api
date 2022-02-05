@@ -1,5 +1,6 @@
 ﻿ import { inject, injectable } from "inversify";
 import { measure } from "../../Common/Utils/MeasureDecorator";
+import { IBookletInfo } from "../../Models/IBookletInfo";
 import { IFormatInfo } from "../../Models/IFormatInfo";
 import { IHymnInfo, IHymnInfoWithServiceDetails } from "../../Models/IHymnInfo";
 import { ISeasonInfo } from "../../Models/ISeasonInfo";
@@ -248,5 +249,14 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
     public async getTuneSeasonServiceHymnFormatVariation<T extends IHymnContent>(tuneId: string, seasonId: string, hymnId: string, formatId: string, variationId: string): Promise<IVariationInfo<T>> {
         const dbResult = await this._dataProvider.getTuneSeasonServiceHymnFormatVariation(tuneId, seasonId, hymnId, formatId, variationId);
         return HazzatContentUtils.convertServiceHymnFormatContentDbItemToTuneServiceHymnFormatContentInfo<T>(dbResult, this._dataProvider, tuneId);
+    }
+
+    @measure
+    public async getBookletList(): Promise<IBookletInfo[]> {
+        const dbResult = await this._dataProvider.getBookletList();
+
+        const variations: IBookletInfo[] = await Promise.all(dbResult
+            .map((row) => HazzatContentUtils.convertBookletDbItemToBookletInfo(row)))
+        return variations;
     }
 }

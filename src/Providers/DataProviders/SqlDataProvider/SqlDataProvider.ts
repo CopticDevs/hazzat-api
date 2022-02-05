@@ -1103,6 +1103,19 @@ export class SqlDataProvider implements IDataProvider {
         });
     }
 
+    public getBookletList(): Promise<HazzatDbSchema.IBooklet[]> {
+        return this._connectAndExecute<HazzatDbSchema.IBooklet[]>(async (cp: ConnectionPool) => {
+            const result = await cp.request()
+                .execute<HazzatDbSchema.IBooklet>(this._getQualifiedName(Constants.StoredProcedures.BookletListSelect));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(ErrorCodes[ErrorCodes.DatabaseError], "Unexpected database error");
+            }
+
+            return result.recordsets[0];
+        });
+    }
+
     public getCommonContent(commonId: string): Promise<string> {
         return this._connectAndExecute<string>(async (cp: ConnectionPool) => {
             if (!SqlHelpers.isValidPositiveIntParameter(commonId)) {

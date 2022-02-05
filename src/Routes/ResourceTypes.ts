@@ -5,5 +5,6 @@ export const enum ResourceTypes {
     Formats = "formats",
     Variations = "variations",
     Types = "types",
-    Tunes = "tunes"
+    Tunes = "tunes",
+    Booklets = "booklets"
 }

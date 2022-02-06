@@ -1103,6 +1103,48 @@ export class SqlDataProvider implements IDataProvider {
         });
     }
 
+    public getBookletList(): Promise<HazzatDbSchema.IBooklet[]> {
+        return this._connectAndExecute<HazzatDbSchema.IBooklet[]>(async (cp: ConnectionPool) => {
+            const result = await cp.request()
+                .execute<HazzatDbSchema.IBooklet>(this._getQualifiedName(Constants.StoredProcedures.BookletListSelect));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(ErrorCodes[ErrorCodes.DatabaseError], "Unexpected database error");
+            }
+
+            return result.recordsets[0];
+        });
+    }
+
+    public getBooklet(bookletId: string): Promise<HazzatDbSchema.IBooklet> {
+        return this._connectAndExecute<HazzatDbSchema.IBooklet>(async (cp: ConnectionPool) => {
+            if (!SqlHelpers.isValidPositiveIntParameter(bookletId)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.InvalidParameterError],
+                    "Invalid booklet id specified.",
+                    `Booklet id: '${bookletId}'`);
+            }
+            const result = await cp.request()
+                .input(Constants.Parameters.BookletId, Sql.Int, bookletId)
+                .execute<HazzatDbSchema.IBooklet>(this._getQualifiedName(Constants.StoredProcedures.BookletSelect));
+
+            if (!SqlHelpers.isValidResult(result)) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.DatabaseError],
+                    "Unexpected database error");
+            }
+
+            const row = result.recordsets[0][0];
+            if (!row) {
+                throw new HazzatApplicationError(
+                    ErrorCodes[ErrorCodes.NotFoundError],
+                    `Unable to find booklet with id '${bookletId}'`);
+            }
+
+            return row;
+        });
+    }
+
     public getCommonContent(commonId: string): Promise<string> {
         return this._connectAndExecute<string>(async (cp: ConnectionPool) => {
             if (!SqlHelpers.isValidPositiveIntParameter(commonId)) {

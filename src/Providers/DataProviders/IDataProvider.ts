@@ -51,4 +51,7 @@ export interface IDataProvider {
 
     getTuneSeasonServiceHymnFormatVariationList(tuneId: string, seasonId: string, hymnId: string, formatId: string): Promise<HazzatDbSchema.IServiceHymnFormatContent[]>;
     getTuneSeasonServiceHymnFormatVariation(tuneId: string, seasonId: string, hymnId: string, formatId: string, variationId: string): Promise<HazzatDbSchema.IServiceHymnFormatContent>;
+
+    getBookletList(): Promise<HazzatDbSchema.IBooklet[]>;
+    getBooklet(bookletId: string): Promise<HazzatDbSchema.IBooklet>;
 }

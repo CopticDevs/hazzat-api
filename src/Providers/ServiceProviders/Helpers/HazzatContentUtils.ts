@@ -1,5 +1,6 @@
 ﻿ import { ErrorCodes, HazzatApplicationError } from "../../../Common/Errors";
 import { Language } from "../../../Common/Types/Language";
+import { IBookletInfo } from "../../../Models/IBookletInfo";
 import { IFormatInfo } from "../../../Models/IFormatInfo";
 import { IHymnInfo, IHymnInfoWithServiceDetails } from "../../../Models/IHymnInfo";
 import { ISeasonInfo } from "../../../Models/ISeasonInfo";
@@ -123,6 +124,23 @@ export class HazzatContentUtils {
             name: serviceHymnFormatDbItem.Format_Name,
             order: serviceHymnFormatDbItem.ItemId,
             variationCount: serviceHymnFormatDbItem.Content_Count
+        };
+    }
+
+    public static convertBookletDbItemToBookletInfo(
+        bookletDbItem: HazzatDbSchema.IBooklet
+    ): IBookletInfo {
+        return {
+            id: `/${ResourceTypes.Booklets}/${bookletDbItem.ItemId}`,
+            name: bookletDbItem.Name,
+            summary: bookletDbItem.Summary,
+            order: bookletDbItem.Booklet_Order,
+            sourcePath: bookletDbItem.Source_Path,
+            displayPath: bookletDbItem.Display_Path,
+            printPath: bookletDbItem.Print_Path,
+            thumbnailPath: bookletDbItem.Thumbnail,
+            fullPicturePath: bookletDbItem.Full_Picture,
+            releaseDate: bookletDbItem.Release_Date
         };
     }
 

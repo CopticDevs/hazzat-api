@@ -32,7 +32,7 @@ describe("Seasons controller", () => {
 
     describe("/GET all seasons", () => {
         it("should get all seasons", async () => {
-            const response: AxiosResponse<ISeasonInfo[]> = await axios.get(`${tc.baseTestUrl}/seasons`);
+            const response: AxiosResponse<ISeasonInfo[]> = await axios.get(`${tc.baseTestUrl}/${ResourceTypes.Seasons}`);
 
             Validators.validateArray(response.data);
             response.data.forEach((season) => Validators.validateSeason(season));

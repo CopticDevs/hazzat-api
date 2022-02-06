@@ -66,6 +66,7 @@
     <TypeScriptCompile Include="Routes\BookletsController.ts" />
     <TypeScriptCompile Include="Routes\TunesController.ts" />
     <TypeScriptCompile Include="Routes\TypesController.ts" />
+    <TypeScriptCompile Include="test\E2ETests\booklets.spec.ts" />
     <TypeScriptCompile Include="test\Helpers\ApiValidator.ts" />
     <TypeScriptCompile Include="test\E2ETests\TestConfiguration.ts" />
     <TypeScriptCompile Include="test\E2ETests\seasons.spec.ts" />
@@ -73,6 +74,7 @@
     <TypeScriptCompile Include="test\E2ETests\tunes.spec.ts" />
     <TypeScriptCompile Include="test\Helpers\SqlDataProviderMock.ts" />
     <TypeScriptCompile Include="test\Helpers\Validators.ts" />
+    <TypeScriptCompile Include="test\IntegrationTests\booklets.spec.ts" />
     <TypeScriptCompile Include="test\UnitTests\operationExecutor.spec.ts" />
     <TypeScriptCompile Include="test\UnitTests\bookletsServiceProvider.spec.ts" />
     <TypeScriptCompile Include="test\UnitTests\seasonsServiceProvider.spec.ts" />

@@ -53,4 +53,23 @@ describe("BookletsService Provider Unit Tests", () => {
             Validators.validateBooklet(booklet);
         });
     });
+
+    it("should have correct db to contract booklet mapping", async () => {
+        // Setup mocked result
+        mockManager.mock('getBooklet', SqlDataProviderMock.getDbBooklet());
+
+        const bookletDb = SqlDataProviderMock.getDbBooklet();
+        const booklet = await hymnsProvider.getBooklet("bookletId");
+
+        // Validate that the contract was mapped out correctly from db results
+        booklet.name.should.be.equal(bookletDb.Name);
+        booklet.summary.should.be.equal(bookletDb.Summary);
+        booklet.order.should.be.equal(bookletDb.Booklet_Order);
+        booklet.sourcePath.should.be.equal(bookletDb.Source_Path);
+        booklet.displayPath.should.be.equal(bookletDb.Display_Path);
+        booklet.printPath.should.be.equal(bookletDb.Print_Path);
+        booklet.thumbnailPath.should.be.equal(bookletDb.Thumbnail);
+        booklet.fullPicturePath.should.be.equal(bookletDb.Full_Picture);
+        booklet.releaseDate.should.be.equal(bookletDb.Release_Date);
+    });
 });

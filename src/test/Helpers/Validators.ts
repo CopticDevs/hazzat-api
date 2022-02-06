@@ -237,4 +237,20 @@ export class Validators {
 
         contentString.should.not.contain(searchString);
     }
+
+    public static validateBooklet(value: any, resourceId: string = null): void {
+        value.should.have.property("id").matches(new RegExp(`^\/${ResourceTypes.Booklets}\/[0-9]+$`));
+        if (!!resourceId) {
+            value.should.have.property("id").eq(resourceId);
+        }
+        value.should.have.property("name");
+        value.should.have.property("summary");
+        value.should.have.property("order");
+        value.should.have.property("sourcePath");
+        value.should.have.property("displayPath");
+        value.should.have.property("printPath");
+        value.should.have.property("thumbnailPath");
+        value.should.have.property("fullPicturePath");
+        value.should.have.property("releaseDate");
+    }
 }

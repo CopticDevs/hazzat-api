@@ -92,4 +92,17 @@ export namespace HazzatDbSchema {
         Tune_Order: number;
         ServiceHymnsCount: number;
     }
+
+    export interface IBooklet {
+        ItemId: number;
+        Name: string;
+        Booklet_Order: number;
+        Source_Path: string;
+        Display_Path: string;
+        Print_Path: string;
+        Thumbnail: string;
+        Full_Picture: string;
+        Release_Date: string;
+        Summary: string;
+    }
 }

@@ -190,26 +190,62 @@ export class SqlDataProviderMock {
         Tune_Order: 3
     };
 
-    public static _type1: HazzatDbSchema.IType = {
+    private static _type1: HazzatDbSchema.IType = {
         ItemId: 1,
         Name: "First Type Hymns",
         Name_Short: "First Type Hymn",
         ServiceHymnsCount: 12,
         Type_Order: 1
     };
-    public static _type2: HazzatDbSchema.IType = {
+    private static _type2: HazzatDbSchema.IType = {
         ItemId: 9,
         Name: "Second Type Hymns",
         Name_Short: "Second Type Hymn",
         ServiceHymnsCount: 32,
         Type_Order: 2
     };
-    public static _type3: HazzatDbSchema.IType = {
+    private static _type3: HazzatDbSchema.IType = {
         ItemId: 5,
         Name: "Third Type Hymns",
         Name_Short: "Thurd Type Hymn",
         ServiceHymnsCount: 7,
         Type_Order: 3
+    };
+    private static _booklet1: HazzatDbSchema.IBooklet = {
+        ItemId: 1,
+        Name: "First Booklet Name",
+        Summary: "First Booklet Summary",
+        Booklet_Order: 1,
+        Display_Path: "First Display Path",
+        Full_Picture: "First Full Picture Path",
+        Print_Path: "First Print Path",
+        Source_Path: "First Source Path",
+        Thumbnail: "First Thumbnail Path",
+        Release_Date: "2007-09-20 00:00:00.000"
+    };
+    private static _booklet2: HazzatDbSchema.IBooklet = {
+        ItemId: 7,
+        Name: "Second Booklet Name",
+        Summary: "Second Booklet Summary",
+        Booklet_Order: 2,
+        Display_Path: "Second Display Path",
+        Full_Picture: "Second Full Picture Path",
+        Print_Path: "Second Print Path",
+        Source_Path: "Second Source Path",
+        Thumbnail: "Second Thumbnail Path",
+        Release_Date: "2007-09-20 00:00:00.000"
+    };
+    private static _booklet3: HazzatDbSchema.IBooklet = {
+        ItemId: 4,
+        Name: "Third Booklet Name",
+        Summary: "Third Booklet Summary",
+        Booklet_Order: 3,
+        Display_Path: "Third Display Path",
+        Full_Picture: "Third Full Picture Path",
+        Print_Path: "Third Print Path",
+        Source_Path: "Third Source Path",
+        Thumbnail: "Third Thumbnail Path",
+        Release_Date: "2007-09-20 00:00:00.000"
     };
 
     public static getDbSeasonsList(): HazzatDbSchema.ISeason[] {
@@ -380,5 +416,17 @@ export class SqlDataProviderMock {
 
     public static getDbTypeSeasonServiceHymnFormat(): HazzatDbSchema.IServiceHymnFormat {
         return SqlDataProviderMock.getDbServiceHymnFormat();
+    }
+
+    public static getDbBookletList(): HazzatDbSchema.IBooklet[] {
+        return [
+            SqlDataProviderMock._booklet1,
+            SqlDataProviderMock._booklet2,
+            SqlDataProviderMock._booklet3
+        ];
+    }
+
+    public static getDbBooklet(): HazzatDbSchema.IBooklet {
+        return SqlDataProviderMock._booklet1;
     }
 }

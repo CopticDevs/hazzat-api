@@ -74,6 +74,7 @@
     <TypeScriptCompile Include="test\Helpers\SqlDataProviderMock.ts" />
     <TypeScriptCompile Include="test\Helpers\Validators.ts" />
     <TypeScriptCompile Include="test\UnitTests\operationExecutor.spec.ts" />
+    <TypeScriptCompile Include="test\UnitTests\bookletsServiceProvider.spec.ts" />
     <TypeScriptCompile Include="test\UnitTests\seasonsServiceProvider.spec.ts" />
     <TypeScriptCompile Include="test\UnitTests\typesServiceProvider.spec.ts" />
     <TypeScriptCompile Include="test\UnitTests\tunesServiceProvider.spec.ts" />

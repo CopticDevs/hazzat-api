@@ -1,0 +1,1915 @@
+{
+        "basePath": "https://api.hazzat.com",
+        "info": {
+            "title": "hazzat-api",
+            "version": "0.0.1"
+        },
+        "swagger": "2.0",
+        "paths": {
+            "/booklets": {
+                "get": {
+                    "description": "Gets a list of Booklets",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Booklets",
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/Booklet"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/booklets/[bookletId]": {
+                "get": {
+                    "description": "Returns the details of the given booklet id",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "bookletId",
+                            "description": "Booklet ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Booklet",
+                            "schema": {
+                                "type": "object",
+                                "items": {
+                                    "$ref": "#/definitions/Booklet"
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "A Booklet detail was not found.",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/seasons": {
+                "get": {
+                    "description": "Gets a list of Seasons",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Seasons",
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/Season"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/seasons/[seasonId]": {
+                "get": {
+                    "description": "Returns the details of the given season id",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Season",
+                            "schema": {
+                                "type": "object",
+                                "items": {
+                                    "$ref": "#/definitions/Season"
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "A Season detail was not found.",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/seasons/[seasonId]/services": {
+                "get": {
+                    "description": "Gets a list of Services within a given season id",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Services",
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/Service"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/seasons/[seasonId]/services/[serviceId]": {
+                "get": {
+                    "description": "Returns the details of the given service",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "serviceId",
+                            "description": "Service ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Service",
+                            "schema": {
+                                "type": "object",
+                                "items": {
+                                    "$ref": "#/definitions/Service"
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "A service detail was not found.",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/seasons/[seasonId]/services/[serviceId]/hymns": {
+                "get": {
+                    "description": "Gets a list of hymns in the service",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "serviceId",
+                            "description": "Service ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Hymns",
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/Hymn"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/seasons/[seasonId]/services/[serviceId]/hymns/[hymnId]": {
+                "get": {
+                    "description": "Returns the details of the given hymn",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "serviceId",
+                            "description": "Service ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "hymnId",
+                            "description": "Service hymn ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Hymn",
+                            "schema": {
+                                "type": "object",
+                                "items": {
+                                    "$ref": "#/definitions/Hymn"
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "A hymn detail was not found.",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/seasons/[seasonId]/services/[serviceId]/hymns/[hymnId]/formats": {
+                "get": {
+                    "description": "Gets a list of formats for the given hymn",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "serviceId",
+                            "description": "Service ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "hymnId",
+                            "description": "Service hymn ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Hymn formats",
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/Format"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/seasons/[seasonId]/services/[serviceId]/hymns/[hymnId]/formats/[formatId]": {
+                "get": {
+                    "description": "Returns the details of the format for the given hymn",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "serviceId",
+                            "description": "Service ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "hymnId",
+                            "description": "Service hymn ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "formatId",
+                            "description": "Format ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Format",
+                            "schema": {
+                                "type": "object",
+                                "items": {
+                                    "$ref": "#/definitions/Format"
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "A format detail was not found.",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/seasons/[seasonId]/services/[serviceId]/hymns/[hymnId]/formats/[formatId]/variations": {
+                "get": {
+                    "description": "Gets a list of variations for the given hymn",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "serviceId",
+                            "description": "Service ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "hymnId",
+                            "description": "Service hymn ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "formatId",
+                            "description": "Format ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Hymn format variations",
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/Variation"
+                                }
+                            }
+                        },
+                        "501": {
+                            "description": "Format variation is not supported at this time",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "details": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/seasons/[seasonId]/services/[serviceId]/hymns/[hymnId]/formats/[formatId]/variations/[variationId]": {
+                "get": {
+                    "description": "Returns the details of the variation",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "serviceId",
+                            "description": "Service ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "hymnId",
+                            "description": "Service hymn ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "formatId",
+                            "description": "Format ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "variationId",
+                            "description": "Variation ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Variation",
+                            "schema": {
+                                "type": "object",
+                                "items": {
+                                    "$ref": "#/definitions/Variation"
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "A variation detail was not found.",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "501": {
+                            "description": "Format content is not supported at this time",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "details": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/tunes": {
+                "get": {
+                    "description": "Gets a list of hymn tunes",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Types",
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/Tune"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/tunes/[tuneId]": {
+                "get": {
+                    "description": "Returns the details of the given tune id",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "tuneId",
+                            "description": "Tune ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Tune",
+                            "schema": {
+                                "type": "object",
+                                "items": {
+                                    "$ref": "#/definitions/Tune"
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "A Tune detail was not found.",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/tunes/[tuneId]/seasons": {
+                "get": {
+                    "description": "Gets a list of Seasons",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "tuneId",
+                            "description": "Tune ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Seasons",
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/Season"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/tunes/[tuneId]/seasons/[seasonId]": {
+                "get": {
+                    "description": "Gets a Season",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "tuneId",
+                            "description": "Tune ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Season",
+                            "schema": {
+                                "type": "object",
+                                "items": {
+                                    "$ref": "#/definitions/Season"
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "A Season detail was not found.",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/tunes/[tuneId]/seasons/[seasonId]/hymns": {
+                "get": {
+                    "description": "Gets a list of hymns of the specified tune in the specified Season",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "tuneId",
+                            "description": "Tune ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Hymns with Service Details",
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/HymnWithServiceDetails"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/tunes/[tuneId]/seasons/[seasonId]/hymns/[hymnId]": {
+                "get": {
+                    "description": "Gets a hymn of the specified tune in the specified Season",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "tuneId",
+                            "description": "Tune ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "hymnId",
+                            "description": "Service hymn ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Hymn with Service Details",
+                            "schema": {
+                                "type": "object",
+                                "items": {
+                                    "$ref": "#/definitions/HymnWithServiceDetails"
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "A hymn detail was not found.",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/tunes/[tuneId]/seasons/[seasonId]/hymns/[hymnId]/formats": {
+                "get": {
+                    "description": "Gets a list of formats of the specified tune in the specified Season and hymn",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "tuneId",
+                            "description": "Tune ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "hymnId",
+                            "description": "Service hymn ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Hymn formats",
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/Format"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/tunes/[tuneId]/seasons/[seasonId]/hymns/[hymnId]/formats/[formatId]": {
+                "get": {
+                    "description": "Gets a format of the specified tune in the specified Season and hymn",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "tuneId",
+                            "description": "Tune ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "hymnId",
+                            "description": "Service hymn ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "formatId",
+                            "description": "Format ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Format",
+                            "schema": {
+                                "type": "object",
+                                "items": {
+                                    "$ref": "#/definitions/Format"
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "A format detail was not found.",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/tunes/[tuneId]/seasons/[seasonId]/hymns/[hymnId]/formats/[formatId]/variations": {
+                "get": {
+                    "description": "Gets a list of variations of the specified tune in the specified Season, hymn, and format",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "tuneId",
+                            "description": "Tune ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "hymnId",
+                            "description": "Service hymn ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "formatId",
+                            "description": "Format ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Hymn format variations",
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/Variation"
+                                }
+                            }
+                        },
+                        "501": {
+                            "description": "Format variation is not supported at this time",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "details": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/tunes/[tuneId]/seasons/[seasonId]/hymns/[hymnId]/formats/[formatId]/variations/[variationId]": {
+                "get": {
+                    "description": "Gets a variation of the specified tune in the specified Season, hymn, format, and variation",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "tuneId",
+                            "description": "Tune ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "hymnId",
+                            "description": "Service hymn ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "formatId",
+                            "description": "Format ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "variationId",
+                            "description": "Variation ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Variation",
+                            "schema": {
+                                "type": "object",
+                                "items": {
+                                    "$ref": "#/definitions/Variation"
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "A variation detail was not found.",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "501": {
+                            "description": "Format content is not supported at this time",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "details": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/types": {
+                "get": {
+                    "description": "Gets a list of hymn types",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Types",
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/Type"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/types/[typeId]": {
+                "get": {
+                    "description": "Returns the details of the given type id",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "typeId",
+                            "description": "Type ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Type",
+                            "schema": {
+                                "type": "object",
+                                "items": {
+                                    "$ref": "#/definitions/Type"
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "A Type detail was not found.",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/types/[typeId]/seasons": {
+                "get": {
+                    "description": "Gets a list of Seasons",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "typeId",
+                            "description": "Type ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Seasons",
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/Season"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/types/[typeId]/seasons/[seasonId]": {
+                "get": {
+                    "description": "Gets a Season",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "typeId",
+                            "description": "Type ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Season",
+                            "schema": {
+                                "type": "object",
+                                "items": {
+                                    "$ref": "#/definitions/Season"
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "A Season detail was not found.",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/types/[typeId]/seasons/[seasonId]/hymns": {
+                "get": {
+                    "description": "Gets a list of hymns of the specified type in the specified Season",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "typeId",
+                            "description": "Type ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Hymns with Service Details",
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/HymnWithServiceDetails"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/types/[typeId]/seasons/[seasonId]/hymns/[hymnId]": {
+                "get": {
+                    "description": "Gets a hymn of the specified type in the specified Season",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "typeId",
+                            "description": "Type ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "hymnId",
+                            "description": "Service hymn ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Hymn with Service Details",
+                            "schema": {
+                                "type": "object",
+                                "items": {
+                                    "$ref": "#/definitions/HymnWithServiceDetails"
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "A hymn detail was not found.",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/types/[typeId]/seasons/[seasonId]/hymns/[hymnId]/formats": {
+                "get": {
+                    "description": "Gets a list of formats of the specified type in the specified Season and hymn",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "typeId",
+                            "description": "Type ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "hymnId",
+                            "description": "Service hymn ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Hymn formats",
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/Format"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/types/[typeId]/seasons/[seasonId]/hymns/[hymnId]/formats/[formatId]": {
+                "get": {
+                    "description": "Gets a format of the specified type in the specified Season and hymn",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "typeId",
+                            "description": "Type ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "hymnId",
+                            "description": "Service hymn ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "formatId",
+                            "description": "Format ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Format",
+                            "schema": {
+                                "type": "object",
+                                "items": {
+                                    "$ref": "#/definitions/Format"
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "A format detail was not found.",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/types/[typeId]/seasons/[seasonId]/hymns/[hymnId]/formats/[formatId]/variations": {
+                "get": {
+                    "description": "Gets a list of variations of the specified type in the specified Season, hymn, and format",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "typeId",
+                            "description": "Type ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "hymnId",
+                            "description": "Service hymn ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "formatId",
+                            "description": "Format ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Hymn format variations",
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/Variation"
+                                }
+                            }
+                        },
+                        "501": {
+                            "description": "Format variation is not supported at this time",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "details": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "/types/[typeId]/seasons/[seasonId]/hymns/[hymnId]/formats/[formatId]/variations/[variationId]": {
+                "get": {
+                    "description": "Gets a variation of the specified type in the specified Season, hymn, format, and variation",
+                    "produces": [
+                        "application/json"
+                    ],
+                    "parameters": [
+                        {
+                            "name": "typeId",
+                            "description": "Type ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "seasonId",
+                            "description": "Season ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "hymnId",
+                            "description": "Service hymn ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "formatId",
+                            "description": "Format ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        },
+                        {
+                            "name": "variationId",
+                            "description": "Variation ID",
+                            "in": "url",
+                            "required": true,
+                            "type": "integer"
+                        }
+                    ],
+                    "responses": {
+                        "200": {
+                            "description": "Variation",
+                            "schema": {
+                                "type": "object",
+                                "items": {
+                                    "$ref": "#/definitions/Variation"
+                                }
+                            }
+                        },
+                        "404": {
+                            "description": "A variation detail was not found.",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        },
+                        "501": {
+                            "description": "Format content is not supported at this time",
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "errorCode": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "details": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "definitions": {
+            "Booklet": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "summary": {
+                        "type": "string"
+                    },
+                    "order": {
+                        "type": "integer"
+                    },
+                    "sourcePath": {
+                        "type": "string"
+                    },
+                    "displayPath": {
+                        "type": "string"
+                    },
+                    "printPath": {
+                        "type": "string"
+                    },
+                    "thumbnailPath": {
+                        "type": "string"
+                    },
+                    "fullPicturePath": {
+                        "type": "string"
+                    },
+                    "releaseDate": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "summary",
+                    "order",
+                    "sourcePath",
+                    "displayPath",
+                    "printPath",
+                    "thumbnailPath",
+                    "fullPicturePath",
+                    "releaseDate"
+                ]
+            },
+            "Season": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "isDateSpecific": {
+                        "type": "boolean"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "order": {
+                        "type": "integer"
+                    },
+                    "verse": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "isDateSpecific",
+                    "name",
+                    "order",
+                    "verse"
+                ]
+            },
+            "Service": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "order": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "order"
+                ]
+            },
+            "Hymn": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "order": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "order"
+                ]
+            },
+            "Format": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "order": {
+                        "type": "integer"
+                    },
+                    "variationCount": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "order",
+                    "variationCount"
+                ]
+            },
+            "TextColumn": {
+                "type": "object",
+                "properties": {
+                    "content": {
+                        "type": "string"
+                    },
+                    "language": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "content",
+                    "language"
+                ]
+            },
+            "TextParagraph": {
+                "type": "object",
+                "properties": {
+                    "columns": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/TextColumn"
+                        }
+                    },
+                    "isComment": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "columns"
+                ]
+            },
+            "TextContent": {
+                "type": "object",
+                "properties": {
+                    "paragraphs": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/TextParagraph"
+                        }
+                    }
+                },
+                "required": [
+                    "paragraphs"
+                ]
+            },
+            "HazzatContent": {
+                "type": "object",
+                "properties": {
+                    "arabicHazzat": {
+                        "type": "string"
+                    },
+                    "copticHazzat": {
+                        "type": "string"
+                    },
+                    "englishHazzat": {
+                        "type": "string"
+                    }
+                }
+            },
+            "VerticalHazzatContent": {
+                "type": "object",
+                "properties": {
+                    "arabicVerticalHazzat": {
+                        "type": "string"
+                    },
+                    "copticVerticalHazzat": {
+                        "type": "string"
+                    },
+                    "englishVerticalHazzat": {
+                        "type": "string"
+                    }
+                }
+            },
+            "MusicalNotesContent": {
+                "type": "object",
+                "properties": {
+                    "musicFilePath": {
+                        "type": "string"
+                    },
+                    "audioFilePath": {
+                        "type": "string"
+                    }
+                }
+            },
+            "AudioContent": {
+                "type": "object",
+                "properties": {
+                    "audioFilePath": {
+                        "type": "string"
+                    }
+                }
+            },
+            "VideoContent": {
+                "type": "object",
+                "properties": {
+                    "arabicVideo": {
+                        "type": "string"
+                    },
+                    "copticVideo": {
+                        "type": "string"
+                    },
+                    "englishVideo": {
+                        "type": "string"
+                    }
+                }
+            },
+            "InformationContent": {
+                "type": "object",
+                "properties": {
+                    "arabicInformation": {
+                        "type": "string"
+                    },
+                    "englishInformation": {
+                        "type": "string"
+                    }
+                }
+            },
+            "HymnContent": {
+                "oneOf": [
+                    {
+                        "$ref": "#/definitions/TextContent"
+                    },
+                    {
+                        "$ref": "#/definitions/HazzatContent"
+                    },
+                    {
+                        "$ref": "#/definitions/VerticalHazzatContent"
+                    },
+                    {
+                        "$ref": "#/definitions/MusicalNotesContent"
+                    },
+                    {
+                        "$ref": "#/definitions/AudioContent"
+                    },
+                    {
+                        "$ref": "#/definitions/VideoContent"
+                    },
+                    {
+                        "$ref": "#/definitions/InformationContent"
+                    }
+                ],
+                "discriminator": {
+                    "propertyName": "contentType"
+                }
+            },
+            "Variation": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "content": {
+                        "$ref": "#/definitions/HymnContent"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "content"
+                ]
+            },
+            "Tune": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "order": {
+                        "type": "integer"
+                    },
+                    "hymnCount": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "order",
+                    "hymnCount"
+                ]
+            },
+            "Type": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "nameSingular": {
+                        "type": "string"
+                    },
+                    "order": {
+                        "type": "integer"
+                    },
+                    "hymnCount": {
+                        "type": "integer"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "nameSingular",
+                    "order",
+                    "hymnCount"
+                ]
+            },
+            "HymnWithServiceDetails": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "order": {
+                        "type": "integer"
+                    },
+                    "serviceId": {
+                        "type": "integer"
+                    },
+                    "serviceName": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "order",
+                    "serviceId",
+                    "serviceName"
+                ]
+            }
+        },
+        "responses": {},
+        "parameters": {},
+        "securityDefinitions": {},
+        "tags": []
+    }

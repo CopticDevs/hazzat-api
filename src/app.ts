@@ -1,7 +1,7 @@
 import * as express from "express";
 import { AddressInfo } from "net";
 import "reflect-metadata";
-import * as swaggerJSDoc from "swagger-jsdoc";
+import fs = require('fs');
 import * as swaggerUI from "swagger-ui-express";
 import { IConfiguration } from "./Common/Configuration";
 import { HttpError } from "./Common/HttpError";
@@ -39,7 +39,7 @@ const options = {
       }
   };
 
-const swaggerSpec = swaggerJSDoc(options);
+const swaggerSpec = JSON.parse(fs.readFileSync(__dirname + "/swagger.json", 'utf-8'));
 
 // Log requests
 app.use((req, res, next) => {
@@ -52,7 +52,7 @@ app.use((err, req, res, next) => {
     logger.error(err);
     next();
 });
-
+app.use("/api-docs/swagger.json", express.static("/swagger.json"));
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.use("/", homeController.router);
 app.use(`/${ResourceTypes.Seasons}`, seasonsController.router);

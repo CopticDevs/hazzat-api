@@ -3,14 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "prebuild": "tslint -c tslint.json -p tsconfig.json",
+    "prebuild": "npm run codegen && tslint -c tslint.json -p tsconfig.json",
     "copy:prod": "mkdirp ./dist/Configs && copyfiles -f Configs/prod.json ./dist/Configs/",
     "copy:dev": "mkdirp ./dist/Configs && copyfiles -f Configs/dev.json ./dist/Configs/",
     "prereq": "npm run init && npm run copy:prod",
     "build": "npm run prereq && tsc -p tsconfig.json",
     "build-trace": "npm run prereq && tsc -p tsconfig.json --diagnostics --listFiles --listEmittedFiles --traceResolution",
     "prestart": "npm run build",
-    "start": "node ./dist/app",
+    "start": "npm run codegen && node ./dist/app",
     "init": "npm install --no-color --no-optional",
     "test": "mocha --reporter mocha-trx-reporter --reporter-options output=testResultsAll.trx --timeout 20000 -r ts-node/register ./test/**/*.spec.ts",
     "test-unit": "mocha --reporter mocha-trx-reporter --reporter-options output=testResultsUnit.trx --timeout 20000 -r ts-node/register ./test/UnitTests/*.spec.ts",
@@ -18,7 +18,8 @@
     "test-e2e:local": "mocha --reporter mocha-trx-reporter --reporter-options output=testResultsE2ELocal.trx --testLocation LOCAL --timeout 60000 -r ts-node/register ./test/E2ETests/*.spec.ts",
     "test-e2e:dev": "mocha --reporter mocha-trx-reporter --reporter-options output=testResultsE2EDev.trx --testLocation DEV --timeout 60000 -r ts-node/register ./test/E2ETests/*.spec.ts",
     "test-e2e:ppe": "mocha --reporter mocha-trx-reporter --reporter-options output=testResultsE2EPPE.trx --testLocation PPE --timeout 60000 -r ts-node/register ./test/E2ETests/*.spec.ts",
-    "test-e2e:prod": "mocha --reporter mocha-trx-reporter --reporter-options output=testResultsE2EProd.trx --testLocation PROD --timeout 60000 -r ts-node/register ./test/E2ETests/*.spec.ts"
+    "test-e2e:prod": "mocha --reporter mocha-trx-reporter --reporter-options output=testResultsE2EProd.trx --testLocation PROD --timeout 60000 -r ts-node/register ./test/E2ETests/*.spec.ts",
+    "codegen": "node ./swagger.ts"
   },
   "description": "hazzat-api",
   "author": {
@@ -52,6 +53,7 @@
     "mocha": "^9.2.2",
     "mocha-trx-reporter": "^3.3.1",
     "sinon": "^13.0.1",
+    "swagger-autogen": "^2.20.5",
     "swagger-jsdoc": "^4.0.0",
     "swagger-ui-express": "^4.3.0",
     "ts-mock-imports": "^1.3.8",

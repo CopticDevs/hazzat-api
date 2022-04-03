@@ -1,0 +1,57 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
+
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+    - name: api-client-gen
+      # You may pin to the exact commit or the version.
+      # uses: ajupov/api-client-gen@f78dda155aff7f4f00f3a409d62991a4cad1df89
+      uses: ajupov/api-client-gen@v1
+      with:
+        # Path to swagger.json file
+        inputFile: "~/swaggerDoc.json"
+        # Path to output files folder
+        outputFolder: "~/output"
+        # Programming language for which clients will be generated
+        language: "typescript-fetch"
+    - name: release-npm-action
+      # You may pin to the exact commit or the version.
+      # uses: tobua/release-npm-action@0820c738c792a3be223f92de06179d12b8b0ce4c
+      uses: tobua/release-npm-action@v1.4.0
+      with:
+        # npm Automation token used to publish package.
+        NPM_TOKEN: 
+        # Used to create GitHub release with changelog contents.
+        GITHUB_TOKEN: # optional, default is ${{ github.token }}
+        # Optional release type for manually triggering release workflow.
+        MANUAL_TRIGGER: # optional
+        # The npm dist-tag for the release, default latest.
+        CHANNEL: # optional
+        # Run action for testing puroposes without publishing anything.
+        DRY_RUN: # optional
+        # Run semantic-release in debug mode.
+        DEBUG: # optional
+        # Pass action when release requested but skipped due to no relevant changes.
+        FAIL_ON_SKIP: # optional

@@ -1,4 +1,5 @@
 import * as express from "express";
+import * as cors from "cors";
 import { AddressInfo } from "net";
 import "reflect-metadata";
 import * as swaggerJSDoc from "swagger-jsdoc";
@@ -26,6 +27,8 @@ const tunesController = new TunesController(hymnsProvider);
 const bookletsController = new BookletsController(hymnsProvider);
 
 const app = express();
+app.use(cors());
+
 const port = configuration.port;
 
 const options = {

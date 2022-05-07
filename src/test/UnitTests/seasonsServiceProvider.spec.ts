@@ -1,6 +1,6 @@
 import * as chai from "chai";
 import { ImportMock, MockManager } from 'ts-mock-imports';
-import { Language } from "../../Common/Types/Language";
+import { ContentLanguage } from "../../Common/Types/ContentLanguage";
 import { IAudioContent, IHazzatContent, IInformationContent, IMusicalNotesContent, ITextContent, IVerticalHazzatContent, IVideoContent } from '../../Models/IVariationInfo';
 import { Constants as SqlConstants } from "../../Providers/DataProviders/SqlDataProvider/SqlConstants";
 import * as SqlDataProviderModule from '../../Providers/DataProviders/SqlDataProvider/SqlDataProvider';
@@ -251,13 +251,13 @@ describe("Seasons Service Provider Unit Tests", () => {
 
             variationContent.content.paragraphs[0].columns.forEach((col) => {
                 switch (col.language) {
-                    case Language.Arabic:
+                    case ContentLanguage.Arabic:
                         col.content.should.be.equal(contentDb.Content_Arabic);
                         break;
-                    case Language.Coptic:
+                    case ContentLanguage.Coptic:
                         col.content.should.be.equal(contentDb.Content_Coptic);
                         break;
-                    case Language.English:
+                    case ContentLanguage.English:
                         col.content.should.be.equal(contentDb.Content_English);
                         break;
                     default:
@@ -316,7 +316,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             variationContent.content.paragraphs.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns[0].content.should.be.equal(contentDb.Content_Arabic);
-            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.Arabic);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(ContentLanguage.Arabic);
         });
 
         it("should get a text with only Coptic paragraph", async () => {
@@ -335,7 +335,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             variationContent.content.paragraphs.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns[0].content.should.be.equal(contentDb.Content_Coptic);
-            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.Coptic);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(ContentLanguage.Coptic);
         });
 
         it("should get a text with only English paragraph", async () => {
@@ -354,7 +354,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             variationContent.content.paragraphs.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns[0].content.should.be.equal(contentDb.Content_English);
-            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.English);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(ContentLanguage.English);
         });
 
         it("should get a text with only English & Arabic only, multiple paragraphs", async () => {
@@ -390,10 +390,10 @@ describe("Seasons Service Provider Unit Tests", () => {
 
                 paragraph.columns.forEach((col) => {
                     switch (col.language) {
-                        case Language.Arabic:
+                        case ContentLanguage.Arabic:
                             col.content.should.be.equal(arabicParagraphs[i]);
                             break;
-                        case Language.English:
+                        case ContentLanguage.English:
                             col.content.should.be.equal(englishParagraphs[i]);
                             break;
                         default:
@@ -442,13 +442,13 @@ describe("Seasons Service Provider Unit Tests", () => {
 
             paragraph.columns.forEach((col) => {
                 switch (col.language) {
-                    case Language.Arabic:
+                    case ContentLanguage.Arabic:
                         col.content.should.be.equal(arabicParagraphs[pIdx]);
                         break;
-                    case Language.Coptic:
+                    case ContentLanguage.Coptic:
                         col.content.should.be.equal(copticParagraphs[pIdx]);
                         break;
-                    case Language.English:
+                    case ContentLanguage.English:
                         col.content.should.be.equal(englishParagraphs[pIdx]);
                         break;
                     default:
@@ -463,10 +463,10 @@ describe("Seasons Service Provider Unit Tests", () => {
 
             paragraph.columns.forEach((col) => {
                 switch (col.language) {
-                    case Language.Arabic:
+                    case ContentLanguage.Arabic:
                         col.content.should.be.equal(arabicParagraphs[pIdx]);
                         break;
-                    case Language.English:
+                    case ContentLanguage.English:
                         col.content.should.be.equal(englishParagraphs[pIdx]);
                         break;
                     default:
@@ -481,13 +481,13 @@ describe("Seasons Service Provider Unit Tests", () => {
 
             paragraph.columns.forEach((col) => {
                 switch (col.language) {
-                    case Language.Arabic:
+                    case ContentLanguage.Arabic:
                         col.content.should.be.equal(arabicParagraphs[pIdx]);
                         break;
-                    case Language.Coptic:
+                    case ContentLanguage.Coptic:
                         col.content.should.be.equal(copticParagraphs[pIdx]);
                         break;
-                    case Language.English:
+                    case ContentLanguage.English:
                         col.content.should.be.equal(englishParagraphs[pIdx]);
                         break;
                     default:
@@ -515,7 +515,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             variationContent.content.paragraphs.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
-            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.English);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(ContentLanguage.English);
         });
 
         it("should get a text with common Coptic content", async () => {
@@ -537,7 +537,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             variationContent.content.paragraphs.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
-            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.Coptic);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(ContentLanguage.Coptic);
         });
 
         it("should get a text with common Arabic content", async () => {
@@ -559,7 +559,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             variationContent.content.paragraphs.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
-            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.Arabic);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(ContentLanguage.Arabic);
         });
 
         it("should get a text with multiple common English content", async () => {
@@ -581,7 +581,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             variationContent.content.paragraphs.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
-            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.English);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(ContentLanguage.English);
         });
 
         it("should get a text with nested common English content", async () => {
@@ -613,7 +613,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             variationContent.content.paragraphs.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
-            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.English);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(ContentLanguage.English);
         });
 
         it("should get a text with English long reason content", async () => {
@@ -635,7 +635,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             variationContent.content.paragraphs.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
-            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.English);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(ContentLanguage.English);
         });
 
         it("should get a text with English short reason content", async () => {
@@ -657,7 +657,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             variationContent.content.paragraphs.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
-            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.English);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(ContentLanguage.English);
         });
 
         it("should get a text with Coptic long reason content", async () => {
@@ -679,7 +679,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             variationContent.content.paragraphs.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
-            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.Coptic);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(ContentLanguage.Coptic);
         });
 
         it("should get a text with Coptic short reason content", async () => {
@@ -701,7 +701,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             variationContent.content.paragraphs.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
-            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.Coptic);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(ContentLanguage.Coptic);
         });
 
         it("should get a text with Arabic long reason content", async () => {
@@ -723,7 +723,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             variationContent.content.paragraphs.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
-            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.Arabic);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(ContentLanguage.Arabic);
         });
 
         it("should get a text with Arabic short reason content", async () => {
@@ -745,7 +745,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             variationContent.content.paragraphs.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
-            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.Arabic);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(ContentLanguage.Arabic);
         });
 
         it("should get a text with common English content containing a reason", async () => {
@@ -769,7 +769,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             variationContent.content.paragraphs.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns.length.should.be.equal(1);
             variationContent.content.paragraphs[0].columns[0].content.should.be.equal(expectedContent);
-            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(Language.English);
+            variationContent.content.paragraphs[0].columns[0].language.should.be.equal(ContentLanguage.English);
         });
     });
 

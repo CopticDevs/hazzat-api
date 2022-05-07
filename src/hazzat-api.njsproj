@@ -40,7 +40,8 @@
   <ItemGroup>
     <TypeScriptCompile Include="Common\HttpError.ts" />
     <TypeScriptCompile Include="Common\Errors.ts" />
-    <TypeScriptCompile Include="Common\Types\Language.ts" />
+    <TypeScriptCompile Include="Common\Types\ServiceLanguage.ts" />
+    <TypeScriptCompile Include="Common\Types\ContentLanguage.ts" />
     <TypeScriptCompile Include="Common\Types\FormatType.ts" />
     <TypeScriptCompile Include="Common\Types\StringMap.ts" />
     <TypeScriptCompile Include="Common\Utils\IRetryPolicy.ts" />

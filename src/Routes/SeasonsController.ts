@@ -1,11 +1,19 @@
 import * as express from "express";
+import { inject } from "inversify";
+import { IConfiguration } from "../Common/Configuration";
 import { IHymnsServiceProvider } from "../Providers/ServiceProviders/IHymnsServiceProvider";
+import { TYPES } from "../types";
 import { BaseController } from "./BaseController";
 import { ResourceTypes } from "./ResourceTypes";
 
 export class SeasonsController extends BaseController {
-    constructor(hymnsServiceProvider: IHymnsServiceProvider) {
+    private configuration: IConfiguration;
+
+    constructor(
+        hymnsServiceProvider: IHymnsServiceProvider,
+        configuration: IConfiguration) {
         super();
+        this.configuration = configuration;
 
         /**
          * @swagger

@@ -1,11 +1,12 @@
-import * as express from "express";
 import * as cors from "cors";
+import * as express from "express";
 import { AddressInfo } from "net";
 import "reflect-metadata";
 import * as swaggerJSDoc from "swagger-jsdoc";
 import * as swaggerUI from "swagger-ui-express";
 import { IConfiguration } from "./Common/Configuration";
 import { HttpError } from "./Common/HttpError";
+import { LanguageHelpers } from "./Common/Utils/LanguageHelpers";
 import { logger } from "./Common/Utils/Logger";
 import { myContainer } from "./inversify.config";
 import { IHymnsServiceProvider } from "./Providers/ServiceProviders/IHymnsServiceProvider";
@@ -21,7 +22,7 @@ const configuration: IConfiguration = myContainer.get<IConfiguration>(TYPES.ICon
 const hymnsProvider: IHymnsServiceProvider = myContainer.get<IHymnsServiceProvider>(TYPES.IHymnsServiceProvider);
 
 const homeController = new HomeController();
-const seasonsController = new SeasonsController(hymnsProvider);
+const seasonsController = new SeasonsController(hymnsProvider, configuration);
 const typesController = new TypesController(hymnsProvider);
 const tunesController = new TunesController(hymnsProvider);
 const bookletsController = new BookletsController(hymnsProvider);
@@ -46,9 +47,17 @@ const swaggerSpec = swaggerJSDoc(options);
 
 // Log requests
 app.use((req, res, next) => {
+    logger.debug("Request Language: " + req.get('Accept-Language'));
     logger.info(req.url);
     next();
 });
+
+// accepted languages
+app.use((req, res, next) => {
+    console.log(LanguageHelpers.getResponseLanguage(req, configuration));
+    next();
+});
+
 
 // Log errors
 app.use((err, req, res, next) => {

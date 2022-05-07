@@ -2,8 +2,10 @@ import { injectable } from "inversify";
 import * as nconf from "nconf";
 
 export interface IConfiguration {
-    port: string;
-    dbConnectionString: string;
+    readonly acceptedLanguages: string[];
+    readonly fallbackLanguage: string;
+    readonly port: string;
+    readonly dbConnectionString: string;
 }
 
 /*
@@ -25,6 +27,8 @@ export class Configuration implements IConfiguration {
         Configuration.configKeys.databaseUsername
     ];
 
+    public acceptedLanguages: string[];
+    public fallbackLanguage: string;
     public port: string;
     public dbConnectionString: string;
 
@@ -53,5 +57,7 @@ export class Configuration implements IConfiguration {
         this.dbConnectionString =
             process.env.CUSTOMCONNSTR_DBCONNECTIONSTRING ||
             `mssql://${dbUser}:${dbPass}@${dbServer}/${dbName}?encrypt=true`;
+        this.acceptedLanguages = ["en", "ar"];
+        this.fallbackLanguage = "en";
     }
 }

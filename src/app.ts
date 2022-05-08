@@ -1,5 +1,5 @@
-import * as express from "express";
 import * as cors from "cors";
+import * as express from "express";
 import { AddressInfo } from "net";
 import "reflect-metadata";
 import * as swaggerJSDoc from "swagger-jsdoc";
@@ -21,7 +21,7 @@ const configuration: IConfiguration = myContainer.get<IConfiguration>(TYPES.ICon
 const hymnsProvider: IHymnsServiceProvider = myContainer.get<IHymnsServiceProvider>(TYPES.IHymnsServiceProvider);
 
 const homeController = new HomeController();
-const seasonsController = new SeasonsController(hymnsProvider);
+const seasonsController = new SeasonsController(hymnsProvider, configuration);
 const typesController = new TypesController(hymnsProvider);
 const tunesController = new TunesController(hymnsProvider);
 const bookletsController = new BookletsController(hymnsProvider);
@@ -46,6 +46,7 @@ const swaggerSpec = swaggerJSDoc(options);
 
 // Log requests
 app.use((req, res, next) => {
+    logger.debug("Request Language: " + req.get('Accept-Language'));
     logger.info(req.url);
     next();
 });

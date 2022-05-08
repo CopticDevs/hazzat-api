@@ -2,7 +2,9 @@ export namespace HazzatDbSchema {
     export interface ISeason {
         ItemId: number;
         Name: string;
+        Name_Arabic: string;
         Verse: string;
+        Verse_Arabic: string;
         Season_Order: number;
         Reason_ID: number;
         Reason_Name: string;

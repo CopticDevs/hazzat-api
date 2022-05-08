@@ -1,5 +1,6 @@
 ﻿ import { ErrorCodes, HazzatApplicationError } from "../../../Common/Errors";
-import { Language } from "../../../Common/Types/Language";
+import { ContentLanguage } from "../../../Common/Types/ContentLanguage";
+import { ServiceLanguage } from "../../../Common/Types/ServiceLanguage";
 import { IBookletInfo } from "../../../Models/IBookletInfo";
 import { IFormatInfo } from "../../../Models/IFormatInfo";
 import { IHymnInfo, IHymnInfoWithServiceDetails } from "../../../Models/IHymnInfo";
@@ -18,25 +19,27 @@ import { Constants } from "../../DataProviders/SqlDataProvider/SqlConstants";
  */
 export class HazzatContentUtils {
 
-    public static convertSeasonDbItemToSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason): ISeasonInfo {
-        return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(seasonDbItem, `/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
+    public static convertSeasonDbItemToSeasonInfo(lang: ServiceLanguage, seasonDbItem: HazzatDbSchema.ISeason): ISeasonInfo {
+        return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(lang, seasonDbItem, `/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
     }
 
     public static convertSeasonDbItemToTuneSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason, tuneId: string): ISeasonInfo {
-        return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(seasonDbItem, `/${ResourceTypes.Tunes}/${tuneId}/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
+        return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(ServiceLanguage.English, seasonDbItem, `/${ResourceTypes.Tunes}/${tuneId}/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
     }
 
     public static convertSeasonDbItemToTypeSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason, typeId: string): ISeasonInfo {
-        return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(seasonDbItem, `/${ResourceTypes.Types}/${typeId}/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
+        return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(ServiceLanguage.English, seasonDbItem, `/${ResourceTypes.Types}/${typeId}/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
     }
 
-    private static _convertSeasonDbItemToSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason, id: string): ISeasonInfo {
+    private static _convertSeasonDbItemToSeasonInfo(lang: ServiceLanguage, seasonDbItem: HazzatDbSchema.ISeason, id: string): ISeasonInfo {
+        const name = lang === ServiceLanguage.Arabic ? seasonDbItem.Name_Arabic : seasonDbItem.Name;
+        const verse = lang === ServiceLanguage.Arabic ? seasonDbItem.Verse_Arabic : seasonDbItem.Verse;
         return {
             id,
             isDateSpecific: seasonDbItem.Date_Specific,
-            name: seasonDbItem.Name,
+            name,
             order: seasonDbItem.Season_Order,
-            verse: seasonDbItem.Verse
+            verse
         };
     }
 
@@ -167,7 +170,7 @@ export class HazzatContentUtils {
         return result;
     }
 
-    private static async _replaceReason(content: string, language: Language, getReasonFunc: () => Promise<HazzatDbSchema.IReason>): Promise<string> {
+    private static async _replaceReason(content: string, language: ContentLanguage, getReasonFunc: () => Promise<HazzatDbSchema.IReason>): Promise<string> {
         if (!content) {
             return Promise.resolve(content);
         }
@@ -189,15 +192,15 @@ export class HazzatContentUtils {
         let shortReason: string;
 
         switch (language) {
-            case Language.English:
+            case ContentLanguage.English:
                 longReason = reasonInfo.Long_English;
                 shortReason = reasonInfo.Short_English;
                 break;
-            case Language.Coptic:
+            case ContentLanguage.Coptic:
                 longReason = reasonInfo.Long_Coptic;
                 shortReason = reasonInfo.Short_Coptic;
                 break;
-            case Language.Arabic:
+            case ContentLanguage.Arabic:
                 longReason = reasonInfo.Long_Arabic;
                 shortReason = reasonInfo.Short_Arabic;
                 break;
@@ -230,7 +233,7 @@ export class HazzatContentUtils {
      * @param language The content language
      * @param getReasonFunc A method to get the reason info.
      */
-    private static async _prepareTextContent(content: string, language: Language, dataProvider: IDataProvider, getReasonFunc: () => Promise<HazzatDbSchema.IReason>): Promise<string[]> {
+    private static async _prepareTextContent(content: string, language: ContentLanguage, dataProvider: IDataProvider, getReasonFunc: () => Promise<HazzatDbSchema.IReason>): Promise<string[]> {
         let fixedContent = content;
 
         // Replace references to common content
@@ -264,7 +267,7 @@ export class HazzatContentUtils {
         return false;
     }
 
-    private static _getCommentColumn(paragraphs: string[], language: Language): TextColumn {
+    private static _getCommentColumn(paragraphs: string[], language: ContentLanguage): TextColumn {
         if (!HazzatContentUtils._peekHasComment(paragraphs)) {
             return null;
         }
@@ -286,7 +289,7 @@ export class HazzatContentUtils {
         };
     }
 
-    private static _getTextColumn(paragraphs: string[], language: Language): TextColumn {
+    private static _getTextColumn(paragraphs: string[], language: ContentLanguage): TextColumn {
         if (!paragraphs || paragraphs.length === 0) {
             return null;
         }
@@ -311,9 +314,9 @@ export class HazzatContentUtils {
         dataProvider: IDataProvider,
         getReasonFunc: () => Promise<HazzatDbSchema.IReason>): Promise<TextParagraph[]> {
 
-        const englishParagraphs = await HazzatContentUtils._prepareTextContent(englishText, Language.English, dataProvider, getReasonFunc);
-        const copticParagraphs = await HazzatContentUtils._prepareTextContent(copticText, Language.Coptic, dataProvider, getReasonFunc);
-        const arabicParagraphs = await HazzatContentUtils._prepareTextContent(arabicText, Language.Arabic, dataProvider, getReasonFunc);
+        const englishParagraphs = await HazzatContentUtils._prepareTextContent(englishText, ContentLanguage.English, dataProvider, getReasonFunc);
+        const copticParagraphs = await HazzatContentUtils._prepareTextContent(copticText, ContentLanguage.Coptic, dataProvider, getReasonFunc);
+        const arabicParagraphs = await HazzatContentUtils._prepareTextContent(arabicText, ContentLanguage.Arabic, dataProvider, getReasonFunc);
         const result: TextParagraph[] = [];
 
         // keep processing while there's content left
@@ -332,14 +335,14 @@ export class HazzatContentUtils {
                 HazzatContentUtils._peekHasComment(arabicParagraphs)) {
                 // These calls will only extract the comment from the languages that have it.  Otherwise
                 // it'll return null
-                englishColumn = HazzatContentUtils._getCommentColumn(englishParagraphs, Language.English);
-                copticColumn = HazzatContentUtils._getCommentColumn(copticParagraphs, Language.Coptic);
-                arabicColumn = HazzatContentUtils._getCommentColumn(arabicParagraphs, Language.Arabic);
+                englishColumn = HazzatContentUtils._getCommentColumn(englishParagraphs, ContentLanguage.English);
+                copticColumn = HazzatContentUtils._getCommentColumn(copticParagraphs, ContentLanguage.Coptic);
+                arabicColumn = HazzatContentUtils._getCommentColumn(arabicParagraphs, ContentLanguage.Arabic);
                 isComment = true;
             } else {
-                englishColumn = HazzatContentUtils._getTextColumn(englishParagraphs, Language.English);
-                copticColumn = HazzatContentUtils._getTextColumn(copticParagraphs, Language.Coptic);
-                arabicColumn = HazzatContentUtils._getTextColumn(arabicParagraphs, Language.Arabic);
+                englishColumn = HazzatContentUtils._getTextColumn(englishParagraphs, ContentLanguage.English);
+                copticColumn = HazzatContentUtils._getTextColumn(copticParagraphs, ContentLanguage.Coptic);
+                arabicColumn = HazzatContentUtils._getTextColumn(arabicParagraphs, ContentLanguage.Arabic);
             }
 
             const paragraph: TextParagraph = {

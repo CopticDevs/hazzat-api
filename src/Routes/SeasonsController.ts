@@ -1,6 +1,7 @@
 import * as express from "express";
 import { inject } from "inversify";
 import { IConfiguration } from "../Common/Configuration";
+import { LanguageHelpers } from "../Common/Utils/LanguageHelpers";
 import { IHymnsServiceProvider } from "../Providers/ServiceProviders/IHymnsServiceProvider";
 import { TYPES } from "../types";
 import { BaseController } from "./BaseController";
@@ -51,7 +52,7 @@ export class SeasonsController extends BaseController {
          */
         this.router.get("/", async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getSeasonList();
+                const result = await hymnsServiceProvider.getSeasonList(LanguageHelpers.getResponseLanguage(req, configuration));
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -92,7 +93,9 @@ export class SeasonsController extends BaseController {
          */
         this.router.get("/:seasonId(\\d+)", async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getSeason(req.params.seasonId);
+                const result = await hymnsServiceProvider.getSeason(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.seasonId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

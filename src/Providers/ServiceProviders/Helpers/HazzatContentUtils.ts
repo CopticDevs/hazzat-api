@@ -1,5 +1,6 @@
 ﻿ import { ErrorCodes, HazzatApplicationError } from "../../../Common/Errors";
 import { ContentLanguage } from "../../../Common/Types/ContentLanguage";
+import { ServiceLanguage } from "../../../Common/Types/ServiceLanguage";
 import { IBookletInfo } from "../../../Models/IBookletInfo";
 import { IFormatInfo } from "../../../Models/IFormatInfo";
 import { IHymnInfo, IHymnInfoWithServiceDetails } from "../../../Models/IHymnInfo";
@@ -18,25 +19,27 @@ import { Constants } from "../../DataProviders/SqlDataProvider/SqlConstants";
  */
 export class HazzatContentUtils {
 
-    public static convertSeasonDbItemToSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason): ISeasonInfo {
-        return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(seasonDbItem, `/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
+    public static convertSeasonDbItemToSeasonInfo(lang: ServiceLanguage, seasonDbItem: HazzatDbSchema.ISeason): ISeasonInfo {
+        return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(lang, seasonDbItem, `/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
     }
 
     public static convertSeasonDbItemToTuneSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason, tuneId: string): ISeasonInfo {
-        return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(seasonDbItem, `/${ResourceTypes.Tunes}/${tuneId}/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
+        return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(ServiceLanguage.English, seasonDbItem, `/${ResourceTypes.Tunes}/${tuneId}/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
     }
 
     public static convertSeasonDbItemToTypeSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason, typeId: string): ISeasonInfo {
-        return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(seasonDbItem, `/${ResourceTypes.Types}/${typeId}/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
+        return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(ServiceLanguage.English, seasonDbItem, `/${ResourceTypes.Types}/${typeId}/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
     }
 
-    private static _convertSeasonDbItemToSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason, id: string): ISeasonInfo {
+    private static _convertSeasonDbItemToSeasonInfo(lang: ServiceLanguage, seasonDbItem: HazzatDbSchema.ISeason, id: string): ISeasonInfo {
+        const name = lang === ServiceLanguage.English ? seasonDbItem.Name : seasonDbItem.Name_Arabic;
+        const verse = lang === ServiceLanguage.English ? seasonDbItem.Verse : seasonDbItem.Verse_Arabic;
         return {
             id,
             isDateSpecific: seasonDbItem.Date_Specific,
-            name: seasonDbItem.Name,
+            name,
             order: seasonDbItem.Season_Order,
-            verse: seasonDbItem.Verse
+            verse
         };
     }
 

@@ -1,6 +1,8 @@
 import * as chai from "chai";
+import { assert } from "chai";
 import { ImportMock, MockManager } from 'ts-mock-imports';
 import { ContentLanguage } from "../../Common/Types/ContentLanguage";
+import { ServiceLanguage } from "../../Common/Types/ServiceLanguage";
 import { IAudioContent, IHazzatContent, IInformationContent, IMusicalNotesContent, ITextContent, IVerticalHazzatContent, IVideoContent } from '../../Models/IVariationInfo';
 import { Constants as SqlConstants } from "../../Providers/DataProviders/SqlDataProvider/SqlConstants";
 import * as SqlDataProviderModule from '../../Providers/DataProviders/SqlDataProvider/SqlDataProvider';
@@ -32,7 +34,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getSeasonList', SqlDataProviderMock.getDbSeasonsList());
 
-            const seasonsList = await hymnsProvider.getSeasonList();
+            const seasonsList = await hymnsProvider.getSeasonList(ServiceLanguage.English);
             Validators.validateArray(seasonsList);
             seasonsList.length.should.be.eql(3);
             seasonsList.forEach((season) => Validators.validateSeason(season));
@@ -42,8 +44,32 @@ describe("Seasons Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getSeasonList', []);
 
-            const seasonsList = await hymnsProvider.getSeasonList();
+            const seasonsList = await hymnsProvider.getSeasonList(ServiceLanguage.English);
             Validators.validateArray(seasonsList, true);
+        });
+
+        it("should get all seasons with English results", async () => {
+            // Setup mocked result
+            mockManager.mock('getSeasonList', SqlDataProviderMock.getDbSeasonsList());
+
+            const seasonsList = await hymnsProvider.getSeasonList(ServiceLanguage.English);
+            Validators.validateArray(seasonsList);
+            seasonsList.length.should.be.eql(3);
+            seasonsList.forEach((season) => Validators.validateSeason(season));
+            assert.equal(seasonsList[0].name, SqlDataProviderMock.getDbSeasonsList()[0].Name);
+            assert.equal(seasonsList[0].verse, SqlDataProviderMock.getDbSeasonsList()[0].Verse);
+        });
+
+        it("should get all seasons with Arabic results", async () => {
+            // Setup mocked result
+            mockManager.mock('getSeasonList', SqlDataProviderMock.getDbSeasonsList());
+
+            const seasonsList = await hymnsProvider.getSeasonList(ServiceLanguage.Arabic);
+            Validators.validateArray(seasonsList);
+            seasonsList.length.should.be.eql(3);
+            seasonsList.forEach((season) => Validators.validateSeason(season));
+            assert.equal(seasonsList[0].name, SqlDataProviderMock.getDbSeasonsList()[0].Name_Arabic);
+            assert.equal(seasonsList[0].verse, SqlDataProviderMock.getDbSeasonsList()[0].Verse_Arabic);
         });
     });
 
@@ -52,7 +78,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getSeason', SqlDataProviderMock.getDbSeason());
 
-            const season = await hymnsProvider.getSeason("seasonId");
+            const season = await hymnsProvider.getSeason(ServiceLanguage.English, "seasonId");
             Validators.validateObject(season);
             Validators.validateSeason(season);
         });
@@ -61,7 +87,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getSeason', SqlDataProviderMock.getDbSeason(true));
 
-            const season = await hymnsProvider.getSeason("seasonId");
+            const season = await hymnsProvider.getSeason(ServiceLanguage.English, "seasonId");
             Validators.validateObject(season);
             Validators.validateSeason(season);
             chai.assert(season.isDateSpecific);
@@ -71,10 +97,32 @@ describe("Seasons Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getSeason', SqlDataProviderMock.getDbSeason(false));
 
-            const season = await hymnsProvider.getSeason("seasonId");
+            const season = await hymnsProvider.getSeason(ServiceLanguage.English, "seasonId");
             Validators.validateObject(season);
             Validators.validateSeason(season);
             chai.assert(!season.isDateSpecific);
+        });
+
+        it("should get a single season in English", async () => {
+            // Setup mocked result
+            mockManager.mock('getSeason', SqlDataProviderMock.getDbSeason());
+
+            const season = await hymnsProvider.getSeason(ServiceLanguage.English, "seasonId");
+            Validators.validateObject(season);
+            Validators.validateSeason(season);
+            assert.equal(season.name, SqlDataProviderMock.getDbSeason().Name);
+            assert.equal(season.verse, SqlDataProviderMock.getDbSeason().Verse);
+        });
+
+        it("should get a single season in Arabic", async () => {
+            // Setup mocked result
+            mockManager.mock('getSeason', SqlDataProviderMock.getDbSeason());
+
+            const season = await hymnsProvider.getSeason(ServiceLanguage.Arabic, "seasonId");
+            Validators.validateObject(season);
+            Validators.validateSeason(season);
+            assert.equal(season.name, SqlDataProviderMock.getDbSeason().Name_Arabic);
+            assert.equal(season.verse, SqlDataProviderMock.getDbSeason().Verse_Arabic);
         });
     });
 

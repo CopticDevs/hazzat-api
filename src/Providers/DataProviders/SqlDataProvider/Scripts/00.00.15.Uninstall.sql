@@ -1,7 +1,7 @@
 ALTER TABLE dbo.Hymns_Seasons
 DROP COLUMN
-	Name_Arabic,
-	Verse_Arabic;
+    Name_Arabic,
+    Verse_Arabic;
 
 
 /****** Object:  StoredProcedure [dbo].[Hymns_SeasonListSelectAll]    Script Date: 5/7/2022 7:30:03 PM ******/
@@ -25,7 +25,7 @@ BEGIN
         [dbo].[Hymns_Seasons].[Date_Specific]
     FROM
         [dbo].[Hymns_Seasons]
-		INNER JOIN [dbo].[Hymns_Reasons] ON [dbo].[Hymns_Seasons].[Reason_ID] = [dbo].[Hymns_Reasons].[ID]
+        INNER JOIN [dbo].[Hymns_Reasons] ON [dbo].[Hymns_Seasons].[Reason_ID] = [dbo].[Hymns_Reasons].[ID]
     ORDER BY [dbo].[Hymns_Seasons].[Season_Order]
 
 END 
@@ -54,10 +54,10 @@ BEGIN
         [dbo].[Hymns_Seasons].[Season_Order],
         [dbo].[Hymns_Seasons].[Reason_ID],
         [dbo].[Hymns_Reasons].[Name] AS Reason_Name,
-		[dbo].[Hymns_Seasons].[Date_Specific]
+        [dbo].[Hymns_Seasons].[Date_Specific]
     FROM
         [dbo].[Hymns_Seasons]
-		INNER JOIN [dbo].[Hymns_Reasons] ON [dbo].[Hymns_Seasons].[Reason_ID] = [dbo].[Hymns_Reasons].[ID]
+        INNER JOIN [dbo].[Hymns_Reasons] ON [dbo].[Hymns_Seasons].[Reason_ID] = [dbo].[Hymns_Reasons].[ID]
 	WHERE
 	    [dbo].[Hymns_Seasons].[ID] = @Season_ID
 END 

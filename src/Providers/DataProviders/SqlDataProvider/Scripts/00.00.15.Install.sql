@@ -1,7 +1,7 @@
 ALTER TABLE dbo.Hymns_Seasons
 ADD
-	Name_Arabic [nvarchar](255) NOT NULL,
-	Verse_Arabic [nvarchar](max);
+    Name_Arabic [nvarchar](255) NOT NULL,
+    Verse_Arabic [nvarchar](max);
 
 
 /****** Object:  StoredProcedure [dbo].[Hymns_SeasonListSelectAll]    Script Date: 5/7/2022 7:30:03 PM ******/
@@ -18,9 +18,9 @@ BEGIN
     SELECT
         [dbo].[Hymns_Seasons].[ID] AS ItemId,
         [dbo].[Hymns_Seasons].[Name],
-		[dbo].[Hymns_Seasons].[Name_Arabic],
+        [dbo].[Hymns_Seasons].[Name_Arabic],
         [dbo].[Hymns_Seasons].[Verse],
-		[dbo].[Hymns_Seasons].[Verse_Arabic],
+        [dbo].[Hymns_Seasons].[Verse_Arabic],
         [dbo].[Hymns_Seasons].[Season_Order],
         [dbo].[Hymns_Seasons].[Reason_ID],
         [dbo].[Hymns_Reasons].[Name] AS Reason_Name,
@@ -52,16 +52,16 @@ BEGIN
     SELECT
         [dbo].[Hymns_Seasons].[ID] AS ItemId,
         [dbo].[Hymns_Seasons].[Name],
-		[dbo].[Hymns_Seasons].[Name_Arabic],
+        [dbo].[Hymns_Seasons].[Name_Arabic],
         [dbo].[Hymns_Seasons].[Verse],
-		[dbo].[Hymns_Seasons].[Verse_Arabic],
+        [dbo].[Hymns_Seasons].[Verse_Arabic],
         [dbo].[Hymns_Seasons].[Season_Order],
         [dbo].[Hymns_Seasons].[Reason_ID],
         [dbo].[Hymns_Reasons].[Name] AS Reason_Name,
-		[dbo].[Hymns_Seasons].[Date_Specific]
+        [dbo].[Hymns_Seasons].[Date_Specific]
     FROM
         [dbo].[Hymns_Seasons]
-		INNER JOIN [dbo].[Hymns_Reasons] ON [dbo].[Hymns_Seasons].[Reason_ID] = [dbo].[Hymns_Reasons].[ID]
+        INNER JOIN [dbo].[Hymns_Reasons] ON [dbo].[Hymns_Seasons].[Reason_ID] = [dbo].[Hymns_Reasons].[ID]
 	WHERE
 	    [dbo].[Hymns_Seasons].[ID] = @Season_ID
 END 

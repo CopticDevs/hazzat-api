@@ -6,7 +6,6 @@ import * as swaggerJSDoc from "swagger-jsdoc";
 import * as swaggerUI from "swagger-ui-express";
 import { IConfiguration } from "./Common/Configuration";
 import { HttpError } from "./Common/HttpError";
-import { LanguageHelpers } from "./Common/Utils/LanguageHelpers";
 import { logger } from "./Common/Utils/Logger";
 import { myContainer } from "./inversify.config";
 import { IHymnsServiceProvider } from "./Providers/ServiceProviders/IHymnsServiceProvider";
@@ -51,13 +50,6 @@ app.use((req, res, next) => {
     logger.info(req.url);
     next();
 });
-
-// accepted languages
-app.use((req, res, next) => {
-    console.log(LanguageHelpers.getResponseLanguage(req, configuration));
-    next();
-});
-
 
 // Log errors
 app.use((err, req, res, next) => {

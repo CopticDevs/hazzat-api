@@ -27,7 +27,7 @@
     <NodejsPort>1337</NodejsPort>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
     <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
-    <TypeScriptToolsVersion>4.5</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>4.6</TypeScriptToolsVersion>
     <EnableTypeScript>true</EnableTypeScript>
     <StartWebBrowser>True</StartWebBrowser>
   </PropertyGroup>
@@ -40,10 +40,12 @@
   <ItemGroup>
     <TypeScriptCompile Include="Common\HttpError.ts" />
     <TypeScriptCompile Include="Common\Errors.ts" />
-    <TypeScriptCompile Include="Common\Types\Language.ts" />
+    <TypeScriptCompile Include="Common\Types\ServiceLanguage.ts" />
+    <TypeScriptCompile Include="Common\Types\ContentLanguage.ts" />
     <TypeScriptCompile Include="Common\Types\FormatType.ts" />
     <TypeScriptCompile Include="Common\Types\StringMap.ts" />
     <TypeScriptCompile Include="Common\Utils\IRetryPolicy.ts" />
+    <TypeScriptCompile Include="Common\Utils\LanguageHelpers.ts" />
     <TypeScriptCompile Include="Common\Utils\OperationExecutor.ts" />
     <TypeScriptCompile Include="Common\Utils\AsyncDelayer.ts" />
     <TypeScriptCompile Include="Common\Utils\MeasureDecorator.ts" />
@@ -67,6 +69,7 @@
     <TypeScriptCompile Include="Routes\TunesController.ts" />
     <TypeScriptCompile Include="Routes\TypesController.ts" />
     <TypeScriptCompile Include="test\E2ETests\booklets.spec.ts" />
+    <TypeScriptCompile Include="test\E2ETests\localization.spec.ts" />
     <TypeScriptCompile Include="test\Helpers\ApiValidator.ts" />
     <TypeScriptCompile Include="test\E2ETests\TestConfiguration.ts" />
     <TypeScriptCompile Include="test\E2ETests\seasons.spec.ts" />
@@ -75,6 +78,7 @@
     <TypeScriptCompile Include="test\Helpers\SqlDataProviderMock.ts" />
     <TypeScriptCompile Include="test\Helpers\Validators.ts" />
     <TypeScriptCompile Include="test\IntegrationTests\booklets.spec.ts" />
+    <TypeScriptCompile Include="test\IntegrationTests\localization.spec.ts" />
     <TypeScriptCompile Include="test\UnitTests\operationExecutor.spec.ts" />
     <TypeScriptCompile Include="test\UnitTests\bookletsServiceProvider.spec.ts" />
     <TypeScriptCompile Include="test\UnitTests\seasonsServiceProvider.spec.ts" />
@@ -99,6 +103,8 @@
     <TypeScriptCompile Include="Routes\HomeController.ts" />
     <TypeScriptCompile Include="Routes\SeasonsController.ts" />
     <Content Include="Configs\prod.json" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.15.Uninstall.sql" />
+    <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.15.Install.sql" />
     <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.14.Uninstall.sql" />
     <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.14.Install.sql" />
     <Content Include="Providers\DataProviders\SqlDataProvider\Scripts\00.00.13.Uninstall.sql" />

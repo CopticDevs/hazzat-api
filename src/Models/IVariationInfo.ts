@@ -1,4 +1,4 @@
-﻿import { Language } from "../Common/Types/Language";
+﻿import { ContentLanguage } from "../Common/Types/ContentLanguage";
 
 export const enum ContentType {
     TextContent = "TextContent",
@@ -12,7 +12,7 @@ export const enum ContentType {
 
 export interface TextColumn {
     content: string;
-    language: Language;
+    language: ContentLanguage;
 }
 
 export interface TextParagraph {

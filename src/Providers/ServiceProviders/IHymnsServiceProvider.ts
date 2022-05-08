@@ -1,4 +1,5 @@
-﻿import { IBookletInfo } from "../../Models/IBookletInfo";
+﻿import { ServiceLanguage } from "../../Common/Types/ServiceLanguage";
+import { IBookletInfo } from "../../Models/IBookletInfo";
 import { IFormatInfo } from "../../Models/IFormatInfo";
 import { IHymnInfo, IHymnInfoWithServiceDetails } from "../../Models/IHymnInfo";
 import { ISeasonInfo } from "../../Models/ISeasonInfo";
@@ -11,8 +12,8 @@ import { IHymnContent, IVariationInfo } from "../../Models/IVariationInfo";
  * Hymns Provider Interface
  */
 export interface IHymnsServiceProvider {
-    getSeasonList(): Promise<ISeasonInfo[]>;
-    getSeason(seasonId: string): Promise<ISeasonInfo>;
+    getSeasonList(lang: ServiceLanguage): Promise<ISeasonInfo[]>;
+    getSeason(lang: ServiceLanguage, seasonId: string): Promise<ISeasonInfo>;
 
     getSeasonServiceList(seasonId: string): Promise<IServiceInfo[]>;
     getSeasonService(seasonId: string, serviceId: string): Promise<IServiceInfo>;

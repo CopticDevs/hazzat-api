@@ -1,4 +1,5 @@
 ﻿ import { inject, injectable } from "inversify";
+import { ServiceLanguage } from "../../Common/Types/ServiceLanguage";
 import { measure } from "../../Common/Utils/MeasureDecorator";
 import { IBookletInfo } from "../../Models/IBookletInfo";
 import { IFormatInfo } from "../../Models/IFormatInfo";
@@ -27,18 +28,18 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
     }
 
     @measure
-    public async getSeasonList(): Promise<ISeasonInfo[]> {
+    public async getSeasonList(lang: ServiceLanguage): Promise<ISeasonInfo[]> {
         const dbResult = await this._dataProvider.getSeasonList();
 
         const seasons: ISeasonInfo[] = dbResult
-            .map((row) => HazzatContentUtils.convertSeasonDbItemToSeasonInfo(row));
+            .map((row) => HazzatContentUtils.convertSeasonDbItemToSeasonInfo(lang, row));
         return seasons;
     }
 
     @measure
-    public async getSeason(seasonId: string): Promise<ISeasonInfo> {
+    public async getSeason(lang: ServiceLanguage, seasonId: string): Promise<ISeasonInfo> {
         const dbResult = await this._dataProvider.getSeason(seasonId);
-        return HazzatContentUtils.convertSeasonDbItemToSeasonInfo(dbResult);
+        return HazzatContentUtils.convertSeasonDbItemToSeasonInfo(lang, dbResult);
     }
 
     @measure

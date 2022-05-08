@@ -1,5 +1,4 @@
-export enum Language {
+export enum ServiceLanguage {
     English = "English",
-    Coptic = "Coptic",
     Arabic = "Arabic"
 }

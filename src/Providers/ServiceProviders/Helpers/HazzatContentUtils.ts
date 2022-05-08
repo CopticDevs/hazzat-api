@@ -32,8 +32,8 @@ export class HazzatContentUtils {
     }
 
     private static _convertSeasonDbItemToSeasonInfo(lang: ServiceLanguage, seasonDbItem: HazzatDbSchema.ISeason, id: string): ISeasonInfo {
-        const name = lang === ServiceLanguage.English ? seasonDbItem.Name : seasonDbItem.Name_Arabic;
-        const verse = lang === ServiceLanguage.English ? seasonDbItem.Verse : seasonDbItem.Verse_Arabic;
+        const name = lang === ServiceLanguage.Arabic ? seasonDbItem.Name_Arabic : seasonDbItem.Name;
+        const verse = lang === ServiceLanguage.Arabic ? seasonDbItem.Verse_Arabic : seasonDbItem.Verse;
         return {
             id,
             isDateSpecific: seasonDbItem.Date_Specific,

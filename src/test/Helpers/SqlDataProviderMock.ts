@@ -4,34 +4,34 @@ export class SqlDataProviderMock {
     private static _season1: HazzatDbSchema.ISeason = {
         ItemId: 1,
         Name: "First Season",
-        Name_Arabic: "?????? ?????",
+        Name_Arabic: "الموسم الأول",
         Date_Specific: true,
         Reason_ID: 2,
         Reason_Name: "Some Reason Name",
         Verse: "First Verse",
-        Verse_Arabic: "????? ??????",
+        Verse_Arabic: "الأية الأولى",
         Season_Order: 1
     };
     private static _season2: HazzatDbSchema.ISeason = {
         ItemId: 5,
         Name: "Second Season",
-        Name_Arabic: "?????? ???????",
+        Name_Arabic: "الموسم الثاني",
         Date_Specific: true,
         Reason_ID: 2,
         Reason_Name: "Some Reason Name",
         Verse: "Second Verse",
-        Verse_Arabic: "????? ????????",
+        Verse_Arabic: "الأية الثانية",
         Season_Order: 2
     };
     private static _season3: HazzatDbSchema.ISeason = {
         ItemId: 4,
         Name: "Third Season",
-        Name_Arabic: "?????? ??????",
+        Name_Arabic: "الموسم الثالث",
         Date_Specific: false,
         Reason_ID: 3,
         Reason_Name: "Some Other Reason Name",
         Verse: "Third Verse",
-        Verse_Arabic: "????? ???????",
+        Verse_Arabic: "الأية الثالثة",
         Season_Order: 3
     };
 

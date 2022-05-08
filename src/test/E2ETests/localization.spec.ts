@@ -62,7 +62,7 @@ describe("Localization Tests", () => {
             const resourceId = `/${ResourceTypes.Seasons}/2`;
             const response: AxiosResponse<ISeasonInfo> = await axios.get(
                 `${tc.baseTestUrl}${resourceId}`,
-                { headers: { "Accept-Language": "en" } });
+                { headers: { "Accept-Language": "fr" } });
 
             Validators.validateObject(response.data);
             Validators.validateSeason(response.data, resourceId);

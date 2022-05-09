@@ -15,8 +15,8 @@ export interface IHymnsServiceProvider {
     getSeasonList(lang: ServiceLanguage): Promise<ISeasonInfo[]>;
     getSeason(lang: ServiceLanguage, seasonId: string): Promise<ISeasonInfo>;
 
-    getSeasonServiceList(seasonId: string): Promise<IServiceInfo[]>;
-    getSeasonService(seasonId: string, serviceId: string): Promise<IServiceInfo>;
+    getSeasonServiceList(lang: ServiceLanguage, seasonId: string): Promise<IServiceInfo[]>;
+    getSeasonService(lang: ServiceLanguage, seasonId: string, serviceId: string): Promise<IServiceInfo>;
 
     getServiceHymnList(seasonId: string, serviceId: string): Promise<IHymnInfo[]>;
     getServiceHymn(seasonId: string, serviceId: string, hymnId: string): Promise<IHymnInfo>;

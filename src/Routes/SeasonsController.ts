@@ -1,20 +1,16 @@
 import * as express from "express";
-import { inject } from "inversify";
 import { IConfiguration } from "../Common/Configuration";
 import { LanguageHelpers } from "../Common/Utils/LanguageHelpers";
 import { IHymnsServiceProvider } from "../Providers/ServiceProviders/IHymnsServiceProvider";
-import { TYPES } from "../types";
 import { BaseController } from "./BaseController";
 import { ResourceTypes } from "./ResourceTypes";
 
 export class SeasonsController extends BaseController {
-    private configuration: IConfiguration;
 
     constructor(
         hymnsServiceProvider: IHymnsServiceProvider,
         configuration: IConfiguration) {
         super();
-        this.configuration = configuration;
 
         /**
          * @swagger
@@ -138,7 +134,9 @@ export class SeasonsController extends BaseController {
          */
         this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getSeasonServiceList(req.params.seasonId);
+                const result = await hymnsServiceProvider.getSeasonServiceList(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.seasonId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -184,7 +182,9 @@ export class SeasonsController extends BaseController {
          */
         this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}/:serviceId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getSeasonService(req.params.seasonId, req.params.serviceId);
+                const result = await hymnsServiceProvider.getSeasonService(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.seasonId, req.params.serviceId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

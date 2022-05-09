@@ -23,7 +23,7 @@ describe("Localization Tests", () => {
         });
     });
 
-    describe("Seasons Localization", () => {
+    describe("Header parsing tests", () => {
         it("should get english for no headers", async () => {
             const resourceId = `/${ResourceTypes.Seasons}/2`;
             const response: AxiosResponse<ISeasonInfo> = await axios.get(`${tc.baseTestUrl}${resourceId}`);
@@ -152,6 +152,56 @@ describe("Localization Tests", () => {
             Validators.validateSeason(response.data, resourceId);
             assert.equal(response.data.name, "نيروز");
             assert.equal(response.data.verse, "بارك إكليل السنة بصلاحك يا رب");
+        });
+    });
+
+    describe("Season localization tests", () => {
+        it("should get a season in English", async () => {
+            const resourceId = `/${ResourceTypes.Seasons}/2`;
+            const response: AxiosResponse<ISeasonInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "en" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateSeason(response.data, resourceId);
+            assert.equal(response.data.name, "Nairouz");
+            assert.equal(response.data.verse, "Bless the crown of the year with Your goodness O Lord");
+        });
+
+        it("should get a season in Arabic", async () => {
+            const resourceId = `/${ResourceTypes.Seasons}/2`;
+            const response: AxiosResponse<ISeasonInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "ar" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateSeason(response.data, resourceId);
+            assert.equal(response.data.name, "نيروز");
+            assert.equal(response.data.verse, "بارك إكليل السنة بصلاحك يا رب");
+        });
+    });
+
+    describe("Service localization tests", () => {
+        it("should get a service in English", async () => {
+            const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15`;
+            const response: AxiosResponse<ISeasonInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "en" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateService(response.data, resourceId);
+            assert.equal(response.data.name, "Vespers Psalmody");
+        });
+
+        it("should get a service in Arabic", async () => {
+            const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15`;
+            const response: AxiosResponse<ISeasonInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "ar" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateService(response.data, resourceId);
+            assert.equal(response.data.name, "تسبحة عشية");
         });
     });
 });

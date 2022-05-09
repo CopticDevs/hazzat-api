@@ -39,21 +39,27 @@ export class SqlDataProviderMock {
         ItemId: 1,
         Season_ID: 2,
         Season_Name: "Some Season Name",
+        Season_Name_Arabic: "إسم الموسم",
         Service_Name: "First Service Name",
+        Service_Name_Arabic: "إسم الخدمة الأولى",
         Service_Order: 1
     };
     private static _service2: HazzatDbSchema.IService = {
         ItemId: 90,
         Season_ID: 2,
         Season_Name: "Some Season Name",
+        Season_Name_Arabic: "إسم الموسم",
         Service_Name: "Second Service Name",
+        Service_Name_Arabic: "إسم الخدمة الثانية",
         Service_Order: 2
     };
     private static _service3: HazzatDbSchema.IService = {
         ItemId: 4,
         Season_ID: 1,
         Season_Name: "Another Season Name",
+        Season_Name_Arabic: "إسم الموسم",
         Service_Name: "Third Service Name",
+        Service_Name_Arabic: "إسم الخدمة الثالثة",
         Service_Order: 3
     };
 

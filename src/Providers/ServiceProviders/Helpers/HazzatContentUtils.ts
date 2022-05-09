@@ -43,10 +43,11 @@ export class HazzatContentUtils {
         };
     }
 
-    public static convertServiceDbItemToServiceInfo(serviceDbItem: HazzatDbSchema.IService): IServiceInfo {
+    public static convertServiceDbItemToServiceInfo(lang: ServiceLanguage, serviceDbItem: HazzatDbSchema.IService): IServiceInfo {
+        const name = lang === ServiceLanguage.Arabic ? serviceDbItem.Service_Name_Arabic : serviceDbItem.Service_Name;
         return {
             id: `/${ResourceTypes.Seasons}/${serviceDbItem.Season_ID}/${ResourceTypes.Services}/${serviceDbItem.ItemId}`,
-            name: serviceDbItem.Service_Name,
+            name,
             order: serviceDbItem.Service_Order
         };
     }

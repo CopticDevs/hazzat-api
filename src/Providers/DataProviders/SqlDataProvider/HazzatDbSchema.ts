@@ -15,7 +15,9 @@ export namespace HazzatDbSchema {
         ItemId: number;
         Season_ID: number;
         Season_Name: string;
+        Season_Name_Arabic: string;
         Service_Name: string;
+        Service_Name_Arabic: string;
         Service_Order: number;
     }
 

@@ -43,18 +43,18 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
     }
 
     @measure
-    public async getSeasonServiceList(seasonId: string): Promise<IServiceInfo[]> {
+    public async getSeasonServiceList(lang: ServiceLanguage, seasonId: string): Promise<IServiceInfo[]> {
         const dbResult = await this._dataProvider.getSeasonServiceList(seasonId);
 
         const services: IServiceInfo[] = dbResult
-            .map((row) => HazzatContentUtils.convertServiceDbItemToServiceInfo(row));
+            .map((row) => HazzatContentUtils.convertServiceDbItemToServiceInfo(lang, row));
         return services;
     }
 
     @measure
-    public async getSeasonService(seasonId: string, serviceId: string): Promise<IServiceInfo> {
+    public async getSeasonService(lang: ServiceLanguage, seasonId: string, serviceId: string): Promise<IServiceInfo> {
         const dbResult = await this._dataProvider.getSeasonService(seasonId, serviceId);
-        return HazzatContentUtils.convertServiceDbItemToServiceInfo(dbResult);
+        return HazzatContentUtils.convertServiceDbItemToServiceInfo(lang, dbResult);
     }
 
     @measure

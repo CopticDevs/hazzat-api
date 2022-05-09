@@ -2,12 +2,13 @@ ALTER Table dbo.[Hymns_Services]
 ADD Name_Arabic [nvarchar](50) NOT NULL
 
 
-/****** Object:  StoredProcedure [dbo].[Hymns_SeasonServicesSelect]    Script Date: 5/8/2022 4:35:01 PM ******/
+/****** Object:  StoredProcedure [dbo].[Hymns_SeasonServicesSelect]    Script Date: 5/8/2022 7:23:27 PM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 
@@ -19,7 +20,7 @@ BEGIN
         [dbo].[Hymns_Structure].[Service_ID] AS ItemId,
         [dbo].[Hymns_Structure].[Season_ID],
         [dbo].[Hymns_Seasons].[Name] AS Season_Name,
-		[dbo].[Hymns_Seasons].[Name_Arabic] AS Season_Name_Arabic,
+        [dbo].[Hymns_Seasons].[Name_Arabic] AS Season_Name_Arabic,
         [dbo].[Hymns_Services].[Name] AS Service_Name,
         [dbo].[Hymns_Services].[Name_Arabic] AS Service_Name_Arabic,
         [dbo].[Hymns_Structure].[Service_Order]

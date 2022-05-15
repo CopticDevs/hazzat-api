@@ -37,13 +37,17 @@ export namespace HazzatDbSchema {
     export interface IServiceHymnFormat {
         ItemId: number;
         Format_Name: string;
+        Format_Name_Arabic: string;
         Season_ID: number;
         Season_Name: string;
+        Season_Name_Arabic: string;
         Service_ID: number;
         Service_Name: string;
+        Service_Name_Arabic: string;
         Hymn_Order: number;
         ServiceHymn_ID: number;
         ServiceHymn_Title: string;
+        ServiceHymn_Title_Arabic: string;
         Content_Count: number;
     }
 

@@ -228,4 +228,28 @@ describe("Localization Tests", () => {
             assert.equal(response.data.name, "المزمور المائة والسادس عشر (ني إثنوس تيرو)");
         });
     });
+
+    describe("Format localization tests", () => {
+        it("should get a Format in English", async () => {
+            const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1`;
+            const response: AxiosResponse<ISeasonInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "en" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateServiceHymnFormat(response.data, resourceId);
+            assert.equal(response.data.name, "Text");
+        });
+
+        it("should get a Format in Arabic", async () => {
+            const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1`;
+            const response: AxiosResponse<ISeasonInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "ar" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateServiceHymnFormat(response.data, resourceId);
+            assert.equal(response.data.name, "نَص");
+        });
+    });
 });

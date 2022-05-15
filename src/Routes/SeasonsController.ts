@@ -232,7 +232,10 @@ export class SeasonsController extends BaseController {
          */
         this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}/:serviceId(\\d+)/${ResourceTypes.Hymns}`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getServiceHymnList(req.params.seasonId, req.params.serviceId);
+                const result = await hymnsServiceProvider.getServiceHymnList(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.seasonId,
+                    req.params.serviceId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -283,7 +286,10 @@ export class SeasonsController extends BaseController {
          */
         this.router.get(`/:seasonId(\\d+)/${ResourceTypes.Services}/:serviceId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getServiceHymn(req.params.seasonId, req.params.serviceId, req.params.hymnId);
+                const result = await hymnsServiceProvider.getServiceHymn(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.seasonId,
+                    req.params.serviceId, req.params.hymnId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

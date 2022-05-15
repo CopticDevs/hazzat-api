@@ -216,7 +216,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getServiceHymnList', SqlDataProviderMock.getDbServiceHymnList());
 
-            const hymnList = await hymnsProvider.getServiceHymnList("seasonId", "serviceId");
+            const hymnList = await hymnsProvider.getServiceHymnList(ServiceLanguage.English, "seasonId", "serviceId");
             Validators.validateArray(hymnList);
             hymnList.length.should.be.eql(3);
             hymnList.forEach((hymn) => Validators.validateServiceHymn(hymn));
@@ -226,8 +226,30 @@ describe("Seasons Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getServiceHymnList', []);
 
-            const hymnList = await hymnsProvider.getServiceHymnList("seasonId", "serviceId");
+            const hymnList = await hymnsProvider.getServiceHymnList(ServiceLanguage.English, "seasonId", "serviceId");
             Validators.validateArray(hymnList, true);
+        });
+
+        it("should get all service hymns with English results", async () => {
+            // Setup mocked result
+            mockManager.mock('getServiceHymnList', SqlDataProviderMock.getDbServiceHymnList());
+
+            const hymnList = await hymnsProvider.getServiceHymnList(ServiceLanguage.English, "seasonId", "serviceId");
+            Validators.validateArray(hymnList);
+            hymnList.length.should.be.eql(3);
+            hymnList.forEach((hymn) => Validators.validateServiceHymn(hymn));
+            assert.equal(hymnList[0].name, SqlDataProviderMock.getDbServiceHymnList()[0].Title);
+        });
+
+        it("should get all service hymns with English results", async () => {
+            // Setup mocked result
+            mockManager.mock('getServiceHymnList', SqlDataProviderMock.getDbServiceHymnList());
+
+            const hymnList = await hymnsProvider.getServiceHymnList(ServiceLanguage.Arabic, "seasonId", "serviceId");
+            Validators.validateArray(hymnList);
+            hymnList.length.should.be.eql(3);
+            hymnList.forEach((hymn) => Validators.validateServiceHymn(hymn));
+            assert.equal(hymnList[0].name, SqlDataProviderMock.getDbServiceHymnList()[0].Title_Arabic);
         });
     });
 
@@ -236,7 +258,7 @@ describe("Seasons Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getServiceHymn', SqlDataProviderMock.getDbServiceHymn());
 
-            const hymn = await hymnsProvider.getServiceHymn("seasonId", "serviceId", "hymnId");
+            const hymn = await hymnsProvider.getServiceHymn(ServiceLanguage.English, "seasonId", "serviceId", "hymnId");
             Validators.validateObject(hymn);
             Validators.validateServiceHymn(hymn);
         });
@@ -246,11 +268,31 @@ describe("Seasons Service Provider Unit Tests", () => {
             mockManager.mock('getServiceHymn', SqlDataProviderMock.getDbServiceHymn());
 
             const hymnDb = SqlDataProviderMock.getDbServiceHymn();
-            const hymn = await hymnsProvider.getServiceHymn("seasonId", "serviceId", "hymnId");
+            const hymn = await hymnsProvider.getServiceHymn(ServiceLanguage.English, "seasonId", "serviceId", "hymnId");
 
             // Validate that the contract was mapped out correctly from db results
             hymn.name.should.be.equal(hymnDb.Title);
             hymn.order.should.be.equal(hymnDb.Hymn_Order);
+        });
+
+        it("should get a single service hymn in English", async () => {
+            // Setup mocked result
+            mockManager.mock('getServiceHymn', SqlDataProviderMock.getDbServiceHymn());
+
+            const hymn = await hymnsProvider.getServiceHymn(ServiceLanguage.English, "seasonId", "serviceId", "hymnId");
+            Validators.validateObject(hymn);
+            Validators.validateServiceHymn(hymn);
+            assert.equal(hymn.name, SqlDataProviderMock.getDbServiceHymn().Title);
+        });
+
+        it("should get a single service hymn in Arabic", async () => {
+            // Setup mocked result
+            mockManager.mock('getServiceHymn', SqlDataProviderMock.getDbServiceHymn());
+
+            const hymn = await hymnsProvider.getServiceHymn(ServiceLanguage.Arabic, "seasonId", "serviceId", "hymnId");
+            Validators.validateObject(hymn);
+            Validators.validateServiceHymn(hymn);
+            assert.equal(hymn.name, SqlDataProviderMock.getDbServiceHymn().Title_Arabic);
         });
     });
 

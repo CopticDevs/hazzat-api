@@ -97,9 +97,11 @@ export class HazzatContentUtils {
     }
 
     public static convertServiceHymnFormatDbItemToFormatInfo(
+        lang: ServiceLanguage,
         serviceHymnFormatDbItem: HazzatDbSchema.IServiceHymnFormat
     ): IFormatInfo {
         return HazzatContentUtils._convertServiceHymnFormatDbItemToFormatInfo(
+            lang,
             serviceHymnFormatDbItem,
             `/${ResourceTypes.Seasons}/${serviceHymnFormatDbItem.Season_ID}/${ResourceTypes.Services}/${serviceHymnFormatDbItem.Service_ID}/${ResourceTypes.Hymns}/${serviceHymnFormatDbItem.ServiceHymn_ID}/${ResourceTypes.Formats}/${serviceHymnFormatDbItem.ItemId}`);
     }
@@ -109,6 +111,7 @@ export class HazzatContentUtils {
         tuneId: string
     ): IFormatInfo {
         return HazzatContentUtils._convertServiceHymnFormatDbItemToFormatInfo(
+            ServiceLanguage.English,
             serviceHymnFormatDbItem,
             `/${ResourceTypes.Tunes}/${tuneId}/${ResourceTypes.Seasons}/${serviceHymnFormatDbItem.Season_ID}/${ResourceTypes.Hymns}/${serviceHymnFormatDbItem.ServiceHymn_ID}/${ResourceTypes.Formats}/${serviceHymnFormatDbItem.ItemId}`);
     }
@@ -118,17 +121,20 @@ export class HazzatContentUtils {
         typeId: string
     ): IFormatInfo {
         return HazzatContentUtils._convertServiceHymnFormatDbItemToFormatInfo(
+            ServiceLanguage.English,
             serviceHymnFormatDbItem,
             `/${ResourceTypes.Types}/${typeId}/${ResourceTypes.Seasons}/${serviceHymnFormatDbItem.Season_ID}/${ResourceTypes.Hymns}/${serviceHymnFormatDbItem.ServiceHymn_ID}/${ResourceTypes.Formats}/${serviceHymnFormatDbItem.ItemId}`);
     }
 
     private static _convertServiceHymnFormatDbItemToFormatInfo(
+        lang: ServiceLanguage,
         serviceHymnFormatDbItem: HazzatDbSchema.IServiceHymnFormat,
         id: string
     ): IFormatInfo {
+        const name = lang === ServiceLanguage.Arabic ? serviceHymnFormatDbItem.Format_Name_Arabic : serviceHymnFormatDbItem.Format_Name;
         return {
             id,
-            name: serviceHymnFormatDbItem.Format_Name,
+            name,
             order: serviceHymnFormatDbItem.ItemId,
             variationCount: serviceHymnFormatDbItem.Content_Count
         };

@@ -222,4 +222,31 @@ describe("Localization Tests", () => {
                 });
         });
     });
+
+    describe("Service Hymn localization tests", () => {
+        it("should get a service Hymn in English", (done) => {
+            const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311`;
+            chai.request(server)
+                .get(resourceId)
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateServiceHymn(res.body, resourceId);
+                    assert.equal(res.body.name, "Psalm 116 (Ni Ethnos Teero)");
+                    done();
+                });
+        });
+
+        it("should get a service Hymn in Arabic", (done) => {
+            const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "ar")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateServiceHymn(res.body, resourceId);
+                    assert.equal(res.body.name, "المزمور المائة والسادس عشر (ني إثنوس تيرو)");
+                    done();
+                });
+        });
+    });
 });

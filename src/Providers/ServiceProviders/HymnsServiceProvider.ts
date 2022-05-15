@@ -73,18 +73,18 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
     }
 
     @measure
-    public async getServiceHymnFormatList(seasonId: string, serviceId: string, hymnId: string): Promise<IFormatInfo[]> {
+    public async getServiceHymnFormatList(lang: ServiceLanguage, seasonId: string, serviceId: string, hymnId: string): Promise<IFormatInfo[]> {
         const dbResult = await this._dataProvider.getServiceHymnFormatList(seasonId, serviceId, hymnId);
 
         const formats: IFormatInfo[] = dbResult
-            .map((row) => HazzatContentUtils.convertServiceHymnFormatDbItemToFormatInfo(row));
+            .map((row) => HazzatContentUtils.convertServiceHymnFormatDbItemToFormatInfo(lang, row));
         return formats;
     }
 
     @measure
-    public async getServiceHymnFormat(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IFormatInfo> {
+    public async getServiceHymnFormat(lang: ServiceLanguage, seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IFormatInfo> {
         const dbResult = await this._dataProvider.getServiceHymnFormat(seasonId, serviceId, hymnId, formatId);
-        return HazzatContentUtils.convertServiceHymnFormatDbItemToFormatInfo(dbResult);
+        return HazzatContentUtils.convertServiceHymnFormatDbItemToFormatInfo(lang, dbResult);
     }
 
     @measure

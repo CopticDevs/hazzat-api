@@ -103,36 +103,48 @@ export class SqlDataProviderMock {
     private static _serviceHymnFormat1: HazzatDbSchema.IServiceHymnFormat = {
         ItemId: 1,
         Format_Name: "First Format Name",
+        Format_Name_Arabic: "إسم الطريقة الأولى",
         Season_ID: 2,
         Season_Name: "Some Season Name",
+        Season_Name_Arabic: "إسم الموسم",
         Service_ID: 3,
         Service_Name: "Some Service Name",
+        Service_Name_Arabic: "إسم الخدمة",
         ServiceHymn_ID: 4,
         ServiceHymn_Title: "Some Hymn Name",
+        ServiceHymn_Title_Arabic: "إسم اللحن",
         Content_Count: 123,
         Hymn_Order: 1
     };
     private static _serviceHymnFormat2: HazzatDbSchema.IServiceHymnFormat = {
         ItemId: 5,
         Format_Name: "Second Format Name",
+        Format_Name_Arabic: "إسم الطريقة الثانية",
         Season_ID: 2,
         Season_Name: "Some Season Name",
+        Season_Name_Arabic: "إسم الموسم",
         Service_ID: 3,
         Service_Name: "Some Service Name",
+        Service_Name_Arabic: "إسم الخدمة",
         ServiceHymn_ID: 4,
         ServiceHymn_Title: "Some Hymn Name",
+        ServiceHymn_Title_Arabic: "إسم اللحن",
         Content_Count: 12,
         Hymn_Order: 2
     };
     private static _serviceHymnFormat3: HazzatDbSchema.IServiceHymnFormat = {
         ItemId: 2,
         Format_Name: "First Format Name",
+        Format_Name_Arabic: "إسم الطريقة الثالثة",
         Season_ID: 5,
         Season_Name: "Other Season Name",
+        Season_Name_Arabic: "إسم الموسم",
         Service_ID: 3,
         Service_Name: "Some Service Name",
+        Service_Name_Arabic: "إسم الخدمة",
         ServiceHymn_ID: 4,
         ServiceHymn_Title: "Some Hymn Name",
+        ServiceHymn_Title_Arabic: "إسم اللحن",
         Content_Count: 13,
         Hymn_Order: 3
     };

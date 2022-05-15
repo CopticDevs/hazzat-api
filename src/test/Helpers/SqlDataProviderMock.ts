@@ -66,28 +66,37 @@ export class SqlDataProviderMock {
     private static _serviceHymn1: HazzatDbSchema.IServiceHymn = {
         ItemId: 1,
         Title: "First Hymn Title",
+        Title_Arabic: "إسم اللحن الأول",
         Season_ID: 2,
         Season_Name: "Some Season Name",
+        Season_Name_Arabic: "إسم الموسم",
         Service_ID: 3,
         Service_Name: "Some Service Name",
+        Service_Name_Arabic: "إسم الخدمة",
         Hymn_Order: 1
     };
     private static _serviceHymn2: HazzatDbSchema.IServiceHymn = {
         ItemId: 87,
         Title: "Second Hymn Title",
+        Title_Arabic: "إسم اللحن الثاني",
         Season_ID: 2,
         Season_Name: "Some Season Name",
+        Season_Name_Arabic: "إسم الموسم",
         Service_ID: 3,
         Service_Name: "Some Service Name",
+        Service_Name_Arabic: "إسم الخدمة",
         Hymn_Order: 2
     };
     private static _serviceHymn3: HazzatDbSchema.IServiceHymn = {
         ItemId: 73,
         Title: "Third Hymn Title",
+        Title_Arabic: "إسم اللحن الثالث",
         Season_ID: 1,
         Season_Name: "Another Season Name",
+        Season_Name_Arabic: "إسم الموسم",
         Service_ID: 2,
         Service_Name: "Another Service Name",
+        Service_Name_Arabic: "إسم الخدمة",
         Hymn_Order: 3
     };
 

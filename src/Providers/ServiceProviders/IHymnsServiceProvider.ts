@@ -18,8 +18,8 @@ export interface IHymnsServiceProvider {
     getSeasonServiceList(lang: ServiceLanguage, seasonId: string): Promise<IServiceInfo[]>;
     getSeasonService(lang: ServiceLanguage, seasonId: string, serviceId: string): Promise<IServiceInfo>;
 
-    getServiceHymnList(seasonId: string, serviceId: string): Promise<IHymnInfo[]>;
-    getServiceHymn(seasonId: string, serviceId: string, hymnId: string): Promise<IHymnInfo>;
+    getServiceHymnList(lang: ServiceLanguage, seasonId: string, serviceId: string): Promise<IHymnInfo[]>;
+    getServiceHymn(lang: ServiceLanguage, seasonId: string, serviceId: string, hymnId: string): Promise<IHymnInfo>;
 
     getServiceHymnFormatList(seasonId: string, serviceId: string, hymnId: string): Promise<IFormatInfo[]>;
     getServiceHymnFormat(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IFormatInfo>;

@@ -204,4 +204,28 @@ describe("Localization Tests", () => {
             assert.equal(response.data.name, "تسبحة عشية");
         });
     });
+
+    describe("Service Hymn localization tests", () => {
+        it("should get a service hymn in English", async () => {
+            const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311`;
+            const response: AxiosResponse<ISeasonInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "en" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateServiceHymn(response.data, resourceId);
+            assert.equal(response.data.name, "Psalm 116 (Ni Ethnos Teero)");
+        });
+
+        it("should get a service hymn in Arabic", async () => {
+            const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311`;
+            const response: AxiosResponse<ISeasonInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "ar" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateServiceHymn(response.data, resourceId);
+            assert.equal(response.data.name, "المزمور المائة والسادس عشر (ني إثنوس تيرو)");
+        });
+    });
 });

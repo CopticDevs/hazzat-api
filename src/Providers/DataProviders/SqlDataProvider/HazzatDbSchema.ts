@@ -54,6 +54,7 @@ export namespace HazzatDbSchema {
     export interface IServiceHymnFormatContent {
         ItemId: number;
         Content_Name: string;
+        Content_Name_Arabic: string;
         Content_Arabic: string;
         Content_Coptic: string;
         Content_English: string;
@@ -61,13 +62,17 @@ export namespace HazzatDbSchema {
         Music_Path: string;
         Season_ID: number;
         Season_Name: string;
+        Season_Name_Arabic: string;
         Reason_ID: number;
         Service_ID: number;
         Service_Name: string;
+        Service_Name_Arabic: string;
         ServiceHymn_ID: number;
         ServiceHymn_Title: string;
+        ServiceHymn_Title_Arabic: string;
         Format_ID: number;
         Format_Name: string;
+        Format_Name_Arabic: string;
     }
 
     export interface ICommonContent {

@@ -276,4 +276,31 @@ describe("Localization Tests", () => {
                 });
         });
     });
+
+    describe("Variation localization tests", () => {
+        it("should get a Variation in English", (done) => {
+            const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288`;
+            chai.request(server)
+                .get(resourceId)
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateTextContent(res.body.content);
+                    assert.equal(res.body.name, "Psalm 116 (Ni Ethnos Teero)");
+                    done();
+                });
+        });
+
+        it("should get a Variation in Arabic", (done) => {
+            const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "ar")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateTextContent(res.body.content);
+                    assert.equal(res.body.name, "المزمور المائة والسادس عشر (ني إثنوس تيرو)");
+                    done();
+                });
+        });
+    });
 });

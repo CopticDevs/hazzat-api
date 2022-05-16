@@ -1,7 +1,11 @@
 import { AxiosResponse, default as axios } from "axios";
 import { assert } from "chai";
 import { OperationExecutor } from "../../Common/Utils/OperationExecutor";
+import { IFormatInfo } from "../../Models/IFormatInfo";
+import { IHymnInfo } from "../../Models/IHymnInfo";
 import { ISeasonInfo } from "../../Models/ISeasonInfo";
+import { IServiceInfo } from "../../Models/IServiceInfo";
+import { ITextContent, IVariationInfo } from "../../Models/IVariationInfo";
 import { ResourceTypes } from "../../Routes/ResourceTypes";
 import { Validators } from "../Helpers/Validators";
 import { TestConfiguration } from "./TestConfiguration";
@@ -184,7 +188,7 @@ describe("Localization Tests", () => {
     describe("Service localization tests", () => {
         it("should get a service in English", async () => {
             const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15`;
-            const response: AxiosResponse<ISeasonInfo> = await axios.get(
+            const response: AxiosResponse<IServiceInfo> = await axios.get(
                 `${tc.baseTestUrl}${resourceId}`,
                 { headers: { "Accept-Language": "en" } });
 
@@ -195,7 +199,7 @@ describe("Localization Tests", () => {
 
         it("should get a service in Arabic", async () => {
             const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15`;
-            const response: AxiosResponse<ISeasonInfo> = await axios.get(
+            const response: AxiosResponse<IServiceInfo> = await axios.get(
                 `${tc.baseTestUrl}${resourceId}`,
                 { headers: { "Accept-Language": "ar" } });
 
@@ -208,7 +212,7 @@ describe("Localization Tests", () => {
     describe("Service Hymn localization tests", () => {
         it("should get a service hymn in English", async () => {
             const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311`;
-            const response: AxiosResponse<ISeasonInfo> = await axios.get(
+            const response: AxiosResponse<IHymnInfo> = await axios.get(
                 `${tc.baseTestUrl}${resourceId}`,
                 { headers: { "Accept-Language": "en" } });
 
@@ -219,7 +223,7 @@ describe("Localization Tests", () => {
 
         it("should get a service hymn in Arabic", async () => {
             const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311`;
-            const response: AxiosResponse<ISeasonInfo> = await axios.get(
+            const response: AxiosResponse<IHymnInfo> = await axios.get(
                 `${tc.baseTestUrl}${resourceId}`,
                 { headers: { "Accept-Language": "ar" } });
 
@@ -232,7 +236,7 @@ describe("Localization Tests", () => {
     describe("Format localization tests", () => {
         it("should get a Format in English", async () => {
             const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1`;
-            const response: AxiosResponse<ISeasonInfo> = await axios.get(
+            const response: AxiosResponse<IFormatInfo> = await axios.get(
                 `${tc.baseTestUrl}${resourceId}`,
                 { headers: { "Accept-Language": "en" } });
 
@@ -243,13 +247,37 @@ describe("Localization Tests", () => {
 
         it("should get a Format in Arabic", async () => {
             const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1`;
-            const response: AxiosResponse<ISeasonInfo> = await axios.get(
+            const response: AxiosResponse<IFormatInfo> = await axios.get(
                 `${tc.baseTestUrl}${resourceId}`,
                 { headers: { "Accept-Language": "ar" } });
 
             Validators.validateObject(response.data);
             Validators.validateServiceHymnFormat(response.data, resourceId);
             assert.equal(response.data.name, "نَص");
+        });
+    });
+
+    describe("Variation localization tests", () => {
+        it("should get a Variation in English", async () => {
+            const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288`;
+            const response: AxiosResponse<IVariationInfo<ITextContent>> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "en" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateTextContent(response.data.content);
+            assert.equal(response.data.name, "Psalm 116 (Ni Ethnos Teero)");
+        });
+
+        it("should get a Variation in Arabic", async () => {
+            const resourceId = `/${ResourceTypes.Seasons}/1/${ResourceTypes.Services}/15/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288`;
+            const response: AxiosResponse<IVariationInfo<ITextContent>> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "ar" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateTextContent(response.data.content);
+            assert.equal(response.data.name, "المزمور المائة والسادس عشر (ني إثنوس تيرو)");
         });
     });
 });

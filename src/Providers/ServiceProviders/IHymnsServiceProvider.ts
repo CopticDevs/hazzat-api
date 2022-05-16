@@ -24,8 +24,8 @@ export interface IHymnsServiceProvider {
     getServiceHymnFormatList(lang: ServiceLanguage, seasonId: string, serviceId: string, hymnId: string): Promise<IFormatInfo[]>;
     getServiceHymnFormat(lang: ServiceLanguage, seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IFormatInfo>;
 
-    getServiceHymnsFormatVariationList<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IVariationInfo<T>[]>;
-    getServiceHymnsFormatVariation<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string, variationId: string): Promise<IVariationInfo<T>>;
+    getServiceHymnsFormatVariationList<T extends IHymnContent>(lang: ServiceLanguage, seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IVariationInfo<T>[]>;
+    getServiceHymnsFormatVariation<T extends IHymnContent>(lang: ServiceLanguage, seasonId: string, serviceId: string, hymnId: string, formatId: string, variationId: string): Promise<IVariationInfo<T>>;
 
     getTypeList(): Promise<ITypeInfo[]>;
     getType(typeId: string): Promise<ITypeInfo>;

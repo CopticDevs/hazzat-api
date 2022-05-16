@@ -88,18 +88,18 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
     }
 
     @measure
-    public async getServiceHymnsFormatVariationList<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IVariationInfo<T>[]> {
+    public async getServiceHymnsFormatVariationList<T extends IHymnContent>(lang: ServiceLanguage, seasonId: string, serviceId: string, hymnId: string, formatId: string): Promise<IVariationInfo<T>[]> {
         const dbResult = await this._dataProvider.getServiceHymnsFormatVariationList(seasonId, serviceId, hymnId, formatId);
 
         const variations: IVariationInfo<T>[] = await Promise.all(dbResult
-            .map((row) => HazzatContentUtils.convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo<T>(row, this._dataProvider)));
+            .map((row) => HazzatContentUtils.convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo<T>(lang, row, this._dataProvider)));
         return variations;
     }
 
     @measure
-    public async getServiceHymnsFormatVariation<T extends IHymnContent>(seasonId: string, serviceId: string, hymnId: string, formatId: string, variationId: string): Promise<IVariationInfo<T>> {
+    public async getServiceHymnsFormatVariation<T extends IHymnContent>(lang: ServiceLanguage, seasonId: string, serviceId: string, hymnId: string, formatId: string, variationId: string): Promise<IVariationInfo<T>> {
         const dbResult = await this._dataProvider.getServiceHymnsFormatVariation(seasonId, serviceId, hymnId, formatId, variationId);
-        return await HazzatContentUtils.convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo<T>(dbResult, this._dataProvider);
+        return await HazzatContentUtils.convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo<T>(lang, dbResult, this._dataProvider);
     }
 
     @measure

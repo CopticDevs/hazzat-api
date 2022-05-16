@@ -391,10 +391,12 @@ export class HazzatContentUtils {
     }
 
     public static async convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo<T extends IHymnContent>(
+        lang: ServiceLanguage,
         serviceHymnFormatContentDbItem: HazzatDbSchema.IServiceHymnFormatContent,
         dataProvider: IDataProvider
     ): Promise<IVariationInfo<T>> {
         return HazzatContentUtils._convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo(
+            lang,
             serviceHymnFormatContentDbItem,
             dataProvider,
             `/${ResourceTypes.Seasons}/${serviceHymnFormatContentDbItem.Season_ID}/${ResourceTypes.Services}/${serviceHymnFormatContentDbItem.Service_ID}/${ResourceTypes.Hymns}/${serviceHymnFormatContentDbItem.ServiceHymn_ID}/${ResourceTypes.Formats}/${serviceHymnFormatContentDbItem.Format_ID}/${ResourceTypes.Variations}/${serviceHymnFormatContentDbItem.ItemId}`);
@@ -406,6 +408,7 @@ export class HazzatContentUtils {
         tuneId: string
     ): Promise<IVariationInfo<T>> {
         return HazzatContentUtils._convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo(
+            ServiceLanguage.English,
             serviceHymnFormatContentDbItem,
             dataProvider,
             `/${ResourceTypes.Tunes}/${tuneId}/${ResourceTypes.Seasons}/${serviceHymnFormatContentDbItem.Season_ID}/${ResourceTypes.Hymns}/${serviceHymnFormatContentDbItem.ServiceHymn_ID}/${ResourceTypes.Formats}/${serviceHymnFormatContentDbItem.Format_ID}/${ResourceTypes.Variations}/${serviceHymnFormatContentDbItem.ItemId}`);
@@ -417,17 +420,20 @@ export class HazzatContentUtils {
         typeId: string
     ): Promise<IVariationInfo<T>> {
         return HazzatContentUtils._convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo(
+            ServiceLanguage.English,
             serviceHymnFormatContentDbItem,
             dataProvider,
             `/${ResourceTypes.Types}/${typeId}/${ResourceTypes.Seasons}/${serviceHymnFormatContentDbItem.Season_ID}/${ResourceTypes.Hymns}/${serviceHymnFormatContentDbItem.ServiceHymn_ID}/${ResourceTypes.Formats}/${serviceHymnFormatContentDbItem.Format_ID}/${ResourceTypes.Variations}/${serviceHymnFormatContentDbItem.ItemId}`);
     }
 
     private static async _convertServiceHymnFormatContentDbItemToServiceHymnFormatContentInfo<T extends IHymnContent>(
+        lang: ServiceLanguage,
         serviceHymnFormatContentDbItem: HazzatDbSchema.IServiceHymnFormatContent,
         dataProvider: IDataProvider,
         id: string
     ): Promise<IVariationInfo<T>> {
 
+        const name = lang === ServiceLanguage.Arabic ? serviceHymnFormatContentDbItem.Content_Name_Arabic : serviceHymnFormatContentDbItem.Content_Name;
         let content: any = null;
 
         // to avoid making multiple calls to the db to fetch the same reason
@@ -503,7 +509,7 @@ export class HazzatContentUtils {
         }
         return {
             id,
-            name: serviceHymnFormatContentDbItem.Content_Name,
+            name,
             content
         };
     }

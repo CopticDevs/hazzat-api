@@ -514,20 +514,23 @@ export class HazzatContentUtils {
         };
     }
 
-    public static convertTypeDbItemToTypeInfo(typeDbItem: HazzatDbSchema.IType): ITypeInfo {
+    public static convertTypeDbItemToTypeInfo(lang: ServiceLanguage, typeDbItem: HazzatDbSchema.IType): ITypeInfo {
+        const name = lang === ServiceLanguage.Arabic ? typeDbItem.Name_Arabic : typeDbItem.Name;
+        const nameSingular = lang === ServiceLanguage.Arabic ? typeDbItem.Name_Short_Arabic : typeDbItem.Name_Short;
         return {
             id: `/${ResourceTypes.Types}/${typeDbItem.ItemId}`,
-            name: typeDbItem.Name,
-            nameSingular: typeDbItem.Name_Short,
+            name,
+            nameSingular,
             order: typeDbItem.Type_Order,
             hymnCount: typeDbItem.ServiceHymnsCount
         };
     }
 
-    public static convertTuneDbItemToTypeInfo(tuneDbItem: HazzatDbSchema.ITune): ITuneInfo {
+    public static convertTuneDbItemToTypeInfo(lang: ServiceLanguage, tuneDbItem: HazzatDbSchema.ITune): ITuneInfo {
+        const name = lang === ServiceLanguage.Arabic ? tuneDbItem.Name_Arabic : tuneDbItem.Name;
         return {
             id: `/${ResourceTypes.Tunes}/${tuneDbItem.ItemId}`,
-            name: tuneDbItem.Name,
+            name,
             order: tuneDbItem.Tune_Order,
             hymnCount: tuneDbItem.ServiceHymnsCount
         };

@@ -1,6 +1,8 @@
 import * as chai from "chai";
+import { assert } from "chai";
 import { ImportMock, MockManager } from 'ts-mock-imports';
 import { ContentLanguage } from '../../Common/Types/ContentLanguage';
+import { ServiceLanguage } from "../../Common/Types/ServiceLanguage";
 import { IAudioContent, IHazzatContent, IInformationContent, IMusicalNotesContent, ITextContent, IVerticalHazzatContent, IVideoContent } from '../../Models/IVariationInfo';
 import { Constants as SqlConstants } from "../../Providers/DataProviders/SqlDataProvider/SqlConstants";
 import * as SqlDataProviderModule from '../../Providers/DataProviders/SqlDataProvider/SqlDataProvider';
@@ -32,7 +34,7 @@ describe("Types Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTypeList', SqlDataProviderMock.getDbTypesList());
 
-            const typesList = await hymnsProvider.getTypeList();
+            const typesList = await hymnsProvider.getTypeList(ServiceLanguage.English);
             Validators.validateArray(typesList);
             typesList.length.should.be.eql(3);
             typesList.forEach((type) => Validators.validateHymnType(type));
@@ -42,8 +44,32 @@ describe("Types Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTypeList', []);
 
-            const typesList = await hymnsProvider.getTypeList();
+            const typesList = await hymnsProvider.getTypeList(ServiceLanguage.English);
             Validators.validateArray(typesList, true);
+        });
+
+        it("should get all types with English results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTypeList', SqlDataProviderMock.getDbTypesList());
+
+            const typesList = await hymnsProvider.getTypeList(ServiceLanguage.English);
+            Validators.validateArray(typesList);
+            typesList.length.should.be.eql(3);
+            typesList.forEach((type) => Validators.validateHymnType(type));
+            assert.equal(typesList[0].name, SqlDataProviderMock.getDbTypesList()[0].Name);
+            assert.equal(typesList[0].nameSingular, SqlDataProviderMock.getDbTypesList()[0].Name_Short);
+        });
+
+        it("should get all types with Arabic results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTypeList', SqlDataProviderMock.getDbTypesList());
+
+            const typesList = await hymnsProvider.getTypeList(ServiceLanguage.Arabic);
+            Validators.validateArray(typesList);
+            typesList.length.should.be.eql(3);
+            typesList.forEach((type) => Validators.validateHymnType(type));
+            assert.equal(typesList[0].name, SqlDataProviderMock.getDbTypesList()[0].Name_Arabic);
+            assert.equal(typesList[0].nameSingular, SqlDataProviderMock.getDbTypesList()[0].Name_Short_Arabic);
         });
     });
 
@@ -52,7 +78,7 @@ describe("Types Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getType', SqlDataProviderMock.getDbType());
 
-            const type = await hymnsProvider.getType("typeId");
+            const type = await hymnsProvider.getType(ServiceLanguage.English, "typeId");
             Validators.validateObject(type);
             Validators.validateHymnType(type);
         });
@@ -62,13 +88,35 @@ describe("Types Service Provider Unit Tests", () => {
             mockManager.mock('getType', SqlDataProviderMock.getDbType());
 
             const typeDb = SqlDataProviderMock.getDbType();
-            const type = await hymnsProvider.getType("typeId");
+            const type = await hymnsProvider.getType(ServiceLanguage.English, "typeId");
 
             // Validate that the contract was mapped out correctly from db results
             type.name.should.be.equal(typeDb.Name);
             type.nameSingular.should.be.equal(typeDb.Name_Short);
             type.hymnCount.should.be.equal(typeDb.ServiceHymnsCount);
             type.order.should.be.equal(typeDb.Type_Order);
+        });
+
+        it("should get a single type in English", async () => {
+            // Setup mocked result
+            mockManager.mock('getType', SqlDataProviderMock.getDbType());
+
+            const type = await hymnsProvider.getType(ServiceLanguage.English, "typeId");
+            Validators.validateObject(type);
+            Validators.validateHymnType(type);
+            assert.equal(type.name, SqlDataProviderMock.getDbType().Name);
+            assert.equal(type.nameSingular, SqlDataProviderMock.getDbType().Name_Short);
+        });
+
+        it("should get a single type in Arabic", async () => {
+            // Setup mocked result
+            mockManager.mock('getType', SqlDataProviderMock.getDbType());
+
+            const type = await hymnsProvider.getType(ServiceLanguage.Arabic, "typeId");
+            Validators.validateObject(type);
+            Validators.validateHymnType(type);
+            assert.equal(type.name, SqlDataProviderMock.getDbType().Name_Arabic);
+            assert.equal(type.nameSingular, SqlDataProviderMock.getDbType().Name_Short_Arabic);
         });
     });
 

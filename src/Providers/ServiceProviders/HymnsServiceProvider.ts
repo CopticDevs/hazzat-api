@@ -103,18 +103,18 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
     }
 
     @measure
-    public async getTypeList(): Promise<ITypeInfo[]> {
+    public async getTypeList(lang: ServiceLanguage): Promise<ITypeInfo[]> {
         const dbResult = await this._dataProvider.getTypeList();
 
         const types: ITypeInfo[] = dbResult
-            .map((row) => HazzatContentUtils.convertTypeDbItemToTypeInfo(row));
+            .map((row) => HazzatContentUtils.convertTypeDbItemToTypeInfo(lang, row));
         return types;
     }
 
     @measure
-    public async getType(typeId: string): Promise<ITypeInfo> {
+    public async getType(lang: ServiceLanguage, typeId: string): Promise<ITypeInfo> {
         const dbResult = await this._dataProvider.getType(typeId);
-        return HazzatContentUtils.convertTypeDbItemToTypeInfo(dbResult);
+        return HazzatContentUtils.convertTypeDbItemToTypeInfo(lang, dbResult);
     }
 
     @measure
@@ -178,18 +178,18 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
     }
 
     @measure
-    public async getTuneList(): Promise<ITuneInfo[]> {
+    public async getTuneList(lang: ServiceLanguage): Promise<ITuneInfo[]> {
         const dbResult = await this._dataProvider.getTuneList();
 
         const types: ITuneInfo[] = dbResult
-            .map((row) => HazzatContentUtils.convertTuneDbItemToTypeInfo(row));
+            .map((row) => HazzatContentUtils.convertTuneDbItemToTypeInfo(lang, row));
         return types;
     }
 
     @measure
-    public async getTune(tuneId: string): Promise<ITuneInfo> {
+    public async getTune(lang: ServiceLanguage, tuneId: string): Promise<ITuneInfo> {
         const dbResult = await this._dataProvider.getTune(tuneId);
-        return HazzatContentUtils.convertTuneDbItemToTypeInfo(dbResult);
+        return HazzatContentUtils.convertTuneDbItemToTypeInfo(lang, dbResult);
     }
 
     @measure

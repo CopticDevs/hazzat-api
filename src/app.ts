@@ -22,8 +22,8 @@ const hymnsProvider: IHymnsServiceProvider = myContainer.get<IHymnsServiceProvid
 
 const homeController = new HomeController();
 const seasonsController = new SeasonsController(hymnsProvider, configuration);
-const typesController = new TypesController(hymnsProvider);
-const tunesController = new TunesController(hymnsProvider);
+const typesController = new TypesController(hymnsProvider, configuration);
+const tunesController = new TunesController(hymnsProvider, configuration);
 const bookletsController = new BookletsController(hymnsProvider);
 
 const app = express();

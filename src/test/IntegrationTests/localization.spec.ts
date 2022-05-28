@@ -303,4 +303,62 @@ describe("Localization Tests", () => {
                 });
         });
     });
+
+    describe("Types localization tests", () => {
+        it("should get a Type in English", (done) => {
+            const resourceId = `/${ResourceTypes.Types}/17`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "en")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateHymnType(res.body, resourceId);
+                    assert.equal(res.body.name, "Psalmody Hymns");
+                    assert.equal(res.body.nameSingular, "Psalmody");
+                    done();
+                });
+        });
+
+        it("should get a Type in Arabic", (done) => {
+            const resourceId = `/${ResourceTypes.Types}/17`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "ar")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateHymnType(res.body, resourceId);
+                    assert.equal(res.body.name, "تسابيح");
+                    assert.equal(res.body.nameSingular, "تسبحة");
+                    done();
+                });
+        });
+    });
+
+    describe("Tunes localization tests", () => {
+        it("should get a Tune in English", (done) => {
+            const resourceId = `/${ResourceTypes.Tunes}/1`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "en")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateHymnTune(res.body, resourceId);
+                    assert.equal(res.body.name, "Annual");
+                    done();
+                });
+        });
+
+        it("should get a Tune in Arabic", (done) => {
+            const resourceId = `/${ResourceTypes.Tunes}/1`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "ar")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateHymnTune(res.body, resourceId);
+                    assert.equal(res.body.name, "سنوي");
+                    done();
+                });
+        });
+    });
 });

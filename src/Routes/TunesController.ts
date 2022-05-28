@@ -1,10 +1,14 @@
 import * as express from "express";
+import { IConfiguration } from "../Common/Configuration";
+import { LanguageHelpers } from "../Common/Utils/LanguageHelpers";
 import { IHymnsServiceProvider } from "../Providers/ServiceProviders/IHymnsServiceProvider";
 import { BaseController } from "./BaseController";
 import { ResourceTypes } from "./ResourceTypes";
 
 export class TunesController extends BaseController {
-    constructor(hymnsServiceProvider: IHymnsServiceProvider) {
+    constructor(
+        hymnsServiceProvider: IHymnsServiceProvider,
+        configuration: IConfiguration) {
         super();
 
         /**
@@ -39,7 +43,7 @@ export class TunesController extends BaseController {
          */
         this.router.get("/", async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getTuneList();
+                const result = await hymnsServiceProvider.getTuneList(LanguageHelpers.getResponseLanguage(req, configuration));
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -80,7 +84,9 @@ export class TunesController extends BaseController {
          */
         this.router.get("/:tuneId(\\d+)", async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getTune(req.params.tuneId);
+                const result = await hymnsServiceProvider.getTune(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.tuneId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

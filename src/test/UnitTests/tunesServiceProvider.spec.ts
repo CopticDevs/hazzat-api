@@ -1,6 +1,8 @@
 import * as chai from "chai";
+import { assert } from "chai";
 import { ImportMock, MockManager } from 'ts-mock-imports';
 import { ContentLanguage } from '../../Common/Types/ContentLanguage';
+import { ServiceLanguage } from "../../Common/Types/ServiceLanguage";
 import { IAudioContent, IHazzatContent, IInformationContent, IMusicalNotesContent, ITextContent, IVerticalHazzatContent, IVideoContent } from '../../Models/IVariationInfo';
 import { Constants as SqlConstants } from "../../Providers/DataProviders/SqlDataProvider/SqlConstants";
 import * as SqlDataProviderModule from '../../Providers/DataProviders/SqlDataProvider/SqlDataProvider';
@@ -32,7 +34,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneList', SqlDataProviderMock.getDbTunesList());
 
-            const tunesList = await hymnsProvider.getTuneList();
+            const tunesList = await hymnsProvider.getTuneList(ServiceLanguage.English);
             Validators.validateArray(tunesList);
             tunesList.length.should.be.eql(3);
             tunesList.forEach((tune) => Validators.validateHymnTune(tune));
@@ -42,8 +44,30 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneList', []);
 
-            const tunesList = await hymnsProvider.getTuneList();
+            const tunesList = await hymnsProvider.getTuneList(ServiceLanguage.English);
             Validators.validateArray(tunesList, true);
+        });
+
+        it("should get all tunes with English results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneList', SqlDataProviderMock.getDbTunesList());
+
+            const tunesList = await hymnsProvider.getTuneList(ServiceLanguage.English);
+            Validators.validateArray(tunesList);
+            tunesList.length.should.be.eql(3);
+            tunesList.forEach((tune) => Validators.validateHymnTune(tune));
+            assert.equal(tunesList[0].name, SqlDataProviderMock.getDbTunesList()[0].Name);
+        });
+
+        it("should get all tunes with Arabic results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneList', SqlDataProviderMock.getDbTunesList());
+
+            const tunesList = await hymnsProvider.getTuneList(ServiceLanguage.Arabic);
+            Validators.validateArray(tunesList);
+            tunesList.length.should.be.eql(3);
+            tunesList.forEach((tune) => Validators.validateHymnTune(tune));
+            assert.equal(tunesList[0].name, SqlDataProviderMock.getDbTunesList()[0].Name_Arabic);
         });
     });
 
@@ -52,7 +76,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTune', SqlDataProviderMock.getDbTune());
 
-            const tune = await hymnsProvider.getTune("tuneId");
+            const tune = await hymnsProvider.getTune(ServiceLanguage.English, "tuneId");
             Validators.validateObject(tune);
             Validators.validateHymnTune(tune);
         });
@@ -62,12 +86,32 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTune', SqlDataProviderMock.getDbTune());
 
             const tuneDb = SqlDataProviderMock.getDbTune();
-            const tune = await hymnsProvider.getTune("tuneId");
+            const tune = await hymnsProvider.getTune(ServiceLanguage.English, "tuneId");
 
             // Validate that the contract was mapped out correctly from db results
             tune.name.should.be.equal(tuneDb.Name);
             tune.hymnCount.should.be.equal(tuneDb.ServiceHymnsCount);
             tune.order.should.be.equal(tuneDb.Tune_Order);
+        });
+
+        it("should get a single tune in English", async () => {
+            // Setup mocked result
+            mockManager.mock('getTune', SqlDataProviderMock.getDbTune());
+
+            const tune = await hymnsProvider.getTune(ServiceLanguage.English, "tuneId");
+            Validators.validateObject(tune);
+            Validators.validateHymnTune(tune);
+            assert.equal(tune.name, SqlDataProviderMock.getDbTune().Name);
+        });
+
+        it("should get a single tune in Arabic", async () => {
+            // Setup mocked result
+            mockManager.mock('getTune', SqlDataProviderMock.getDbTune());
+
+            const tune = await hymnsProvider.getTune(ServiceLanguage.Arabic, "tuneId");
+            Validators.validateObject(tune);
+            Validators.validateHymnTune(tune);
+            assert.equal(tune.name, SqlDataProviderMock.getDbTune().Name_Arabic);
         });
     });
 

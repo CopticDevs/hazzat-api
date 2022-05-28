@@ -5,6 +5,8 @@ import { IFormatInfo } from "../../Models/IFormatInfo";
 import { IHymnInfo } from "../../Models/IHymnInfo";
 import { ISeasonInfo } from "../../Models/ISeasonInfo";
 import { IServiceInfo } from "../../Models/IServiceInfo";
+import { ITuneInfo } from "../../Models/ITuneInfo";
+import { ITypeInfo } from "../../Models/ITypeInfo";
 import { ITextContent, IVariationInfo } from "../../Models/IVariationInfo";
 import { ResourceTypes } from "../../Routes/ResourceTypes";
 import { Validators } from "../Helpers/Validators";
@@ -278,6 +280,56 @@ describe("Localization Tests", () => {
             Validators.validateObject(response.data);
             Validators.validateTextContent(response.data.content);
             assert.equal(response.data.name, "المزمور المائة والسادس عشر (ني إثنوس تيرو)");
+        });
+    });
+
+    describe("Types localization tests", () => {
+        it("should get a Type in English", async () => {
+            const resourceId = `/${ResourceTypes.Types}/17`;
+            const response: AxiosResponse<ITypeInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "en" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateHymnType(response.data, resourceId);
+            assert.equal(response.data.name, "Psalmody Hymns");
+            assert.equal(response.data.nameSingular, "Psalmody");
+        });
+
+        it("should get a Type in Arabic", async () => {
+            const resourceId = `/${ResourceTypes.Types}/17`;
+            const response: AxiosResponse<ITypeInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "ar" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateHymnType(response.data, resourceId);
+            assert.equal(response.data.name, "تسابيح");
+            assert.equal(response.data.nameSingular, "تسبحة");
+        });
+    });
+
+    describe("Tunes localization tests", () => {
+        it("should get a Tune in English", async () => {
+            const resourceId = `/${ResourceTypes.Tunes}/1`;
+            const response: AxiosResponse<ITuneInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "en" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateHymnTune(response.data, resourceId);
+            assert.equal(response.data.name, "Annual");
+        });
+
+        it("should get a Tune in Arabic", async () => {
+            const resourceId = `/${ResourceTypes.Tunes}/1`;
+            const response: AxiosResponse<ITuneInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "ar" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateHymnTune(response.data, resourceId);
+            assert.equal(response.data.name, "سنوي");
         });
     });
 });

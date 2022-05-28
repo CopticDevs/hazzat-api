@@ -334,6 +334,36 @@ describe("Localization Tests", () => {
         });
     });
 
+    describe("Type Season localization tests", () => {
+        it("should get a Type Season in English", (done) => {
+            const resourceId = `/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/1`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "en")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateTypeSeason(res.body, resourceId);
+                    assert.equal(res.body.name, "Annual");
+                    assert.isTrue(res.body.verse.startsWith("\"How lovely is Your tabernacle, O Lord of hosts!"));
+                    done();
+                });
+        });
+
+        it("should get a Type Season in Arabic", (done) => {
+            const resourceId = `/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/1`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "ar")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateTypeSeason(res.body, resourceId);
+                    assert.equal(res.body.name, "سنوي");
+                    assert.isTrue(res.body.verse.startsWith("\"ما أحلى مساكنك يا رب الجنود"));
+                    done();
+                });
+        });
+    });
+
     describe("Tunes localization tests", () => {
         it("should get a Tune in English", (done) => {
             const resourceId = `/${ResourceTypes.Tunes}/1`;
@@ -357,6 +387,36 @@ describe("Localization Tests", () => {
                     Validators.validateObjectChaiResponse(res);
                     Validators.validateHymnTune(res.body, resourceId);
                     assert.equal(res.body.name, "سنوي");
+                    done();
+                });
+        });
+    });
+
+    describe("Tune Season localization tests", () => {
+        it("should get a Tune Season in English", (done) => {
+            const resourceId = `/${ResourceTypes.Tunes}/1/${ResourceTypes.Seasons}/33`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "en")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateTuneSeason(res.body, resourceId);
+                    assert.equal(res.body.name, "Papal Hymns");
+                    assert.isTrue(res.body.verse.startsWith("\"Your people shall be volunteers in the day of Your power"));
+                    done();
+                });
+        });
+
+        it("should get a Tune Season in Arabic", (done) => {
+            const resourceId = `/${ResourceTypes.Tunes}/1/${ResourceTypes.Seasons}/33`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "ar")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateTuneSeason(res.body, resourceId);
+                    assert.equal(res.body.name, "الحآن البطاركة");
+                    assert.isTrue(res.body.verse.startsWith("شعبك مُنتدب في يوم قوتك في زينة مقدسة من رحم الفجر."));
                     done();
                 });
         });

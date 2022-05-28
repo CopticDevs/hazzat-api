@@ -23,12 +23,12 @@ export class HazzatContentUtils {
         return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(lang, seasonDbItem, `/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
     }
 
-    public static convertSeasonDbItemToTuneSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason, tuneId: string): ISeasonInfo {
-        return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(ServiceLanguage.English, seasonDbItem, `/${ResourceTypes.Tunes}/${tuneId}/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
+    public static convertSeasonDbItemToTuneSeasonInfo(lang: ServiceLanguage, seasonDbItem: HazzatDbSchema.ISeason, tuneId: string): ISeasonInfo {
+        return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(lang, seasonDbItem, `/${ResourceTypes.Tunes}/${tuneId}/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
     }
 
-    public static convertSeasonDbItemToTypeSeasonInfo(seasonDbItem: HazzatDbSchema.ISeason, typeId: string): ISeasonInfo {
-        return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(ServiceLanguage.English, seasonDbItem, `/${ResourceTypes.Types}/${typeId}/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
+    public static convertSeasonDbItemToTypeSeasonInfo(lang: ServiceLanguage, seasonDbItem: HazzatDbSchema.ISeason, typeId: string): ISeasonInfo {
+        return HazzatContentUtils._convertSeasonDbItemToSeasonInfo(lang, seasonDbItem, `/${ResourceTypes.Types}/${typeId}/${ResourceTypes.Seasons}/${seasonDbItem.ItemId}`);
     }
 
     private static _convertSeasonDbItemToSeasonInfo(lang: ServiceLanguage, seasonDbItem: HazzatDbSchema.ISeason, id: string): ISeasonInfo {

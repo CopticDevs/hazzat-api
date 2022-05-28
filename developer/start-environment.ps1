@@ -32,7 +32,7 @@ $slnPath = [System.IO.Path]::GetDirectoryName($myInvocation.MyCommand.Definition
 function StartDevEnv([string]$dbConnectionString) {
     $env:CUSTOMCONNSTR_DBCONNECTIONSTRING=$dbConnectionString
 
-    & 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\devenv.exe' $slnPath
+    & 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\devenv.exe' $slnPath
 }
 
 Write-Output "Using environment '$DeploymentEnvironment'"

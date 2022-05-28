@@ -309,6 +309,32 @@ describe("Localization Tests", () => {
         });
     });
 
+    describe("Type Season localization tests", () => {
+        it("should get a Type Season in English", async () => {
+            const resourceId = `/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/1`;
+            const response: AxiosResponse<ISeasonInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "en" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateTypeSeason(response.data, resourceId);
+            assert.equal(response.data.name, "Annual");
+            assert.isTrue(response.data.verse.startsWith("\"How lovely is Your tabernacle, O Lord of hosts!"));
+        });
+
+        it("should get a Type Season in English", async () => {
+            const resourceId = `/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/1`;
+            const response: AxiosResponse<ISeasonInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "ar" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateTypeSeason(response.data, resourceId);
+            assert.equal(response.data.name, "سنوي");
+            assert.isTrue(response.data.verse.startsWith("\"ما أحلى مساكنك يا رب الجنود"));
+        });
+    });
+
     describe("Tunes localization tests", () => {
         it("should get a Tune in English", async () => {
             const resourceId = `/${ResourceTypes.Tunes}/1`;
@@ -330,6 +356,32 @@ describe("Localization Tests", () => {
             Validators.validateObject(response.data);
             Validators.validateHymnTune(response.data, resourceId);
             assert.equal(response.data.name, "سنوي");
+        });
+    });
+
+    describe("Tune Season localization tests", () => {
+        it("should get a Tune Season in English", async () => {
+            const resourceId = `/${ResourceTypes.Tunes}/1/${ResourceTypes.Seasons}/33`;
+            const response: AxiosResponse<ISeasonInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "en" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateTuneSeason(response.data, resourceId);
+            assert.equal(response.data.name, "Papal Hymns");
+            assert.isTrue(response.data.verse.startsWith("\"Your people shall be volunteers in the day of Your power"));
+        });
+
+        it("should get a Tune Season in Arabic", async () => {
+            const resourceId = `/${ResourceTypes.Tunes}/1/${ResourceTypes.Seasons}/33`;
+            const response: AxiosResponse<ISeasonInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "ar" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateTuneSeason(response.data, resourceId);
+            assert.equal(response.data.name, "الحآن البطاركة");
+            assert.isTrue(response.data.verse.startsWith("شعبك مُنتدب في يوم قوتك في زينة مقدسة من رحم الفجر."));
         });
     });
 });

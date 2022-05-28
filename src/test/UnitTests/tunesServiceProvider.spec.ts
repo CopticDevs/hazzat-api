@@ -120,7 +120,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneSeasonList', SqlDataProviderMock.getDbTuneSeasonList());
 
-            const seasonList = await hymnsProvider.getTuneSeasonList("12");
+            const seasonList = await hymnsProvider.getTuneSeasonList(ServiceLanguage.English, "12");
             Validators.validateArray(seasonList);
             seasonList.length.should.be.eql(3);
             seasonList.forEach((season) => Validators.validateTuneSeason(season));
@@ -130,8 +130,32 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneSeasonList', []);
 
-            const seasonList = await hymnsProvider.getTuneSeasonList("tuneId");
+            const seasonList = await hymnsProvider.getTuneSeasonList(ServiceLanguage.English, "tuneId");
             Validators.validateArray(seasonList, true);
+        });
+
+        it("should get all seasons for a tune with English results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonList', SqlDataProviderMock.getDbTuneSeasonList());
+
+            const seasonList = await hymnsProvider.getTuneSeasonList(ServiceLanguage.English, "12");
+            Validators.validateArray(seasonList);
+            seasonList.length.should.be.eql(3);
+            seasonList.forEach((season) => Validators.validateTuneSeason(season));
+            assert.equal(seasonList[0].name, SqlDataProviderMock.getDbTuneSeasonList()[0].Name);
+            assert.equal(seasonList[0].verse, SqlDataProviderMock.getDbTuneSeasonList()[0].Verse);
+        });
+
+        it("should get all seasons for a tune with Arabic results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonList', SqlDataProviderMock.getDbTuneSeasonList());
+
+            const seasonList = await hymnsProvider.getTuneSeasonList(ServiceLanguage.Arabic, "12");
+            Validators.validateArray(seasonList);
+            seasonList.length.should.be.eql(3);
+            seasonList.forEach((season) => Validators.validateTuneSeason(season));
+            assert.equal(seasonList[0].name, SqlDataProviderMock.getDbTuneSeasonList()[0].Name_Arabic);
+            assert.equal(seasonList[0].verse, SqlDataProviderMock.getDbTuneSeasonList()[0].Verse_Arabic);
         });
     });
 
@@ -140,7 +164,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneSeason', SqlDataProviderMock.getDbTuneSeason());
 
-            const season = await hymnsProvider.getTuneSeason("12", "seasonId");
+            const season = await hymnsProvider.getTuneSeason(ServiceLanguage.English, "12", "seasonId");
             Validators.validateObject(season);
             Validators.validateTuneSeason(season);
         });
@@ -150,11 +174,33 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeason', SqlDataProviderMock.getDbTuneSeason());
 
             const seasonDb = SqlDataProviderMock.getDbTuneSeason();
-            const season = await hymnsProvider.getTuneSeason("tuneId", "seasonId");
+            const season = await hymnsProvider.getTuneSeason(ServiceLanguage.English, "tuneId", "seasonId");
 
             // Validate that the contract was mapped out correctly from db results
             season.name.should.be.equal(seasonDb.Name);
             season.verse.should.be.equal(seasonDb.Verse);
+        });
+
+        it("should get a single season for a tune in English", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeason', SqlDataProviderMock.getDbTuneSeason());
+
+            const season = await hymnsProvider.getTuneSeason(ServiceLanguage.English, "12", "seasonId");
+            Validators.validateObject(season);
+            Validators.validateTuneSeason(season);
+            assert.equal(season.name, SqlDataProviderMock.getDbTuneSeason().Name);
+            assert.equal(season.verse, SqlDataProviderMock.getDbTuneSeason().Verse);
+        });
+
+        it("should get a single season for a tune in Arabic", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeason', SqlDataProviderMock.getDbTuneSeason());
+
+            const season = await hymnsProvider.getTuneSeason(ServiceLanguage.Arabic, "12", "seasonId");
+            Validators.validateObject(season);
+            Validators.validateTuneSeason(season);
+            assert.equal(season.name, SqlDataProviderMock.getDbTuneSeason().Name_Arabic);
+            assert.equal(season.verse, SqlDataProviderMock.getDbTuneSeason().Verse_Arabic);
         });
     });
 

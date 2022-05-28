@@ -117,7 +117,9 @@ export class TunesController extends BaseController {
          */
         this.router.get(`/:tuneId(\\d+)/${ResourceTypes.Seasons}`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getTuneSeasonList(req.params.tuneId);
+                const result = await hymnsServiceProvider.getTuneSeasonList(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.tuneId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -163,7 +165,10 @@ export class TunesController extends BaseController {
          */
         this.router.get(`/:tuneId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getTuneSeason(req.params.tuneId, req.params.seasonId);
+                const result = await hymnsServiceProvider.getTuneSeason(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.tuneId,
+                    req.params.seasonId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

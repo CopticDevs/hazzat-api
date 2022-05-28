@@ -118,18 +118,18 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
     }
 
     @measure
-    public async getTypeSeasonList(typeId: string): Promise<ISeasonInfo[]> {
+    public async getTypeSeasonList(lang: ServiceLanguage, typeId: string): Promise<ISeasonInfo[]> {
         const dbResult = await this._dataProvider.getTypeSeasonList(typeId);
 
         const seasons: ISeasonInfo[] = dbResult
-            .map((row) => HazzatContentUtils.convertSeasonDbItemToTypeSeasonInfo(row, typeId));
+            .map((row) => HazzatContentUtils.convertSeasonDbItemToTypeSeasonInfo(lang, row, typeId));
         return seasons;
     }
 
     @measure
-    public async getTypeSeason(typeId: string, seasonId: string): Promise<ISeasonInfo> {
+    public async getTypeSeason(lang: ServiceLanguage, typeId: string, seasonId: string): Promise<ISeasonInfo> {
         const dbResult = await this._dataProvider.getTypeSeason(typeId, seasonId);
-        return HazzatContentUtils.convertSeasonDbItemToTypeSeasonInfo(dbResult, typeId);
+        return HazzatContentUtils.convertSeasonDbItemToTypeSeasonInfo(lang, dbResult, typeId);
     }
 
     @measure
@@ -193,18 +193,18 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
     }
 
     @measure
-    public async getTuneSeasonList(tuneId: string): Promise<ISeasonInfo[]> {
+    public async getTuneSeasonList(lang: ServiceLanguage, tuneId: string): Promise<ISeasonInfo[]> {
         const dbResult = await this._dataProvider.getTuneSeasonList(tuneId);
 
         const seasons: ISeasonInfo[] = dbResult
-            .map((row) => HazzatContentUtils.convertSeasonDbItemToTuneSeasonInfo(row, tuneId));
+            .map((row) => HazzatContentUtils.convertSeasonDbItemToTuneSeasonInfo(lang, row, tuneId));
         return seasons;
     }
 
     @measure
-    public async getTuneSeason(tuneId: string, seasonId: string): Promise<ISeasonInfo> {
+    public async getTuneSeason(lang: ServiceLanguage, tuneId: string, seasonId: string): Promise<ISeasonInfo> {
         const dbResult = await this._dataProvider.getTuneSeason(tuneId, seasonId);
-        return HazzatContentUtils.convertSeasonDbItemToTuneSeasonInfo(dbResult, tuneId);
+        return HazzatContentUtils.convertSeasonDbItemToTuneSeasonInfo(lang, dbResult, tuneId);
     }
 
     @measure

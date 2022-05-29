@@ -296,7 +296,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneSeasonServiceHymnFormatList', SqlDataProviderMock.getDbTuneSeasonServiceHymnFormatList());
 
-            const formatList = await hymnsProvider.getTuneSeasonServiceHymnFormatList("12", "seasonId", "hymnId");
+            const formatList = await hymnsProvider.getTuneSeasonServiceHymnFormatList(ServiceLanguage.English, "12", "seasonId", "hymnId");
             Validators.validateArray(formatList);
             formatList.length.should.be.eql(3);
             formatList.forEach((format) => Validators.validateTuneServiceHymnFormat(format));
@@ -306,8 +306,30 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneSeasonServiceHymnFormatList', []);
 
-            const formatList = await hymnsProvider.getTuneSeasonServiceHymnFormatList("tuneId", "seasonId", "hymnId");
+            const formatList = await hymnsProvider.getTuneSeasonServiceHymnFormatList(ServiceLanguage.English, "tuneId", "seasonId", "hymnId");
             Validators.validateArray(formatList, true);
+        });
+
+        it("should get all formats for a tune for a season for a hymn with English results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonServiceHymnFormatList', SqlDataProviderMock.getDbTuneSeasonServiceHymnFormatList());
+
+            const formatList = await hymnsProvider.getTuneSeasonServiceHymnFormatList(ServiceLanguage.English, "12", "seasonId", "hymnId");
+            Validators.validateArray(formatList);
+            formatList.length.should.be.eql(3);
+            formatList.forEach((format) => Validators.validateTuneServiceHymnFormat(format));
+            assert.equal(formatList[0].name, SqlDataProviderMock.getDbTuneSeasonServiceHymnFormatList()[0].Format_Name);
+        });
+
+        it("should get all formats for a tune for a season for a hymn with Arabic results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonServiceHymnFormatList', SqlDataProviderMock.getDbTuneSeasonServiceHymnFormatList());
+
+            const formatList = await hymnsProvider.getTuneSeasonServiceHymnFormatList(ServiceLanguage.Arabic, "12", "seasonId", "hymnId");
+            Validators.validateArray(formatList);
+            formatList.length.should.be.eql(3);
+            formatList.forEach((format) => Validators.validateTuneServiceHymnFormat(format));
+            assert.equal(formatList[0].name, SqlDataProviderMock.getDbTuneSeasonServiceHymnFormatList()[0].Format_Name_Arabic);
         });
     });
 
@@ -316,7 +338,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneSeasonServiceHymnFormat', SqlDataProviderMock.getDbTuneSeasonServiceHymnFormat());
 
-            const format = await hymnsProvider.getTuneSeasonServiceHymnFormat("12", "seasonId", "hymnId", "formatId");
+            const format = await hymnsProvider.getTuneSeasonServiceHymnFormat(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId");
             Validators.validateObject(format);
             Validators.validateTuneServiceHymnFormat(format);
         });
@@ -326,11 +348,31 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormat', SqlDataProviderMock.getDbTuneSeasonServiceHymnFormat());
 
             const formatDb = SqlDataProviderMock.getDbTuneSeasonServiceHymnFormat();
-            const format = await hymnsProvider.getTuneSeasonServiceHymnFormat("tuneId", "seasonId", "hymnId", "formatId");
+            const format = await hymnsProvider.getTuneSeasonServiceHymnFormat(ServiceLanguage.English, "tuneId", "seasonId", "hymnId", "formatId");
 
             // Validate that the contract was mapped out correctly from db results
             format.name.should.be.equal(formatDb.Format_Name);
             format.variationCount.should.be.equal(formatDb.Content_Count);
+        });
+
+        it("should get a single format for a tune in a season in a hymn in English", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonServiceHymnFormat', SqlDataProviderMock.getDbTuneSeasonServiceHymnFormat());
+
+            const format = await hymnsProvider.getTuneSeasonServiceHymnFormat(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId");
+            Validators.validateObject(format);
+            Validators.validateTuneServiceHymnFormat(format);
+            assert.equal(format.name, SqlDataProviderMock.getDbTuneSeasonServiceHymnFormat().Format_Name);
+        });
+
+        it("should get a single format for a tune in a season in a hymn in Arabic", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonServiceHymnFormat', SqlDataProviderMock.getDbTuneSeasonServiceHymnFormat());
+
+            const format = await hymnsProvider.getTuneSeasonServiceHymnFormat(ServiceLanguage.Arabic, "12", "seasonId", "hymnId", "formatId");
+            Validators.validateObject(format);
+            Validators.validateTuneServiceHymnFormat(format);
+            assert.equal(format.name, SqlDataProviderMock.getDbTuneSeasonServiceHymnFormat().Format_Name_Arabic);
         });
     });
 

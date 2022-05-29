@@ -394,6 +394,34 @@ describe("Localization Tests", () => {
         });
     });
 
+    describe("Type Season hymn Formats localization tests", () => {
+        it("should get a Type Season hymn Format in English", (done) => {
+            const resourceId = `/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/1/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/2`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "en")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateTypeServiceHymnFormat(res.body, resourceId);
+                    assert.equal(res.body.name, "Hazzat");
+                    done();
+                });
+        });
+
+        it("should get a Type Season hymn Format in Arabic", (done) => {
+            const resourceId = `/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/1/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/2`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "ar")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateTypeServiceHymnFormat(res.body, resourceId);
+                    assert.equal(res.body.name, "هزّات");
+                    done();
+                });
+        });
+    });
+
     describe("Tunes localization tests", () => {
         it("should get a Tune in Arabic", (done) => {
             const resourceId = `/${ResourceTypes.Tunes}/1`;
@@ -477,6 +505,34 @@ describe("Localization Tests", () => {
                     Validators.validateTuneServiceHymnWithServiceDetails(res.body, resourceId);
                     assert.equal(res.body.name, "يا ملك السلام (أبؤورو)");
                     assert.equal(res.body.serviceName, "زفّة");
+                    done();
+                });
+        });
+    });
+
+    describe("Tune Season hymn Formats localization tests", () => {
+        it("should get a Tune Season hymn Format in English", (done) => {
+            const resourceId = `/${ResourceTypes.Tunes}/1/${ResourceTypes.Seasons}/33/${ResourceTypes.Hymns}/456/${ResourceTypes.Formats}/1`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "en")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateTuneServiceHymnFormat(res.body, resourceId);
+                    assert.equal(res.body.name, "Text");
+                    done();
+                });
+        });
+
+        it("should get a Tune Season hymn Format in Arabic", (done) => {
+            const resourceId = `/${ResourceTypes.Tunes}/1/${ResourceTypes.Seasons}/33/${ResourceTypes.Hymns}/456/${ResourceTypes.Formats}/1`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "ar")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateTuneServiceHymnFormat(res.body, resourceId);
+                    assert.equal(res.body.name, "نَص");
                     done();
                 });
         });

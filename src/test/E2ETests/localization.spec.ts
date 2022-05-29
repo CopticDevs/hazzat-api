@@ -361,6 +361,30 @@ describe("Localization Tests", () => {
         });
     });
 
+    describe("Type Season Hymn Format localization tests", () => {
+        it("should get a Type Season hymn Format in English", async () => {
+            const resourceId = `/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/1/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/2`;
+            const response: AxiosResponse<IFormatInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "en" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateTypeServiceHymnFormat(response.data, resourceId);
+            assert.equal(response.data.name, "Hazzat");
+        });
+
+        it("should get a Type Season hymn Format in Arabic", async () => {
+            const resourceId = `/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/1/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/2`;
+            const response: AxiosResponse<IFormatInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "ar" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateTypeServiceHymnFormat(response.data, resourceId);
+            assert.equal(response.data.name, "هزّات");
+        });
+    });
+
     describe("Tunes localization tests", () => {
         it("should get a Tune in English", async () => {
             const resourceId = `/${ResourceTypes.Tunes}/1`;
@@ -434,6 +458,30 @@ describe("Localization Tests", () => {
             Validators.validateTuneServiceHymnWithServiceDetails(response.data, resourceId);
             assert.equal(response.data.name, "يا ملك السلام (أبؤورو)");
             assert.equal(response.data.serviceName, "زفّة");
+        });
+    });
+
+    describe("Tune Season Hymn Format localization tests", () => {
+        it("should get a Tune Season hymn Format in English", async () => {
+            const resourceId = `/${ResourceTypes.Tunes}/1/${ResourceTypes.Seasons}/33/${ResourceTypes.Hymns}/456/${ResourceTypes.Formats}/1`;
+            const response: AxiosResponse<IFormatInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "en" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateTuneServiceHymnFormat(response.data, resourceId);
+            assert.equal(response.data.name, "Text");
+        });
+
+        it("should get a Tune Season hymn Format in Arabic", async () => {
+            const resourceId = `/${ResourceTypes.Tunes}/1/${ResourceTypes.Seasons}/33/${ResourceTypes.Hymns}/456/${ResourceTypes.Formats}/1`;
+            const response: AxiosResponse<IFormatInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "ar" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateTuneServiceHymnFormat(response.data, resourceId);
+            assert.equal(response.data.name, "نَص");
         });
     });
 });

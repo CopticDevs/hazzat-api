@@ -111,21 +111,23 @@ export class HazzatContentUtils {
     }
 
     public static convertServiceHymnFormatDbItemToTuneFormatInfo(
+        lang: ServiceLanguage,
         serviceHymnFormatDbItem: HazzatDbSchema.IServiceHymnFormat,
         tuneId: string
     ): IFormatInfo {
         return HazzatContentUtils._convertServiceHymnFormatDbItemToFormatInfo(
-            ServiceLanguage.English,
+            lang,
             serviceHymnFormatDbItem,
             `/${ResourceTypes.Tunes}/${tuneId}/${ResourceTypes.Seasons}/${serviceHymnFormatDbItem.Season_ID}/${ResourceTypes.Hymns}/${serviceHymnFormatDbItem.ServiceHymn_ID}/${ResourceTypes.Formats}/${serviceHymnFormatDbItem.ItemId}`);
     }
 
     public static convertServiceHymnFormatDbItemToTypeFormatInfo(
+        lang: ServiceLanguage,
         serviceHymnFormatDbItem: HazzatDbSchema.IServiceHymnFormat,
         typeId: string
     ): IFormatInfo {
         return HazzatContentUtils._convertServiceHymnFormatDbItemToFormatInfo(
-            ServiceLanguage.English,
+            lang,
             serviceHymnFormatDbItem,
             `/${ResourceTypes.Types}/${typeId}/${ResourceTypes.Seasons}/${serviceHymnFormatDbItem.Season_ID}/${ResourceTypes.Hymns}/${serviceHymnFormatDbItem.ServiceHymn_ID}/${ResourceTypes.Formats}/${serviceHymnFormatDbItem.ItemId}`);
     }

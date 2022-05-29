@@ -323,7 +323,11 @@ export class TypesController extends BaseController {
          */
         this.router.get(`/:typeId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)/${ResourceTypes.Formats}`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getTypeSeasonServiceHymnFormatList(req.params.typeId, req.params.seasonId, req.params.hymnId);
+                const result = await hymnsServiceProvider.getTypeSeasonServiceHymnFormatList(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.typeId,
+                    req.params.seasonId,
+                    req.params.hymnId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -379,7 +383,12 @@ export class TypesController extends BaseController {
          */
         this.router.get(`/:typeId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)/${ResourceTypes.Formats}/:formatId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getTypeSeasonServiceHymnFormat(req.params.typeId, req.params.seasonId, req.params.hymnId, req.params.formatId);
+                const result = await hymnsServiceProvider.getTypeSeasonServiceHymnFormat(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.typeId,
+                    req.params.seasonId,
+                    req.params.hymnId,
+                    req.params.formatId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

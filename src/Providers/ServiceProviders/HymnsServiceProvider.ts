@@ -148,18 +148,18 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
     }
 
     @measure
-    public async getTypeSeasonServiceHymnFormatList(typeId: string, seasonId: string, hymnId: string): Promise<IFormatInfo[]> {
+    public async getTypeSeasonServiceHymnFormatList(lang: ServiceLanguage, typeId: string, seasonId: string, hymnId: string): Promise<IFormatInfo[]> {
         const dbResult = await this._dataProvider.getTypeSeasonServiceHymnFormatList(typeId, seasonId, hymnId);
 
         const formats: IFormatInfo[] = dbResult
-            .map((row) => HazzatContentUtils.convertServiceHymnFormatDbItemToTypeFormatInfo(row, typeId));
+            .map((row) => HazzatContentUtils.convertServiceHymnFormatDbItemToTypeFormatInfo(lang, row, typeId));
         return formats;
     }
 
     @measure
-    public async getTypeSeasonServiceHymnFormat(typeId: string, seasonId: string, hymnId: string, formatId: string): Promise<IFormatInfo> {
+    public async getTypeSeasonServiceHymnFormat(lang: ServiceLanguage, typeId: string, seasonId: string, hymnId: string, formatId: string): Promise<IFormatInfo> {
         const dbResult = await this._dataProvider.getTypeSeasonServiceHymnFormat(typeId, seasonId, hymnId, formatId);
-        return HazzatContentUtils.convertServiceHymnFormatDbItemToTypeFormatInfo(dbResult, typeId);
+        return HazzatContentUtils.convertServiceHymnFormatDbItemToTypeFormatInfo(lang, dbResult, typeId);
     }
 
     @measure
@@ -223,18 +223,18 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
     }
 
     @measure
-    public async getTuneSeasonServiceHymnFormatList(tuneId: string, seasonId: string, hymnId: string): Promise<IFormatInfo[]> {
+    public async getTuneSeasonServiceHymnFormatList(lang: ServiceLanguage, tuneId: string, seasonId: string, hymnId: string): Promise<IFormatInfo[]> {
         const dbResult = await this._dataProvider.getTuneSeasonServiceHymnFormatList(tuneId, seasonId, hymnId);
 
         const formats: IFormatInfo[] = dbResult
-            .map((row) => HazzatContentUtils.convertServiceHymnFormatDbItemToTuneFormatInfo(row, tuneId));
+            .map((row) => HazzatContentUtils.convertServiceHymnFormatDbItemToTuneFormatInfo(lang, row, tuneId));
         return formats;
     }
 
     @measure
-    public async getTuneSeasonServiceHymnFormat(tuneId: string, seasonId: string, hymnId: string, formatId: string): Promise<IFormatInfo> {
+    public async getTuneSeasonServiceHymnFormat(lang: ServiceLanguage, tuneId: string, seasonId: string, hymnId: string, formatId: string): Promise<IFormatInfo> {
         const dbResult = await this._dataProvider.getTuneSeasonServiceHymnFormat(tuneId, seasonId, hymnId, formatId);
-        return HazzatContentUtils.convertServiceHymnFormatDbItemToTuneFormatInfo(dbResult, tuneId);
+        return HazzatContentUtils.convertServiceHymnFormatDbItemToTuneFormatInfo(lang, dbResult, tuneId);
     }
 
     @measure

@@ -1,6 +1,8 @@
 import * as chai from "chai";
+import { assert } from "chai";
 import { ImportMock, MockManager } from 'ts-mock-imports';
 import { ContentLanguage } from '../../Common/Types/ContentLanguage';
+import { ServiceLanguage } from "../../Common/Types/ServiceLanguage";
 import { IAudioContent, IHazzatContent, IInformationContent, IMusicalNotesContent, ITextContent, IVerticalHazzatContent, IVideoContent } from '../../Models/IVariationInfo';
 import { Constants as SqlConstants } from "../../Providers/DataProviders/SqlDataProvider/SqlConstants";
 import * as SqlDataProviderModule from '../../Providers/DataProviders/SqlDataProvider/SqlDataProvider';
@@ -32,7 +34,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneList', SqlDataProviderMock.getDbTunesList());
 
-            const tunesList = await hymnsProvider.getTuneList();
+            const tunesList = await hymnsProvider.getTuneList(ServiceLanguage.English);
             Validators.validateArray(tunesList);
             tunesList.length.should.be.eql(3);
             tunesList.forEach((tune) => Validators.validateHymnTune(tune));
@@ -42,8 +44,30 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneList', []);
 
-            const tunesList = await hymnsProvider.getTuneList();
+            const tunesList = await hymnsProvider.getTuneList(ServiceLanguage.English);
             Validators.validateArray(tunesList, true);
+        });
+
+        it("should get all tunes with English results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneList', SqlDataProviderMock.getDbTunesList());
+
+            const tunesList = await hymnsProvider.getTuneList(ServiceLanguage.English);
+            Validators.validateArray(tunesList);
+            tunesList.length.should.be.eql(3);
+            tunesList.forEach((tune) => Validators.validateHymnTune(tune));
+            assert.equal(tunesList[0].name, SqlDataProviderMock.getDbTunesList()[0].Name);
+        });
+
+        it("should get all tunes with Arabic results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneList', SqlDataProviderMock.getDbTunesList());
+
+            const tunesList = await hymnsProvider.getTuneList(ServiceLanguage.Arabic);
+            Validators.validateArray(tunesList);
+            tunesList.length.should.be.eql(3);
+            tunesList.forEach((tune) => Validators.validateHymnTune(tune));
+            assert.equal(tunesList[0].name, SqlDataProviderMock.getDbTunesList()[0].Name_Arabic);
         });
     });
 
@@ -52,7 +76,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTune', SqlDataProviderMock.getDbTune());
 
-            const tune = await hymnsProvider.getTune("tuneId");
+            const tune = await hymnsProvider.getTune(ServiceLanguage.English, "tuneId");
             Validators.validateObject(tune);
             Validators.validateHymnTune(tune);
         });
@@ -62,12 +86,32 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTune', SqlDataProviderMock.getDbTune());
 
             const tuneDb = SqlDataProviderMock.getDbTune();
-            const tune = await hymnsProvider.getTune("tuneId");
+            const tune = await hymnsProvider.getTune(ServiceLanguage.English, "tuneId");
 
             // Validate that the contract was mapped out correctly from db results
             tune.name.should.be.equal(tuneDb.Name);
             tune.hymnCount.should.be.equal(tuneDb.ServiceHymnsCount);
             tune.order.should.be.equal(tuneDb.Tune_Order);
+        });
+
+        it("should get a single tune in English", async () => {
+            // Setup mocked result
+            mockManager.mock('getTune', SqlDataProviderMock.getDbTune());
+
+            const tune = await hymnsProvider.getTune(ServiceLanguage.English, "tuneId");
+            Validators.validateObject(tune);
+            Validators.validateHymnTune(tune);
+            assert.equal(tune.name, SqlDataProviderMock.getDbTune().Name);
+        });
+
+        it("should get a single tune in Arabic", async () => {
+            // Setup mocked result
+            mockManager.mock('getTune', SqlDataProviderMock.getDbTune());
+
+            const tune = await hymnsProvider.getTune(ServiceLanguage.Arabic, "tuneId");
+            Validators.validateObject(tune);
+            Validators.validateHymnTune(tune);
+            assert.equal(tune.name, SqlDataProviderMock.getDbTune().Name_Arabic);
         });
     });
 
@@ -76,7 +120,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneSeasonList', SqlDataProviderMock.getDbTuneSeasonList());
 
-            const seasonList = await hymnsProvider.getTuneSeasonList("12");
+            const seasonList = await hymnsProvider.getTuneSeasonList(ServiceLanguage.English, "12");
             Validators.validateArray(seasonList);
             seasonList.length.should.be.eql(3);
             seasonList.forEach((season) => Validators.validateTuneSeason(season));
@@ -86,8 +130,32 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneSeasonList', []);
 
-            const seasonList = await hymnsProvider.getTuneSeasonList("tuneId");
+            const seasonList = await hymnsProvider.getTuneSeasonList(ServiceLanguage.English, "tuneId");
             Validators.validateArray(seasonList, true);
+        });
+
+        it("should get all seasons for a tune with English results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonList', SqlDataProviderMock.getDbTuneSeasonList());
+
+            const seasonList = await hymnsProvider.getTuneSeasonList(ServiceLanguage.English, "12");
+            Validators.validateArray(seasonList);
+            seasonList.length.should.be.eql(3);
+            seasonList.forEach((season) => Validators.validateTuneSeason(season));
+            assert.equal(seasonList[0].name, SqlDataProviderMock.getDbTuneSeasonList()[0].Name);
+            assert.equal(seasonList[0].verse, SqlDataProviderMock.getDbTuneSeasonList()[0].Verse);
+        });
+
+        it("should get all seasons for a tune with Arabic results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonList', SqlDataProviderMock.getDbTuneSeasonList());
+
+            const seasonList = await hymnsProvider.getTuneSeasonList(ServiceLanguage.Arabic, "12");
+            Validators.validateArray(seasonList);
+            seasonList.length.should.be.eql(3);
+            seasonList.forEach((season) => Validators.validateTuneSeason(season));
+            assert.equal(seasonList[0].name, SqlDataProviderMock.getDbTuneSeasonList()[0].Name_Arabic);
+            assert.equal(seasonList[0].verse, SqlDataProviderMock.getDbTuneSeasonList()[0].Verse_Arabic);
         });
     });
 
@@ -96,7 +164,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneSeason', SqlDataProviderMock.getDbTuneSeason());
 
-            const season = await hymnsProvider.getTuneSeason("12", "seasonId");
+            const season = await hymnsProvider.getTuneSeason(ServiceLanguage.English, "12", "seasonId");
             Validators.validateObject(season);
             Validators.validateTuneSeason(season);
         });
@@ -106,11 +174,33 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeason', SqlDataProviderMock.getDbTuneSeason());
 
             const seasonDb = SqlDataProviderMock.getDbTuneSeason();
-            const season = await hymnsProvider.getTuneSeason("tuneId", "seasonId");
+            const season = await hymnsProvider.getTuneSeason(ServiceLanguage.English, "tuneId", "seasonId");
 
             // Validate that the contract was mapped out correctly from db results
             season.name.should.be.equal(seasonDb.Name);
             season.verse.should.be.equal(seasonDb.Verse);
+        });
+
+        it("should get a single season for a tune in English", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeason', SqlDataProviderMock.getDbTuneSeason());
+
+            const season = await hymnsProvider.getTuneSeason(ServiceLanguage.English, "12", "seasonId");
+            Validators.validateObject(season);
+            Validators.validateTuneSeason(season);
+            assert.equal(season.name, SqlDataProviderMock.getDbTuneSeason().Name);
+            assert.equal(season.verse, SqlDataProviderMock.getDbTuneSeason().Verse);
+        });
+
+        it("should get a single season for a tune in Arabic", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeason', SqlDataProviderMock.getDbTuneSeason());
+
+            const season = await hymnsProvider.getTuneSeason(ServiceLanguage.Arabic, "12", "seasonId");
+            Validators.validateObject(season);
+            Validators.validateTuneSeason(season);
+            assert.equal(season.name, SqlDataProviderMock.getDbTuneSeason().Name_Arabic);
+            assert.equal(season.verse, SqlDataProviderMock.getDbTuneSeason().Verse_Arabic);
         });
     });
 
@@ -119,7 +209,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneSeasonServiceHymnList', SqlDataProviderMock.getDbTuneSeasonServiceHymnList());
 
-            const serviceHymnList = await hymnsProvider.getTuneSeasonServiceHymnList("12", "seasonId");
+            const serviceHymnList = await hymnsProvider.getTuneSeasonServiceHymnList(ServiceLanguage.English, "12", "seasonId");
             Validators.validateArray(serviceHymnList);
             serviceHymnList.length.should.be.eql(3);
             serviceHymnList.forEach((serviceHymn) => Validators.validateTuneServiceHymnWithServiceDetails(serviceHymn));
@@ -129,8 +219,30 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneSeasonServiceHymnList', []);
 
-            const hymnList = await hymnsProvider.getTuneSeasonServiceHymnList("tuneId", "seasonId");
+            const hymnList = await hymnsProvider.getTuneSeasonServiceHymnList(ServiceLanguage.English, "tuneId", "seasonId");
             Validators.validateArray(hymnList, true);
+        });
+
+        it("should get all hymns for a tune for a season with English results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonServiceHymnList', SqlDataProviderMock.getDbTuneSeasonServiceHymnList());
+
+            const serviceHymnList = await hymnsProvider.getTuneSeasonServiceHymnList(ServiceLanguage.English, "12", "seasonId");
+            Validators.validateArray(serviceHymnList);
+            serviceHymnList.length.should.be.eql(3);
+            serviceHymnList.forEach((serviceHymn) => Validators.validateTuneServiceHymnWithServiceDetails(serviceHymn));
+            assert.equal(serviceHymnList[0].name, SqlDataProviderMock.getDbTuneSeasonServiceHymnList()[0].Title);
+        });
+
+        it("should get all hymns for a tune for a season with Arabic results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonServiceHymnList', SqlDataProviderMock.getDbTuneSeasonServiceHymnList());
+
+            const serviceHymnList = await hymnsProvider.getTuneSeasonServiceHymnList(ServiceLanguage.Arabic, "12", "seasonId");
+            Validators.validateArray(serviceHymnList);
+            serviceHymnList.length.should.be.eql(3);
+            serviceHymnList.forEach((serviceHymn) => Validators.validateTuneServiceHymnWithServiceDetails(serviceHymn));
+            assert.equal(serviceHymnList[0].name, SqlDataProviderMock.getDbTuneSeasonServiceHymnList()[0].Title_Arabic);
         });
     });
 
@@ -139,7 +251,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneSeasonServiceHymn', SqlDataProviderMock.getDbTuneSeasonServiceHymn());
 
-            const serviceHymn = await hymnsProvider.getTuneSeasonServiceHymn("12", "seasonId", "hymnId");
+            const serviceHymn = await hymnsProvider.getTuneSeasonServiceHymn(ServiceLanguage.English, "12", "seasonId", "hymnId");
             Validators.validateObject(serviceHymn);
             Validators.validateTuneServiceHymnWithServiceDetails(serviceHymn);
         });
@@ -149,13 +261,33 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymn', SqlDataProviderMock.getDbTuneSeasonServiceHymn());
 
             const serviceHymnDb = SqlDataProviderMock.getDbTuneSeasonServiceHymn();
-            const serviceHymn = await hymnsProvider.getTuneSeasonServiceHymn("tuneId", "seasonId", "hymnId");
+            const serviceHymn = await hymnsProvider.getTuneSeasonServiceHymn(ServiceLanguage.English, "tuneId", "seasonId", "hymnId");
 
             // Validate that the contract was mapped out correctly from db results
             serviceHymn.name.should.be.equal(serviceHymnDb.Title);
             serviceHymn.serviceId.should.be.equal(serviceHymnDb.Service_ID);
             serviceHymn.serviceName.should.be.equal(serviceHymnDb.Service_Name);
             serviceHymn.order.should.be.equal(serviceHymnDb.Hymn_Order);
+        });
+
+        it("should get a single hymn for a tune in a season in English", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonServiceHymn', SqlDataProviderMock.getDbTuneSeasonServiceHymn());
+
+            const serviceHymn = await hymnsProvider.getTuneSeasonServiceHymn(ServiceLanguage.English, "12", "seasonId", "hymnId");
+            Validators.validateObject(serviceHymn);
+            Validators.validateTuneServiceHymnWithServiceDetails(serviceHymn);
+            assert.equal(serviceHymn.name, SqlDataProviderMock.getDbTuneSeasonServiceHymn().Title);
+        });
+
+        it("should get a single hymn for a tune in a season in Arabic", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonServiceHymn', SqlDataProviderMock.getDbTuneSeasonServiceHymn());
+
+            const serviceHymn = await hymnsProvider.getTuneSeasonServiceHymn(ServiceLanguage.Arabic, "12", "seasonId", "hymnId");
+            Validators.validateObject(serviceHymn);
+            Validators.validateTuneServiceHymnWithServiceDetails(serviceHymn);
+            assert.equal(serviceHymn.name, SqlDataProviderMock.getDbTuneSeasonServiceHymn().Title_Arabic);
         });
     });
 
@@ -164,7 +296,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneSeasonServiceHymnFormatList', SqlDataProviderMock.getDbTuneSeasonServiceHymnFormatList());
 
-            const formatList = await hymnsProvider.getTuneSeasonServiceHymnFormatList("12", "seasonId", "hymnId");
+            const formatList = await hymnsProvider.getTuneSeasonServiceHymnFormatList(ServiceLanguage.English, "12", "seasonId", "hymnId");
             Validators.validateArray(formatList);
             formatList.length.should.be.eql(3);
             formatList.forEach((format) => Validators.validateTuneServiceHymnFormat(format));
@@ -174,8 +306,30 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneSeasonServiceHymnFormatList', []);
 
-            const formatList = await hymnsProvider.getTuneSeasonServiceHymnFormatList("tuneId", "seasonId", "hymnId");
+            const formatList = await hymnsProvider.getTuneSeasonServiceHymnFormatList(ServiceLanguage.English, "tuneId", "seasonId", "hymnId");
             Validators.validateArray(formatList, true);
+        });
+
+        it("should get all formats for a tune for a season for a hymn with English results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonServiceHymnFormatList', SqlDataProviderMock.getDbTuneSeasonServiceHymnFormatList());
+
+            const formatList = await hymnsProvider.getTuneSeasonServiceHymnFormatList(ServiceLanguage.English, "12", "seasonId", "hymnId");
+            Validators.validateArray(formatList);
+            formatList.length.should.be.eql(3);
+            formatList.forEach((format) => Validators.validateTuneServiceHymnFormat(format));
+            assert.equal(formatList[0].name, SqlDataProviderMock.getDbTuneSeasonServiceHymnFormatList()[0].Format_Name);
+        });
+
+        it("should get all formats for a tune for a season for a hymn with Arabic results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonServiceHymnFormatList', SqlDataProviderMock.getDbTuneSeasonServiceHymnFormatList());
+
+            const formatList = await hymnsProvider.getTuneSeasonServiceHymnFormatList(ServiceLanguage.Arabic, "12", "seasonId", "hymnId");
+            Validators.validateArray(formatList);
+            formatList.length.should.be.eql(3);
+            formatList.forEach((format) => Validators.validateTuneServiceHymnFormat(format));
+            assert.equal(formatList[0].name, SqlDataProviderMock.getDbTuneSeasonServiceHymnFormatList()[0].Format_Name_Arabic);
         });
     });
 
@@ -184,7 +338,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneSeasonServiceHymnFormat', SqlDataProviderMock.getDbTuneSeasonServiceHymnFormat());
 
-            const format = await hymnsProvider.getTuneSeasonServiceHymnFormat("12", "seasonId", "hymnId", "formatId");
+            const format = await hymnsProvider.getTuneSeasonServiceHymnFormat(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId");
             Validators.validateObject(format);
             Validators.validateTuneServiceHymnFormat(format);
         });
@@ -194,11 +348,31 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormat', SqlDataProviderMock.getDbTuneSeasonServiceHymnFormat());
 
             const formatDb = SqlDataProviderMock.getDbTuneSeasonServiceHymnFormat();
-            const format = await hymnsProvider.getTuneSeasonServiceHymnFormat("tuneId", "seasonId", "hymnId", "formatId");
+            const format = await hymnsProvider.getTuneSeasonServiceHymnFormat(ServiceLanguage.English, "tuneId", "seasonId", "hymnId", "formatId");
 
             // Validate that the contract was mapped out correctly from db results
             format.name.should.be.equal(formatDb.Format_Name);
             format.variationCount.should.be.equal(formatDb.Content_Count);
+        });
+
+        it("should get a single format for a tune in a season in a hymn in English", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonServiceHymnFormat', SqlDataProviderMock.getDbTuneSeasonServiceHymnFormat());
+
+            const format = await hymnsProvider.getTuneSeasonServiceHymnFormat(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId");
+            Validators.validateObject(format);
+            Validators.validateTuneServiceHymnFormat(format);
+            assert.equal(format.name, SqlDataProviderMock.getDbTuneSeasonServiceHymnFormat().Format_Name);
+        });
+
+        it("should get a single format for a tune in a season in a hymn in Arabic", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonServiceHymnFormat', SqlDataProviderMock.getDbTuneSeasonServiceHymnFormat());
+
+            const format = await hymnsProvider.getTuneSeasonServiceHymnFormat(ServiceLanguage.Arabic, "12", "seasonId", "hymnId", "formatId");
+            Validators.validateObject(format);
+            Validators.validateTuneServiceHymnFormat(format);
+            assert.equal(format.name, SqlDataProviderMock.getDbTuneSeasonServiceHymnFormat().Format_Name_Arabic);
         });
     });
 
@@ -207,7 +381,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneSeasonServiceHymnFormatVariationList', SqlDataProviderMock.getDbTuneServiceHymnsFormatVariationList());
 
-            const variationList = await hymnsProvider.getTuneSeasonServiceHymnFormatVariationList("12", "seasonId", "hymnId", "variationId");
+            const variationList = await hymnsProvider.getTuneSeasonServiceHymnFormatVariationList(ServiceLanguage.English, "12", "seasonId", "hymnId", "variationId");
             Validators.validateArray(variationList);
             variationList.length.should.be.eql(3);
             variationList.forEach((variation) => Validators.validateTuneServiceHymnFormatVariation(variation));
@@ -217,8 +391,30 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneSeasonServiceHymnFormatVariationList', []);
 
-            const variationList = await hymnsProvider.getTuneSeasonServiceHymnFormatVariationList("tuneId", "seasonId", "hymnId", "variationId");
+            const variationList = await hymnsProvider.getTuneSeasonServiceHymnFormatVariationList(ServiceLanguage.English, "tuneId", "seasonId", "hymnId", "variationId");
             Validators.validateArray(variationList, true);
+        });
+
+        it("should get all variations for a tune for a season for a hymn for a format with English results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonServiceHymnFormatVariationList', SqlDataProviderMock.getDbTuneServiceHymnsFormatVariationList());
+
+            const variationList = await hymnsProvider.getTuneSeasonServiceHymnFormatVariationList(ServiceLanguage.English, "12", "seasonId", "hymnId", "variationId");
+            Validators.validateArray(variationList);
+            variationList.length.should.be.eql(3);
+            variationList.forEach((variation) => Validators.validateTuneServiceHymnFormatVariation(variation));
+            assert.equal(variationList[0].name, SqlDataProviderMock.getDbTuneServiceHymnsFormatVariationList()[0].Content_Name);
+        });
+
+        it("should get all variations for a tune for a season for a hymn for a format with Arabic results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTuneSeasonServiceHymnFormatVariationList', SqlDataProviderMock.getDbTuneServiceHymnsFormatVariationList());
+
+            const variationList = await hymnsProvider.getTuneSeasonServiceHymnFormatVariationList(ServiceLanguage.Arabic, "12", "seasonId", "hymnId", "variationId");
+            Validators.validateArray(variationList);
+            variationList.length.should.be.eql(3);
+            variationList.forEach((variation) => Validators.validateTuneServiceHymnFormatVariation(variation));
+            assert.equal(variationList[0].name, SqlDataProviderMock.getDbTuneServiceHymnsFormatVariationList()[0].Content_Name_Arabic);
         });
     });
 
@@ -227,7 +423,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase());
 
-            const variation = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variation = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variation);
             Validators.validateTuneServiceHymnFormatVariation(variation);
         });
@@ -237,10 +433,32 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase());
 
             const variationDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationContentBase();
-            const variation = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation("tuneId", "seasonId", "hymnId", "formatId", "variationId");
+            const variation = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation(ServiceLanguage.English, "tuneId", "seasonId", "hymnId", "formatId", "variationId");
 
             // Validate that the contract was mapped out correctly from db results
             variation.name.should.be.equal(variationDb.Content_Name);
+        });
+
+        it("should get a single variation for a tune in a season in a hymn in a format in English ", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationList()[0];
+            mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
+
+            const variation = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
+            Validators.validateObject(variation);
+            Validators.validateTuneServiceHymnFormatVariation(variation);
+            assert.equal(variation.name, SqlDataProviderMock.getDbServiceHymnsFormatVariationList()[0].Content_Name);
+        });
+
+        it("should get a single variation for a tune in a season in a hymn in a format in Arabic ", async () => {
+            // Setup mocked result
+            const contentDb = SqlDataProviderMock.getDbServiceHymnsFormatVariationList()[0];
+            mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
+
+            const variation = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation(ServiceLanguage.Arabic, "12", "seasonId", "hymnId", "formatId", "variationId");
+            Validators.validateObject(variation);
+            Validators.validateTuneServiceHymnFormatVariation(variation);
+            assert.equal(variation.name, SqlDataProviderMock.getDbServiceHymnsFormatVariationList()[0].Content_Name_Arabic);
         });
     });
 
@@ -254,7 +472,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_Coptic = "Some Coptic content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -289,7 +507,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_English = "<comment=Some Comment Text>Some English content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -306,7 +524,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_English = "Some English content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -323,7 +541,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_Arabic = "Some Arabic content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -342,7 +560,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_Coptic = "Some Coptic content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -361,7 +579,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_English = "Some English content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -391,7 +609,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_Arabic = arabicParagraphs.join(SqlConstants.Tokens.ParagraphSeparator);
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -443,7 +661,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_Coptic = copticParagraphs.join(SqlConstants.Tokens.ParagraphSeparator);
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -522,7 +740,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
             mockManager.mock('getCommonContent', commonContent);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -544,7 +762,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
             mockManager.mock('getCommonContent', commonContent);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -566,7 +784,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
             mockManager.mock('getCommonContent', commonContent);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -588,7 +806,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
             mockManager.mock('getCommonContent', commonContent);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -620,7 +838,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
             mockManager.mock('getCommonContent', (commonId) => mockedGetCommonContent(commonId));
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -642,7 +860,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
             mockManager.mock('getReason', reasonDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -664,7 +882,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
             mockManager.mock('getReason', reasonDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -686,7 +904,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
             mockManager.mock('getReason', reasonDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -708,7 +926,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
             mockManager.mock('getReason', reasonDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -730,7 +948,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
             mockManager.mock('getReason', reasonDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -752,7 +970,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
             mockManager.mock('getReason', reasonDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -776,7 +994,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getCommonContent', commonContent);
             mockManager.mock('getReason', reasonDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<ITextContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateTextContent(variationContent.content);
@@ -799,7 +1017,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_Coptic = "Some Coptic content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IHazzatContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IHazzatContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateHazzatContent(variationContent.content);
@@ -818,7 +1036,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_Arabic = "Some Arabic content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IHazzatContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IHazzatContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateHazzatContent(variationContent.content);
@@ -836,7 +1054,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_Coptic = "Some Coptic content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IHazzatContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IHazzatContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateHazzatContent(variationContent.content);
@@ -854,7 +1072,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_English = "Some English content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IHazzatContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IHazzatContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateHazzatContent(variationContent.content);
@@ -875,7 +1093,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
             mockManager.mock('getCommonContent', commonContent);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IHazzatContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IHazzatContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateHazzatContent(variationContent.content);
@@ -894,7 +1112,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
             mockManager.mock('getCommonContent', commonContent);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IHazzatContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IHazzatContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateHazzatContent(variationContent.content);
@@ -913,7 +1131,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
             mockManager.mock('getCommonContent', commonContent);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IHazzatContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IHazzatContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateHazzatContent(variationContent.content);
@@ -942,7 +1160,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
             mockManager.mock('getCommonContent', (commonId) => mockedGetCommonContent(commonId));
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IHazzatContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IHazzatContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateHazzatContent(variationContent.content);
@@ -962,7 +1180,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_Coptic = "Some Coptic content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVerticalHazzatContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVerticalHazzatContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateVerticalHazzatContent(variationContent.content);
@@ -981,7 +1199,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_Arabic = "Some Arabic content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVerticalHazzatContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVerticalHazzatContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateVerticalHazzatContent(variationContent.content);
@@ -999,7 +1217,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_Coptic = "Some Coptic content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVerticalHazzatContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVerticalHazzatContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateVerticalHazzatContent(variationContent.content);
@@ -1017,7 +1235,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_English = "Some English content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVerticalHazzatContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVerticalHazzatContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateVerticalHazzatContent(variationContent.content);
@@ -1038,7 +1256,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
             mockManager.mock('getCommonContent', commonContent);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVerticalHazzatContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVerticalHazzatContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateVerticalHazzatContent(variationContent.content);
@@ -1057,7 +1275,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
             mockManager.mock('getCommonContent', commonContent);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVerticalHazzatContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVerticalHazzatContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateVerticalHazzatContent(variationContent.content);
@@ -1076,7 +1294,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
             mockManager.mock('getCommonContent', commonContent);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVerticalHazzatContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVerticalHazzatContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateVerticalHazzatContent(variationContent.content);
@@ -1105,7 +1323,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
             mockManager.mock('getCommonContent', (commonId) => mockedGetCommonContent(commonId));
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVerticalHazzatContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVerticalHazzatContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateVerticalHazzatContent(variationContent.content);
@@ -1124,7 +1342,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Audio_Path = "Some Audio Path";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IMusicalNotesContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IMusicalNotesContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateMusicalNotesContent(variationContent.content);
@@ -1144,7 +1362,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Audio_Path = "Some Audio Path";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IAudioContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IAudioContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateAudioContent(variationContent.content);
@@ -1165,7 +1383,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_Coptic = "Some Coptic content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVideoContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVideoContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateVideoContent(variationContent.content);
@@ -1184,7 +1402,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_Arabic = "Some Arabic content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVideoContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVideoContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateVideoContent(variationContent.content);
@@ -1202,7 +1420,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_Coptic = "Some Coptic content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVideoContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVideoContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateVideoContent(variationContent.content);
@@ -1220,7 +1438,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_English = "Some English content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVideoContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IVideoContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateVideoContent(variationContent.content);
@@ -1241,7 +1459,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_English = "Some English content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IInformationContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IInformationContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateInformationContent(variationContent.content);
@@ -1259,7 +1477,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_Arabic = "Some Arabic content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IInformationContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IInformationContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateInformationContent(variationContent.content);
@@ -1276,7 +1494,7 @@ describe("Tunes Service Provider Unit Tests", () => {
             contentDb.Content_English = "Some English content";
             mockManager.mock('getTuneSeasonServiceHymnFormatVariation', contentDb);
 
-            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IInformationContent>("12", "seasonId", "hymnId", "formatId", "variationId");
+            const variationContent = await hymnsProvider.getTuneSeasonServiceHymnFormatVariation<IInformationContent>(ServiceLanguage.English, "12", "seasonId", "hymnId", "formatId", "variationId");
             Validators.validateObject(variationContent);
             Validators.validateTuneServiceHymnFormatVariation(variationContent);
             Validators.validateInformationContent(variationContent.content);

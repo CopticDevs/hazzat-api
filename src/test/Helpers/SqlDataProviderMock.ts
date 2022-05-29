@@ -222,18 +222,21 @@ export class SqlDataProviderMock {
     private static _tune1: HazzatDbSchema.ITune = {
         ItemId: 1,
         Name: "First Tune",
+        Name_Arabic: "النغمة الأولى",
         ServiceHymnsCount: 12,
         Tune_Order: 1
     };
     private static _tune2: HazzatDbSchema.ITune = {
         ItemId: 7,
         Name: "Second Tune",
+        Name_Arabic: "النغمة الثانية",
         ServiceHymnsCount: 23,
         Tune_Order: 2
     };
     private static _tune3: HazzatDbSchema.ITune = {
         ItemId: 4,
         Name: "Second Tune",
+        Name_Arabic: "النغمة الثالثة",
         ServiceHymnsCount: 2,
         Tune_Order: 3
     };
@@ -241,21 +244,27 @@ export class SqlDataProviderMock {
     private static _type1: HazzatDbSchema.IType = {
         ItemId: 1,
         Name: "First Type Hymns",
+        Name_Arabic: "الأنواع الأولى",
         Name_Short: "First Type Hymn",
+        Name_Short_Arabic: "النوع الأول",
         ServiceHymnsCount: 12,
         Type_Order: 1
     };
     private static _type2: HazzatDbSchema.IType = {
         ItemId: 9,
         Name: "Second Type Hymns",
+        Name_Arabic: "الأنواع الثانية",
         Name_Short: "Second Type Hymn",
+        Name_Short_Arabic: "النوع االثاني",
         ServiceHymnsCount: 32,
         Type_Order: 2
     };
     private static _type3: HazzatDbSchema.IType = {
         ItemId: 5,
         Name: "Third Type Hymns",
-        Name_Short: "Thurd Type Hymn",
+        Name_Arabic: "الأنواع الثالثة",
+        Name_Short: "Third Type Hymn",
+        Name_Short_Arabic: "النوع االثالث",
         ServiceHymnsCount: 7,
         Type_Order: 3
     };

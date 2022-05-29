@@ -97,7 +97,9 @@ export namespace HazzatDbSchema {
     export interface IType {
         ItemId: number;
         Name: string;
+        Name_Arabic: string;
         Name_Short: string;
+        Name_Short_Arabic: string;
         Type_Order: number;
         ServiceHymnsCount: number;
     }
@@ -105,6 +107,7 @@ export namespace HazzatDbSchema {
     export interface ITune {
         ItemId: number;
         Name: string;
+        Name_Arabic: string;
         Tune_Order: number;
         ServiceHymnsCount: number;
     }

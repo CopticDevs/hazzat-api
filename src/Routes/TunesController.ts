@@ -1,10 +1,14 @@
 import * as express from "express";
+import { IConfiguration } from "../Common/Configuration";
+import { LanguageHelpers } from "../Common/Utils/LanguageHelpers";
 import { IHymnsServiceProvider } from "../Providers/ServiceProviders/IHymnsServiceProvider";
 import { BaseController } from "./BaseController";
 import { ResourceTypes } from "./ResourceTypes";
 
 export class TunesController extends BaseController {
-    constructor(hymnsServiceProvider: IHymnsServiceProvider) {
+    constructor(
+        hymnsServiceProvider: IHymnsServiceProvider,
+        configuration: IConfiguration) {
         super();
 
         /**
@@ -39,7 +43,7 @@ export class TunesController extends BaseController {
          */
         this.router.get("/", async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getTuneList();
+                const result = await hymnsServiceProvider.getTuneList(LanguageHelpers.getResponseLanguage(req, configuration));
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -80,7 +84,9 @@ export class TunesController extends BaseController {
          */
         this.router.get("/:tuneId(\\d+)", async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getTune(req.params.tuneId);
+                const result = await hymnsServiceProvider.getTune(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.tuneId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -111,7 +117,9 @@ export class TunesController extends BaseController {
          */
         this.router.get(`/:tuneId(\\d+)/${ResourceTypes.Seasons}`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getTuneSeasonList(req.params.tuneId);
+                const result = await hymnsServiceProvider.getTuneSeasonList(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.tuneId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -157,7 +165,10 @@ export class TunesController extends BaseController {
          */
         this.router.get(`/:tuneId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getTuneSeason(req.params.tuneId, req.params.seasonId);
+                const result = await hymnsServiceProvider.getTuneSeason(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.tuneId,
+                    req.params.seasonId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -193,7 +204,10 @@ export class TunesController extends BaseController {
          */
         this.router.get(`/:tuneId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)/${ResourceTypes.Hymns}`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getTuneSeasonServiceHymnList(req.params.tuneId, req.params.seasonId);
+                const result = await hymnsServiceProvider.getTuneSeasonServiceHymnList(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.tuneId,
+                    req.params.seasonId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -244,7 +258,11 @@ export class TunesController extends BaseController {
          */
         this.router.get(`/:tuneId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getTuneSeasonServiceHymn(req.params.tuneId, req.params.seasonId, req.params.hymnId);
+                const result = await hymnsServiceProvider.getTuneSeasonServiceHymn(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.tuneId,
+                    req.params.seasonId,
+                    req.params.hymnId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -285,7 +303,11 @@ export class TunesController extends BaseController {
          */
         this.router.get(`/:tuneId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)/${ResourceTypes.Formats}`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getTuneSeasonServiceHymnFormatList(req.params.tuneId, req.params.seasonId, req.params.hymnId);
+                const result = await hymnsServiceProvider.getTuneSeasonServiceHymnFormatList(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.tuneId,
+                    req.params.seasonId,
+                    req.params.hymnId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -341,7 +363,12 @@ export class TunesController extends BaseController {
          */
         this.router.get(`/:tuneId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)/${ResourceTypes.Formats}/:formatId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getTuneSeasonServiceHymnFormat(req.params.tuneId, req.params.seasonId, req.params.hymnId, req.params.formatId);
+                const result = await hymnsServiceProvider.getTuneSeasonServiceHymnFormat(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.tuneId,
+                    req.params.seasonId,
+                    req.params.hymnId,
+                    req.params.formatId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -399,7 +426,12 @@ export class TunesController extends BaseController {
          */
         this.router.get(`/:tuneId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)/${ResourceTypes.Formats}/:formatId(\\d+)/${ResourceTypes.Variations}`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getTuneSeasonServiceHymnFormatVariationList(req.params.tuneId, req.params.seasonId, req.params.hymnId, req.params.formatId);
+                const result = await hymnsServiceProvider.getTuneSeasonServiceHymnFormatVariationList(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.tuneId,
+                    req.params.seasonId,
+                    req.params.hymnId,
+                    req.params.formatId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -472,7 +504,13 @@ export class TunesController extends BaseController {
          */
         this.router.get(`/:tuneId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)/${ResourceTypes.Formats}/:formatId(\\d+)/${ResourceTypes.Variations}/:variationId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getTuneSeasonServiceHymnFormatVariation(req.params.tuneId, req.params.seasonId, req.params.hymnId, req.params.formatId, req.params.variationId);
+                const result = await hymnsServiceProvider.getTuneSeasonServiceHymnFormatVariation(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.tuneId,
+                    req.params.seasonId,
+                    req.params.hymnId,
+                    req.params.formatId,
+                    req.params.variationId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

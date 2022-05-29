@@ -1,8 +1,8 @@
 ALTER Table dbo.[Hymns_Types]
-ADD Name_Arabic [nvarchar](50)
+ADD Name_Arabic [nvarchar](50) NOT NULL
 
 ALTER Table dbo.[Hymns_Types]
-ADD Name_Short_Arabic [nvarchar](50)
+ADD Name_Short_Arabic [nvarchar](50) NOT NULL
 
 ALTER Table dbo.[Hymns_Tunes]
 ADD Name_Arabic [nvarchar](50) NOT NULL

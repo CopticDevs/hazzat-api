@@ -167,6 +167,107 @@ GO
 
 
 
+/****** Object:  StoredProcedure [dbo].[Hymns_ServiceHymnListSelectByTypeIdAndSeasonId]    Script Date: 5/28/2022 4:54:08 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+ALTER PROCEDURE [dbo].[Hymns_ServiceHymnListSelectByTypeIdAndSeasonId]
+    @Type_ID int,
+	@Season_ID int
+AS 
+BEGIN
+	SELECT
+        [dbo].[Hymns_ServiceHymns].[ID] AS ItemId,
+		[dbo].[Hymns_Seasons].[ID] AS Season_ID,
+		[dbo].[Hymns_Seasons].[Name] AS Season_Name,
+		[dbo].[Hymns_Services].[ID] AS Service_ID,
+		[dbo].[Hymns_Services].[Name] AS Service_Name,
+		[dbo].[Hymns_ServiceHymns].[Hymn_Order],
+		[dbo].[Hymns_ServiceHymns].[Title]
+    FROM
+        [dbo].[Hymns_Structure] INNER JOIN
+        [dbo].[Hymns_Seasons] ON [dbo].[Hymns_Structure].[Season_ID] = [dbo].[Hymns_Seasons].[ID] INNER JOIN
+        [dbo].[Hymns_Services] ON [dbo].[Hymns_Structure].[Service_ID] = [dbo].[Hymns_Services].[ID] INNER JOIN
+        [dbo].[Hymns_ServiceHymns] ON [dbo].[Hymns_Structure].[ID] = [dbo].[Hymns_ServiceHymns].[Structure_ID] INNER JOIN
+        [dbo].[Hymns_ServiceHymnsContent] ON [dbo].[Hymns_ServiceHymns].[ID] = [dbo].[Hymns_ServiceHymnsContent].[ServiceHymn_ID]
+    WHERE
+        [dbo].[Hymns_ServiceHymnsContent].[Type_ID] = @Type_ID AND
+		[dbo].[Hymns_Seasons].[ID] = @Season_ID
+    GROUP BY
+        [dbo].[Hymns_ServiceHymns].[ID],
+		[dbo].[Hymns_Seasons].[ID],
+		[dbo].[Hymns_Seasons].[Name],
+		[dbo].[Hymns_Services].[ID],
+		[dbo].[Hymns_Services].[Name],
+		[dbo].[Hymns_ServiceHymns].[Hymn_Order],
+		[dbo].[Hymns_ServiceHymns].[Title],
+		[dbo].[Hymns_Structure].[Service_Order]
+    ORDER BY
+	    [dbo].[Hymns_Structure].[Service_Order],
+        [dbo].[Hymns_ServiceHymns].[Hymn_Order]
+END
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Hymns_ServiceHymnSelectByTypeIdAndSeasonIdAndServiceHymnId]    Script Date: 5/28/2022 4:56:58 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+
+
+ALTER PROCEDURE [dbo].[Hymns_ServiceHymnSelectByTypeIdAndSeasonIdAndServiceHymnId]
+    @Type_ID int,
+	@Season_ID int,
+	@ServiceHymn_ID int
+AS 
+BEGIN
+	SELECT
+        [dbo].[Hymns_ServiceHymns].[ID] AS ItemId,
+		[dbo].[Hymns_Seasons].[ID] AS Season_ID,
+		[dbo].[Hymns_Seasons].[Name] AS Season_Name,
+		[dbo].[Hymns_Services].[ID] AS Service_ID,
+		[dbo].[Hymns_Services].[Name] AS Service_Name,
+		[dbo].[Hymns_ServiceHymns].[Hymn_Order],
+		[dbo].[Hymns_ServiceHymns].[Title]
+    FROM
+        [dbo].[Hymns_Structure] INNER JOIN
+        [dbo].[Hymns_Seasons] ON [dbo].[Hymns_Structure].[Season_ID] = [dbo].[Hymns_Seasons].[ID] INNER JOIN
+        [dbo].[Hymns_Services] ON [dbo].[Hymns_Structure].[Service_ID] = [dbo].[Hymns_Services].[ID] INNER JOIN
+        [dbo].[Hymns_ServiceHymns] ON [dbo].[Hymns_Structure].[ID] = [dbo].[Hymns_ServiceHymns].[Structure_ID] INNER JOIN
+        [dbo].[Hymns_ServiceHymnsContent] ON [dbo].[Hymns_ServiceHymns].[ID] = [dbo].[Hymns_ServiceHymnsContent].[ServiceHymn_ID]
+    WHERE
+        [dbo].[Hymns_ServiceHymnsContent].[Type_ID] = @Type_ID AND
+		[dbo].[Hymns_Seasons].[ID] = @Season_ID AND
+		[dbo].[Hymns_ServiceHymns].[ID] = @ServiceHymn_ID
+    GROUP BY
+        [dbo].[Hymns_ServiceHymns].[ID],
+		[dbo].[Hymns_Seasons].[ID],
+		[dbo].[Hymns_Seasons].[Name],
+		[dbo].[Hymns_Services].[ID],
+		[dbo].[Hymns_Services].[Name],
+		[dbo].[Hymns_ServiceHymns].[Hymn_Order],
+		[dbo].[Hymns_ServiceHymns].[Title],
+		[dbo].[Hymns_Structure].[Service_Order]
+    ORDER BY
+	    [dbo].[Hymns_Structure].[Service_Order],
+        [dbo].[Hymns_ServiceHymns].[Hymn_Order]
+END
+GO
+
+
+
 /****** Object:  StoredProcedure [dbo].[Hymns_TuneListSelect]    Script Date: 5/28/2022 1:35:50 PM ******/
 SET ANSI_NULLS ON
 GO
@@ -318,6 +419,103 @@ BEGIN
         [dbo].[Hymns_Seasons].[Date_Specific]
 END 
 
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Hymns_ServiceHymnListSelectByTuneIdAndSeasonId]    Script Date: 5/28/2022 4:59:21 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+ALTER PROCEDURE [dbo].[Hymns_ServiceHymnListSelectByTuneIdAndSeasonId]
+    @Tune_ID int,
+	@Season_ID int
+AS 
+BEGIN
+	SELECT
+        [dbo].[Hymns_ServiceHymns].[ID] AS ItemId,
+		[dbo].[Hymns_Seasons].[ID] AS Season_ID,
+		[dbo].[Hymns_Seasons].[Name] AS Season_Name,
+		[dbo].[Hymns_Services].[ID] AS Service_ID,
+		[dbo].[Hymns_Services].[Name] AS Service_Name,
+		[dbo].[Hymns_ServiceHymns].[Hymn_Order],
+		[dbo].[Hymns_ServiceHymns].[Title]
+    FROM
+        [dbo].[Hymns_Structure] INNER JOIN
+        [dbo].[Hymns_Seasons] ON [dbo].[Hymns_Structure].[Season_ID] = [dbo].[Hymns_Seasons].[ID] INNER JOIN
+        [dbo].[Hymns_Services] ON [dbo].[Hymns_Structure].[Service_ID] = [dbo].[Hymns_Services].[ID] INNER JOIN
+        [dbo].[Hymns_ServiceHymns] ON [dbo].[Hymns_Structure].[ID] = [dbo].[Hymns_ServiceHymns].[Structure_ID] INNER JOIN
+        [dbo].[Hymns_ServiceHymnsContent] ON [dbo].[Hymns_ServiceHymns].[ID] = [dbo].[Hymns_ServiceHymnsContent].[ServiceHymn_ID]
+    WHERE
+        [dbo].[Hymns_ServiceHymnsContent].[Tune_ID] = @Tune_ID AND
+		[dbo].[Hymns_Seasons].[ID] = @Season_ID
+    GROUP BY
+        [dbo].[Hymns_ServiceHymns].[ID],
+		[dbo].[Hymns_Seasons].[ID],
+		[dbo].[Hymns_Seasons].[Name],
+		[dbo].[Hymns_Services].[ID],
+		[dbo].[Hymns_Services].[Name],
+		[dbo].[Hymns_ServiceHymns].[Hymn_Order],
+		[dbo].[Hymns_ServiceHymns].[Title],
+		[dbo].[Hymns_Structure].[Service_Order]
+    ORDER BY
+	    [dbo].[Hymns_Structure].[Service_Order],
+        [dbo].[Hymns_ServiceHymns].[Hymn_Order]
+END
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[Hymns_ServiceHymnSelectByTuneIdAndSeasonIdAndServiceHymnId]    Script Date: 5/28/2022 5:01:09 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+ALTER PROCEDURE [dbo].[Hymns_ServiceHymnSelectByTuneIdAndSeasonIdAndServiceHymnId]
+    @Tune_ID int,
+	@Season_ID int,
+	@ServiceHymn_ID int
+AS 
+BEGIN
+	SELECT
+        [dbo].[Hymns_ServiceHymns].[ID] AS ItemId,
+		[dbo].[Hymns_Seasons].[ID] AS Season_ID,
+		[dbo].[Hymns_Seasons].[Name] AS Season_Name,
+		[dbo].[Hymns_Services].[ID] AS Service_ID,
+		[dbo].[Hymns_Services].[Name] AS Service_Name,
+		[dbo].[Hymns_ServiceHymns].[Hymn_Order],
+		[dbo].[Hymns_ServiceHymns].[Title]
+    FROM
+        [dbo].[Hymns_Structure] INNER JOIN
+        [dbo].[Hymns_Seasons] ON [dbo].[Hymns_Structure].[Season_ID] = [dbo].[Hymns_Seasons].[ID] INNER JOIN
+        [dbo].[Hymns_Services] ON [dbo].[Hymns_Structure].[Service_ID] = [dbo].[Hymns_Services].[ID] INNER JOIN
+        [dbo].[Hymns_ServiceHymns] ON [dbo].[Hymns_Structure].[ID] = [dbo].[Hymns_ServiceHymns].[Structure_ID] INNER JOIN
+        [dbo].[Hymns_ServiceHymnsContent] ON [dbo].[Hymns_ServiceHymns].[ID] = [dbo].[Hymns_ServiceHymnsContent].[ServiceHymn_ID]
+    WHERE
+        [dbo].[Hymns_ServiceHymnsContent].[Tune_ID] = @Tune_ID AND
+		[dbo].[Hymns_Seasons].[ID] = @Season_ID AND
+		[dbo].[Hymns_ServiceHymns].[ID] = @ServiceHymn_ID
+    GROUP BY
+        [dbo].[Hymns_ServiceHymns].[ID],
+		[dbo].[Hymns_Seasons].[ID],
+		[dbo].[Hymns_Seasons].[Name],
+		[dbo].[Hymns_Services].[ID],
+		[dbo].[Hymns_Services].[Name],
+		[dbo].[Hymns_ServiceHymns].[Hymn_Order],
+		[dbo].[Hymns_ServiceHymns].[Title],
+		[dbo].[Hymns_Structure].[Service_Order]
+    ORDER BY
+	    [dbo].[Hymns_Structure].[Service_Order],
+        [dbo].[Hymns_ServiceHymns].[Hymn_Order]
+END
 GO
 
 

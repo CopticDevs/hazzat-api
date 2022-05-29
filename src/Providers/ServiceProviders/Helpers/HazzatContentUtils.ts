@@ -60,26 +60,30 @@ export class HazzatContentUtils {
     }
 
     public static convertTypeServiceHymnDbItemToHymnInfoWithServiceDetails(
+        lang: ServiceLanguage,
         serviceHymnDbItem: HazzatDbSchema.IServiceHymn,
         typeId: string
     ): IHymnInfoWithServiceDetails {
-        const hymnInfo = HazzatContentUtils._convertServiceHymnDbItemToHymnInfo(ServiceLanguage.English, serviceHymnDbItem, `/${ResourceTypes.Types}/${typeId}/${ResourceTypes.Seasons}/${serviceHymnDbItem.Season_ID}/${ResourceTypes.Hymns}/${serviceHymnDbItem.ItemId}`);
+        const hymnInfo = HazzatContentUtils._convertServiceHymnDbItemToHymnInfo(lang, serviceHymnDbItem, `/${ResourceTypes.Types}/${typeId}/${ResourceTypes.Seasons}/${serviceHymnDbItem.Season_ID}/${ResourceTypes.Hymns}/${serviceHymnDbItem.ItemId}`);
+        const serviceName = lang === ServiceLanguage.Arabic ? serviceHymnDbItem.Service_Name_Arabic : serviceHymnDbItem.Service_Name;
         return {
             ...hymnInfo,
             serviceId: serviceHymnDbItem.Service_ID,
-            serviceName: serviceHymnDbItem.Service_Name
+            serviceName
         };
     }
 
     public static convertTuneServiceHymnDbItemToHymnInfoWithServiceDetails(
+        lang: ServiceLanguage,
         serviceHymnDbItem: HazzatDbSchema.IServiceHymn,
         tuneId: string
     ): IHymnInfoWithServiceDetails {
-        const hymnInfo = HazzatContentUtils._convertServiceHymnDbItemToHymnInfo(ServiceLanguage.English, serviceHymnDbItem, `/${ResourceTypes.Tunes}/${tuneId}/${ResourceTypes.Seasons}/${serviceHymnDbItem.Season_ID}/${ResourceTypes.Hymns}/${serviceHymnDbItem.ItemId}`);
+        const hymnInfo = HazzatContentUtils._convertServiceHymnDbItemToHymnInfo(lang, serviceHymnDbItem, `/${ResourceTypes.Tunes}/${tuneId}/${ResourceTypes.Seasons}/${serviceHymnDbItem.Season_ID}/${ResourceTypes.Hymns}/${serviceHymnDbItem.ItemId}`);
+        const serviceName = lang === ServiceLanguage.Arabic ? serviceHymnDbItem.Service_Name_Arabic : serviceHymnDbItem.Service_Name;
         return {
             ...hymnInfo,
             serviceId: serviceHymnDbItem.Service_ID,
-            serviceName: serviceHymnDbItem.Service_Name
+            serviceName
         };
     }
 

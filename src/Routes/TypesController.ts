@@ -225,7 +225,10 @@ export class TypesController extends BaseController {
          */
         this.router.get(`/:typeId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)/${ResourceTypes.Hymns}`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getTypeSeasonServiceHymnList(req.params.typeId, req.params.seasonId);
+                const result = await hymnsServiceProvider.getTypeSeasonServiceHymnList(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.typeId,
+                    req.params.seasonId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -276,7 +279,10 @@ export class TypesController extends BaseController {
          */
         this.router.get(`/:typeId(\\d+)/${ResourceTypes.Seasons}/:seasonId(\\d+)/${ResourceTypes.Hymns}/:hymnId(\\d+)`, async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getTypeSeasonServiceHymn(req.params.typeId, req.params.seasonId, req.params.hymnId);
+                const result = await hymnsServiceProvider.getTypeSeasonServiceHymn(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.typeId,
+                    req.params.seasonId, req.params.hymnId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

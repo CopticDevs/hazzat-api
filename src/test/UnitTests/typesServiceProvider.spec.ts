@@ -214,7 +214,7 @@ describe("Types Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTypeSeasonServiceHymnList', SqlDataProviderMock.getDbTypeSeasonServiceHymnList());
 
-            const serviceHymnList = await hymnsProvider.getTypeSeasonServiceHymnList("12", "seasonId");
+            const serviceHymnList = await hymnsProvider.getTypeSeasonServiceHymnList(ServiceLanguage.English, "12", "seasonId");
             Validators.validateArray(serviceHymnList);
             serviceHymnList.length.should.be.eql(3);
             serviceHymnList.forEach((serviceHymn) => Validators.validateTypeServiceHymnWithServiceDetails(serviceHymn));
@@ -224,8 +224,30 @@ describe("Types Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTypeSeasonServiceHymnList', []);
 
-            const seasonList = await hymnsProvider.getTypeSeasonServiceHymnList("typeId", "seasonId");
+            const seasonList = await hymnsProvider.getTypeSeasonServiceHymnList(ServiceLanguage.English, "typeId", "seasonId");
             Validators.validateArray(seasonList, true);
+        });
+
+        it("should get all hymns for a type for a season with English results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTypeSeasonServiceHymnList', SqlDataProviderMock.getDbTypeSeasonServiceHymnList());
+
+            const serviceHymnList = await hymnsProvider.getTypeSeasonServiceHymnList(ServiceLanguage.English, "12", "seasonId");
+            Validators.validateArray(serviceHymnList);
+            serviceHymnList.length.should.be.eql(3);
+            serviceHymnList.forEach((serviceHymn) => Validators.validateTypeServiceHymnWithServiceDetails(serviceHymn));
+            assert.equal(serviceHymnList[0].name, SqlDataProviderMock.getDbTypeSeasonServiceHymnList()[0].Title);
+        });
+
+        it("should get all hymns for a type for a season with Arabic results", async () => {
+            // Setup mocked result
+            mockManager.mock('getTypeSeasonServiceHymnList', SqlDataProviderMock.getDbTypeSeasonServiceHymnList());
+
+            const serviceHymnList = await hymnsProvider.getTypeSeasonServiceHymnList(ServiceLanguage.Arabic, "12", "seasonId");
+            Validators.validateArray(serviceHymnList);
+            serviceHymnList.length.should.be.eql(3);
+            serviceHymnList.forEach((serviceHymn) => Validators.validateTypeServiceHymnWithServiceDetails(serviceHymn));
+            assert.equal(serviceHymnList[0].name, SqlDataProviderMock.getDbTypeSeasonServiceHymnList()[0].Title_Arabic);
         });
     });
 
@@ -234,7 +256,7 @@ describe("Types Service Provider Unit Tests", () => {
             // Setup mocked result
             mockManager.mock('getTypeSeasonServiceHymn', SqlDataProviderMock.getDbTypeSeasonServiceHymn());
 
-            const serviceHymn = await hymnsProvider.getTypeSeasonServiceHymn("12", "seasonId", "hymnId");
+            const serviceHymn = await hymnsProvider.getTypeSeasonServiceHymn(ServiceLanguage.English, "12", "seasonId", "hymnId");
             Validators.validateObject(serviceHymn);
             Validators.validateTypeServiceHymnWithServiceDetails(serviceHymn);
         });
@@ -244,13 +266,33 @@ describe("Types Service Provider Unit Tests", () => {
             mockManager.mock('getTypeSeasonServiceHymn', SqlDataProviderMock.getDbTypeSeasonServiceHymn());
 
             const serviceHymnDb = SqlDataProviderMock.getDbTypeSeasonServiceHymn();
-            const serviceHymn = await hymnsProvider.getTypeSeasonServiceHymn("typeId", "seasonId", "hymnId");
+            const serviceHymn = await hymnsProvider.getTypeSeasonServiceHymn(ServiceLanguage.English, "typeId", "seasonId", "hymnId");
 
             // Validate that the contract was mapped out correctly from db results
             serviceHymn.name.should.be.equal(serviceHymnDb.Title);
             serviceHymn.serviceId.should.be.equal(serviceHymnDb.Service_ID);
             serviceHymn.serviceName.should.be.equal(serviceHymnDb.Service_Name);
             serviceHymn.order.should.be.equal(serviceHymnDb.Hymn_Order);
+        });
+
+        it("should get a single hymn for a type in a season in English", async () => {
+            // Setup mocked result
+            mockManager.mock('getTypeSeasonServiceHymn', SqlDataProviderMock.getDbTypeSeasonServiceHymn());
+
+            const serviceHymn = await hymnsProvider.getTypeSeasonServiceHymn(ServiceLanguage.English, "12", "seasonId", "hymnId");
+            Validators.validateObject(serviceHymn);
+            Validators.validateTypeServiceHymnWithServiceDetails(serviceHymn);
+            assert.equal(serviceHymn.name, SqlDataProviderMock.getDbTypeSeasonServiceHymn().Title);
+        });
+
+        it("should get a single hymn for a type in a season in Arabic", async () => {
+            // Setup mocked result
+            mockManager.mock('getTypeSeasonServiceHymn', SqlDataProviderMock.getDbTypeSeasonServiceHymn());
+
+            const serviceHymn = await hymnsProvider.getTypeSeasonServiceHymn(ServiceLanguage.Arabic, "12", "seasonId", "hymnId");
+            Validators.validateObject(serviceHymn);
+            Validators.validateTypeServiceHymnWithServiceDetails(serviceHymn);
+            assert.equal(serviceHymn.name, SqlDataProviderMock.getDbTypeSeasonServiceHymn().Title_Arabic);
         });
     });
 

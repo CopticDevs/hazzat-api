@@ -39,8 +39,8 @@ export interface IHymnsServiceProvider {
     getTypeSeasonServiceHymnFormatList(lang: ServiceLanguage, typeId: string, seasonId: string, hymnId: string): Promise<IFormatInfo[]>;
     getTypeSeasonServiceHymnFormat(lang: ServiceLanguage, typeId: string, seasonId: string, hymnId: string, formatId: string): Promise<IFormatInfo>;
 
-    getTypeSeasonServiceHymnFormatVariationList<T extends IHymnContent>(typeId: string, seasonId: string, hymnId: string, formatId: string): Promise<IVariationInfo<T>[]>;
-    getTypeSeasonServiceHymnFormatVariation<T extends IHymnContent>(typeId: string, seasonId: string, hymnId: string, formatId: string, variationId: string): Promise<IVariationInfo<T>>;
+    getTypeSeasonServiceHymnFormatVariationList<T extends IHymnContent>(lang: ServiceLanguage, typeId: string, seasonId: string, hymnId: string, formatId: string): Promise<IVariationInfo<T>[]>;
+    getTypeSeasonServiceHymnFormatVariation<T extends IHymnContent>(lang: ServiceLanguage, typeId: string, seasonId: string, hymnId: string, formatId: string, variationId: string): Promise<IVariationInfo<T>>;
 
     getTuneList(lang: ServiceLanguage): Promise<ITuneInfo[]>;
     getTune(lang: ServiceLanguage, tuneId: string): Promise<ITuneInfo>;
@@ -54,8 +54,8 @@ export interface IHymnsServiceProvider {
     getTuneSeasonServiceHymnFormatList(lang: ServiceLanguage, tuneId: string, seasonId: string, hymnId: string): Promise<IFormatInfo[]>;
     getTuneSeasonServiceHymnFormat(lang: ServiceLanguage, tuneId: string, seasonId: string, hymnId: string, formatId: string): Promise<IFormatInfo>;
 
-    getTuneSeasonServiceHymnFormatVariationList<T extends IHymnContent>(tuneId: string, seasonId: string, hymnId: string, formatId: string): Promise<IVariationInfo<T>[]>;
-    getTuneSeasonServiceHymnFormatVariation<T extends IHymnContent>(tuneId: string, seasonId: string, hymnId: string, formatId: string, variationId: string): Promise<IVariationInfo<T>>;
+    getTuneSeasonServiceHymnFormatVariationList<T extends IHymnContent>(lang: ServiceLanguage, tuneId: string, seasonId: string, hymnId: string, formatId: string): Promise<IVariationInfo<T>[]>;
+    getTuneSeasonServiceHymnFormatVariation<T extends IHymnContent>(lang: ServiceLanguage, tuneId: string, seasonId: string, hymnId: string, formatId: string, variationId: string): Promise<IVariationInfo<T>>;
 
     getBookletList(): Promise<IBookletInfo[]>;
     getBooklet(bookletId: string): Promise<IBookletInfo>;

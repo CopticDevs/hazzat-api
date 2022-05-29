@@ -422,6 +422,34 @@ describe("Localization Tests", () => {
         });
     });
 
+    describe("Type Season hymn Format Variation localization tests", () => {
+        it("should get a Type Season hymn Format variation in English", (done) => {
+            const resourceId = `/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/1/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "en")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateTypeServiceHymnFormatVariation(res.body, resourceId);
+                    assert.equal(res.body.name, "Psalm 116 (Ni Ethnos Teero)");
+                    done();
+                });
+        });
+
+        it("should get a Type Season hymn Format variation in Arabic", (done) => {
+            const resourceId = `/${ResourceTypes.Types}/17/${ResourceTypes.Seasons}/1/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "ar")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateTypeServiceHymnFormatVariation(res.body, resourceId);
+                    assert.equal(res.body.name, "المزمور المائة والسادس عشر (ني إثنوس تيرو)");
+                    done();
+                });
+        });
+    });
+
     describe("Tunes localization tests", () => {
         it("should get a Tune in Arabic", (done) => {
             const resourceId = `/${ResourceTypes.Tunes}/1`;
@@ -533,6 +561,34 @@ describe("Localization Tests", () => {
                     Validators.validateObjectChaiResponse(res);
                     Validators.validateTuneServiceHymnFormat(res.body, resourceId);
                     assert.equal(res.body.name, "نَص");
+                    done();
+                });
+        });
+    });
+
+    describe("Tune Season hymn Format Variation localization tests", () => {
+        it("should get a Tune Season hymn Format variation in English", (done) => {
+            const resourceId = `/${ResourceTypes.Tunes}/14/${ResourceTypes.Seasons}/1/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "en")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateTuneServiceHymnFormatVariation(res.body, resourceId);
+                    assert.equal(res.body.name, "Psalm 116 (Ni Ethnos Teero)");
+                    done();
+                });
+        });
+
+        it("should get a Tune Season hymn Format variation in Arabic", (done) => {
+            const resourceId = `/${ResourceTypes.Tunes}/14/${ResourceTypes.Seasons}/1/${ResourceTypes.Hymns}/311/${ResourceTypes.Formats}/1/${ResourceTypes.Variations}/288`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "ar")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateTuneServiceHymnFormatVariation(res.body, resourceId);
+                    assert.equal(res.body.name, "المزمور المائة والسادس عشر (ني إثنوس تيرو)");
                     done();
                 });
         });

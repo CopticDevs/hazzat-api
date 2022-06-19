@@ -33,6 +33,11 @@ export class TunesController extends BaseController {
          *     description: Gets a list of hymn tunes
          *     produces:
          *       - application/json
+         *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *     responses:
          *       200:
          *         description: Types
@@ -59,6 +64,10 @@ export class TunesController extends BaseController {
          *     produces:
          *       - application/json
          *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *       - name: tuneId
          *         description: Tune ID
          *         in:  url
@@ -102,6 +111,10 @@ export class TunesController extends BaseController {
          *     produces:
          *       - application/json
          *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *       - name: tuneId
          *         description: Tune ID
          *         in:  url
@@ -135,6 +148,10 @@ export class TunesController extends BaseController {
          *     produces:
          *       - application/json
          *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *       - name: tuneId
          *         description: Tune ID
          *         in:  url
@@ -184,6 +201,10 @@ export class TunesController extends BaseController {
          *     produces:
          *       - application/json
          *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *       - name: tuneId
          *         description: Tune ID
          *         in:  url
@@ -223,6 +244,10 @@ export class TunesController extends BaseController {
          *     produces:
          *       - application/json
          *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *       - name: tuneId
          *         description: Tune ID
          *         in:  url
@@ -278,6 +303,10 @@ export class TunesController extends BaseController {
          *     produces:
          *       - application/json
          *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *       - name: tuneId
          *         description: Tune ID
          *         in:  url
@@ -323,6 +352,10 @@ export class TunesController extends BaseController {
          *     produces:
          *       - application/json
          *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *       - name: tuneId
          *         description: Tune ID
          *         in:  url
@@ -384,6 +417,10 @@ export class TunesController extends BaseController {
          *     produces:
          *       - application/json
          *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *       - name: tuneId
          *         description: Tune ID
          *         in:  url
@@ -447,6 +484,10 @@ export class TunesController extends BaseController {
          *     produces:
          *       - application/json
          *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *       - name: tuneId
          *         description: Tune ID
          *         in:  url

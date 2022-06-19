@@ -253,17 +253,17 @@ export class HymnsServiceProvider implements IHymnsServiceProvider {
     }
 
     @measure
-    public async getBookletList(): Promise<IBookletInfo[]> {
+    public async getBookletList(lang: ServiceLanguage): Promise<IBookletInfo[]> {
         const dbResult = await this._dataProvider.getBookletList();
 
         const variations: IBookletInfo[] = await Promise.all(dbResult
-            .map((row) => HazzatContentUtils.convertBookletDbItemToBookletInfo(row)))
+            .map((row) => HazzatContentUtils.convertBookletDbItemToBookletInfo(lang, row)))
         return variations;
     }
 
     @measure
-    public async getBooklet(bookletId: string): Promise<IBookletInfo> {
+    public async getBooklet(lang: ServiceLanguage, bookletId: string): Promise<IBookletInfo> {
         const dbResult = await this._dataProvider.getBooklet(bookletId);
-        return HazzatContentUtils.convertBookletDbItemToBookletInfo(dbResult);
+        return HazzatContentUtils.convertBookletDbItemToBookletInfo(lang, dbResult);
     }
 }

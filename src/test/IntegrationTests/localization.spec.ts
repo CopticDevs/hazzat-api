@@ -593,4 +593,34 @@ describe("Localization Tests", () => {
                 });
         });
     });
+
+    describe("Booklet localization tests", () => {
+        it("should get a Booklet in English", (done) => {
+            const resourceId = `/${ResourceTypes.Booklets}/1`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "en")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateBooklet(res.body, resourceId);
+                    assert.equal(res.body.name, "Passion Week Hazzat Booklet");
+                    assert.isTrue(res.body.summary.startsWith("Download the"));
+                    done();
+                });
+        });
+
+        it("should get a Booklet in Arabic", (done) => {
+            const resourceId = `/${ResourceTypes.Booklets}/1`;
+            chai.request(server)
+                .get(resourceId)
+                .set("Accept-Language", "ar")
+                .end((err, res) => {
+                    Validators.validateObjectChaiResponse(res);
+                    Validators.validateBooklet(res.body, resourceId);
+                    assert.equal(res.body.name, "كتيب هزات أسبوع الآلام");
+                    assert.isTrue(res.body.summary.startsWith("تنزيل كتيب"));
+                    done();
+                });
+        });
+    });
 });

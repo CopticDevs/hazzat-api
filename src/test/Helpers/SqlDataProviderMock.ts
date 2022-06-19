@@ -271,7 +271,9 @@ export class SqlDataProviderMock {
     private static _booklet1: HazzatDbSchema.IBooklet = {
         ItemId: 1,
         Name: "First Booklet Name",
+        Name_Arabic: "أسم الكتيب الأول",
         Summary: "First Booklet Summary",
+        Summary_Arabic: "ملخص الكتيب الأول",
         Booklet_Order: 1,
         Display_Path: "First Display Path",
         Full_Picture: "First Full Picture Path",
@@ -283,7 +285,9 @@ export class SqlDataProviderMock {
     private static _booklet2: HazzatDbSchema.IBooklet = {
         ItemId: 7,
         Name: "Second Booklet Name",
+        Name_Arabic: "أسم الكتيب الثاني",
         Summary: "Second Booklet Summary",
+        Summary_Arabic: "ملخص الكتيب الثاني",
         Booklet_Order: 2,
         Display_Path: "Second Display Path",
         Full_Picture: "Second Full Picture Path",
@@ -295,7 +299,9 @@ export class SqlDataProviderMock {
     private static _booklet3: HazzatDbSchema.IBooklet = {
         ItemId: 4,
         Name: "Third Booklet Name",
+        Name_Arabic: "أسم الكتيب الثالث",
         Summary: "Third Booklet Summary",
+        Summary_Arabic: "ملخص الكتيب الثالث",
         Booklet_Order: 3,
         Display_Path: "Third Display Path",
         Full_Picture: "Third Full Picture Path",

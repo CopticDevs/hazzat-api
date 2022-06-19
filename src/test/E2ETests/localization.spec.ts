@@ -1,6 +1,7 @@
 import { AxiosResponse, default as axios } from "axios";
 import { assert } from "chai";
 import { OperationExecutor } from "../../Common/Utils/OperationExecutor";
+import { IBookletInfo } from "../../Models/IBookletInfo";
 import { IFormatInfo } from "../../Models/IFormatInfo";
 import { IHymnInfo, IHymnInfoWithServiceDetails } from "../../Models/IHymnInfo";
 import { ISeasonInfo } from "../../Models/ISeasonInfo";
@@ -530,6 +531,32 @@ describe("Localization Tests", () => {
             Validators.validateObject(response.data);
             Validators.validateTuneServiceHymnFormatVariation(response.data, resourceId);
             assert.equal(response.data.name, "المزمور المائة والسادس عشر (ني إثنوس تيرو)");
+        });
+    });
+
+    describe("Booklet localization tests", () => {
+        it("should get a Booklet in English", async () => {
+            const resourceId = `/${ResourceTypes.Booklets}/1`;
+            const response: AxiosResponse<IBookletInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "en" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateBooklet(response.data, resourceId);
+            assert.equal(response.data.name, "Passion Week Hazzat Booklet");
+            assert.isTrue(response.data.summary.startsWith("Download the"));
+        });
+
+        it("should get a Booklet in Arabic", async () => {
+            const resourceId = `/${ResourceTypes.Booklets}/1`;
+            const response: AxiosResponse<IBookletInfo> = await axios.get(
+                `${tc.baseTestUrl}${resourceId}`,
+                { headers: { "Accept-Language": "ar" } });
+
+            Validators.validateObject(response.data);
+            Validators.validateBooklet(response.data, resourceId);
+            assert.equal(response.data.name, "كتيب هزات أسبوع الآلام");
+            assert.isTrue(response.data.summary.startsWith("تنزيل كتيب"));
         });
     });
 });

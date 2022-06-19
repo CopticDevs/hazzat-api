@@ -115,6 +115,7 @@ export namespace HazzatDbSchema {
     export interface IBooklet {
         ItemId: number;
         Name: string;
+        Name_Arabic: string;
         Booklet_Order: number;
         Source_Path: string;
         Display_Path: string;
@@ -123,5 +124,6 @@ export namespace HazzatDbSchema {
         Full_Picture: string;
         Release_Date: string;
         Summary: string;
+        Summary_Arabic: string;
     }
 }

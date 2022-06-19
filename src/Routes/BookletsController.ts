@@ -1,9 +1,13 @@
 import * as express from "express";
+import { IConfiguration } from "../Common/Configuration";
+import { LanguageHelpers } from "../Common/Utils/LanguageHelpers";
 import { IHymnsServiceProvider } from "../Providers/ServiceProviders/IHymnsServiceProvider";
 import { BaseController } from "./BaseController";
 
 export class BookletsController extends BaseController {
-    constructor(hymnsServiceProvider: IHymnsServiceProvider) {
+    constructor(
+        hymnsServiceProvider: IHymnsServiceProvider,
+        configuration: IConfiguration) {
         super();
 
         /**
@@ -40,6 +44,11 @@ export class BookletsController extends BaseController {
          *     description: Gets a list of Booklets
          *     produces:
          *       - application/json
+         *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *     responses:
          *       200:
          *         description: Booklets
@@ -50,7 +59,7 @@ export class BookletsController extends BaseController {
          */
         this.router.get("/", async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getBookletList();
+                const result = await hymnsServiceProvider.getBookletList(LanguageHelpers.getResponseLanguage(req, configuration));
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);
@@ -66,6 +75,10 @@ export class BookletsController extends BaseController {
          *     produces:
          *       - application/json
          *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *       - name: bookletId
          *         description: Booklet ID
          *         in:  url
@@ -91,7 +104,9 @@ export class BookletsController extends BaseController {
          */
         this.router.get("/:bookletId(\\d+)", async (req: express.Request, res: express.Response) => {
             try {
-                const result = await hymnsServiceProvider.getBooklet(req.params.bookletId);
+                const result = await hymnsServiceProvider.getBooklet(
+                    LanguageHelpers.getResponseLanguage(req, configuration),
+                    req.params.bookletId);
                 res.send(result);
             } catch (ex) {
                 BaseController._OnError(ex, res);

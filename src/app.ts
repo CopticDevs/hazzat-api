@@ -24,7 +24,7 @@ const homeController = new HomeController();
 const seasonsController = new SeasonsController(hymnsProvider, configuration);
 const typesController = new TypesController(hymnsProvider, configuration);
 const tunesController = new TunesController(hymnsProvider, configuration);
-const bookletsController = new BookletsController(hymnsProvider);
+const bookletsController = new BookletsController(hymnsProvider, configuration);
 
 const app = express();
 app.use(cors());

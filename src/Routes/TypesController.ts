@@ -35,6 +35,11 @@ export class TypesController extends BaseController {
          *     description: Gets a list of hymn types
          *     produces:
          *       - application/json
+         *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *     responses:
          *       200:
          *         description: Types
@@ -62,6 +67,10 @@ export class TypesController extends BaseController {
          *     produces:
          *       - application/json
          *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *       - name: typeId
          *         description: Type ID
          *         in:  url
@@ -105,6 +114,10 @@ export class TypesController extends BaseController {
          *     produces:
          *       - application/json
          *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *       - name: typeId
          *         description: Type ID
          *         in:  url
@@ -140,6 +153,10 @@ export class TypesController extends BaseController {
          *     produces:
          *       - application/json
          *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *       - name: typeId
          *         description: Type ID
          *         in:  url
@@ -205,6 +222,10 @@ export class TypesController extends BaseController {
          *     produces:
          *       - application/json
          *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *       - name: typeId
          *         description: Type ID
          *         in:  url
@@ -244,6 +265,10 @@ export class TypesController extends BaseController {
          *     produces:
          *       - application/json
          *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *       - name: typeId
          *         description: Type ID
          *         in:  url
@@ -298,6 +323,10 @@ export class TypesController extends BaseController {
          *     produces:
          *       - application/json
          *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *       - name: typeId
          *         description: Type ID
          *         in:  url
@@ -343,6 +372,10 @@ export class TypesController extends BaseController {
          *     produces:
          *       - application/json
          *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *       - name: typeId
          *         description: Type ID
          *         in:  url
@@ -404,6 +437,10 @@ export class TypesController extends BaseController {
          *     produces:
          *       - application/json
          *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *       - name: typeId
          *         description: Type ID
          *         in:  url
@@ -467,6 +504,10 @@ export class TypesController extends BaseController {
          *     produces:
          *       - application/json
          *     parameters:
+         *       - name: Accept-Language
+         *         description: Locale. Supported locales: en, ar
+         *         in: header
+         *         type: string
          *       - name: typeId
          *         description: Type ID
          *         in:  url

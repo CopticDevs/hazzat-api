@@ -147,12 +147,15 @@ export class HazzatContentUtils {
     }
 
     public static convertBookletDbItemToBookletInfo(
+        lang: ServiceLanguage,
         bookletDbItem: HazzatDbSchema.IBooklet
     ): IBookletInfo {
+        const name = lang === ServiceLanguage.Arabic ? bookletDbItem.Name_Arabic : bookletDbItem.Name;
+        const summary = lang === ServiceLanguage.Arabic ? bookletDbItem.Summary_Arabic : bookletDbItem.Summary;
         return {
             id: `/${ResourceTypes.Booklets}/${bookletDbItem.ItemId}`,
-            name: bookletDbItem.Name,
-            summary: bookletDbItem.Summary,
+            name,
+            summary,
             order: bookletDbItem.Booklet_Order,
             sourcePath: bookletDbItem.Source_Path,
             displayPath: bookletDbItem.Display_Path,

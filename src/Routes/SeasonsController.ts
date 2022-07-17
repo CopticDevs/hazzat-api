@@ -38,7 +38,6 @@ export class SeasonsController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *     responses:
@@ -70,7 +69,6 @@ export class SeasonsController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *       - name: seasonId
@@ -129,7 +127,6 @@ export class SeasonsController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *       - name: seasonId
@@ -166,7 +163,6 @@ export class SeasonsController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *       - name: seasonId
@@ -230,7 +226,6 @@ export class SeasonsController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *       - name: seasonId
@@ -273,7 +268,6 @@ export class SeasonsController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *       - name: seasonId
@@ -345,7 +339,6 @@ export class SeasonsController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *       - name: seasonId
@@ -394,7 +387,6 @@ export class SeasonsController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *       - name: seasonId
@@ -564,7 +556,6 @@ export class SeasonsController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *       - name: seasonId
@@ -631,7 +622,6 @@ export class SeasonsController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *       - name: seasonId

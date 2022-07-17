@@ -37,7 +37,6 @@ export class TypesController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *     responses:
@@ -68,7 +67,6 @@ export class TypesController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *       - name: typeId
@@ -115,7 +113,6 @@ export class TypesController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *       - name: typeId
@@ -154,7 +151,6 @@ export class TypesController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *       - name: typeId
@@ -223,7 +219,6 @@ export class TypesController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *       - name: typeId
@@ -266,7 +261,6 @@ export class TypesController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *       - name: typeId
@@ -324,7 +318,6 @@ export class TypesController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *       - name: typeId
@@ -373,7 +366,6 @@ export class TypesController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *       - name: typeId
@@ -438,7 +430,6 @@ export class TypesController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *       - name: typeId
@@ -505,7 +496,6 @@ export class TypesController extends BaseController {
          *       - application/json
          *     parameters:
          *       - name: Accept-Language
-         *         description: Locale. Supported locales: en, ar
          *         in: header
          *         type: string
          *       - name: typeId

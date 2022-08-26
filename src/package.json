@@ -33,7 +33,7 @@
     "nconf": "^0.12.0",
     "q": "^1.5.1",
     "reflect-metadata": "^0.1.13",
-    "tedious": "^15.0.1",
+    "tedious": "^15.1.0",
     "winston": "^3.8.1"
   },
   "devDependencies": {
@@ -58,7 +58,7 @@
     "ts-mock-imports": "^1.3.8",
     "ts-node": "^10.9.1",
     "tslint": "^6.1.3",
-    "typescript": "^4.7.4"
+    "typescript": "^4.8.2"
   },
   "engines": {
     "node": "^10.15.0"

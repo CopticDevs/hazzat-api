@@ -472,6 +472,8 @@ export class SeasonsController extends BaseController {
          *         type: array
          *         items:
          *           $ref: '#/definitions/TextParagraph'
+         *       contentType:
+         *         type: string
          *     required: [paragraphs]
          *
          *   HazzatContent:
@@ -483,6 +485,8 @@ export class SeasonsController extends BaseController {
          *         type: string
          *       englishHazzat:
          *         type: string
+         *       contentType:
+         *         type: string
          *
          *   VerticalHazzatContent:
          *     type: object
@@ -493,6 +497,8 @@ export class SeasonsController extends BaseController {
          *         type: string
          *       englishVerticalHazzat:
          *         type: string
+         *       contentType:
+         *         type: string
          *
          *   MusicalNotesContent:
          *     type: object
@@ -501,11 +507,15 @@ export class SeasonsController extends BaseController {
          *         type: string
          *       audioFilePath:
          *         type: string
+         *       contentType:
+         *         type: string
          *
          *   AudioContent:
          *     type: object
          *     properties:
          *       audioFilePath:
+         *         type: string
+         *       contentType:
          *         type: string
          *
          *   VideoContent:
@@ -517,6 +527,8 @@ export class SeasonsController extends BaseController {
          *         type: string
          *       englishVideo:
          *         type: string
+         *       contentType:
+         *         type: string
          *
          *   InformationContent:
          *     type: object
@@ -525,18 +537,8 @@ export class SeasonsController extends BaseController {
          *         type: string
          *       englishInformation:
          *         type: string
-         *
-         *   HymnContent:
-         *     oneOf:
-         *       - $ref: '#/definitions/TextContent'
-         *       - $ref: '#/definitions/HazzatContent'
-         *       - $ref: '#/definitions/VerticalHazzatContent'
-         *       - $ref: '#/definitions/MusicalNotesContent'
-         *       - $ref: '#/definitions/AudioContent'
-         *       - $ref: '#/definitions/VideoContent'
-         *       - $ref: '#/definitions/InformationContent'
-         *     discriminator:
-         *       propertyName: contentType
+         *       contentType:
+         *         type: string
          *
          *   Variation:
          *     type: object
@@ -546,7 +548,16 @@ export class SeasonsController extends BaseController {
          *       name:
          *         type: string
          *       content:
-         *         $ref: '#/definitions/HymnContent'
+         *         oneOf:
+         *           - $ref: '#/definitions/TextContent'
+         *           - $ref: '#/definitions/HazzatContent'
+         *           - $ref: '#/definitions/VerticalHazzatContent'
+         *           - $ref: '#/definitions/MusicalNotesContent'
+         *           - $ref: '#/definitions/AudioContent'
+         *           - $ref: '#/definitions/VideoContent'
+         *           - $ref: '#/definitions/InformationContent'
+         *         discriminator:
+         *           propertyName: contentType
          *     required: [id, name, content]
          *
          * /seasons/[seasonId]/services/[serviceId]/hymns/[hymnId]/formats/[formatId]/variations:

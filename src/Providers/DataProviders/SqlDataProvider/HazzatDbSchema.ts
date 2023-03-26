@@ -29,6 +29,7 @@ export namespace HazzatDbSchema {
         Service_ID: number;
         Service_Name: string;
         Service_Name_Arabic: string;
+        Service_Order: number;
         Hymn_Order: number;
         Title: string;
         Title_Arabic: string;

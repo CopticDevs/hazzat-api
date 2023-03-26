@@ -210,7 +210,9 @@ export class TypesController extends BaseController {
          *          type: integer
          *       serviceName:
          *          type: string
-         *     required: [id, name, order, serviceId, serviceName]
+         *       serviceOrder:
+         *          type: string
+         *     required: [id, name, order, serviceId, serviceName, serviceOrder]
          *
          * /types/[typeId]/seasons/[seasonId]/hymns:
          *   get:

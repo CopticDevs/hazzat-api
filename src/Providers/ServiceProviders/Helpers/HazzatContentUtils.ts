@@ -69,7 +69,8 @@ export class HazzatContentUtils {
         return {
             ...hymnInfo,
             serviceId: serviceHymnDbItem.Service_ID,
-            serviceName
+            serviceName,
+            serviceOrder: serviceHymnDbItem.Service_Order
         };
     }
 
@@ -83,7 +84,8 @@ export class HazzatContentUtils {
         return {
             ...hymnInfo,
             serviceId: serviceHymnDbItem.Service_ID,
-            serviceName
+            serviceName,
+            serviceOrder: serviceHymnDbItem.Service_Order
         };
     }
 

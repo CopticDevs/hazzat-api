@@ -89,6 +89,7 @@ export class Validators {
         Validators._validateServiceHymn(value, resourceId);
         value.should.have.property("serviceId");
         value.should.have.property("serviceName");
+        value.should.have.property("serviceOrder");
     }
 
     public static validateTypeServiceHymnWithServiceDetails(value: any, resourceId: string = null): void {
@@ -96,6 +97,7 @@ export class Validators {
         Validators._validateServiceHymn(value, resourceId);
         value.should.have.property("serviceId");
         value.should.have.property("serviceName");
+        value.should.have.property("serviceOrder");
     }
 
     private static _validateServiceHymn(value: any, resourceId: string = null): void {

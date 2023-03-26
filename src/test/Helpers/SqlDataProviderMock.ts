@@ -73,6 +73,7 @@ export class SqlDataProviderMock {
         Service_ID: 3,
         Service_Name: "Some Service Name",
         Service_Name_Arabic: "إسم الخدمة",
+        Service_Order: 1,
         Hymn_Order: 1
     };
     private static _serviceHymn2: HazzatDbSchema.IServiceHymn = {
@@ -85,6 +86,7 @@ export class SqlDataProviderMock {
         Service_ID: 3,
         Service_Name: "Some Service Name",
         Service_Name_Arabic: "إسم الخدمة",
+        Service_Order: 1,
         Hymn_Order: 2
     };
     private static _serviceHymn3: HazzatDbSchema.IServiceHymn = {
@@ -97,6 +99,7 @@ export class SqlDataProviderMock {
         Service_ID: 2,
         Service_Name: "Another Service Name",
         Service_Name_Arabic: "إسم الخدمة",
+        Service_Order: 2,
         Hymn_Order: 3
     };
 

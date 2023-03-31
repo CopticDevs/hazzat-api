@@ -58,7 +58,7 @@
     "ts-mock-imports": "^1.3.8",
     "ts-node": "^10.9.1",
     "tslint": "^6.1.3",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.3"
   },
   "engines": {
     "node": "^16.13.1"

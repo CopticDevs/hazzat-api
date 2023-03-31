@@ -42,7 +42,7 @@
     "@types/mocha": "^10.0.1",
     "@types/mssql": "^8.1.2",
     "@types/nconf": "^0.10.3",
-    "@types/node": "^18.15.7",
+    "@types/node": "^18.15.11",
     "@types/q": "^1.5.5",
     "@types/sinon": "^10.0.13",
     "axios": "^1.3.4",
@@ -58,7 +58,7 @@
     "ts-mock-imports": "^1.3.8",
     "ts-node": "^10.9.1",
     "tslint": "^6.1.3",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.3"
   },
   "engines": {
     "node": "^16.13.1"

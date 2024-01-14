@@ -487,7 +487,7 @@ describe("Localization Tests", () => {
                 .end((err, res) => {
                     Validators.validateObjectChaiResponse(res);
                     Validators.validateTuneSeason(res.body, resourceId);
-                    assert.equal(res.body.name, "Papal Hymns");
+                    assert.equal(res.body.name, "Papal");
                     assert.isTrue(res.body.verse.startsWith("\"Your people shall be volunteers in the day of Your power"));
                     done();
                 });
@@ -501,7 +501,7 @@ describe("Localization Tests", () => {
                 .end((err, res) => {
                     Validators.validateObjectChaiResponse(res);
                     Validators.validateTuneSeason(res.body, resourceId);
-                    assert.equal(res.body.name, "الحآن البطاركة");
+                    assert.equal(res.body.name, "البطاركة");
                     assert.isTrue(res.body.verse.startsWith("شعبك مُنتدب في يوم قوتك في زينة مقدسة من رحم الفجر."));
                     done();
                 });

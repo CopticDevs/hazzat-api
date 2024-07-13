@@ -34,7 +34,7 @@
     "q": "^1.5.1",
     "reflect-metadata": "^0.2.2",
     "tedious": "^18.2.4",
-    "winston": "^3.13.0"
+    "winston": "^3.13.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",

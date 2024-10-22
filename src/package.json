@@ -39,7 +39,7 @@
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/mime": "^3.0.4",
-    "@types/mocha": "^10.0.6",
+    "@types/mocha": "^10.0.9",
     "@types/mssql": "^9.1.5",
     "@types/nconf": "^0.10.6",
     "@types/node": "^22.7.8",
@@ -50,7 +50,7 @@
     "chai-http": "^4.4.0",
     "copyfiles": "^2.4.1",
     "mkdirp": "^3.0.1",
-    "mocha": "^10.4.0",
+    "mocha": "^10.7.3",
     "mocha-trx-reporter": "^3.3.1",
     "sinon": "^19.0.2",
     "swagger-jsdoc": "^6.2.8",

@@ -28,7 +28,7 @@
     "cors": "^2.8.5",
     "diagnostics": "^2.0.2",
     "express": "^4.21.1",
-    "inversify": "^6.0.2",
+    "inversify": "^6.0.3",
     "mssql": "^11.0.1",
     "nconf": "^0.12.1",
     "q": "^1.5.1",

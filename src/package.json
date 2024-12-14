@@ -41,7 +41,7 @@
     "@types/mime": "^3.0.4",
     "@types/mocha": "^10.0.9",
     "@types/mssql": "^9.1.5",
-    "@types/nconf": "^0.10.6",
+    "@types/nconf": "^0.10.7",
     "@types/node": "^22.10.2",
     "@types/q": "^1.5.8",
     "@types/sinon": "^17.0.3",

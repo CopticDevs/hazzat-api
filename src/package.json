@@ -28,7 +28,7 @@
     "cors": "^2.8.5",
     "diagnostics": "^2.0.2",
     "express": "^4.21.2",
-    "inversify": "^6.2.1",
+    "inversify": "^7.1.0",
     "mssql": "^11.0.1",
     "nconf": "^0.12.1",
     "q": "^1.5.1",
@@ -42,15 +42,15 @@
     "@types/mocha": "^10.0.9",
     "@types/mssql": "^9.1.7",
     "@types/nconf": "^0.10.7",
-    "@types/node": "^22.10.5",
+    "@types/node": "^22.13.10",
     "@types/q": "^1.5.8",
-    "@types/sinon": "^17.0.3",
-    "axios": "^1.7.9",
+    "@types/sinon": "^17.0.4",
+    "axios": "^1.8.2",
     "chai": "^4.3.10",
     "chai-http": "^4.4.0",
     "copyfiles": "^2.4.1",
     "mkdirp": "^3.0.1",
-    "mocha": "^11.0.1",
+    "mocha": "^11.1.0",
     "mocha-trx-reporter": "^3.3.1",
     "sinon": "^19.0.2",
     "swagger-jsdoc": "^6.2.8",
@@ -58,7 +58,7 @@
     "ts-mock-imports": "^1.3.16",
     "ts-node": "^10.9.2",
     "tslint": "^6.1.3",
-    "typescript": "^5.7.2"
+    "typescript": "^5.8.2"
   },
   "engines": {
     "node": "^16.13.1"

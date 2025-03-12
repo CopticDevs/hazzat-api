@@ -40,7 +40,7 @@
     "@types/express": "^5.0.0",
     "@types/mime": "^3.0.4",
     "@types/mocha": "^10.0.9",
-    "@types/mssql": "^9.1.6",
+    "@types/mssql": "^9.1.7",
     "@types/nconf": "^0.10.7",
     "@types/node": "^22.13.10",
     "@types/q": "^1.5.8",

@@ -44,7 +44,7 @@
     "@types/nconf": "^0.10.7",
     "@types/node": "^22.13.10",
     "@types/q": "^1.5.8",
-    "@types/sinon": "^17.0.3",
+    "@types/sinon": "^17.0.4",
     "axios": "^1.8.2",
     "chai": "^4.3.10",
     "chai-http": "^4.4.0",

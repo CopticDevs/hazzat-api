@@ -42,7 +42,7 @@
     "@types/mocha": "^10.0.9",
     "@types/mssql": "^9.1.7",
     "@types/nconf": "^0.10.7",
-    "@types/node": "^22.13.10",
+    "@types/node": "^22.14.1",
     "@types/q": "^1.5.8",
     "@types/sinon": "^17.0.4",
     "axios": "^1.8.2",

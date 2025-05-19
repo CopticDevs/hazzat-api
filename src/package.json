@@ -27,7 +27,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "diagnostics": "^2.0.2",
-    "express": "^4.21.2",
+    "express": "^5.1.0",
     "inversify": "^7.5.1",
     "mssql": "^11.0.1",
     "nconf": "^0.13.0",
@@ -37,7 +37,7 @@
     "winston": "^3.17.0"
   },
   "devDependencies": {
-    "@types/express": "^5.0.0",
+    "@types/express": "^5.0.2",
     "@types/mime": "^3.0.4",
     "@types/mocha": "^10.0.9",
     "@types/mssql": "^9.1.7",

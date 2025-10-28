@@ -47,7 +47,7 @@
     "@types/sinon": "^17.0.4",
     "axios": "^1.13.0",
     "chai": "^4.3.10",
-    "chai-http": "^4.4.0",
+    "chai-http": "^5.1.2",
     "copyfiles": "^2.4.1",
     "mkdirp": "^3.0.1",
     "mocha": "^11.7.4",
